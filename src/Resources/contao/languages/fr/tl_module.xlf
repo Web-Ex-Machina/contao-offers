@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
+    <body>
+		<trans-unit id="tl_module.job_template.0">
+			<source>Job template</source>
+			<target>Modèle d'offre</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_template.1">
+			<source>Here you can select the job template.</source>
+			<target>Choisir un modèle de job.</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>
+

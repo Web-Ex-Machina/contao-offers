@@ -1,0 +1,24 @@
+<div class="block-list job job_default col-4 content--inline<?= $this->class ?>" itemscope itemtype="http://schema.org/Article">
+	<div class="block-list__wrapper">
+		<div class="block-list__headline">
+			<div class="block-list__category"></div>
+			<div class="block-list__date" itemprop="datePublished">Publiée le <?= date('d/m/Y', $this->createdAt) ?></div>
+		</div>
+		<div class="block-list__content">
+			<h3 class="block-list__title" itemprop="name"><?= $this->title ?></h3>
+			<div class="block-list__text">
+				<p>
+					<strong>Statut :</strong> <?= $this->status ?> |
+					<strong>Rémunération :</strong> <?= $this->remuneration ?> |
+					<strong>Lieu :</strong> <?= $this->location ?>
+				</p>
+				<?= $this->text ?>
+			</div>
+		</div>
+		<div class="block-list__footer">
+			<div class="block-list__author">
+				<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
+			</div>
+		</div>
+	</div>
+</div>
