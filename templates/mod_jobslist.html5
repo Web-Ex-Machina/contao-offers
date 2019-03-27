@@ -1,0 +1,46 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+  <?php if (empty($this->articles)): ?>
+    <p class="empty"><?= $this->empty ?></p>
+  <?php else: ?>
+  	<?php if($this->jobFilters || $this->locationFilters): ?>
+  	<div class="filters">
+  		<form action="{{env::request}}" method="GET" class="row">
+			<?php if($this->jobFilters): ?>
+			<div class="filter col-5">
+				<select name="job">
+					<option value="">Tous</option>
+					<?php foreach($this->jobFilters as $job): ?>
+					<option value="<?= $job ?>"<?= (\Input::get('job') && \Input::get('job') == $job) ? " selected" : '' ?>><?= $job ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
+
+			<?php if($this->locationFilters): ?>
+			<div class="filter col-5">
+				<select name="location">
+					<option value="">Tous</option>
+					<?php foreach($this->locationFilters as $location): ?>
+					<option value="<?= $location ?>"<?= (\Input::get('location') && \Input::get('location') == $location) ? " selected" : '' ?>><?= $location ?></option>
+					<?php endforeach; ?>
+				</select>
+			</div>
+			<?php endif; ?>
+
+			<div class="col-2">
+				<input type="submit" class="btn m-0 w-100" value="Filtrer" />
+			</div>
+		</form>
+  	</div>
+  	<?php endif; ?>
+  	<div class="row">
+    <?= implode('', $this->articles) ?>
+	</div>
+    <?= $this->pagination ?>
+
+  <?php endif; ?>
+
+<?php $this->endblock(); ?>
