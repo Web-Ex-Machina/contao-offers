@@ -13,7 +13,7 @@ class Job extends Model
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_pzl_job';
+    protected static $strTable = 'tl_wem_job';
 
     /**
      * Find items, depends on the arguments

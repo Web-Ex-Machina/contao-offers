@@ -13,7 +13,7 @@ class Application extends Model
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_pzl_job_application';
+    protected static $strTable = 'tl_wem_job_application';
 
     /**
      * Find items, depends on the arguments

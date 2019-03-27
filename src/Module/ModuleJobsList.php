@@ -6,7 +6,7 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Patchwork\Utf8;
 
-use Prezioso\Model\Job as JobModel;
+use WEM\JobOffersBundle\Model\Job as JobModel;
 
 /**
  * Front end module "offers list".
