@@ -1,1 +1,23 @@
-/sftp-config.json
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.buildpath
+.project
+.settings/
+.build/
+.idea/
+nbproject/
+
+# Vendors
+/vendor
+
+# Distribution
+/dist
+/build
+
+# Dev
+sftp-config*
+*.sublime-*
+.php_cs*

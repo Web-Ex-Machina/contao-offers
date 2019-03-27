@@ -1,185 +1,185 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/prezioso/languages/en/tl_pzl_job_application.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job_application.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="tl_pzl_job_application.createdAt.0">
+    	<trans-unit id="tl_wem_job_application.createdAt.0">
 			<source>Application date</source>
 			<target>Date de candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.createdAt.1">
+		<trans-unit id="tl_wem_job_application.createdAt.1">
 			<source>Enter the application date</source>
 			<target>Saisissez la date de la candidature</target>
 		</trans-unit>
-    	<trans-unit id="tl_pzl_job_application.status.0">
+    	<trans-unit id="tl_wem_job_application.status.0">
 			<source>Status</source>
 			<target>Statut</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.status.1">
+		<trans-unit id="tl_wem_job_application.status.1">
 			<source>Enter the application status</source>
 			<target>Saisissez le statut de la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.status.not-answered">
+		<trans-unit id="tl_wem_job_application.status.not-answered">
 			<source>Not answered</source>
 			<target>Non répondue</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.status.refused">
+		<trans-unit id="tl_wem_job_application.status.refused">
 			<source>Refused</source>
 			<target>Refusée</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.status.accepted">
+		<trans-unit id="tl_wem_job_application.status.accepted">
 			<source>Accepted</source>
 			<target>Acceptée</target>
 		</trans-unit>
 
-    	<trans-unit id="tl_pzl_job_application.firstname.0">
+    	<trans-unit id="tl_wem_job_application.firstname.0">
 			<source>Firstname</source>
 			<target>Prénom</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.firstname.1">
+		<trans-unit id="tl_wem_job_application.firstname.1">
 			<source>Enter the firstname</source>
 			<target>Saisissez le prénom</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.lastname.0">
+		<trans-unit id="tl_wem_job_application.lastname.0">
 			<source>Lastname</source>
 			<target>Nom de famille</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.lastname.1">
+		<trans-unit id="tl_wem_job_application.lastname.1">
 			<source>Enter the lastname</source>
 			<target>Saisissez le nom de famille</target>
 		</trans-unit>
 
-		<trans-unit id="tl_pzl_job_application.street.0">
+		<trans-unit id="tl_wem_job_application.street.0">
 			<source>Address</source>
 			<target>Adresse</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.street.1">
+		<trans-unit id="tl_wem_job_application.street.1">
 			<source>Enter the address</source>
 			<target>Saisissez l'adresse</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.postal.0">
+		<trans-unit id="tl_wem_job_application.postal.0">
 			<source>Postal code</source>
 			<target>Code postal</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.postal.1">
+		<trans-unit id="tl_wem_job_application.postal.1">
 			<source>Enter the postal code</source>
 			<target>Saisissez le code postal</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.city.0">
+		<trans-unit id="tl_wem_job_application.city.0">
 			<source>City</source>
 			<target>Ville</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.city.1">
+		<trans-unit id="tl_wem_job_application.city.1">
 			<source>Enter the city</source>
 			<target>Saisissez la ville</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.country.0">
+		<trans-unit id="tl_wem_job_application.country.0">
 			<source>Country</source>
 			<target>Pays</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.country.1">
+		<trans-unit id="tl_wem_job_application.country.1">
 			<source>Select the country</source>
 			<target>Sélectionnez le pays</target>
 		</trans-unit>
 		
-		<trans-unit id="tl_pzl_job_application.phone.0">
+		<trans-unit id="tl_wem_job_application.phone.0">
 			<source>Phone</source>
 			<target>Téléphone</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.phone.1">
+		<trans-unit id="tl_wem_job_application.phone.1">
 			<source>Enter the phone number</source>
 			<target>Saisissez le numéro de téléphone</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.email.0">
+		<trans-unit id="tl_wem_job_application.email.0">
 			<source>Email</source>
 			<target>Email</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.email.1">
+		<trans-unit id="tl_wem_job_application.email.1">
 			<source>Enter the email address</source>
 			<target>Saisissez l'adresse email</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.comments.0">
+		<trans-unit id="tl_wem_job_application.comments.0">
 			<source>Comments</source>
 			<target>Commentaires</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.comments.1">
+		<trans-unit id="tl_wem_job_application.comments.1">
 			<source>Enter optional comments</source>
 			<target>Saisissez un commentaire optionnel</target>
 		</trans-unit>
 
-		<trans-unit id="tl_pzl_job_application.cv.0">
+		<trans-unit id="tl_wem_job_application.cv.0">
 			<source>CV</source>
 			<target>CV</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.cv.1">
+		<trans-unit id="tl_wem_job_application.cv.1">
 			<source>Select the CV</source>
 			<target>Sélectionnez le CV</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.applicationLetter.0">
+		<trans-unit id="tl_wem_job_application.applicationLetter.0">
 			<source>Application letter</source>
 			<target>Lettre de motivation</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.applicationLetter.1">
+		<trans-unit id="tl_wem_job_application.applicationLetter.1">
 			<source>Select the application letter</source>
 			<target>Sélectionnez la lettre de motivation</target>
 		</trans-unit>
 
-		<trans-unit id="tl_pzl_job_application.statut_legend">
+		<trans-unit id="tl_wem_job_application.statut_legend">
 			<source>Application data</source>
 			<target>Informations sur la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.name_legend">
+		<trans-unit id="tl_wem_job_application.name_legend">
 			<source>Identity</source>
 			<target>Identité</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.street_legend">
+		<trans-unit id="tl_wem_job_application.street_legend">
 			<source>Address data</source>
 			<target>Coordonnées</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.contact_legend">
+		<trans-unit id="tl_wem_job_application.contact_legend">
 			<source>Contact data</source>
 			<target>Contact</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.files_legend">
+		<trans-unit id="tl_wem_job_application.files_legend">
 			<source>Files</source>
 			<target>Fichiers</target>
 		</trans-unit>
 
-    	<trans-unit id="tl_pzl_job_application.new.0">
+    	<trans-unit id="tl_wem_job_application.new.0">
 			<source>New application</source>
 			<target>Nouvelle candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.new.1">
+		<trans-unit id="tl_wem_job_application.new.1">
 			<source>Create a new application</source>
 			<target>Créer une nouvelle candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.edit.0">
+		<trans-unit id="tl_wem_job_application.edit.0">
 			<source>Edit application</source>
 			<target>Editer la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.edit.1">
+		<trans-unit id="tl_wem_job_application.edit.1">
 			<source>Edit application ID %s</source>
 			<target>Editer la candidature ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.copy.0">
+		<trans-unit id="tl_wem_job_application.copy.0">
 			<source>Copy application</source>
 			<target>Dupliquer la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.copy.1">
+		<trans-unit id="tl_wem_job_application.copy.1">
 			<source>Copy application ID %s</source>
 			<target>Dupliquer la candidature ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.delete.0">
+		<trans-unit id="tl_wem_job_application.delete.0">
 			<source>Delete application</source>
 			<target>Supprimer la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.delete.1">
+		<trans-unit id="tl_wem_job_application.delete.1">
 			<source>Delete application ID %s</source>
 			<target>Supprimer la candidature ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.show.0">
+		<trans-unit id="tl_wem_job_application.show.0">
 			<source>Show application data</source>
 			<target>Voir les informations de la candidature</target>
 		</trans-unit>
-		<trans-unit id="tl_pzl_job_application.show.1">
+		<trans-unit id="tl_wem_job_application.show.1">
 			<source>Show application data ID %s</source>
 			<target>Voir les informations de la candidature ID %s</target>
 		</trans-unit>

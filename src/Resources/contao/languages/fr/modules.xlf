@@ -1,24 +1,15 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/prezioso/languages/en/modules.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="MOD.prezioso">
-			<source>PREZIOSO Linjebygg</source>
-			<target>PREZIOSO Linjebygg</target>
-		</trans-unit>
-
-		<trans-unit id="MOD.pzl-jobs.0">
+		<trans-unit id="MOD.wem-jobs.0">
 			<source>Job offers</source>
 			<target>Offres d'emploi</target>
 		</trans-unit>
-		<trans-unit id="MOD.pzl-jobs.1">
+		<trans-unit id="MOD.wem-jobs.1">
 			<source>Manage job offers</source>
 			<target>Gérer les offres d'emploi</target>
 		</trans-unit>
 
-		<trans-unit id="FMD.prezioso">
-			<source>PREZIOSO Linjebygg</source>
-			<target>PREZIOSO Linjebygg</target>
-		</trans-unit>
 		<trans-unit id="FMD.jobslist.0">
 			<source>Jobs list</source>
 			<target>Liste d'offres</target>

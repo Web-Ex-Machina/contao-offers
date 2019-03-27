@@ -1,7 +1,8 @@
 {
-    "name": "web-ex-machina/prezioso-linjebygg",
-    "description": "Prezioso Linjebygg extension for Contao Open Source CMS",
-    "type": "contao-module",
+    "name": "web-ex-machina/contao-job-offers",
+    "description": "Job Offers for Contao Open Source CMS",
+     "keywords": ["frontend", "job", "application", "offer", "webexmachina", "module", "contao"],
+    "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
         {
@@ -10,27 +11,32 @@
             "role":"Developer"
         }
     ],
+    "support":{
+        "website":"https://www.webexmachina.fr/",
+        "issues":"https://github.com/web-ex-machina/contao-job-offers/issues",
+        "source":"https://github.com/web-ex-machina/contao-job-offers"
+    },
     "require": {
-        "php": ">=5.5",
-        "contao/core-bundle": "~3.2 || ~4.1",
-        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
+        "php": "^5.6|^7.0",
+        "contao/core-bundle": "^4.4",
+        "contao-community-alliance/composer-plugin": "*",
+        "terminal42/notification_center": "^1.5"
     },
     "autoload":{
-        "psr-0": {
-            "Prezioso\\": [
-                "library/"
-            ]
+        "psr-4": {
+            "WEM\\JobOffersBundle\\": "src/"
         },
-        "classmap": [""]
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/",
+            "src/Resources/contao/languages/",
+            "src/Resources/contao/templates/"
+        ]
     },
-    "extra": {
-        "contao": {
-            "sources": {
-                "": "system/modules/prezioso-linjebygg"
-            },
-            "runonce": [
-                "system/modules/prezioso-linjebygg/config/runonce.php"
-            ]
-        }
+    "extra":{
+        "contao-manager-plugin": "WEM\\JobOffersBundle\\ContaoManager\\Plugin"
     }
 }
