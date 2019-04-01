@@ -153,12 +153,6 @@ class ModuleJobsList extends \Module
         if ($objArticles !== null) {
             $this->Template->articles = $this->parseArticles($objArticles);
         }
-
-        // Load JS
-        $objCombiner = new \Combiner();
-        $objCombiner->add("system/modules/prezioso/assets/js/mod_joblist.js", time());
-        $GLOBALS["TL_JQUERY"][] = '<script src="https://www.google.com/recaptcha/api.js"></script>';
-        $GLOBALS["TL_JQUERY"][] = sprintf('<script src="%s"></script>', $objCombiner->getCombinedFile());
     }
 
     /**
