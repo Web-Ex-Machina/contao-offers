@@ -12,13 +12,18 @@
 					<strong>Rémunération :</strong> <?= $this->remuneration ?> |
 					<strong>Lieu :</strong> <?= $this->location ?>
 				</p>
-				<?= $this->text ?>
+				<?= $this->job_displayTeaser ? $this->text : '' ?>
 			</div>
 		</div>
-		<?php if($this->blnDisplayApplyButton): ?>
+		<?php if($this->blnDisplayApplyButton || !$this->job_displayTeaser): ?>
 		<div class="block-list__footer">
 			<div class="block-list__author">
+				<?php if(!$this->job_displayTeaser): ?>
+				<a href="<?= $this->detailsUrl ?>" class="btn" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>">Voir l'offre</a>
+				<?php endif; ?>
+				<?php if($this->blnDisplayApplyButton): ?>
 				<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php endif; ?>

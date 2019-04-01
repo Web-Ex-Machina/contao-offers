@@ -1,0 +1,14 @@
+<div class="job job_details">
+	<h1><?= $this->title ?></h1>
+	<p>
+		<strong>Statut :</strong> <?= $this->status ?> |
+		<strong>Rémunération :</strong> <?= $this->remuneration ?> |
+		<strong>Lieu :</strong> <?= $this->location ?>
+	</p>
+
+	<?= $this->text ?>
+
+	<?php if($this->blnDisplayApplyButton): ?>
+	<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
+	<?php endif; ?>
+</div>

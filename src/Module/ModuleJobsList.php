@@ -73,6 +73,15 @@ class ModuleJobsList extends \Module
             }
         }
 
+        // Catch the details modal
+        if (Input::get('seeDetails')) {
+            $objJob = JobModel::findByPk(Input::get('seeDetails'));
+
+            $this->job_template = 'job_details';
+            echo $this->parseArticle($objJob);
+            die;
+        }
+
         global $objPage;
         $limit = null;
         $offset = (int) $this->skipFirst;
@@ -218,9 +227,17 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->date;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', $objArticle->date);
 
+        // Notice the template if we want/can display apply button
         if ($this->blnDisplayApplyButton) {
             $objTemplate->blnDisplayApplyButton = true;
             $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+        }
+
+        // Notice the template if we want to display the text
+        if ($this->job_displayTeaser) {
+            $objTemplate->blnDisplayText = true;
+        } else {
+            $objTemplate->detailsUrl = $this->addToUrl("seeDetails=".$objArticle->id, true, ["job"]);
         }
 
         // Tag the response
