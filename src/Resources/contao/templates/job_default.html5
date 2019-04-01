@@ -15,10 +15,12 @@
 				<?= $this->text ?>
 			</div>
 		</div>
+		<?php if($this->blnDisplayApplyButton): ?>
 		<div class="block-list__footer">
 			<div class="block-list__author">
 				<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
 			</div>
 		</div>
+		<?php endif; ?>
 	</div>
 </div>

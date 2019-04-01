@@ -48,22 +48,29 @@ class ModuleJobsList extends \Module
      */
     protected function compile()
     {
-        $strForm = $this->getForm(1);
+        // Fetch the application form if defined
+        if ($this->job_applicationForm) {
+            $strForm = $this->getForm($this->job_applicationForm);
 
-        if (Input::get('apply') && !Input::post('FORM_SUBMIT')) {
-            $objJob = JobModel::findByPk(Input::get('apply'));
+            if (Input::get('apply') && !Input::post('FORM_SUBMIT') && "" != $strForm) {
+                $objJob = JobModel::findByPk(Input::get('apply'));
 
-            $objTemplate = new \FrontendTemplate('job_apply');
-            $objTemplate->id =  $objJob->id;
-            $objTemplate->code =  $objJob->code;
-            $objTemplate->title =  $objJob->title;
-            $objTemplate->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
-            $objTemplate->time =  time();
-            $objTemplate->token =  \RequestToken::get();
-            $objTemplate->form = $strForm;
-            
-            echo $objTemplate->parse();
-            die;
+                $objTemplate = new \FrontendTemplate('job_apply');
+                $objTemplate->id =  $objJob->id;
+                $objTemplate->code =  $objJob->code;
+                $objTemplate->title =  $objJob->title;
+                $objTemplate->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
+                $objTemplate->time =  time();
+                $objTemplate->token =  \RequestToken::get();
+                $objTemplate->form = $strForm;
+                
+                echo $objTemplate->parse();
+                die;
+            }
+
+            if ("" != $strForm) {
+                $this->blnDisplayApplyButton = true;
+            }
         }
 
         global $objPage;
@@ -211,7 +218,10 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->date;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', $objArticle->date);
 
-        $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+        if ($this->blnDisplayApplyButton) {
+            $objTemplate->blnDisplayApplyButton = true;
+            $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+        }
 
         // Tag the response
         if (\System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
