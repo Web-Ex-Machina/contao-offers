@@ -40,6 +40,9 @@ class ModuleJobsList extends \Module
             return $objTemplate->parse();
         }
 
+        // Load bundles
+        $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
+
         return parent::generate();
     }
 
@@ -231,6 +234,11 @@ class ModuleJobsList extends \Module
         if ($this->blnDisplayApplyButton) {
             $objTemplate->blnDisplayApplyButton = true;
             $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+
+            // Comply with i18nl10n constraints
+            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+                $objTemplate->applyUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->applyUrl;
+            }
         }
 
         // Notice the template if we want to display the text
@@ -238,6 +246,11 @@ class ModuleJobsList extends \Module
             $objTemplate->blnDisplayText = true;
         } else {
             $objTemplate->detailsUrl = $this->addToUrl("seeDetails=".$objArticle->id, true, ["job"]);
+
+            // Comply with i18nl10n constraints
+            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+                $objTemplate->detailsUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->detailsUrl;
+            }
         }
 
         // Tag the response
