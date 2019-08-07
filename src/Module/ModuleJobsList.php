@@ -1,20 +1,12 @@
 <?php
 
-/**
- * Prezioso Extension for Contao Open Source CMS
- *
- * Copyright (c) 2015-2018 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
-
-namespace Prezioso\Module;
+namespace WEM\JobOffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Patchwork\Utf8;
 
-use Prezioso\Model\Job as JobModel;
+use WEM\JobOffersBundle\Model\Job as JobModel;
 
 /**
  * Front end module "offers list".
@@ -48,6 +40,9 @@ class ModuleJobsList extends \Module
             return $objTemplate->parse();
         }
 
+        // Load bundles
+        $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
+
         return parent::generate();
     }
 
@@ -56,21 +51,37 @@ class ModuleJobsList extends \Module
      */
     protected function compile()
     {
-        $strForm = $this->getForm(1);
+        // Fetch the application form if defined
+        if ($this->job_applicationForm) {
+            $strForm = $this->getForm($this->job_applicationForm);
 
-        if (Input::get('apply') && !Input::post('FORM_SUBMIT')) {
-            $objJob = JobModel::findByPk(Input::get('apply'));
+            if (Input::get('apply') && "" != $strForm) {
+                $objJob = JobModel::findByPk(Input::get('apply'));
 
-            $objTemplate = new \FrontendTemplate('job_apply');
-            $objTemplate->id =  $objJob->id;
-            $objTemplate->code =  $objJob->code;
-            $objTemplate->title =  $objJob->title;
-            $objTemplate->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
-            $objTemplate->time =  time();
-            $objTemplate->token =  \RequestToken::get();
-            $objTemplate->form = $strForm;
-            
-            echo $objTemplate->parse();
+                $objTemplate = new \FrontendTemplate('job_apply');
+                $objTemplate->id =  $objJob->id;
+                $objTemplate->code =  $objJob->code;
+                $objTemplate->title =  $objJob->title;
+                $objTemplate->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
+                $objTemplate->time =  time();
+                $objTemplate->token =  \RequestToken::get();
+                $objTemplate->form = $strForm;
+                
+                echo $objTemplate->parse();
+                die;
+            }
+
+            if ("" != $strForm) {
+                $this->blnDisplayApplyButton = true;
+            }
+        }
+
+        // Catch the details modal
+        if (Input::get('seeDetails')) {
+            $objJob = JobModel::findByPk(Input::get('seeDetails'));
+
+            $this->job_template = 'job_details';
+            echo $this->parseArticle($objJob);
             die;
         }
 
@@ -161,12 +172,6 @@ class ModuleJobsList extends \Module
         if ($objArticles !== null) {
             $this->Template->articles = $this->parseArticles($objArticles);
         }
-
-        // Load JS
-        $objCombiner = new \Combiner();
-        $objCombiner->add("system/modules/prezioso/assets/js/mod_joblist.js", time());
-        $GLOBALS["TL_JQUERY"][] = '<script src="https://www.google.com/recaptcha/api.js"></script>';
-        $GLOBALS["TL_JQUERY"][] = sprintf('<script src="%s"></script>', $objCombiner->getCombinedFile());
     }
 
     /**
@@ -225,7 +230,28 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->date;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', $objArticle->date);
 
-        $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+        // Notice the template if we want/can display apply button
+        if ($this->blnDisplayApplyButton) {
+            $objTemplate->blnDisplayApplyButton = true;
+            $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+
+            // Comply with i18nl10n constraints
+            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+                $objTemplate->applyUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->applyUrl;
+            }
+        }
+
+        // Notice the template if we want to display the text
+        if ($this->job_displayTeaser) {
+            $objTemplate->blnDisplayText = true;
+        } else {
+            $objTemplate->detailsUrl = $this->addToUrl("seeDetails=".$objArticle->id, true, ["job"]);
+
+            // Comply with i18nl10n constraints
+            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+                $objTemplate->detailsUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->detailsUrl;
+            }
+        }
 
         // Tag the response
         if (\System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {

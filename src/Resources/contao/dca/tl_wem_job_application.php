@@ -73,12 +73,12 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = array
     'palettes' => array
     (
         'default'                     => '
-			{statut_legend},createdAt,status;
-			{name_legend},firstname,lastname;
-			{street_legend},street,postal,city,country;
-			{contact_legend},phone,email,comments;
-			{files_legend},cv,applicationLetter;
-		'
+            {statut_legend},createdAt,status;
+            {name_legend},firstname,lastname;
+            {street_legend},street,postal,city,country;
+            {contact_legend},phone,email,comments;
+            {files_legend},cv,applicationLetter;
+        '
     ),
 
     // Fields

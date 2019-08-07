@@ -94,10 +94,10 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = array
     'palettes' => array
     (
         'default'       => '
-			{title_legend},code,author,recipient;
-			{job_legend},title,location,createdAt,remuneration,status,text;
-			{publish_legend},published,start,stop
-		'
+            {title_legend},code,author,recipient;
+            {job_legend},title,location,createdAt,remuneration,status,text;
+            {publish_legend},published,start,stop
+        '
     ),
 
     // Fields
@@ -268,7 +268,7 @@ class tl_wem_job extends Backend
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->hasAccess('tl_wem_location::published', 'alexf')) {
+        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
             return '';
         }
 
@@ -296,17 +296,17 @@ class tl_wem_job extends Backend
         Input::setGet('act', 'toggle');
 
         // Check permissions to publish
-        if (!$this->User->hasAccess('tl_wem_location::published', 'alexf')) {
+        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
             $this->log('Not enough permissions to publish/unpublish agence item ID "'.$intId.'"', __METHOD__, TL_ERROR);
             $this->redirect('contao/main.php?act=error');
         }
 
-        $objVersions = new Versions('tl_wem_location', $intId);
+        $objVersions = new Versions('tl_wem_job', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'] as $callback) {
+        if (is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'] as $callback) {
                 if (is_array($callback)) {
                     $this->import($callback[0]);
                     $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, ($dc ?: $this));
@@ -317,10 +317,10 @@ class tl_wem_job extends Backend
         }
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_wem_location SET tstamp=". time() .", published='" . ($blnVisible ? '1' : '') . "' WHERE id=?")
+        $this->Database->prepare("UPDATE tl_wem_job SET tstamp=". time() .", published='" . ($blnVisible ? '1' : '') . "' WHERE id=?")
                        ->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_wem_location.id='.$intId.'" has been created'.$this->getParentEntries('tl_wem_location', $intId), __METHOD__, TL_GENERAL);
+        $this->log('A new version of record "tl_wem_job.id='.$intId.'" has been created'.$this->getParentEntries('tl_wem_job', $intId), __METHOD__, TL_GENERAL);
     }
 }

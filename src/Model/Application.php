@@ -1,14 +1,6 @@
 <?php
 
-/**
- * Prezioso Extension for Contao Open Source CMS
- *
- * Copyright (c) 2015-2018 Web ex Machina
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
-
-namespace Prezioso\Model;
+namespace WEM\JobOffersBundle\Model;
 
 use Contao\Model;
 
@@ -21,7 +13,7 @@ class Application extends Model
      * Table name
      * @var string
      */
-    protected static $strTable = 'tl_pzl_job_application';
+    protected static $strTable = 'tl_wem_job_application';
 
     /**
      * Find items, depends on the arguments
