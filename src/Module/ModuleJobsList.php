@@ -55,7 +55,7 @@ class ModuleJobsList extends \Module
         if ($this->job_applicationForm) {
             $strForm = $this->getForm($this->job_applicationForm);
 
-            if (Input::get('apply') && "" != $strForm) {
+            if (Input::get('apply') && !Input::post('FORM_SUBMIT') && "" != $strForm) {
                 $objJob = JobModel::findByPk(Input::get('apply'));
 
                 $objTemplate = new \FrontendTemplate('job_apply');
@@ -69,6 +69,17 @@ class ModuleJobsList extends \Module
                 
                 echo $objTemplate->parse();
                 die;
+            } else if (Input::get('apply') && Input::post('FORM_SUBMIT') && "" != $strForm) {
+                $this->Template = new \FrontendTemplate('job_apply');
+                $this->Template->id =  $objJob->id;
+                $this->Template->code =  $objJob->code;
+                $this->Template->title =  $objJob->title;
+                $this->Template->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
+                $this->Template->time =  time();
+                $this->Template->token =  \RequestToken::get();
+                $this->Template->form = $strForm;
+                
+                return;
             }
 
             if ("" != $strForm) {

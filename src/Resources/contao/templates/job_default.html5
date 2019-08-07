@@ -19,10 +19,10 @@
 		<div class="block-list__footer">
 			<div class="block-list__author">
 				<?php if(!$this->job_displayTeaser): ?>
-				<a href="<?= $this->detailsUrl ?>" class="btn" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>">Voir l'offre</a>
+				<a href="<?= $this->detailsUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>">Voir l'offre</a>
 				<?php endif; ?>
 				<?php if($this->blnDisplayApplyButton): ?>
-				<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
+				<a href="<?= $this->applyUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
 				<?php endif; ?>
 			</div>
 		</div>
