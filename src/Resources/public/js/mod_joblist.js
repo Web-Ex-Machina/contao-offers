@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function () {
   /*$('.job .apply').bind('click', function(){
     var modalObject = $('#applicationModal').modalFW('get');
 

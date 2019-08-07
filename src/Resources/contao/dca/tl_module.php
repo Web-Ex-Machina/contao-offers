@@ -13,13 +13,13 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist']    = '{title_legend},nam
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['job_template'],
-	'default'                 => 'job_default',
-	'exclude'                 => true,
-	'inputType'               => 'select',
-	'options_callback'        => array('tl_module_jobs', 'getJobsTemplates'),
-	'eval'                    => array('tl_class'=>'w50'),
-	'sql'                     => "varchar(64) NOT NULL default ''"
+    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['job_template'],
+    'default'                 => 'job_default',
+    'exclude'                 => true,
+    'inputType'               => 'select',
+    'options_callback'        => array('tl_module_jobs', 'getJobsTemplates'),
+    'eval'                    => array('tl_class'=>'w50'),
+    'sql'                     => "varchar(64) NOT NULL default ''"
 );
 
 /**
@@ -29,22 +29,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = array
  */
 class tl_module_jobs extends Backend
 {
-	/**
-	 * Import the back end user object
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->import('BackendUser', 'User');
-	}
+    /**
+     * Import the back end user object
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->import('BackendUser', 'User');
+    }
 
-	/**
-	 * Return all news templates as array
-	 *
-	 * @return array
-	 */
-	public function getJobsTemplates()
-	{
-		return $this->getTemplateGroup('job_');
-	}
+    /**
+     * Return all news templates as array
+     *
+     * @return array
+     */
+    public function getJobsTemplates()
+    {
+        return $this->getTemplateGroup('job_');
+    }
 }
