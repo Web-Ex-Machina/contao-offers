@@ -1,0 +1,27 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="fr">
+    <body>
+		<trans-unit id="MOD.wem-job-offers.0">
+			<source>Job offers</source>
+			<target>Job offers</target>
+		</trans-unit>
+		<trans-unit id="MOD.wem-job-offers.1">
+			<source>Manage job offers</source>
+			<target>Manage job offers</target>
+		</trans-unit>
+
+		<trans-unit id="FMD.wem-job-offers">
+			<source>Job offers</source>
+			<target>Job offers</target>
+		</trans-unit>
+		<trans-unit id="FMD.jobslist.0">
+			<source>Jobs list</source>
+			<target>Jobs list</target>
+		</trans-unit>
+		<trans-unit id="FMD.jobslist.1">
+			<source>Adds a list of jobs items to the page</source>
+			<target>Adds a list of jobs items to the page</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>

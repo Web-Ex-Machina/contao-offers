@@ -1,0 +1,188 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job_application.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_wem_job_application.createdAt.0">
+			<source>Application date</source>
+			<target>Application date</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.createdAt.1">
+			<source>Enter the application date</source>
+			<target>Enter the application date</target>
+		</trans-unit>
+    	<trans-unit id="tl_wem_job_application.status.0">
+			<source>Status</source>
+			<target>Status</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.status.1">
+			<source>Enter the application status</source>
+			<target>Enter the application status</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.status.not-answered">
+			<source>Not answered</source>
+			<target>Not answered</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.status.refused">
+			<source>Refused</source>
+			<target>Refused</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.status.accepted">
+			<source>Accepted</source>
+			<target>Accepted</target>
+		</trans-unit>
+
+    	<trans-unit id="tl_wem_job_application.firstname.0">
+			<source>Firstname</source>
+			<target>Firstname</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.firstname.1">
+			<source>Enter the firstname</source>
+			<target>Enter the firstname</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.lastname.0">
+			<source>Lastname</source>
+			<target>Lastname</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.lastname.1">
+			<source>Enter the lastname</source>
+			<target>Enter the lastname</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_application.street.0">
+			<source>Address</source>
+			<target>Address</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.street.1">
+			<source>Enter the address</source>
+			<target>Enter the address</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.postal.0">
+			<source>Postal code</source>
+			<target>Postal code</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.postal.1">
+			<source>Enter the postal code</source>
+			<target>Enter the postal code</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.city.0">
+			<source>City</source>
+			<target>City</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.city.1">
+			<source>Enter the city</source>
+			<target>Enter the city</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.country.0">
+			<source>Country</source>
+			<target>Country</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.country.1">
+			<source>Select the country</source>
+			<target>Select the country</target>
+		</trans-unit>
+		
+		<trans-unit id="tl_wem_job_application.phone.0">
+			<source>Phone</source>
+			<target>Phone</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.phone.1">
+			<source>Enter the phone number</source>
+			<target>Enter the phone number</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.email.0">
+			<source>Email</source>
+			<target>Email</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.email.1">
+			<source>Enter the email address</source>
+			<target>Enter the email address</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.comments.0">
+			<source>Comments</source>
+			<target>Comments</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.comments.1">
+			<source>Enter optional comments</source>
+			<target>Enter optional comments</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_application.cv.0">
+			<source>CV</source>
+			<target>CV</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.cv.1">
+			<source>Select the CV</source>
+			<target>Select the CV</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.applicationLetter.0">
+			<source>Application letter</source>
+			<target>Application letter</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.applicationLetter.1">
+			<source>Select the application letter</source>
+			<target>Select the application letter</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_application.statut_legend">
+			<source>Application data</source>
+			<target>Application data</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.name_legend">
+			<source>Identity</source>
+			<target>Identity</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.street_legend">
+			<source>Address data</source>
+			<target>Address data</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.contact_legend">
+			<source>Contact data</source>
+			<target>Contact data</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.files_legend">
+			<source>Files</source>
+			<target>Files</target>
+		</trans-unit>
+
+    	<trans-unit id="tl_wem_job_application.new.0">
+			<source>New application</source>
+			<target>New application</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.new.1">
+			<source>Create a new application</source>
+			<target>Create a new application</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.edit.0">
+			<source>Edit application</source>
+			<target>Edit application</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.edit.1">
+			<source>Edit application ID %s</source>
+			<target>Edit application ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.copy.0">
+			<source>Copy application</source>
+			<target>Copy application</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.copy.1">
+			<source>Copy application ID %s</source>
+			<target>Copy application ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.delete.0">
+			<source>Delete application</source>
+			<target>Delete application</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.delete.1">
+			<source>Delete application ID %s</source>
+			<target>Delete application ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.show.0">
+			<source>Show application data</source>
+			<target>Show application data</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.show.1">
+			<source>Show application data ID %s</source>
+			<target>Show application data ID %s</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>
