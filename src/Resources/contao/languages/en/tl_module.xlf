@@ -1,0 +1,32 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_module.job_displayTeaser.0">
+			<source>Display offer</source>
+			<target>Display offer</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_displayTeaser.1">
+			<source>Check to display the offer content in the template</source>
+			<target>Check to display the offer content in the template</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_applicationForm.0">
+			<source>Application form</source>
+			<target>Application form</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_applicationForm.1">
+			<source>Choose an form for candidates</source>
+			<target>Choose an form for candidates</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_template.0">
+			<source>Job template</source>
+			<target>Job template</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_template.1">
+			<source>Here you can select the job template.</source>
+			<target>Here you can select the job template.</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>
+
