@@ -2,15 +2,15 @@
 	<div class="block-list__wrapper">
 		<div class="block-list__headline">
 			<div class="block-list__category"></div>
-			<div class="block-list__date" itemprop="datePublished">Publiée le <?= date('d/m/Y', $this->createdAt) ?></div>
+			<div class="block-list__date" itemprop="datePublished"><?= sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['datePublished'], date(\Config::get('datimFormat'), $this->createdAt)) ?></div>
 		</div>
 		<div class="block-list__content">
 			<h3 class="block-list__title" itemprop="name"><?= $this->title ?></h3>
 			<div class="block-list__text">
 				<p>
-					<strong>Statut :</strong> <?= $this->status ?> |
-					<strong>Rémunération :</strong> <?= $this->remuneration ?> |
-					<strong>Lieu :</strong> <?= $this->location ?>
+					<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></strong> <?= $this->status ?> |
+					<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></strong> <?= $this->remuneration ?> |
+					<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?></strong> <?= $this->location ?>
 				</p>
 				<?= $this->job_displayTeaser ? $this->text : '' ?>
 			</div>
@@ -19,10 +19,10 @@
 		<div class="block-list__footer">
 			<div class="block-list__author">
 				<?php if(!$this->job_displayTeaser): ?>
-				<a href="<?= $this->detailsUrl ?>" class="btn" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>">Voir l'offre</a>
+				<a href="<?= $this->detailsUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?></a>
 				<?php endif; ?>
 				<?php if($this->blnDisplayApplyButton): ?>
-				<a href="<?= $this->applyUrl ?>" class="btn" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>">Postuler</a>
+				<a href="<?= $this->applyUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['apply'] ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

@@ -1,0 +1,44 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/default.php" source-language="en" target-language="fr">
+    <body>
+		<trans-unit id="WEM.JOBOFFERS.datePublished">
+			<source>Published: %s</source>
+			<target>Publiée: %s</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.status">
+			<source>Position:</source>
+			<target>Statut :</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.remuneration">
+			<source>Remuneration:</source>
+			<target>Rémunération :</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.location">
+			<source>Location:</source>
+			<target>Lieu :</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.allLocations">
+			<source>All location</source>
+			<target>Tous les lieux</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.allPositions">
+			<source>All positions</source>
+			<target>Tous les postes</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.filter">
+			<source>Filter</source>
+			<target>Filtrer</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.seeOffer">
+			<source>See offer</source>
+			<target>Voir l'offre</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.apply">
+			<source>Apply</source>
+			<target>Postuler</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,44 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/default.php" source-language="en" target-language="en">
+    <body>
+		<trans-unit id="WEM.JOBOFFERS.datePublished">
+			<source>Published: %s</source>
+			<target>Published: %s</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.status">
+			<source>Position:</source>
+			<target>Position:</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.remuneration">
+			<source>Remuneration:</source>
+			<target>Remuneration:</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.location">
+			<source>Location:</source>
+			<target>Location:</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.allLocations">
+			<source>All location</source>
+			<target>All location</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.allPositions">
+			<source>All positions</source>
+			<target>All positions</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.filter">
+			<source>Filter</source>
+			<target>Filter</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.seeOffer">
+			<source>See offer</source>
+			<target>See offer</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.apply">
+			<source>Apply</source>
+			<target>Apply</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>
