@@ -1,9 +1,9 @@
 <div class="job job_details">
 	<h1><?= $this->title ?></h1>
 	<p>
-		<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></strong> <?= $this->status ?> |
-		<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></strong> <?= $this->remuneration ?> |
-		<strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?></strong> <?= $this->location ?>
+		<?= if($this->status): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></strong> <?= $this->status ?> |<?php endif; ?>
+		<?= if($this->remuneration): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></strong> <?= $this->remuneration ?> |<?php endif; ?>
+		<?= if($this->location): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?></strong> <?= $this->location ?><?php endif; ?>
 	</p>
 
 	<?= $this->text ?>

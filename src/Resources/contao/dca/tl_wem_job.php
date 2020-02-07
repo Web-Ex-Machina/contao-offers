@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = array
             'exclude'                 => true,
             'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'maxlength'=>255),
+            'eval'                    => array('tl_class'=>'w50', 'maxlength'=>255),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'remuneration' => array
@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = array
             'exclude'                 => true,
             'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'maxlength'=>255),
+            'eval'                    => array('tl_class'=>'w50', 'maxlength'=>255),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'status' => array
@@ -188,7 +188,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = array
             'exclude'                 => true,
             'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50', 'maxlength'=>255),
+            'eval'                    => array('tl_class'=>'w50', 'maxlength'=>255),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'text' => array
