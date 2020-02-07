@@ -9,11 +9,7 @@
 			<source>Manage job offers</source>
 			<target>Gérer les offres d'emploi</target>
 		</trans-unit>
-		
-		<trans-unit id="FMD.wem-job-offers">
-			<source>Job offers</source>
-			<target>Offres d'emploi</target>
-		</trans-unit>
+
 		<trans-unit id="FMD.jobslist.0">
 			<source>Jobs list</source>
 			<target>Liste d'offres</target>

@@ -1,22 +1,6 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="tl_module.job_displayTeaser.0">
-			<source>Display text</source>
-			<target>Afficher le texte</target>
-		</trans-unit>
-		<trans-unit id="tl_module.job_displayTeaser.1">
-			<source>Check if you want to display the job offer text in the list.</source>
-			<target>Cocher si vous voulez afficher le texte de l'offre d'emploi dans la liste.</target>
-		</trans-unit>
-		<trans-unit id="tl_module.job_applicationForm.0">
-			<source>Application form</source>
-			<target>Formulaire d'application</target>
-		</trans-unit>
-		<trans-unit id="tl_module.job_applicationForm.1">
-			<source>Here you can select the application form.</source>
-			<target>Choisissez le formulaire d'application.</target>
-		</trans-unit>
 		<trans-unit id="tl_module.job_template.0">
 			<source>Job template</source>
 			<target>Modèle d'offre</target>
