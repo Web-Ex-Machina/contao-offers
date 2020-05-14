@@ -85,8 +85,11 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {title_legend},code,author,recipient;
-            {job_legend},title,location,createdAt,remuneration,status,text;
+            {title_legend},code,title,postedAt,availableAt;
+            {location_legend},countries,locations;
+            {details_legend},field,remuneration,status;
+            {content_legend},text,file;
+            {hr_legend},hrName,hrPosition,hrPhone,hrEmail;
             {publish_legend},published,start,stop
         ',
     ],
@@ -99,6 +102,12 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'createdAt' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['createdAt'],
+            'default' => time(),
+            'flag' => 8,
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
 
         'code' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['code'],
@@ -108,30 +117,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'author' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['author'],
-            'default' => BackendUser::getInstance()->id,
-            'exclude' => true,
-            'search' => true,
-            'filter' => true,
-            'sorting' => true,
-            'flag' => 11,
-            'inputType' => 'select',
-            'foreignKey' => 'tl_user.name',
-            'eval' => ['doNotCopy' => true, 'chosen' => true, 'mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'recipient' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['recipient'],
-            'default' => BackendUser::getInstance()->email,
-            'exclude' => true,
-            'search' => true,
-            'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-
         'title' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['title'],
             'exclude' => true,
@@ -140,17 +125,44 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'createdAt' => [
+        'postedAt' => [
             'exclude' => true,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['createdAt'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['postedAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
-        'location' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['location'],
+        'availableAt' => [
+            'exclude' => true,
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['availableAt'],
+            'inputType' => 'text',
+            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
+            'sql' => "varchar(10) NOT NULL default ''",
+        ],
+        'countries' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['countries'],
+            'exclude' => true,
+            'filter' => true,
+            'sorting' => true,
+            'inputType' => 'select',
+            'eval' => ['multiple' => true, 'chosen' => true],
+            'options_callback' => function () {
+                return System::getCountries();
+            },
+            'sql' => 'blob NULL',
+        ],
+        'locations' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['locations'],
             'exclude' => true,
             'search' => true,
+            'inputType' => 'listWizard',
+            'sql' => 'blob NULL',
+        ],
+
+        'field' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['field'],
+            'exclude' => true,
+            'filter' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -158,7 +170,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         'remuneration' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['remuneration'],
             'exclude' => true,
-            'search' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -166,11 +177,45 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         'status' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['status'],
             'exclude' => true,
-            'search' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
+
+        'hrName' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrName'],
+            'default' => BackendUser::getInstance()->name,
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'hrPosition' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPosition'],
+            'default' => '',
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'hrPhone' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPhone'],
+            'default' => '',
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'hrEmail' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrEmail'],
+            'default' => BackendUser::getInstance()->email,
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+
         'text' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['text'],
             'exclude' => true,
@@ -179,6 +224,13 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
             'explanation' => 'insertTags',
             'sql' => 'mediumtext NULL',
+        ],
+        'file' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['file'],
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
+            'sql' => 'binary(16) NULL',
         ],
 
         'published' => [
