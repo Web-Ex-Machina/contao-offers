@@ -295,17 +295,17 @@ class tl_wem_job extends Backend
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->hasAccess('tl_wem_location::published', 'alexf')) {
+        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
             return '';
         }
 
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
         if (!$row['published']) {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label, 'data-state="'.($row['published'] ? 1 : 0).'"').'</a> ';
     }
 
     /**
@@ -317,37 +317,82 @@ class tl_wem_job extends Backend
      */
     public function toggleVisibility($intId, $blnVisible, DataContainer $dc = null): void
     {
-        // Check permissions to edit
+        // Set the ID and action
         Input::setGet('id', $intId);
         Input::setGet('act', 'toggle');
 
-        // Check permissions to publish
-        if (!$this->User->hasAccess('tl_wem_location::published', 'alexf')) {
-            $this->log('Not enough permissions to publish/unpublish agence item ID "'.$intId.'"', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+        if ($dc) {
+            $dc->id = $intId; // see #8043
         }
 
-        $objVersions = new Versions('tl_wem_location', $intId);
-        $objVersions->initialize();
-
-        // Trigger the save_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_location']['fields']['published']['save_callback'] as $callback) {
+        // Trigger the onload_callback
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'] as $callback) {
                 if (\is_array($callback)) {
                     $this->import($callback[0]);
-                    $blnVisible = $this->$callback[0]->$callback[1]($blnVisible, ($dc ?: $this));
+                    $this->{$callback[0]}->{$callback[1]}($dc);
                 } elseif (\is_callable($callback)) {
-                    $blnVisible = $callback($blnVisible, ($dc ?: $this));
+                    $callback($dc);
                 }
             }
         }
 
+        // Check the field access
+        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
+            throw new Contao\CoreBundle\Exception\AccessDeniedException('Not enough permissions to publish/unpublish article ID "'.$intId.'".');
+        }
+
+        // Set the current record
+        if ($dc) {
+            $objRow = $this->Database->prepare('SELECT * FROM tl_wem_job WHERE id=?')
+                                     ->limit(1)
+                                     ->execute($intId)
+            ;
+
+            if ($objRow->numRows) {
+                $dc->activeRecord = $objRow;
+            }
+        }
+
+        $objVersions = new Versions('tl_wem_job', $intId);
+        $objVersions->initialize();
+
+        // Trigger the save_callback
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'] as $callback) {
+                if (\is_array($callback)) {
+                    $this->import($callback[0]);
+                    $blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, $dc);
+                } elseif (\is_callable($callback)) {
+                    $blnVisible = $callback($blnVisible, $dc);
+                }
+            }
+        }
+
+        $time = time();
+
         // Update the database
-        $this->Database->prepare('UPDATE tl_wem_location SET tstamp='.time().", published='".($blnVisible ? '1' : '')."' WHERE id=?")
+        $this->Database->prepare("UPDATE tl_wem_job SET tstamp=$time, published='".($blnVisible ? '1' : '')."' WHERE id=?")
                        ->execute($intId)
         ;
 
+        if ($dc) {
+            $dc->activeRecord->tstamp = $time;
+            $dc->activeRecord->published = ($blnVisible ? '1' : '');
+        }
+
+        // Trigger the onsubmit_callback
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'] as $callback) {
+                if (\is_array($callback)) {
+                    $this->import($callback[0]);
+                    $this->{$callback[0]}->{$callback[1]}($dc);
+                } elseif (\is_callable($callback)) {
+                    $callback($dc);
+                }
+            }
+        }
+
         $objVersions->create();
-        $this->log('A new version of record "tl_wem_location.id='.$intId.'" has been created'.$this->getParentEntries('tl_wem_location', $intId), __METHOD__, TL_GENERAL);
     }
 }
