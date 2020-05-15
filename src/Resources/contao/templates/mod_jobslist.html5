@@ -1,11 +1,7 @@
 <?php $this->extend('block_unsearchable'); ?>
 
 <?php $this->block('content'); ?>
-
-  <?php if (empty($this->articles)): ?>
-    <p class="empty"><?= $this->empty ?></p>
-  <?php else: ?>
-  	<?php if($this->jobFilters || $this->locationFilters): ?>
+  <?php if($this->locationFilters || $this->fieldFilters): ?>
   	<div class="filters">
   		<form action="{{env::request}}" method="GET" class="row">
 			<?php if($this->fieldFilters): ?>
@@ -35,7 +31,12 @@
 			</div>
 		</form>
   	</div>
-  	<?php endif; ?>
+  <?php endif; ?>
+
+  <?php if (empty($this->articles)): ?>
+    <p class="empty"><?= $this->empty ?></p>
+  <?php else: ?>
+  	
   	<div class="row">
     <?= implode('', $this->articles) ?>
 	</div>
