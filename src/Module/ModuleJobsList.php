@@ -62,6 +62,8 @@ class ModuleJobsList extends \Module
      */
     protected function compile(): void
     {
+        \System::getCountries();
+
         // Fetch the application form if defined
         if ($this->job_applicationForm) {
             $strForm = $this->getForm($this->job_applicationForm);
@@ -73,7 +75,7 @@ class ModuleJobsList extends \Module
                 $objTemplate->id = $objJob->id;
                 $objTemplate->code = $objJob->code;
                 $objTemplate->title = $objJob->title;
-                $objTemplate->recipient = $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
+                $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
                 $objTemplate->time = time();
                 $objTemplate->token = \RequestToken::get();
                 $objTemplate->form = $strForm;
@@ -113,17 +115,30 @@ class ModuleJobsList extends \Module
         $objJobFilters = JobModel::findItems(['published' => 1]);
         if ($objJobFilters && 0 < $objJobFilters->count()) {
             $arrJobFilters = [];
+            $arrFieldFilters = [];
             $arrLocationFilters = [];
             while ($objJobFilters->next()) {
-                if (!\in_array($objJobFilters->title, $arrJobFilters, true)) {
+                if ('' !== $objJobFilters->title && !\in_array($objJobFilters->title, $arrJobFilters, true)) {
                     $arrJobFilters[] = $objJobFilters->title;
                 }
 
-                if (!\in_array($objJobFilters->location, $arrLocationFilters, true)) {
-                    $arrLocationFilters[] = $objJobFilters->location;
+                if ('' !== $objJobFilters->field && !\in_array($objJobFilters->field, $arrFieldFilters, true)) {
+                    $arrFieldFilters[] = $objJobFilters->field;
+                }
+
+                $arrCountries = deserialize($objJobFilters->countries);
+                if (!$arrCountries) {
+                    continue;
+                }
+
+                foreach ($arrCountries as $c) {
+                    if (!\in_array($c, $arrLocationFilters, true)) {
+                        $arrLocationFilters[$c] = $GLOBALS['TL_LANG']['CNT'][$c];
+                    }
                 }
             }
             $this->Template->jobFilters = $arrJobFilters;
+            $this->Template->fieldFilters = $arrFieldFilters;
             $this->Template->locationFilters = $arrLocationFilters;
         }
 
@@ -132,9 +147,14 @@ class ModuleJobsList extends \Module
             $arrConfig['title'] = \Input::get('job');
         }
 
+        // Add field to the config if there is a filter
+        if (\Input::get('field')) {
+            $arrConfig['field'] = \Input::get('field');
+        }
+
         // Add area to the config if there is a filter
         if (\Input::get('location')) {
-            $arrConfig['location'] = \Input::get('location');
+            $arrConfig['country'] = \Input::get('location');
         }
 
         // Get the total number of items
@@ -237,9 +257,9 @@ class ModuleJobsList extends \Module
         $objTemplate->count = $intCount; // see #5708
 
         // Add the meta information
-        $objTemplate->date = $arrMeta['createdAt'];
-        $objTemplate->timestamp = $objArticle->date;
-        $objTemplate->datetime = date('Y-m-d\TH:i:sP', $objArticle->date);
+        $objTemplate->date = (int) $objArticle->postedAt;
+        $objTemplate->timestamp = $objArticle->postedAt;
+        $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
         // Notice the template if we want/can display apply button
         if ($this->blnDisplayApplyButton) {

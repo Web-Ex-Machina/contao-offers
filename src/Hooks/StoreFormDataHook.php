@@ -21,7 +21,7 @@ class StoreFormDataHook
         try {
             if ('job-offer-application' === $objForm->formID) {
                 // Unset fields who are not in tl_wem_job_application table
-                unset($arrSet['recipient'], $arrSet['code'], $arrSet['title']);
+                unset($arrSet['rhEmail'], $arrSet['code'], $arrSet['title']);
 
                 // Convert files path into uuid
                 if ($arrSet['cv'] && $objFile = \FilesModel::findOneByPath($arrSet['cv'])) {

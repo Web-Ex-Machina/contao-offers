@@ -98,8 +98,12 @@ class Job extends Model
             $arrColumns[] = $t.'.title = "'.$arrConfig['title'].'"';
         }
 
-        if ($arrConfig['location']) {
-            $arrColumns[] = "$t.location = '".$arrConfig['location']."'";
+        if ($arrConfig['field']) {
+            $arrColumns[] = $t.'.field = "'.$arrConfig['field'].'"';
+        }
+
+        if ($arrConfig['country']) {
+            $arrColumns[] = "$t.countries LIKE '%%".$arrConfig['country']."%'";
         }
 
         if (1 === $arrConfig['published']) {
