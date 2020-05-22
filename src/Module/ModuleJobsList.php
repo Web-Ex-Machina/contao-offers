@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace WEM\JobOffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
-use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
 use Patchwork\Utf8;
 use WEM\JobOffersBundle\Model\Job as JobModel;
@@ -114,18 +113,20 @@ class ModuleJobsList extends \Module
             die;
         }
 
-        // Fetch the application form if defined
         if ($this->job_applicationForm
-            && Input::post('FORM_SUBMIT')
             && '' !== $objSession->get('wem_job_offer')
         ) {
-            try {
-                $strForm = $this->getApplicationForm($objSession->get('wem_job_offer'));
-                $this->Template->openModalOnLoad = true;
-                $this->Template->openModalOnLoadContent = json_encode($strForm);
-            } catch(\Exception $e) {
-                $this->Template->openModalOnLoad = true;
-                $this->Template->openModalOnLoadContent = json_encode('"'.$e->getResponse().'"');
+            $strForm = $this->getApplicationForm($objSession->get('wem_job_offer'));
+
+            // Fetch the application form if defined
+            if (Input::post('FORM_SUBMIT')) {
+                try {
+                    $this->Template->openModalOnLoad = true;
+                    $this->Template->openModalOnLoadContent = json_encode($strForm);
+                } catch (\Exception $e) {
+                    $this->Template->openModalOnLoad = true;
+                    $this->Template->openModalOnLoadContent = json_encode('"'.$e->getResponse().'"');
+                }
             }
         }
 
@@ -246,26 +247,20 @@ class ModuleJobsList extends \Module
      */
     protected function getApplicationForm($intJob, $strTemplate = 'job_apply')
     {
-        try {
-            $strForm = $this->getForm($this->job_applicationForm);
+        $strForm = $this->getForm($this->job_applicationForm);
 
-            $objJob = JobModel::findByPk($intJob);
+        $objJob = JobModel::findByPk($intJob);
 
-            $objTemplate = new \FrontendTemplate($strTemplate);
-            $objTemplate->id = $objJob->id;
-            $objTemplate->code = $objJob->code;
-            $objTemplate->title = $objJob->title;
-            $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
-            $objTemplate->time = time();
-            $objTemplate->token = \RequestToken::get();
-            $objTemplate->form = $strForm;
+        $objTemplate = new \FrontendTemplate($strTemplate);
+        $objTemplate->id = $objJob->id;
+        $objTemplate->code = $objJob->code;
+        $objTemplate->title = $objJob->title;
+        $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $objTemplate->time = time();
+        $objTemplate->token = \RequestToken::get();
+        $objTemplate->form = $strForm;
 
-            return $objTemplate->parse();
-        } catch(RedirectResponseException $r) {
-            return $objTemplate->parse();
-        } catch (\Exception $e) {
-            throw $e;
-        }
+        return $objTemplate->parse();
     }
 
     /**
