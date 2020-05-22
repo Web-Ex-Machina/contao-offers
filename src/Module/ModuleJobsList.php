@@ -261,6 +261,13 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->postedAt;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
+        // Fetch the job offer file
+        if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
+            $objTemplate->file = $objFile->path;
+        } else {
+            $objTemplate->file = null;
+        }
+
         // Notice the template if we want/can display apply button
         if ($this->blnDisplayApplyButton) {
             $objTemplate->blnDisplayApplyButton = true;
