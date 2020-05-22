@@ -42,6 +42,77 @@
 	</div>
     <?= $this->pagination ?>
 
+    <script type="text/javascript">
+    	<?php if($this->openModalOnLoad): ?>
+    	window.addEventListener('load', function() {
+			setTimeout(function(){
+				var modal = new app.ModalFW({
+		          name : 'jobApplyModal',
+		          content: <?= $this->openModalOnLoadContent ?>,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		    },10);
+		});
+    	<?php endif; ?>
+
+		var openDetailsModal = function(btn){
+		    return new Promise(function(resolve,reject){
+		      var job = btn.$el.attr('data-job');
+		      $.ajax({
+		        timeout: 10000,
+		        url: window.location.pathname,
+		        type: 'post',
+		        data:{
+		          'TL_AJAX': 1,
+		          'action': 'seeDetails',
+		          'job': job
+		        },
+		      }).done(function(html){
+		        var modal = new app.ModalFW({
+		          name : 'jobDetailsModal',
+		          content: html,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		        resolve();
+		      }).fail(function(jqXHR, textStatus){
+		        console.log(jqXHR, textStatus);
+		        reject();
+		      });
+		    });
+	    }
+
+	    var openApplicationModal = function(btn){
+		    return new Promise(function(resolve,reject){
+		      var job = btn.$el.attr('data-job');
+		      $.ajax({
+		        timeout: 10000,
+		        url: window.location.pathname,
+		        type: 'post',
+		        data:{
+		          'TL_AJAX': 1,
+		          'action': 'apply',
+		          'job': job
+		        },
+		      }).done(function(html){
+		        var modal = new app.ModalFW({
+		          name : 'jobApplyModal',
+		          content: html,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		        resolve();
+		      }).fail(function(jqXHR, textStatus){
+		        console.log(jqXHR, textStatus);
+		        reject();
+		      });
+		    });
+	    }
+    </script>
   <?php endif; ?>
 
 <?php $this->endblock(); ?>

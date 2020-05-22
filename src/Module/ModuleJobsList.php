@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace WEM\JobOffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Input;
 use Patchwork\Utf8;
 use WEM\JobOffersBundle\Model\Job as JobModel;
@@ -62,40 +63,70 @@ class ModuleJobsList extends \Module
      */
     protected function compile(): void
     {
+        // Init countries
         \System::getCountries();
 
-        // Fetch the application form if defined
+        // Init session
+        $objSession = \Session::getInstance();
+
+        // If we have setup a form, allow module to use it later
         if ($this->job_applicationForm) {
-            $strForm = $this->getForm($this->job_applicationForm);
-
-            if (Input::get('apply') && !Input::post('FORM_SUBMIT') && '' !== $strForm) {
-                $objJob = JobModel::findByPk(Input::get('apply'));
-
-                $objTemplate = new \FrontendTemplate('job_apply');
-                $objTemplate->id = $objJob->id;
-                $objTemplate->code = $objJob->code;
-                $objTemplate->title = $objJob->title;
-                $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
-                $objTemplate->time = time();
-                $objTemplate->token = \RequestToken::get();
-                $objTemplate->form = $strForm;
-
-                echo $objTemplate->parse();
-                die;
-            }
-
-            if ('' !== $strForm) {
-                $this->blnDisplayApplyButton = true;
-            }
+            $this->blnDisplayApplyButton = true;
         }
 
-        // Catch the details modal
-        if (Input::get('seeDetails')) {
-            $objJob = JobModel::findByPk(Input::get('seeDetails'));
+        // Catch Ajax requets
+        if (\Input::post('TL_AJAX')) {
+            try {
+                switch (\Input::post('action')) {
+                    case 'seeDetails':
+                        if (!\Input::post('job')) {
+                            throw new \Exception('Missing job argument');
+                        }
+                        $objJob = JobModel::findByPk(\Input::post('job'));
 
-            $this->job_template = 'job_details';
-            echo $this->parseArticle($objJob);
+                        $this->job_template = 'job_details';
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseArticle($objJob));
+                        die;
+                    break;
+
+                    case 'apply':
+                        if (!\Input::post('job')) {
+                            throw new \Exception('Missing job argument');
+                        }
+
+                        // Put the job in session
+                        $objSession->set('wem_job_offer', \Input::post('job'));
+
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('job')));
+                        die;
+                    break;
+
+                    default:
+                        throw new \Exception(sprintf('Unknown request called : %s', \Input::post('action')));
+                }
+            } catch (\Exception $e) {
+                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
+            }
+
+            // Add Request Token to JSON answer and return
+            $arrResponse['rt'] = \RequestToken::get();
+            echo json_encode($arrResponse);
             die;
+        }
+
+        // Fetch the application form if defined
+        if ($this->job_applicationForm
+            && Input::post('FORM_SUBMIT')
+            && '' !== $objSession->get('wem_job_offer')
+        ) {
+            try {
+                $strForm = $this->getApplicationForm($objSession->get('wem_job_offer'));
+                $this->Template->openModalOnLoad = true;
+                $this->Template->openModalOnLoadContent = json_encode($strForm);
+            } catch(\Exception $e) {
+                $this->Template->openModalOnLoad = true;
+                $this->Template->openModalOnLoadContent = json_encode('"'.$e->getResponse().'"');
+            }
         }
 
         global $objPage;
@@ -206,6 +237,38 @@ class ModuleJobsList extends \Module
     }
 
     /**
+     * Parse and return an application form for a job.
+     *
+     * @param int    $intJob      [Job ID]
+     * @param string $strTemplate [Template name]
+     *
+     * @return string
+     */
+    protected function getApplicationForm($intJob, $strTemplate = 'job_apply')
+    {
+        try {
+            $strForm = $this->getForm($this->job_applicationForm);
+
+            $objJob = JobModel::findByPk($intJob);
+
+            $objTemplate = new \FrontendTemplate($strTemplate);
+            $objTemplate->id = $objJob->id;
+            $objTemplate->code = $objJob->code;
+            $objTemplate->title = $objJob->title;
+            $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
+            $objTemplate->time = time();
+            $objTemplate->token = \RequestToken::get();
+            $objTemplate->form = $strForm;
+
+            return $objTemplate->parse();
+        } catch(RedirectResponseException $r) {
+            return $objTemplate->parse();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
      * Parse one or more items and return them as array.
      *
      * @param Model\Collection $objArticles
@@ -289,6 +352,11 @@ class ModuleJobsList extends \Module
             if (\array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
                 $objTemplate->detailsUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->detailsUrl;
             }
+        }
+
+        // Notify the template we must open this item apply modal
+        if ($this->openApplyModalOnStart && $objArticle->id === $this->openApplyModalOnStart) {
+            $objTemplate->openApplyModalOnStart = true;
         }
 
         // Tag the response

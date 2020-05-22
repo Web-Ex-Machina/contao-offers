@@ -1,4 +1,4 @@
-<div class="block-list job job_default col-4 content--inline<?= $this->class ?>" itemscope itemtype="http://schema.org/Article">
+<div class="block-list job job_default col-4 content--inline<?= $this->class ?>" data-job="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article">
 	<div class="block-list__wrapper">
 		<div class="block-list__headline">
 			<div class="block-list__category"></div>
@@ -19,10 +19,10 @@
 		<div class="block-list__footer">
 			<div class="block-list__author">
 				<?php if(!$this->job_displayTeaser): ?>
-				<a href="<?= $this->detailsUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="offerTextModal_<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?></a>
+				<button class="btn-load" data-process="openDetailsModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?></button>
 				<?php endif; ?>
 				<?php if($this->blnDisplayApplyButton): ?>
-				<a href="<?= $this->applyUrl ?>" class="btn" data-autoload="false" data-refresh="false" data-modal="applicationModal_<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['apply'] ?></a>
+				<button class="btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['apply'] ?></button>
 				<?php endif; ?>
 			</div>
 		</div>

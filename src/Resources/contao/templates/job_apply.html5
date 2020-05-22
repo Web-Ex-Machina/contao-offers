@@ -3,13 +3,13 @@
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="pid"]').val(<?= $this->id ?>);
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="code"]').val("<?= $this->code ?>");
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="title"]').val("<?= $this->title ?>");
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="recipient"]').val("<?= $this->recipient ?>");
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="REQUEST_TOKEN"]').val("<?= $this->token ?>");
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="tstamp"]').val(Math.floor(Date.now() / 1000));
-		    $('.modalFW[data-name="applicationModal_'+<?= $this->id ?>+'"] input[name="createdAt"]').val(Math.floor(Date.now() / 1000));
+			$('.modalFW[data-name="jobApplyModal"] input[name="pid"]').val(<?= $this->id ?>);
+		    $('.modalFW[data-name="jobApplyModal"] input[name="code"]').val("<?= $this->code ?>");
+		    $('.modalFW[data-name="jobApplyModal"] input[name="title"]').val("<?= $this->title ?>");
+		    $('.modalFW[data-name="jobApplyModal"] input[name="recipient"]').val("<?= $this->recipient ?>");
+		    $('.modalFW[data-name="jobApplyModal"] input[name="REQUEST_TOKEN"]').val("<?= $this->token ?>");
+		    $('.modalFW[data-name="jobApplyModal"] input[name="tstamp"]').val(Math.floor(Date.now() / 1000));
+		    $('.modalFW[data-name="jobApplyModal"] input[name="createdAt"]').val(Math.floor(Date.now() / 1000));
 		});
 	</script>
 </div>
