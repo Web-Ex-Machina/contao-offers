@@ -70,9 +70,10 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             ],
             'toggle' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['toggle'],
-                'icon' => 'visible.gif',
+                'icon' => 'visible.svg',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback' => ['tl_wem_job', 'toggleIcon'],
+                'showInHeader' => true,
             ],
             'applications' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['applications'],
@@ -290,7 +291,7 @@ class tl_wem_job extends Backend
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
         if (\strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), (1 === Input::get('state')), (@func_get_arg(12) ?: null));
+            $this->toggleVisibility(Input::get('tid'), (1 == Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 
@@ -309,7 +310,7 @@ class tl_wem_job extends Backend
     }
 
     /**
-     * Disable/enable a agence.
+     * Disable/enable a job.
      *
      * @param int           $intId
      * @param bool          $blnVisible
@@ -339,7 +340,7 @@ class tl_wem_job extends Backend
 
         // Check the field access
         if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
-            throw new Contao\CoreBundle\Exception\AccessDeniedException('Not enough permissions to publish/unpublish article ID "'.$intId.'".');
+            throw new Contao\CoreBundle\Exception\AccessDeniedException('Not enough permissions to publish/unpublish job item ID '.$intId.'.');
         }
 
         // Set the current record
