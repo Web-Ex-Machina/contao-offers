@@ -13,6 +13,10 @@
 			<source>Remuneration:</source>
 			<target>Rémunération :</target>
 		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.field">
+			<source>Field:</source>
+			<target>Discipline :</target>
+		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.location">
 			<source>Location:</source>
 			<target>Lieu :</target>
@@ -25,6 +29,10 @@
 		<trans-unit id="WEM.JOBOFFERS.allPositions">
 			<source>All positions</source>
 			<target>Tous les postes</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.allFields">
+			<source>All fields</source>
+			<target>Toutes les postes</target>
 		</trans-unit>
 
 		<trans-unit id="WEM.JOBOFFERS.filter">

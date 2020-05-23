@@ -1,5 +1,5 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job.php" source-language="en" target-language="en">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job.php" source-language="en" target-language="fr">
     <body>
     	<trans-unit id="tl_wem_job.code.0">
 			<source>Code</source>
@@ -9,23 +9,6 @@
 			<source>Enter the job offer code</source>
 			<target>Enter the job offer code</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.author.0">
-			<source>Author</source>
-			<target>Author</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_job.author.1">
-			<source>Select the job offer author</source>
-			<target>Select the job offer author</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_job.recipient.0">
-			<source>Recipient</source>
-			<target>Recipient</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_job.recipient.1">
-			<source>Enter the job offer recipient who'll receive applications</source>
-			<target>Enter the job offer recipient who'll receive applications</target>
-		</trans-unit>
-
 		<trans-unit id="tl_wem_job.title.0">
 			<source>Title</source>
 			<target>Title</target>
@@ -34,21 +17,47 @@
 			<source>Enter the job offer title</source>
 			<target>Enter the job offer title</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.createdAt.0">
+		<trans-unit id="tl_wem_job.postedAt.0">
 			<source>Date of filing</source>
 			<target>Date of filing</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.createdAt.1">
+		<trans-unit id="tl_wem_job.postedAt.1">
 			<source>Enter the job offer date of filing</source>
 			<target>Enter the job offer date of filing</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.location.0">
-			<source>Location</source>
-			<target>Location</target>
+		<trans-unit id="tl_wem_job.availableAt.0">
+			<source>Date of availability</source>
+			<target>Date of availability</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.location.1">
-			<source>Enter the job offer location</source>
-			<target>Enter the job offer location</target>
+		<trans-unit id="tl_wem_job.availableAt.1">
+			<source>Enter the job offer date of availability</source>
+			<target>Enter the job offer date of availability</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job.countries.0">
+			<source>Countries</source>
+			<target>Countries</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.countries.1">
+			<source>Select the job offer countries</source>
+			<target>Select the job offer countries</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.locations.0">
+			<source>Locations</source>
+			<target>Locations</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.locations.1">
+			<source>Enter more precise locations</source>
+			<target>Enter more precise locations</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job.field.0">
+			<source>Job field</source>
+			<target>Job field</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.field.1">
+			<source>Enter the job field</source>
+			<target>Enter the job field</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.remuneration.0">
 			<source>Remuneration</source>
@@ -66,6 +75,7 @@
 			<source>Enter the job offer status</source>
 			<target>Enter the job offer status</target>
 		</trans-unit>
+
 		<trans-unit id="tl_wem_job.text.0">
 			<source>Content</source>
 			<target>Content</target>
@@ -73,6 +83,14 @@
 		<trans-unit id="tl_wem_job.text.1">
 			<source>Enter the job offer content</source>
 			<target>Enter the job offer content</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.file.0">
+			<source>File</source>
+			<target>File</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.file.1">
+			<source>Select the job file</source>
+			<target>Select the job file</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.published.0">
@@ -100,17 +118,71 @@
 			<target>Enter the date on which the job offer should be removed from the site</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_job.title_legend">
-			<source>Offer informations</source>
-			<target>Offer informations</target>
+		<trans-unit id="tl_wem_job.hrName.0">
+			<source>Contact name</source>
+			<target>Contact name</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job.job_legend">
-			<source>Job informations</source>
-			<target>Job informations</target>
+		<trans-unit id="tl_wem_job.hrName.1">
+			<source>Enter the job offer contact name</source>
+			<target>Enter the job offer contact name</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPosition.0">
+			<source>Contact position</source>
+			<target>Contact position</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPosition.1">
+			<source>Enter the job offer contact position</source>
+			<target>Enter the job offer contact position</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPhone.0">
+			<source>Contact phone</source>
+			<target>Contact phone</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPhone.1">
+			<source>Enter the job offer contact phone</source>
+			<target>Enter the job offer contact phone</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrEmail.0">
+			<source>Contact email</source>
+			<target>Contact email</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrEmail.1">
+			<source>Enter the job offer contact email</source>
+			<target>Enter the job offer contact email</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job.title_legend">
+			<source>Global informations</source>
+			<target>Global informations</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.location_legend">
+			<source>Location details</source>
+			<target>Location details</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.details_legend">
+			<source>Job details</source>
+			<target>Job details</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.content_legend">
+			<source>Contents</source>
+			<target>Contents</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hr_legend">
+			<source>HR Settings</source>
+			<target>HR Settings</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.publish_legend">
 			<source>Publish settings</source>
 			<target>Publish settings</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job.createdAt.0">
+			<source>Created at</source>
+			<target>Created at</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.createdAt.1">
+			<source>Enter creation date</source>
+			<target>Enter creation date</target>
 		</trans-unit>
 
     	<trans-unit id="tl_wem_job.new.0">

@@ -1,43 +1,54 @@
 <?php
 
-// Load tl_content container
+declare(strict_types=1);
+
+/**
+ * Contao Job Offers for Contao Open Source CMS
+ * Copyright (c) 2018-2020 Web ex Machina
+ *
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-job-offers
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ */
+
 $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
-$GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist']    = '
-	{title_legend},name,headline,type;
-	{config_legend},job_displayTeaser,job_applicationForm;numberOfItems,skipFirst,perPage;
-	{template_legend:hide},job_template,customTpl;
-	{expert_legend:hide},guests,cssID
+$GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
+    {title_legend},name,headline,type;
+    {config_legend},job_displayTeaser,job_applicationForm;numberOfItems,skipFirst,perPage;
+    {template_legend:hide},job_template,customTpl;
+    {expert_legend:hide},guests,cssID
 ';
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = array(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['job_displayTeaser'],
-    'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'eval'                    => array('doNotCopy'=>true, 'tl_class'=>'w50 m12'),
-    'sql'                     => "char(1) NOT NULL default ''"
-);
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = array(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['job_applicationForm'],
-    'exclude'                 => true,
-    'inputType'               => 'select',
-    'options_callback'        => array('tl_content', 'getForms'),
-    'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50 wizard'),
-    'wizard' => array(
-        array('tl_content', 'editForm')
-    ),
-    'sql'                     => "int(10) unsigned NOT NULL default '0'"
-);
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = array(
-    'label'                   => &$GLOBALS['TL_LANG']['tl_module']['job_template'],
-    'default'                 => 'job_default',
-    'exclude'                 => true,
-    'inputType'               => 'select',
-    'options_callback'        => array('tl_module_jobs', 'getJobsTemplates'),
-    'eval'                    => array('tl_class'=>'w50'),
-    'sql'                     => "varchar(64) NOT NULL default ''"
-);
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_displayTeaser'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12'],
+    'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_applicationForm'],
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => ['tl_content', 'getForms'],
+    'eval' => ['includeBlankOption' => true, 'chosen' => true, 'submitOnChange' => true, 'tl_class' => 'w50 wizard'],
+    'wizard' => [
+        ['tl_content', 'editForm'],
+    ],
+    'sql' => "int(10) unsigned NOT NULL default '0'",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_template'],
+    'default' => 'job_default',
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => ['tl_module_jobs', 'getJobsTemplates'],
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
+];
 
 /**
  * Provide miscellaneous methods that are used by the data configuration array.
@@ -47,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = array(
 class tl_module_jobs extends Backend
 {
     /**
-     * Import the back end user object
+     * Import the back end user object.
      */
     public function __construct()
     {
@@ -56,7 +67,7 @@ class tl_module_jobs extends Backend
     }
 
     /**
-     * Return all news templates as array
+     * Return all news templates as array.
      *
      * @return array
      */

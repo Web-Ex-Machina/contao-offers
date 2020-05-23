@@ -1,19 +1,15 @@
 <?php $this->extend('block_unsearchable'); ?>
 
 <?php $this->block('content'); ?>
-
-  <?php if (empty($this->articles)): ?>
-    <p class="empty"><?= $this->empty ?></p>
-  <?php else: ?>
-  	<?php if($this->jobFilters || $this->locationFilters): ?>
+  <?php if($this->locationFilters || $this->fieldFilters): ?>
   	<div class="filters">
   		<form action="{{env::request}}" method="GET" class="row">
-			<?php if($this->jobFilters): ?>
+			<?php if($this->fieldFilters): ?>
 			<div class="filter col-5">
-				<select name="job">
-					<option value=""><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['allPositions'] ?></option>
-					<?php foreach($this->jobFilters as $job): ?>
-					<option value="<?= $job ?>"<?= (\Input::get('job') && \Input::get('job') == $job) ? " selected" : '' ?>><?= $job ?></option>
+				<select name="field">
+					<option value=""><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['allFields'] ?></option>
+					<?php foreach($this->fieldFilters as $field): ?>
+					<option value="<?= $field ?>"<?= (\Input::get('field') && \Input::get('field') == $field) ? " selected" : '' ?>><?= $field ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -23,8 +19,8 @@
 			<div class="filter col-5">
 				<select name="location">
 					<option value=""><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['allLocations'] ?></option>
-					<?php foreach($this->locationFilters as $location): ?>
-					<option value="<?= $location ?>"<?= (\Input::get('location') && \Input::get('location') == $location) ? " selected" : '' ?>><?= $location ?></option>
+					<?php foreach($this->locationFilters as $value => $location): ?>
+					<option value="<?= $value ?>"<?= (\Input::get('location') && \Input::get('location') == $value) ? " selected" : '' ?>><?= $location ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -35,12 +31,88 @@
 			</div>
 		</form>
   	</div>
-  	<?php endif; ?>
+  <?php endif; ?>
+
+  <?php if (empty($this->articles)): ?>
+    <p class="empty"><?= $this->empty ?></p>
+  <?php else: ?>
+  	
   	<div class="row">
     <?= implode('', $this->articles) ?>
 	</div>
     <?= $this->pagination ?>
 
+    <script type="text/javascript">
+    	<?php if($this->openModalOnLoad): ?>
+    	window.addEventListener('load', function() {
+			setTimeout(function(){
+				var modal = new app.ModalFW({
+		          name : 'jobApplyModal',
+		          content: <?= $this->openModalOnLoadContent ?>,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		    },10);
+		});
+    	<?php endif; ?>
+
+		var openDetailsModal = function(btn){
+		    return new Promise(function(resolve,reject){
+		      var job = btn.$el.attr('data-job');
+		      $.ajax({
+		        timeout: 10000,
+		        url: window.location.pathname,
+		        type: 'post',
+		        data:{
+		          'TL_AJAX': 1,
+		          'action': 'seeDetails',
+		          'job': job
+		        },
+		      }).done(function(html){
+		        var modal = new app.ModalFW({
+		          name : 'jobDetailsModal',
+		          content: html,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		        resolve();
+		      }).fail(function(jqXHR, textStatus){
+		        console.log(jqXHR, textStatus);
+		        reject();
+		      });
+		    });
+	    }
+
+	    var openApplicationModal = function(btn){
+		    return new Promise(function(resolve,reject){
+		      var job = btn.$el.attr('data-job');
+		      $.ajax({
+		        timeout: 10000,
+		        url: window.location.pathname,
+		        type: 'post',
+		        data:{
+		          'TL_AJAX': 1,
+		          'action': 'apply',
+		          'job': job
+		        },
+		      }).done(function(html){
+		        var modal = new app.ModalFW({
+		          name : 'jobApplyModal',
+		          content: html,
+		          onClose: function(){
+		            modal.destroy();
+		          }
+		        }).open();
+		        resolve();
+		      }).fail(function(jqXHR, textStatus){
+		        console.log(jqXHR, textStatus);
+		        reject();
+		      });
+		    });
+	    }
+    </script>
   <?php endif; ?>
 
 <?php $this->endblock(); ?>

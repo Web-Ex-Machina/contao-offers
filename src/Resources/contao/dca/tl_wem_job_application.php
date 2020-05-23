@@ -1,230 +1,208 @@
 <?php
 
-/**
- * Table tl_wem_job_application
- */
-$GLOBALS['TL_DCA']['tl_wem_job_application'] = array
-(
+declare(strict_types=1);
 
+/**
+ * Contao Job Offers for Contao Open Source CMS
+ * Copyright (c) 2018-2020 Web ex Machina
+ *
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-job-offers
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ */
+
+$GLOBALS['TL_DCA']['tl_wem_job_application'] = [
     // Config
-    'config' => array
-    (
-        'dataContainer'               => 'Table',
-        'ptable'                      => 'tl_wem_job',
-        'switchToEdit'                => true,
-        'enableVersioning'            => true,
-        'sql' => array
-        (
-            'keys' => array
-            (
+    'config' => [
+        'dataContainer' => 'Table',
+        'ptable' => 'tl_wem_job',
+        'switchToEdit' => true,
+        'enableVersioning' => true,
+        'sql' => [
+            'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-            )
-        )
-    ),
+            ],
+        ],
+    ],
 
     // List
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'                    => 4,
-            'fields'                  => array('country DESC'),
-            'headerFields'            => array('title'),
-            'panelLayout'             => 'filter;sort,search,limit',
-            'child_record_callback'   => array('tl_wem_job_application', 'listItems'),
-            'child_record_class'      => 'no_padding'
-        ),
-        'global_operations' => array
-        (
-            'all' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'                => 'act=select',
-                'class'               => 'header_edit_all',
-                'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="e"'
-            )
-        ),
-        'operations' => array
-        (
-            'edit' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_wem_job_application']['edit'],
-                'href'                => 'act=edit',
-                'icon'                => 'edit.gif'
-            ),
-            'delete' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_wem_job_application']['delete'],
-                'href'                => 'act=delete',
-                'icon'                => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
-            ),
-            'show' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_wem_job_application']['show'],
-                'href'                => 'act=show',
-                'icon'                => 'show.gif'
-            ),
-        )
-    ),
+    'list' => [
+        'sorting' => [
+            'mode' => 4,
+            'fields' => ['country DESC'],
+            'headerFields' => ['title'],
+            'panelLayout' => 'filter;sort,search,limit',
+            'child_record_callback' => ['tl_wem_job_application', 'listItems'],
+            'child_record_class' => 'no_padding',
+        ],
+        'global_operations' => [
+            'all' => [
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
+            ],
+        ],
+        'operations' => [
+            'edit' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['edit'],
+                'href' => 'act=edit',
+                'icon' => 'edit.gif',
+            ],
+            'delete' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['delete'],
+                'href' => 'act=delete',
+                'icon' => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+            ],
+            'show' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['show'],
+                'href' => 'act=show',
+                'icon' => 'show.gif',
+            ],
+        ],
+    ],
 
     // Palettes
-    'palettes' => array
-    (
-        'default'                     => '
-			{statut_legend},createdAt,status;
-			{name_legend},firstname,lastname;
-			{street_legend},street,postal,city,country;
-			{contact_legend},phone,email,comments;
-			{files_legend},cv,applicationLetter;
-		'
-    ),
+    'palettes' => [
+        'default' => '
+            {statut_legend},createdAt,status;
+            {name_legend},firstname,lastname;
+            {street_legend},street,postal,city,country;
+            {contact_legend},phone,email,comments;
+            {files_legend},cv,applicationLetter;
+        ',
+    ],
 
     // Fields
-    'fields' => array
-    (
-        'id' => array
-        (
-            'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'tstamp' => array
-        (
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'pid' => array
-        (
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
-        ),
+    'fields' => [
+        'id' => [
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+        ],
+        'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'pid' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
 
         // {statut_legend},createdAt,status;
-        'createdAt' => array
-        (
-            'exclude'                 => true,
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['createdAt'],
-            'inputType'               => 'text',
-            'eval'                    => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
-            'sql'                     => "varchar(10) NOT NULL default ''"
-        ),
-        'status' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
-            'default'                 => 'not-answered',
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'select',
-            'options'                 => array('not-answered', 'refused', 'accepted'),
-            'reference'               => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
-            'eval'                    => array('helpwizard'=>true, 'mandatory'=>true, 'chosen'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default 'not-answered'"
-        ),
+        'createdAt' => [
+            'exclude' => true,
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['createdAt'],
+            'inputType' => 'text',
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
+            'sql' => "varchar(10) NOT NULL default ''",
+        ],
+        'status' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
+            'default' => 'not-answered',
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'options' => ['not-answered', 'refused', 'accepted'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
+            'eval' => ['helpwizard' => true, 'mandatory' => true, 'chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default 'not-answered'",
+        ],
 
         // {name_legend},firstname,lastname;
-        'firstname' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['firstname'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'lastname' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['lastname'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        
+        'firstname' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['firstname'],
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'lastname' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['lastname'],
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+
         // {street_legend},street,postal,city,country;
-        'street' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['street'],
-            'exclude'                 => true,
-            'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'w100 clr'),
-            'sql'                     => "text NULL"
-        ),
-        'postal' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['postal'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'city' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['city'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'country' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['country'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'sorting'                 => true,
-            'inputType'               => 'select',
-            'options'                 => System::getCountries(),
-            'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(2) NOT NULL default ''"
-        ),
+        'street' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['street'],
+            'exclude' => true,
+            'inputType' => 'textarea',
+            'eval' => ['tl_class' => 'w100 clr'],
+            'sql' => 'text NULL',
+        ],
+        'postal' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['postal'],
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'city' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['city'],
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'country' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['country'],
+            'exclude' => true,
+            'filter' => true,
+            'sorting' => true,
+            'inputType' => 'select',
+            'options' => System::getCountries(),
+            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(2) NOT NULL default ''",
+        ],
 
         // {contact_legend},phone,email,comments;
-        'phone' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['phone'],
-            'exclude'                 => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>64, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(64) NOT NULL default ''"
-        ),
-        'email' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['email'],
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'comments' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['comments'],
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'clr'),
-            'sql'                     => "mediumtext NULL"
-        ),
+        'phone' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['phone'],
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
+            'sql' => "varchar(64) NOT NULL default ''",
+        ],
+        'email' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['email'],
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'comments' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['comments'],
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'textarea',
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => 'mediumtext NULL',
+        ],
 
         // {files_legend},cv,applicationLetter;
-        'cv' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['cv'],
-            'exclude'                 => true,
-            'inputType'               => 'fileTree',
-            'eval'                    => array('filesOnly'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                     => "binary(16) NULL"
-        ),
-        'applicationLetter' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_wem_job_application']['applicationLetter'],
-            'exclude'                 => true,
-            'inputType'               => 'fileTree',
-            'eval'                    => array('filesOnly'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                     => "binary(16) NULL"
-        ),
-    )
-);
+        'cv' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['cv'],
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
+            'sql' => 'binary(16) NULL',
+        ],
+        'applicationLetter' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['applicationLetter'],
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
+            'sql' => 'binary(16) NULL',
+        ],
+    ],
+];
 
 /**
  * Provide miscellaneous methods that are used by the data configuration array.
@@ -233,9 +211,8 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = array
  */
 class tl_wem_job_application extends Backend
 {
-
     /**
-     * Import the back end user object
+     * Import the back end user object.
      */
     public function __construct()
     {
@@ -244,9 +221,9 @@ class tl_wem_job_application extends Backend
     }
 
     /**
-     * Design each row of the DCA
-     * @param  Array  $arrRow
-     * @return String
+     * Design each row of the DCA.
+     *
+     * @return string
      */
     public function listItems($row)
     {

@@ -1,11 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Contao Job Offers for Contao Open Source CMS
+ * Copyright (c) 2018-2020 Web ex Machina
+ *
+ * @category ContaoBundle
+ * @package  Web-Ex-Machina/contao-job-offers
+ * @author   Web ex Machina <contact@webexmachina.fr>
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ */
+
 namespace WEM\JobOffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Patchwork\Utf8;
-
 use WEM\JobOffersBundle\Model\Job as JobModel;
 
 /**
@@ -15,27 +26,27 @@ use WEM\JobOffersBundle\Model\Job as JobModel;
  */
 class ModuleJobsList extends \Module
 {
-
     /**
-     * Template
+     * Template.
+     *
      * @var string
      */
     protected $strTemplate = 'mod_jobslist';
 
     /**
-     * Display a wildcard in the back end
+     * Display a wildcard in the back end.
      *
      * @return string
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['jobslist'][0]) . ' ###';
+            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['jobslist'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id='.$this->id;
 
             return $objTemplate->parse();
         }
@@ -47,42 +58,76 @@ class ModuleJobsList extends \Module
     }
 
     /**
-     * Generate the module
+     * Generate the module.
      */
-    protected function compile()
+    protected function compile(): void
     {
-        // Fetch the application form if defined
+        // Init countries
+        \System::getCountries();
+
+        // Init session
+        $objSession = \Session::getInstance();
+
+        // If we have setup a form, allow module to use it later
         if ($this->job_applicationForm) {
-            $strForm = $this->getForm($this->job_applicationForm);
-
-            if (Input::get('apply') && !Input::post('FORM_SUBMIT') && "" != $strForm) {
-                $objJob = JobModel::findByPk(Input::get('apply'));
-
-                $objTemplate = new \FrontendTemplate('job_apply');
-                $objTemplate->id =  $objJob->id;
-                $objTemplate->code =  $objJob->code;
-                $objTemplate->title =  $objJob->title;
-                $objTemplate->recipient =  $objJob->recipient ?: $GLOBALS['TL_ADMIN_EMAIL'];
-                $objTemplate->time =  time();
-                $objTemplate->token =  \RequestToken::get();
-                $objTemplate->form = $strForm;
-                
-                echo $objTemplate->parse();
-                die;
-            }
-
-            if ("" != $strForm) {
-                $this->blnDisplayApplyButton = true;
-            }
+            $this->blnDisplayApplyButton = true;
         }
 
-        // Catch the details modal
-        if (Input::get('seeDetails')) {
-            $objJob = JobModel::findByPk(Input::get('seeDetails'));
+        // Catch Ajax requets
+        if (\Input::post('TL_AJAX')) {
+            try {
+                switch (\Input::post('action')) {
+                    case 'seeDetails':
+                        if (!\Input::post('job')) {
+                            throw new \Exception('Missing job argument');
+                        }
+                        $objJob = JobModel::findByPk(\Input::post('job'));
 
-            $this->job_template = 'job_details';
-            echo $this->parseArticle($objJob);
+                        $this->job_template = 'job_details';
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseArticle($objJob));
+                        die;
+                    break;
+
+                    case 'apply':
+                        if (!\Input::post('job')) {
+                            throw new \Exception('Missing job argument');
+                        }
+
+                        // Put the job in session
+                        $objSession->set('wem_job_offer', \Input::post('job'));
+
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('job')));
+                        die;
+                    break;
+
+                    default:
+                        throw new \Exception(sprintf('Unknown request called : %s', \Input::post('action')));
+                }
+            } catch (\Exception $e) {
+                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
+            }
+
+            // Add Request Token to JSON answer and return
+            $arrResponse['rt'] = \RequestToken::get();
+            echo json_encode($arrResponse);
             die;
+        }
+
+        if ($this->job_applicationForm
+            && '' !== $objSession->get('wem_job_offer')
+        ) {
+            $strForm = $this->getApplicationForm($objSession->get('wem_job_offer'));
+
+            // Fetch the application form if defined
+            if (Input::post('FORM_SUBMIT')) {
+                try {
+                    $this->Template->openModalOnLoad = true;
+                    $this->Template->openModalOnLoadContent = json_encode($strForm);
+                } catch (\Exception $e) {
+                    $this->Template->openModalOnLoad = true;
+                    $this->Template->openModalOnLoadContent = json_encode('"'.$e->getResponse().'"');
+                }
+            }
         }
 
         global $objPage;
@@ -94,25 +139,38 @@ class ModuleJobsList extends \Module
             $limit = $this->numberOfItems;
         }
 
-        $arrConfig = ["published"=>1];
-        $this->Template->articles = array();
+        $arrConfig = ['published' => 1];
+        $this->Template->articles = [];
         $this->Template->empty = $GLOBALS['TL_LANG']['MSC']['emptyList'];
 
         // Get the available filters
-        $objJobFilters = JobModel::findItems(["published"=>1]);
+        $objJobFilters = JobModel::findItems(['published' => 1]);
         if ($objJobFilters && 0 < $objJobFilters->count()) {
             $arrJobFilters = [];
+            $arrFieldFilters = [];
             $arrLocationFilters = [];
             while ($objJobFilters->next()) {
-                if (!in_array($objJobFilters->title, $arrJobFilters)) {
+                if ('' !== $objJobFilters->title && !\in_array($objJobFilters->title, $arrJobFilters, true)) {
                     $arrJobFilters[] = $objJobFilters->title;
                 }
 
-                if (!in_array($objJobFilters->location, $arrLocationFilters)) {
-                    $arrLocationFilters[] = $objJobFilters->location;
+                if ('' !== $objJobFilters->field && !\in_array($objJobFilters->field, $arrFieldFilters, true)) {
+                    $arrFieldFilters[] = $objJobFilters->field;
+                }
+
+                $arrCountries = deserialize($objJobFilters->countries);
+                if (!$arrCountries) {
+                    continue;
+                }
+
+                foreach ($arrCountries as $c) {
+                    if (!\in_array($c, $arrLocationFilters, true)) {
+                        $arrLocationFilters[$c] = $GLOBALS['TL_LANG']['CNT'][$c];
+                    }
                 }
             }
             $this->Template->jobFilters = $arrJobFilters;
+            $this->Template->fieldFilters = $arrFieldFilters;
             $this->Template->locationFilters = $arrLocationFilters;
         }
 
@@ -120,10 +178,15 @@ class ModuleJobsList extends \Module
         if (\Input::get('job')) {
             $arrConfig['title'] = \Input::get('job');
         }
-        
+
+        // Add field to the config if there is a filter
+        if (\Input::get('field')) {
+            $arrConfig['field'] = \Input::get('field');
+        }
+
         // Add area to the config if there is a filter
         if (\Input::get('location')) {
-            $arrConfig['location'] = \Input::get('location');
+            $arrConfig['country'] = \Input::get('location');
         }
 
         // Get the total number of items
@@ -143,12 +206,12 @@ class ModuleJobsList extends \Module
             }
 
             // Get the current page
-            $id = 'page_n' . $this->id;
+            $id = 'page_n'.$this->id;
             $page = \Input::get($id) ?? 1;
 
             // Do not index or cache the page if the page number is outside the range
-            if ($page < 1 || $page > max(ceil($total/$this->perPage), 1)) {
-                throw new PageNotFoundException('Page not found: ' . \Environment::get('uri'));
+            if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
+                throw new PageNotFoundException('Page not found: '.\Environment::get('uri'));
             }
 
             // Set limit and offset
@@ -169,16 +232,42 @@ class ModuleJobsList extends \Module
         $objArticles = JobModel::findItems($arrConfig, ($limit ?: 0), ($offset ?: 0));
 
         // Add the articles
-        if ($objArticles !== null) {
+        if (null !== $objArticles) {
             $this->Template->articles = $this->parseArticles($objArticles);
         }
     }
 
     /**
-     * Parse one or more items and return them as array
+     * Parse and return an application form for a job.
+     *
+     * @param int    $intJob      [Job ID]
+     * @param string $strTemplate [Template name]
+     *
+     * @return string
+     */
+    protected function getApplicationForm($intJob, $strTemplate = 'job_apply')
+    {
+        $strForm = $this->getForm($this->job_applicationForm);
+
+        $objJob = JobModel::findByPk($intJob);
+
+        $objTemplate = new \FrontendTemplate($strTemplate);
+        $objTemplate->id = $objJob->id;
+        $objTemplate->code = $objJob->code;
+        $objTemplate->title = $objJob->title;
+        $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $objTemplate->time = time();
+        $objTemplate->token = \RequestToken::get();
+        $objTemplate->form = $strForm;
+
+        return $objTemplate->parse();
+    }
+
+    /**
+     * Parse one or more items and return them as array.
      *
      * @param Model\Collection $objArticles
-     * @param boolean          $blnAddArchive
+     * @param bool             $blnAddArchive
      *
      * @return array
      */
@@ -187,29 +276,29 @@ class ModuleJobsList extends \Module
         $limit = $objArticles->count();
 
         if ($limit < 1) {
-            return array();
+            return [];
         }
 
         $count = 0;
-        $arrArticles = array();
+        $arrArticles = [];
 
         while ($objArticles->next()) {
             /** @var NewsModel $objArticle */
             $objArticle = $objArticles->current();
 
-            $arrArticles[] = $this->parseArticle($objArticle, $blnAddArchive, ((++$count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'), $count);
+            $arrArticles[] = $this->parseArticle($objArticle, $blnAddArchive, ((1 === ++$count) ? ' first' : '').(($count === $limit) ? ' last' : '').((0 === ($count % 2)) ? ' odd' : ' even'), $count);
         }
 
         return $arrArticles;
     }
 
     /**
-     * Parse an item and return it as string
+     * Parse an item and return it as string.
      *
      * @param NewsModel $objArticle
-     * @param boolean   $blnAddArchive
+     * @param bool      $blnAddArchive
      * @param string    $strClass
-     * @param integer   $intCount
+     * @param int       $intCount
      *
      * @return string
      */
@@ -218,25 +307,32 @@ class ModuleJobsList extends \Module
         $objTemplate = new \FrontendTemplate($this->job_template);
         $objTemplate->setData($objArticle->row());
 
-        if ($objArticle->cssClass != '') {
-            $strClass = ' ' . $objArticle->cssClass . $strClass;
+        if ('' !== $objArticle->cssClass) {
+            $strClass = ' '.$objArticle->cssClass.$strClass;
         }
 
         $objTemplate->class = $strClass;
         $objTemplate->count = $intCount; // see #5708
 
         // Add the meta information
-        $objTemplate->date = $arrMeta['createdAt'];
-        $objTemplate->timestamp = $objArticle->date;
-        $objTemplate->datetime = date('Y-m-d\TH:i:sP', $objArticle->date);
+        $objTemplate->date = (int) $objArticle->postedAt;
+        $objTemplate->timestamp = $objArticle->postedAt;
+        $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
+
+        // Fetch the job offer file
+        if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
+            $objTemplate->file = $objFile->path;
+        } else {
+            $objTemplate->file = null;
+        }
 
         // Notice the template if we want/can display apply button
         if ($this->blnDisplayApplyButton) {
             $objTemplate->blnDisplayApplyButton = true;
-            $objTemplate->applyUrl = $this->addToUrl("apply=".$objArticle->id, true, ["job"]);
+            $objTemplate->applyUrl = $this->addToUrl('apply='.$objArticle->id, true, ['job']);
 
             // Comply with i18nl10n constraints
-            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+            if (\array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
                 $objTemplate->applyUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->applyUrl;
             }
         }
@@ -245,19 +341,24 @@ class ModuleJobsList extends \Module
         if ($this->job_displayTeaser) {
             $objTemplate->blnDisplayText = true;
         } else {
-            $objTemplate->detailsUrl = $this->addToUrl("seeDetails=".$objArticle->id, true, ["job"]);
+            $objTemplate->detailsUrl = $this->addToUrl('seeDetails='.$objArticle->id, true, ['job']);
 
             // Comply with i18nl10n constraints
-            if (array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
+            if (\array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
                 $objTemplate->detailsUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->detailsUrl;
             }
+        }
+
+        // Notify the template we must open this item apply modal
+        if ($this->openApplyModalOnStart && $objArticle->id === $this->openApplyModalOnStart) {
+            $objTemplate->openApplyModalOnStart = true;
         }
 
         // Tag the response
         if (\System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
             /** @var ResponseTagger $responseTagger */
             $responseTagger = \System::getContainer()->get('fos_http_cache.http.symfony_response_tagger');
-            $responseTagger->addTags(array('contao.db.tl_pzl_job.' . $objArticle->id));
+            $responseTagger->addTags(['contao.db.tl_pzl_job.'.$objArticle->id]);
         }
 
         return $objTemplate->parse();
