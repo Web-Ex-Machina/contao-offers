@@ -319,6 +319,11 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->postedAt;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
+        // Parse locations
+        if (deserialize($objArticle->locations)) {
+            $objTemplate->locations = implode(', ', deserialize($objArticle->locations));
+        }
+
         // Fetch the job offer file
         if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
             $objTemplate->file = $objFile->path;

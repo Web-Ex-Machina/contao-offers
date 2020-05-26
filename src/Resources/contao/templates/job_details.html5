@@ -16,7 +16,8 @@
 		<div class="hr">
 			<div class="bg-greylighter">
 				<h4><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></h4>
-				<p>Contact: <?= $this->hrName ?> (<?= $this->hrPosition ?>)</p>
+				<p>Contact: <?= $this->hrName ?> (<?= $this->hrPosition ?>)<br>
+					<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?> <?= $this->locations ?></p>
 				<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
 				<a href="mailto:<?= $this->hrEmail ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a><br />
 				<?php if($this->blnDisplayApplyButton): ?>
