@@ -22,6 +22,23 @@
 			<target>Lieu :</target>
 		</trans-unit>
 
+		<trans-unit id="WEM.JOBOFFERS.applyTitle">
+			<source>Interested? Apply here!</source>
+			<target>Intéressé(e)? Postulez içi!</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.byPhone">
+			<source>By phone</source>
+			<target>Par téléphone</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.byEmail">
+			<source>By email</source>
+			<target>Par email</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.byForm">
+			<source>By form</source>
+			<target>Par formulaire</target>
+		</trans-unit>
+
 		<trans-unit id="WEM.JOBOFFERS.allLocations">
 			<source>All location</source>
 			<target>Tous les lieux</target>

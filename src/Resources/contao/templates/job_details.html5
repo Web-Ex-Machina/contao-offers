@@ -15,12 +15,12 @@
 		</div>
 		<div class="hr">
 			<div class="bg-greylighter">
-				<h4>How to apply?</h4>
+				<h4><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></h4>
 				<p>Contact: <?= $this->hrName ?> (<?= $this->hrPosition ?>)</p>
-				<a href="tel:<?= $this->hrPhone ?>" class="btn" title="Apply by phone">By phone</a><br />
-				<a href="mailto:<?= $this->hrEmail ?>" class="btn" title="Apply by email">By email</a><br />
+				<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
+				<a href="mailto:<?= $this->hrEmail ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a><br />
 				<?php if($this->blnDisplayApplyButton): ?>
-				<button class="btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false">By form</button>
+				<button class="btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
 				<?php endif; ?>
 			</div>
 		</div>
