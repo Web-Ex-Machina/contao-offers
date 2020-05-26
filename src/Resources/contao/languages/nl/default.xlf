@@ -1,0 +1,52 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/default.php" source-language="en" target-language="nl">
+    <body>
+		<trans-unit id="WEM.JOBOFFERS.datePublished">
+			<source>Published: %s</source>
+			<target>Gepubliceerd: %s</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.status">
+			<source>Position:</source>
+			<target>Positie:</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.remuneration">
+			<source>Remuneration:</source>
+			<target>Vergoeding:</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.location">
+			<source>Location:</source>
+			<target>Plaats:</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.field">
+			<source>Field:</source>
+			<target>Veld:</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.allLocations">
+			<source>All location</source>
+			<target>Alle locatie</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.allPositions">
+			<source>All positions</source>
+			<target>Alle posities</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.allFields">
+			<source>All fields</source>
+			<target>Alle velden</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.filter">
+			<source>Filter</source>
+			<target>Filter</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.seeOffer">
+			<source>See offer</source>
+			<target>Zie baan</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.apply">
+			<source>Apply</source>
+			<target>Aanvragen</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>

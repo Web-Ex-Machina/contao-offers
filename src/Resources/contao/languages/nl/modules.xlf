@@ -1,0 +1,23 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="nl">
+    <body>
+		<trans-unit id="MOD.wem-job-offers.0">
+			<source>Job offers</source>
+			<target>Vacatures</target>
+		</trans-unit>
+		<trans-unit id="MOD.wem-job-offers.1">
+			<source>Manage job offers</source>
+			<target>Beheer vacatures</target>
+		</trans-unit>
+
+		<trans-unit id="FMD.jobslist.0">
+			<source>Jobs list</source>
+			<target>Jobs lijst</target>
+		</trans-unit>
+		<trans-unit id="FMD.jobslist.1">
+			<source>Adds a list of jobs items to the page</source>
+			<target>Voegt een lijst met taakitems toe aan de pagina</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>
