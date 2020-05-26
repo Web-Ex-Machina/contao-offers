@@ -19,7 +19,7 @@
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.field">
 			<source>Field:</source>
-			<target>Veld:</target>
+			<target>Vakgebied:</target>
 		</trans-unit>
 
 		<trans-unit id="WEM.JOBOFFERS.applyTitle">
@@ -41,7 +41,7 @@
 
 		<trans-unit id="WEM.JOBOFFERS.allLocations">
 			<source>All location</source>
-			<target>Alle locatie</target>
+			<target>Alle locaties</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.allPositions">
 			<source>All positions</source>
@@ -49,7 +49,7 @@
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.allFields">
 			<source>All fields</source>
-			<target>Alle velden</target>
+			<target>Alle vakgebieden</target>
 		</trans-unit>
 
 		<trans-unit id="WEM.JOBOFFERS.filter">
@@ -58,11 +58,11 @@
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.seeOffer">
 			<source>See offer</source>
-			<target>Zie baan</target>
+			<target>Zie vacature</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.apply">
 			<source>Apply</source>
-			<target>Aanvragen</target>
+			<target>Solliciteer</target>
 		</trans-unit>
     </body>
   </file>
