@@ -150,6 +150,14 @@
 			<source>Enter the job offer contact email</source>
 			<target>Voer het e-mailadres voor contact met de vacature in</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.0">
+			<source>Contact picture</source>
+			<target>Afbeelding van contactpersoon</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.1">
+			<source>Select the job offer contact picture</source>
+			<target>Selecteer de contactfoto van de vacature</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_job.title_legend">
 			<source>Global informations</source>

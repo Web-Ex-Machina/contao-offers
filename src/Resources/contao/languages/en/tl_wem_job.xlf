@@ -150,6 +150,14 @@
 			<source>Enter the job offer contact email</source>
 			<target>Enter the job offer contact email</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.0">
+			<source>Contact picture</source>
+			<target>Contact picture</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.1">
+			<source>Select the job offer contact picture</source>
+			<target>Select the job offer contact picture</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_job.title_legend">
 			<source>Global informations</source>

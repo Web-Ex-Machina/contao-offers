@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             {location_legend},countries,locations;
             {details_legend},field,remuneration,status;
             {content_legend},text,file;
-            {hr_legend},hrName,hrPosition,hrPhone,hrEmail;
+            {hr_legend},hrName,hrPosition,hrPhone,hrEmail,hrPicture;
             {publish_legend},published,start,stop
         ',
     ],
@@ -216,6 +216,13 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
+        'hrPicture' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPicture'],
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr', 'extensions' => Config::get('validImageTypes')],
+            'sql' => 'binary(16) NULL',
+        ],
 
         'text' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['text'],
@@ -291,7 +298,7 @@ class tl_wem_job extends Backend
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
         if (\strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), (1 == Input::get('state')), (@func_get_arg(12) ?: null));
+            $this->toggleVisibility(Input::get('tid'), (1 === Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 

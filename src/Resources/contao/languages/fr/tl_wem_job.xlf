@@ -144,11 +144,19 @@
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrEmail.0">
 			<source>Contact email</source>
-			<target>email du contact</target>
+			<target>Email du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrEmail.1">
 			<source>Enter the job offer contact email</source>
 			<target>Saisissez l'email du contact de l'offre d'emploi</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.0">
+			<source>Contact picture</source>
+			<target>Photo du contact</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job.hrPicture.1">
+			<source>Select the job offer contact picture</source>
+			<target>Sélectionnez la photo du contact</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.title_legend">

@@ -319,6 +319,11 @@ class ModuleJobsList extends \Module
         $objTemplate->timestamp = $objArticle->postedAt;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
+        // Retrieve and parse the HR Picture
+        if($objArticle->hrPicture && $objFile = \FilesModel::findByUuid($objArticle->hrPicture)) {
+            $objTemplate->hrPicture = \Image::get($objFile->path, 300, 300);
+        }
+
         // Parse locations
         if (deserialize($objArticle->locations)) {
             $objTemplate->locations = implode(', ', deserialize($objArticle->locations));

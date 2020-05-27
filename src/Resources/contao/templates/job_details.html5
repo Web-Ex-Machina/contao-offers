@@ -16,6 +16,9 @@
 		<div class="hr">
 			<div class="bg-greylighter">
 				<h4><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></h4>
+				<?php if($this->hrPicture): ?>
+				<figure class="image_container txt-center"><img src="<?= $this->hrPicture ?>" class="bd-primary-5 rounded-circle p-0" alt="<?= $this->hrName ?>" /></figure>
+				<?php endif; ?>
 				<p>Contact: <?= $this->hrName ?> (<?= $this->hrPosition ?>)<br>
 					<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?> <?= $this->locations ?></p>
 				<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
