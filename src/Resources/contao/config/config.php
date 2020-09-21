@@ -13,13 +13,15 @@ declare(strict_types=1);
  */
 
 array_insert(
-    $GLOBALS['BE_MOD']['content'],
-    array_search('form', array_keys($GLOBALS['BE_MOD']['content']), true) + 1,
+    $GLOBALS['BE_MOD'],
+    2,
     [
         'wem-job-offers' => [
-            'tables' => ['tl_wem_job', 'tl_wem_job_application'],
-            'icon' => 'bundles/wem-job-offers/icon_jobs.png',
-        ],
+            'wem-job-offers' => [
+                'tables' => ['tl_wem_job', 'tl_wem_job_application'],
+                'icon' => 'bundles/wem-job-offers/icon_jobs.png',
+            ],
+        ]
     ]
 );
 
