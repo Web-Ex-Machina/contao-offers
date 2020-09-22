@@ -12,6 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+// Backend modules
 array_insert(
     $GLOBALS['BE_MOD'],
     2,
@@ -35,6 +36,15 @@ array_insert(
         ],
     ]
 );
+
+// Load icon in Contao 4.2 backend
+if ('BE' === TL_MODE) {
+    if (version_compare(VERSION, '4.4', '<')) {
+        $GLOBALS['TL_CSS'][] = 'bundles/joboffers/backend/backend.css';
+    } else {
+        $GLOBALS['TL_CSS'][] = 'bundles/joboffers/backend/backend_svg.css';
+    }
+}
 
 // Hooks
 $GLOBALS['TL_HOOKS']['storeFormData'][] = ['WEM\JobOffersBundle\Hooks\StoreFormDataHook', 'storeFormData'];
