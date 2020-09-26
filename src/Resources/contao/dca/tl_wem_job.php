@@ -35,8 +35,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'fields' => ['code ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => ['tl_wem_job', 'listItems'],
-            'child_record_class' => 'no_padding',
+            'child_record_callback' => ['tl_wem_job', 'listItems']
         ],
         'global_operations' => [
             'all' => [
@@ -117,6 +116,8 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['code'],
             'exclude' => true,
             'search' => true,
+            'sorting' => true,
+            'flag' => 3,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 255],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -131,6 +132,8 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'postedAt' => [
             'exclude' => true,
+            'sorting' => true,
+            'flag' => 8,
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['postedAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
@@ -138,6 +141,8 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'availableAt' => [
             'exclude' => true,
+            'sorting' => true,
+            'flag' => 8,
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['availableAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
@@ -147,7 +152,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['countries'],
             'exclude' => true,
             'filter' => true,
-            'sorting' => true,
             'inputType' => 'select',
             'eval' => ['multiple' => true, 'chosen' => true],
             'options_callback' => function () {
