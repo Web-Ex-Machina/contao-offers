@@ -16,12 +16,14 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
+        'ptable' => 'tl_wem_job_feed',
         'ctable' => ['tl_wem_job_application'],
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
             'keys' => [
                 'id' => 'primary',
+                'pid' => 'index',
             ],
         ],
     ],
@@ -29,14 +31,12 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 1,
-            'fields' => ['code'],
-            'flag' => 1,
-            'panelLayout' => 'filter;search,limit',
-        ],
-        'label' => [
-            'fields' => ['code', 'title'],
-            'format' => '%s | %s',
+            'mode' => 4,
+            'fields' => ['code ASC'],
+            'headerFields' => ['title'],
+            'panelLayout' => 'filter;sort,search,limit',
+            'child_record_callback' => ['tl_wem_job', 'listItems'],
+            'child_record_class' => 'no_padding',
         ],
         'global_operations' => [
             'all' => [
@@ -101,6 +101,9 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'pid' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
@@ -281,6 +284,20 @@ class tl_wem_job extends Backend
     {
         parent::__construct();
         $this->import('BackendUser', 'User');
+    }
+
+    /**
+     * Design each row of the DCA.
+     *
+     * @return string
+     */
+    public function listItems($row)
+    {
+        return sprintf(
+            '%s <span style="color:#888">[%s]</span>',
+            $row['title'],
+            $row['code']
+        );
     }
 
     /**
