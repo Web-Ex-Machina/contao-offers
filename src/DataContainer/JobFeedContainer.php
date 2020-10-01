@@ -40,13 +40,13 @@ class JobFeedContainer extends \Backend
     }
 
     /**
-     * Get Notification Choices for this kind of modules
-     * 
+     * Get Notification Choices for this kind of modules.
+     *
      * @return [Array]
      */
     public function getAlertEmailNotificationChoices()
     {
-        $arrChoices = array();
+        $arrChoices = [];
         $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_joboffers_alerts_email' ORDER BY title");
 
         while ($objNotifications->next()) {
