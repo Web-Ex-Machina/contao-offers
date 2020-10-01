@@ -17,11 +17,19 @@ $this->loadDataContainer('tl_content');
 // Add palettes to tl_module
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_displayTeaser,job_applicationForm;numberOfItems,skipFirst,perPage;
+    {config_legend},job_feeds,job_displayTeaser,job_applicationForm;numberOfItems,skipFirst,perPage;
     {template_legend:hide},job_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_feeds'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_feeds'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobFeeds'],
+    'eval' => ['multiple' => true, 'mandatory' => true],
+    'sql' => 'blob NULL',
+];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_displayTeaser'],
     'exclude' => true,
@@ -45,34 +53,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = [
     'default' => 'job_default',
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => ['tl_module_jobs', 'getJobsTemplates'],
+    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobsTemplates'],
     'eval' => ['tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
 ];
-
-/**
- * Provide miscellaneous methods that are used by the data configuration array.
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
-class tl_module_jobs extends Backend
-{
-    /**
-     * Import the back end user object.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('BackendUser', 'User');
-    }
-
-    /**
-     * Return all news templates as array.
-     *
-     * @return array
-     */
-    public function getJobsTemplates()
-    {
-        return $this->getTemplateGroup('job_');
-    }
-}

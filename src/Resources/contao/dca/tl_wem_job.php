@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'fields' => ['code ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => ['tl_wem_job', 'listItems']
+            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['toggle'],
                 'icon' => 'visible.svg',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => ['tl_wem_job', 'toggleIcon'],
+                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'toggleIcon'],
                 'showInHeader' => true,
             ],
             'applications' => [
@@ -273,155 +273,3 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
     ],
 ];
-
-/**
- * Provide miscellaneous methods that are used by the data configuration array.
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
-class tl_wem_job extends Backend
-{
-    /**
-     * Import the back end user object.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('BackendUser', 'User');
-    }
-
-    /**
-     * Design each row of the DCA.
-     *
-     * @return string
-     */
-    public function listItems($row)
-    {
-        return sprintf(
-            '%s <span style="color:#888">[%s]</span>',
-            $row['title'],
-            $row['code']
-        );
-    }
-
-    /**
-     * Return the "toggle visibility" button.
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (\strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), (1 === Input::get('state')), (@func_get_arg(12) ?: null));
-            $this->redirect($this->getReferer());
-        }
-
-        // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
-            return '';
-        }
-
-        $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
-
-        if (!$row['published']) {
-            $icon = 'invisible.svg';
-        }
-
-        return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label, 'data-state="'.($row['published'] ? 1 : 0).'"').'</a> ';
-    }
-
-    /**
-     * Disable/enable a job.
-     *
-     * @param int           $intId
-     * @param bool          $blnVisible
-     * @param DataContainer $dc
-     */
-    public function toggleVisibility($intId, $blnVisible, DataContainer $dc = null): void
-    {
-        // Set the ID and action
-        Input::setGet('id', $intId);
-        Input::setGet('act', 'toggle');
-
-        if ($dc) {
-            $dc->id = $intId; // see #8043
-        }
-
-        // Trigger the onload_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'] as $callback) {
-                if (\is_array($callback)) {
-                    $this->import($callback[0]);
-                    $this->{$callback[0]}->{$callback[1]}($dc);
-                } elseif (\is_callable($callback)) {
-                    $callback($dc);
-                }
-            }
-        }
-
-        // Check the field access
-        if (!$this->User->hasAccess('tl_wem_job::published', 'alexf')) {
-            throw new Contao\CoreBundle\Exception\AccessDeniedException('Not enough permissions to publish/unpublish job item ID '.$intId.'.');
-        }
-
-        // Set the current record
-        if ($dc) {
-            $objRow = $this->Database->prepare('SELECT * FROM tl_wem_job WHERE id=?')
-                                     ->limit(1)
-                                     ->execute($intId)
-            ;
-
-            if ($objRow->numRows) {
-                $dc->activeRecord = $objRow;
-            }
-        }
-
-        $objVersions = new Versions('tl_wem_job', $intId);
-        $objVersions->initialize();
-
-        // Trigger the save_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'] as $callback) {
-                if (\is_array($callback)) {
-                    $this->import($callback[0]);
-                    $blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, $dc);
-                } elseif (\is_callable($callback)) {
-                    $blnVisible = $callback($blnVisible, $dc);
-                }
-            }
-        }
-
-        $time = time();
-
-        // Update the database
-        $this->Database->prepare("UPDATE tl_wem_job SET tstamp=$time, published='".($blnVisible ? '1' : '')."' WHERE id=?")
-                       ->execute($intId)
-        ;
-
-        if ($dc) {
-            $dc->activeRecord->tstamp = $time;
-            $dc->activeRecord->published = ($blnVisible ? '1' : '');
-        }
-
-        // Trigger the onsubmit_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'] as $callback) {
-                if (\is_array($callback)) {
-                    $this->import($callback[0]);
-                    $this->{$callback[0]}->{$callback[1]}($dc);
-                } elseif (\is_callable($callback)) {
-                    $callback($dc);
-                }
-            }
-        }
-
-        $objVersions->create();
-    }
-}

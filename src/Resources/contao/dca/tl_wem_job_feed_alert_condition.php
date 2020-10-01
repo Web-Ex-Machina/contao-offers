@@ -12,17 +12,18 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
+$GLOBALS['TL_DCA']['tl_wem_job_feed_alert_condition'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ctable' => ['tl_wem_job'],
+        'ptable' => 'tl_wem_job_feed_alert',
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
             'keys' => [
                 'id' => 'primary',
-                'alias' => 'index',
+                'pid' => 'index',
+                'field' => 'index',
             ],
         ],
     ],
@@ -30,14 +31,11 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 1,
-            'fields' => ['title'],
-            'flag' => 1,
-            'panelLayout' => 'filter;search,limit',
-        ],
-        'label' => [
-            'fields' => ['title'],
-            'format' => '%s',
+            'mode' => 4,
+            'fields' => ['field ASC'],
+            'headerFields' => ['name', 'position', 'phone', 'email'],
+            'panelLayout' => 'filter;sort,search,limit',
+            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAlertConditionContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -49,30 +47,20 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['delete'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['show'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
-            ],
-            'jobs' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['jobs'],
-                'href' => 'table=tl_wem_job',
-                'icon' => 'folderOP.gif',
-            ],
-            'alerts' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['alerts'],
-                'href' => 'table=tl_wem_job_feed_alert',
-                'icon' => 'rss.gif',
             ],
         ],
     ],
@@ -80,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {title_legend},title,alias
+            {recipient_legend},field,value
         ',
     ],
 
@@ -92,28 +80,31 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'pid' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
         'createdAt' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['createdAt'],
             'default' => time(),
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
 
-        'title' => [
+        'field' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['field'],
             'exclude' => true,
-            'search' => true,
+            'filter' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 255],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'alias' => [
+        'value' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert_condition']['value'],
             'exclude' => true,
+            'filter' => true,
             'inputType' => 'text',
-            'search' => true,
-            'eval' => ['rgxp' => 'alias', 'doNotCopy' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'save_callback' => [
-                [WEM\JobOffersBundle\DataContainer\JobFeedContainer::class, 'generateAlias'],
-            ],
-            'sql' => "varchar(255) BINARY NOT NULL default ''",
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],
 ];

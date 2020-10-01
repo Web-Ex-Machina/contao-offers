@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'fields' => ['country DESC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => ['tl_wem_job_application', 'listItems'],
+            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'listItems'],
             'child_record_class' => 'no_padding',
         ],
         'global_operations' => [
@@ -203,36 +203,3 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
         ],
     ],
 ];
-
-/**
- * Provide miscellaneous methods that are used by the data configuration array.
- *
- * @author Web ex Machina <https://www.webexmachina.fr>
- */
-class tl_wem_job_application extends Backend
-{
-    /**
-     * Import the back end user object.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->import('BackendUser', 'User');
-    }
-
-    /**
-     * Design each row of the DCA.
-     *
-     * @return string
-     */
-    public function listItems($row)
-    {
-        return sprintf(
-            '(%s) %s <span style="color:#888">[%s - %s]</span>',
-            $GLOBALS['TL_LANG']['tl_wem_job_application']['status'][$row['status']],
-            $row['firstname'].' '.$row['lastname'],
-            $row['city'],
-            $GLOBALS['TL_LANG']['CNT'][$row['country']]
-        );
-    }
-}
