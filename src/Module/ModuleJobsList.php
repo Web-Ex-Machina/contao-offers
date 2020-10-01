@@ -54,6 +54,13 @@ class ModuleJobsList extends \Module
         // Load bundles
         $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
 
+        $this->job_feeds = \StringUtil::deserialize($this->job_feeds);
+
+        // Return if there are no archives
+        if (empty($this->job_feeds) || !\is_array($this->job_feeds)) {
+            return '';
+        }
+
         return parent::generate();
     }
 
@@ -144,7 +151,7 @@ class ModuleJobsList extends \Module
         $this->Template->empty = $GLOBALS['TL_LANG']['MSC']['emptyList'];
 
         // Get the available filters
-        $objJobFilters = JobModel::findItems(['published' => 1]);
+        $objJobFilters = JobModel::findItems(['pid' => $this->job_feeds, 'published' => 1]);
         if ($objJobFilters && 0 < $objJobFilters->count()) {
             $arrJobFilters = [];
             $arrFieldFilters = [];
@@ -173,6 +180,9 @@ class ModuleJobsList extends \Module
             $this->Template->fieldFilters = $arrFieldFilters;
             $this->Template->locationFilters = $arrLocationFilters;
         }
+
+        // Add pids
+        $arrConfig['pid'] = $this->job_feeds;
 
         // Add job to the config if there is a filter
         if (\Input::get('job')) {
@@ -320,7 +330,7 @@ class ModuleJobsList extends \Module
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
         // Retrieve and parse the HR Picture
-        if($objArticle->hrPicture && $objFile = \FilesModel::findByUuid($objArticle->hrPicture)) {
+        if ($objArticle->hrPicture && $objFile = \FilesModel::findByUuid($objArticle->hrPicture)) {
             $objTemplate->hrPicture = \Image::get($objFile->path, 300, 300);
         }
 

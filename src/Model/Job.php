@@ -94,6 +94,14 @@ class Job extends Model
         $t = static::$strTable;
         $arrColumns = [];
 
+        if ($arrConfig['pid']) {
+            if (\is_array($arrConfig['pid'])) {
+                $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $arrConfig['pid'])).')';
+            } else {
+                $arrColumns[] = $t.'.pid = '.$arrConfig['pid'];
+            }
+        }
+
         if ($arrConfig['title']) {
             $arrColumns[] = $t.'.title = "'.$arrConfig['title'].'"';
         }
