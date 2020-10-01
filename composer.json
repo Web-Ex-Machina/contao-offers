@@ -22,7 +22,8 @@
         "contao-community-alliance/composer-plugin": "*",
         "codefog/contao-haste": "^4.24",
         "terminal42/contao-countryselect": "^1.4",
-        "terminal42/notification_center": "^1.5"
+        "terminal42/notification_center": "^1.5",
+        "webexmachina/contao-utils": "^0.3"
     },
     "autoload":{
         "psr-4": {
