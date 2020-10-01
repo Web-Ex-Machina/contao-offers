@@ -54,3 +54,22 @@ $GLOBALS['TL_HOOKS']['storeFormData'][] = ['WEM\JobOffersBundle\Hooks\StoreFormD
 // Models
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Job::getTable()] = 'WEM\JobOffersBundle\Model\Job';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Application::getTable()] = 'WEM\JobOffersBundle\Model\Application';
+
+/*
+ * Notification Center Notification Types
+ */
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
+    (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
+    [
+        'wem_joboffers' => [
+            'wem_joboffers_alerts_email' => [
+                'recipients' => ['recipient_email'],
+                'email_subject' => ['jobfeed_*', 'recipient_*'],
+                'email_text' => ['jobfeed_*', 'recipient_*', 'jobstext'],
+                'email_html' => ['jobfeed_*', 'recipient_*', 'jobshtml'],
+                'email_replyTo' => ['admin_email'],
+                'email_sender_address' => ['admin_email'],
+            ],
+        ],
+    ]
+);
