@@ -24,6 +24,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {template_legend:hide},job_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_allowAlerts'] = 'job_alertsGateways';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_feeds'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_feeds'],
@@ -37,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_displayTeaser'],
     'exclude' => true,
     'inputType' => 'checkbox',
-    'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12'],
+    'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_allowAlerts'] = [
@@ -46,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_allowAlerts'] = [
     'filter' => true,
     'flag' => 1,
     'inputType' => 'checkbox',
-    'eval' => ['doNotCopy' => true],
+    'eval' => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [

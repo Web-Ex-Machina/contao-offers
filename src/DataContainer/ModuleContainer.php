@@ -46,4 +46,15 @@ class ModuleContainer extends \Backend
 
         return $arrFeeds;
     }
+
+    /**
+     * Return all job alerts available gateways
+     *
+     * @return array
+     */
+    public function getJobAlertsOptions() {
+        return [
+            "email" => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['EMAIL']
+        ];
+    }
 }
