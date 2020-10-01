@@ -15,9 +15,10 @@ declare(strict_types=1);
 $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_allowAlerts';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feeds,job_displayTeaser;
+    {config_legend},job_feeds,job_displayTeaser,job_allowAlerts;
     {list_legend},numberOfItems,skipFirst,perPage;
     {form_legend},job_applicationForm;
     {template_legend:hide},job_template,customTpl;
@@ -38,6 +39,23 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12'],
     'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_allowAlerts'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_allowAlerts'],
+    'exclude' => true,
+    'filter' => true,
+    'flag' => 1,
+    'inputType' => 'checkbox',
+    'eval' => ['doNotCopy' => true],
+    'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_alertsGateways'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobAlertsOptions'],
+    'eval' => ['multiple' => true, 'mandatory' => true],
+    'sql' => 'blob NULL',
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_applicationForm'],

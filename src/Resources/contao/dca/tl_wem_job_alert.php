@@ -12,17 +12,16 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
+$GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ptable' => 'tl_wem_job_feed',
+        'ctable' => ['tl_wem_job_alert_condition'],
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
             'keys' => [
-                'id' => 'primary',
-                'pid' => 'index',
+                'id' => 'primary'
             ],
         ],
     ],
@@ -30,11 +29,15 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 4,
-            'fields' => ['email ASC'],
-            'headerFields' => ['code', 'title'],
-            'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAlertContainer::class, 'listItems'],
+            'mode' => 1,
+            'fields' => ['name', 'email'],
+            'flag' => 1,
+            'panelLayout' => 'filter;search,limit',
+        ],
+        'label' => [
+            'fields' => ['name', 'email'],
+            'format' => '%s - %s',
+            'label_callback' => [WEM\JobOffersBundle\DataContainer\JobAlertContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -46,18 +49,18 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['delete'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['show'],
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
@@ -81,18 +84,15 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'pid' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
         'createdAt' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['createdAt'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['createdAt'],
             'default' => time(),
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
 
         'name' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['name'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['name'],
             'default' => BackendUser::getInstance()->name,
             'exclude' => true,
             'search' => true,
@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'position' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['position'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['position'],
             'default' => '',
             'exclude' => true,
             'inputType' => 'text',
@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'phone' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['phone'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['phone'],
             'default' => '',
             'exclude' => true,
             'inputType' => 'text',
@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'email' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['email'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['email'],
             'default' => BackendUser::getInstance()->email,
             'exclude' => true,
             'inputType' => 'text',
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
         ],
 
         'sendViaEmail' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['sendViaEmail'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['sendViaEmail'],
             'exclude' => true,
             'filter' => true,
             'flag' => 1,
@@ -136,12 +136,12 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_alert'] = [
         ],
 
         'conditions' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['conditions'],
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['conditions'],
             'inputType' => 'dcaWizard',
-            'foreignTable' => 'tl_wem_job_feed_alert_condition',
+            'foreignTable' => 'tl_wem_job_alert_condition',
             'foreignField' => 'pid',
             'params' => [
-                'do' => 'wem-job-offers',
+                'do' => 'wem-job-alerts',
             ],
             'eval' => [
                 'fields' => ['field', 'value'],

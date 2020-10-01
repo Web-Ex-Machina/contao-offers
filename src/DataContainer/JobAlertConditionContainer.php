@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace WEM\JobOffersBundle\DataContainer;
 
-class JobFeedAlertConditionContainer
+class JobAlertConditionContainer
 {
 	/**
      * Design each row of the DCA.

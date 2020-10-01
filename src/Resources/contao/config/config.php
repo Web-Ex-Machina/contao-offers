@@ -19,8 +19,10 @@ array_insert(
     [
         'wem-job-offers' => [
             'wem-job-offers' => [
-                'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application', 'tl_wem_job_feed_alert', 'tl_wem_job_feed_alert_condition'],
-                'icon' => 'bundles/wem-job-offers/icon_jobs.png',
+                'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application'],
+            ],
+            'wem-job-alerts' => [
+                'tables' => ['tl_wem_job_alert', 'tl_wem_job_alert_condition'],
             ],
         ],
     ]
