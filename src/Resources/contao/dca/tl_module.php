@@ -17,7 +17,9 @@ $this->loadDataContainer('tl_content');
 // Add palettes to tl_module
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feeds,job_displayTeaser,job_applicationForm;numberOfItems,skipFirst,perPage;
+    {config_legend},job_feeds,job_displayTeaser;
+    {list_legend},numberOfItems,skipFirst,perPage;
+    {form_legend},job_applicationForm;
     {template_legend:hide},job_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
