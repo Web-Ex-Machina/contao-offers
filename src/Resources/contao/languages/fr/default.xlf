@@ -64,6 +64,15 @@
 			<source>Apply</source>
 			<target>Postuler</target>
 		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.GATEWAY.email">
+			<source>Email</source>
+			<target>Email</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.GATEWAY.sms">
+			<source>Text</source>
+			<target>SMS</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

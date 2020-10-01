@@ -54,7 +54,7 @@ class ModuleContainer extends \Backend
      */
     public function getJobAlertsOptions() {
         return [
-            "email" => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['EMAIL']
+            "email" => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['email']
         ];
     }
 }
