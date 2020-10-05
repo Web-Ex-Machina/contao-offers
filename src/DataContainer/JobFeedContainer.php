@@ -26,7 +26,7 @@ class JobFeedContainer extends \Backend
     public function generateAlias($varValue, \DataContainer $dc)
     {
         $aliasExists = function (string $alias) use ($dc): bool {
-            return $this->Database->prepare('SELECT id FROM tl_article WHERE alias=? AND id!=?')->execute($alias, $dc->id)->numRows > 0;
+            return $this->Database->prepare('SELECT id FROM tl_wem_job_feed WHERE alias=? AND id!=?')->execute($alias, $dc->id)->numRows > 0;
         };
 
         // Generate an alias if there is none
