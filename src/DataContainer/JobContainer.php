@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
+ * Copyright (c) 2018-2020 Web ex Machina.
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ *
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ *
+ * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\DataContainer;
+
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use WEM\JobOffersBundle\Model\Job;
+use WEM\JobOffersBundle\Model\JobFeedAttribute;
 
 class JobContainer extends \Backend
 {
@@ -143,7 +148,21 @@ class JobContainer extends \Backend
         $objVersions->create();
     }
 
-    public function updatePalettes($dc) {
-        dump($dc); die;
+    public function updatePalettes($dc)
+    {
+        if ($dc->id && 'edit' == \Input::get('act')) {
+            $objJob = Job::findByPk($dc->id);
+            $objAttributes = JobFeedAttribute::findItems(['pid' => $objJob->pid]);
+
+            if (!$objAttributes || 0 == $objAttributes->count()) {
+                return;
+            }
+
+            $objPalette = PaletteManipulator::create();
+            while ($objAttributes->next()) {
+                $objPalette->addField($objAttributes->name, $objAttributes->insertAfter);
+            }
+            $objPalette->applyToPalette('default', 'tl_wem_job');
+        }
     }
 }

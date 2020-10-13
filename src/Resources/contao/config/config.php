@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Contao Job Offers for Contao Open Source CMS
  * Copyright (c) 2018-2020 Web ex Machina
  *
@@ -49,12 +49,15 @@ if ('BE' === TL_MODE) {
 }
 
 // Hooks
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [WEM\JobOffersBundle\Hooks\LoadDataContainerHook::class, 'addAttributesToJobDca'];
 $GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\JobOffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
 
 // Models
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Alert::getTable()] = 'WEM\JobOffersBundle\Model\Alert';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\AlertCondition::getTable()] = 'WEM\JobOffersBundle\Model\AlertCondition';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Job::getTable()] = 'WEM\JobOffersBundle\Model\Job';
+$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\JobFeed::getTable()] = 'WEM\JobOffersBundle\Model\JobFeed';
+$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\JobFeedAttribute::getTable()] = 'WEM\JobOffersBundle\Model\JobFeedAttribute';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Application::getTable()] = 'WEM\JobOffersBundle\Model\Application';
 
 // Cronjobs
