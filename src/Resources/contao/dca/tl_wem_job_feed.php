@@ -16,7 +16,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ctable' => ['tl_wem_job'],
+        'ctable' => ['tl_wem_job', 'tl_wem_job_feed_attribute'],
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
@@ -64,16 +64,16 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
+            'attributes' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['attributes'],
+                'href' => 'table=tl_wem_job_feed_attribute',
+                'icon' => 'header.gif',
+            ],
             'jobs' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['jobs'],
                 'href' => 'table=tl_wem_job',
                 'icon' => 'folderOP.gif',
-            ],
-            'alerts' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['alerts'],
-                'href' => 'table=tl_wem_job_feed_alert',
-                'icon' => 'rss.gif',
-            ],
+            ]
         ],
     ],
 
@@ -81,7 +81,8 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
     'palettes' => [
         'default' => '
             {title_legend},title,alias;
-            {alert_legend},ncEmailAlert,alertFrequency
+            {attributes_legend},attributes;
+            {alert_legend},ncEmailAlert,tplJobAlert
         ',
     ],
 
@@ -117,6 +118,23 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
             'sql' => "varchar(255) BINARY NOT NULL default ''",
         ],
 
+        'attributes' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['attributes'],
+            'inputType' => 'dcaWizard',
+            'foreignTable' => 'tl_wem_job_feed_attribute',
+            'foreignField' => 'pid',
+            'params' => [
+                'do' => 'wem-job-offers',
+            ],
+            'eval' => [
+                'fields' => ['name', 'label', 'type'],
+                'orderField' => 'name ASC',
+                'showOperations' => true,
+                'operations' => ['edit', 'delete'],
+                'tl_class' => 'clr',
+            ],
+        ],
+
         'ncEmailAlert' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['ncEmailAlert'],
             'exclude' => true,
@@ -125,14 +143,15 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'alertFrequency' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['alertFrequency'],
-            'exclude' => true,
-            'inputType' => 'select',
-            'options' => ['hourly', 'daily', 'weekly', 'monthly'],
-            'reference' => $GLOBALS['TL_LANG']['tl_wem_job_feed']['alertFrequency'],
-            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
-        ],
+        'tplJobAlert' => [
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options_callback' => static function ()
+            {
+                return Controller::getTemplateGroup('job_alert_');
+            },
+            'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''"
+        ]
     ],
 ];

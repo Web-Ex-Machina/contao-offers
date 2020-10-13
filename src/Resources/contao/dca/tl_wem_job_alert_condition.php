@@ -19,6 +19,9 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert_condition'] = [
         'ptable' => 'tl_wem_job_alert',
         'switchToEdit' => true,
         'enableVersioning' => true,
+        'onload_callback' => [
+            [WEM\JobOffersBundle\DataContainer\JobAlertConditionContainer::class, 'getValueChoices']
+        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -94,16 +97,17 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert_condition'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert_condition']['field'],
             'exclude' => true,
             'filter' => true,
-            'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'inputType'                 => 'select',
+            'options_callback'          => array(WEM\JobOffersBundle\DataContainer\JobAlertConditionContainer::class, 'getFieldChoices'),
+            'eval'                      => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                       => "varchar(255) NOT NULL default ''"
         ],
         'value' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert_condition']['value'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],

@@ -19,7 +19,7 @@ array_insert(
     [
         'wem-job-offers' => [
             'wem-job-offers' => [
-                'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application'],
+                'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application', 'tl_wem_job_feed_attribute'],
             ],
             'wem-job-alerts' => [
                 'tables' => ['tl_wem_job_alert', 'tl_wem_job_alert_condition'],
@@ -49,13 +49,16 @@ if ('BE' === TL_MODE) {
 }
 
 // Hooks
-$GLOBALS['TL_HOOKS']['storeFormData'][] = ['WEM\JobOffersBundle\Hooks\StoreFormDataHook', 'storeFormData'];
+$GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\JobOffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
 
 // Models
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Alert::getTable()] = 'WEM\JobOffersBundle\Model\Alert';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\AlertCondition::getTable()] = 'WEM\JobOffersBundle\Model\AlertCondition';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Job::getTable()] = 'WEM\JobOffersBundle\Model\Job';
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Application::getTable()] = 'WEM\JobOffersBundle\Model\Application';
+
+// Cronjobs
+$GLOBALS['TL_CRON']['hourly'][] = [WEM\JobOffersBundle\Cronjob\SendAlertsJob::class, 'do'];
 
 /*
  * Notification Center Notification Types

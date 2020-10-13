@@ -26,6 +26,9 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
                 'pid' => 'index',
             ],
         ],
+        'onload_callback' => [
+            [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'updatePalettes'],
+        ]
     ],
 
     // List
@@ -153,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'chosen' => true],
+            'eval' => ['multiple' => true, 'chosen' => true, 'wemjoboffers_isAvailableForAlerts' => true],
             'options_callback' => function () {
                 return System::getCountries();
             },
@@ -164,6 +167,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'exclude' => true,
             'search' => true,
             'inputType' => 'listWizard',
+            'eval' => ['wemjoboffers_isAvailableForAlerts' => true],
             'sql' => 'blob NULL',
         ],
 
@@ -172,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
+            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_isAvailableForAlerts' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'remuneration' => [

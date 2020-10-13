@@ -142,4 +142,8 @@ class JobContainer extends \Backend
 
         $objVersions->create();
     }
+
+    public function updatePalettes($dc) {
+        dump($dc); die;
+    }
 }

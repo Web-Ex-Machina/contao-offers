@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
     'palettes' => [
         'default' => '
             {recipient_legend},name,position,phone,email;
-            {alert_legend},sendViaEmail;
+            {alert_legend},feed,frequency,sendViaEmail;
             {filters_legend},conditions
         ',
     ],
@@ -82,6 +82,9 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'lastJob' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
@@ -125,13 +128,30 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
 
+        'feed' => [
+            'label'                     => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['feed'],
+            'exclude'                   => true,
+            'inputType'                 => 'select',
+            'options_callback'          => array(WEM\JobOffersBundle\DataContainer\JobAlertContainer::class, 'getJobFeeds'),
+            'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                       => "int(10) unsigned NOT NULL default '0'"
+        ],
+        'frequency' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['frequency'],
+            'exclude' => true,
+            'inputType' => 'select',
+            'options' => ['hourly', 'daily', 'weekly', 'monthly'],
+            'reference' => $GLOBALS['TL_LANG']['tl_wem_job_alert']['frequency'],
+            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(16) NOT NULL default ''",
+        ],
         'sendViaEmail' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['sendViaEmail'],
             'exclude' => true,
             'filter' => true,
             'flag' => 1,
             'inputType' => 'checkbox',
-            'eval' => ['doNotCopy' => true],
+            'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
             'sql' => "char(1) NOT NULL default ''",
         ],
 

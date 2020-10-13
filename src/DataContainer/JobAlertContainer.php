@@ -29,4 +29,21 @@ class JobAlertContainer
             $row['email']
         );
     }
+
+    /**
+     * Get available job feeds.
+     *
+     * @return [Array]
+     */
+    public function getJobFeeds()
+    {
+        $arrChoices = [];
+        $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_job_feed ORDER BY title");
+
+        while ($objFeeds->next()) {
+            $arrChoices[$objFeeds->id] = $objFeeds->title;
+        }
+
+        return $arrChoices;
+    }
 }
