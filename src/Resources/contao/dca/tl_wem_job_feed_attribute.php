@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Contao Job Offers for Contao Open Source CMS
  * Copyright (c) 2018-2020 Web ex Machina
  *
@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
 
     // Palettes
     'palettes' => [
-        '__selector__' => array('type'),
+        '__selector__' => ['type'],
         'default' => '
             {title_legend},name,label;
             {field_legend},type,mandatory;
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
     // Subpalettes
     'subpalettes' => [
         'type_text' => 'value',
-        'type_select' => 'options'
+        'type_select' => 'options',
     ],
 
     // Fields
@@ -103,71 +103,63 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
 
-        'name' => array
-        (
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'rgxp'=>'fieldname', 'spaceToUnderscore'=>true, 'maxlength'=>64, 'tl_class'=>'w50 clr'),
-            'sql'                     => "varchar(64) NOT NULL default ''"
-        ),
-        'label' => array
-        (
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        
-        'type' => array
-        (
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'select',
-            'options_callback'        => array(WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getFieldOptions'),
-            'eval'                    => array('helpwizard'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
-            'reference'               => &$GLOBALS['TL_LANG']['FFL'],
-            'sql'                     => array('name'=>'type', 'type'=>'string', 'length'=>64, 'default'=>'text')
-        ),
-        'value' => array
-        (
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'options' => array
-        (
-            'exclude'                 => true,
-            'inputType'               => 'optionWizard',
-            'eval'                    => array('mandatory'=>true, 'allowHtml'=>true),
-            'sql'                     => "blob NULL"
-        ),
-        'mandatory' => array
-        (
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'checkbox',
-            'sql'                     => "char(1) NOT NULL default ''"
-        ),
-        'insertAfter' => array
-        (
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'select',
-            'options_callback'        => array(WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getJobFields'),
-            'eval'                    => array('tl_class'=>'w50'),
-            'sql'                     => array('name'=>'insertAfter', 'type'=>'string', 'length'=>64, 'default'=>'text')
-        ),
-        'class' => array
-        (
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
+        'name' => [
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'rgxp' => 'fieldname', 'spaceToUnderscore' => true, 'maxlength' => 64, 'tl_class' => 'w50 clr'],
+            'sql' => "varchar(64) NOT NULL default ''",
+        ],
+        'label' => [
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+
+        'type' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getFieldOptions'],
+            'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'reference' => &$GLOBALS['TL_LANG']['FFL'],
+            'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
+        ],
+        'value' => [
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'options' => [
+            'exclude' => true,
+            'inputType' => 'optionWizard',
+            'eval' => ['mandatory' => true, 'allowHtml' => true],
+            'sql' => 'blob NULL',
+        ],
+        'mandatory' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'insertAfter' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getJobFields'],
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => ['name' => 'insertAfter', 'type' => 'string', 'length' => 64, 'default' => ''],
+        ],
+        'class' => [
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
     ],
 ];
