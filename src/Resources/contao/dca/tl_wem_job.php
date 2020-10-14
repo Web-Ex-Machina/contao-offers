@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'chosen' => true, 'wemjoboffers_isAvailableForAlerts' => true],
+            'eval' => ['multiple' => true, 'chosen' => true, 'wemjoboffers_isAvailableForAlerts' => true, 'wemjoboffers_availableForFilters' => true],
             'options_callback' => function () {
                 return System::getCountries();
             },
@@ -176,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_isAvailableForAlerts' => true],
+            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_isAvailableForAlerts' => true, 'wemjoboffers_availableForFilters' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'remuneration' => [
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['status'],
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
+            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_availableForFilters' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
 

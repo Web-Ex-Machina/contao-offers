@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Contao Job Offers for Contao Open Source CMS
  * Copyright (c) 2018-2020 Web ex Machina
  *
@@ -16,15 +16,17 @@ $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_allowAlerts';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_addFilters';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feeds,job_displayTeaser,job_allowAlerts;
+    {config_legend},job_feeds,job_displayTeaser,job_allowAlerts,job_addFilters;
     {list_legend},numberOfItems,skipFirst,perPage;
     {form_legend},job_applicationForm;
     {template_legend:hide},job_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_allowAlerts'] = 'job_alertsGateways';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_addFilters'] = 'job_filters,job_addSearch';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_feeds'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_feeds'],
@@ -57,6 +59,32 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [
     'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobAlertsOptions'],
     'eval' => ['multiple' => true, 'mandatory' => true],
     'sql' => 'blob NULL',
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_addFilters'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_addFilters'],
+    'exclude' => true,
+    'filter' => true,
+    'flag' => 1,
+    'inputType' => 'checkbox',
+    'eval' => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'clr'],
+    'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_filters'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_filters'],
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobFiltersOptions'],
+    'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true],
+    'sql' => 'blob NULL',
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_addSearch'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_addSearch'],
+    'exclude' => true,
+    'filter' => true,
+    'flag' => 1,
+    'inputType' => 'checkbox',
+    'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
+    'sql' => "char(1) NOT NULL default ''",
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['job_applicationForm'],

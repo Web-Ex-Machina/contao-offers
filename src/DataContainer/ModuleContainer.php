@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
+ * Copyright (c) 2018-2020 Web ex Machina.
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ *
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ *
+ * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\DataContainer;
@@ -48,13 +49,33 @@ class ModuleContainer extends \Backend
     }
 
     /**
-     * Return all job alerts available gateways
+     * Return all job alerts available gateways.
      *
      * @return array
      */
-    public function getJobAlertsOptions() {
+    public function getJobAlertsOptions()
+    {
         return [
-            "email" => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['email']
+            'email' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['email'],
         ];
+    }
+
+    /**
+     * Return all job alerts available gateways.
+     *
+     * @return array
+     */
+    public function getJobFiltersOptions()
+    {
+        $this->loadDataContainer('tl_wem_job');
+        $fields = [];
+
+        foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k => $v) {
+            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_availableForFilters']) {
+                $fields[$k] = $v['label'][0] ?: $k;
+            }
+        }
+
+        return $fields;
     }
 }
