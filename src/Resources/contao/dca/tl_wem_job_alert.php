@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Contao Job Offers for Contao Open Source CMS
  * Copyright (c) 2018-2020 Web ex Machina
  *
@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
         'enableVersioning' => true,
         'sql' => [
             'keys' => [
-                'id' => 'primary'
+                'id' => 'primary',
             ],
         ],
     ],
@@ -129,12 +129,14 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
         ],
 
         'feed' => [
-            'label'                     => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['feed'],
-            'exclude'                   => true,
-            'inputType'                 => 'select',
-            'options_callback'          => array(WEM\JobOffersBundle\DataContainer\JobAlertContainer::class, 'getJobFeeds'),
-            'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                       => "int(10) unsigned NOT NULL default '0'"
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['feed'],
+            'exclude' => true,
+            'inputType' => 'select',
+            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobAlertContainer::class, 'getJobFeeds'],
+            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'foreignKey' => 'tl_wem_job_feed.title',
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['type' => 'hasOne', 'load' => 'eager'],
         ],
         'frequency' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['frequency'],
