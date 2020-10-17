@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
+ * Copyright (c) 2018-2020 Web ex Machina.
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ *
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ *
+ * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\Module;
 
 /**
- * Common functions for job offers modules
+ * Common functions for job offers modules.
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */

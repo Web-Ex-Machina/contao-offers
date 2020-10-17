@@ -64,6 +64,14 @@
 			<source>Apply</source>
 			<target>Postuler</target>
 		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.search">
+			<source>Search</source>
+			<target>Rechercher</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.searchPlaceholder">
+			<source>What do you seek?</source>
+			<target>Que recherchez-vous ?</target>
+		</trans-unit>
 
 		<trans-unit id="WEM.JOBOFFERS.GATEWAY.email">
 			<source>Email</source>

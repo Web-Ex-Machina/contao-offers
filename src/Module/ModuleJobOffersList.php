@@ -332,8 +332,8 @@ class ModuleJobOffersList extends ModuleJobOffers
             $this->filters['search'] = [
                 'type' => 'text',
                 'name' => 'search',
-                'label' => 'Rechercher', // @todo translation
-                'placeholder' => 'Mots-clefs...', // @todo translation
+                'label' => $GLOBALS['WEM']['JOBOFFERS']['search'],
+                'placeholder' => $GLOBALS['WEM']['JOBOFFERS']['searchPlaceholder'],
                 'value' => \Input::get('search') ?: '',
             ];
 
