@@ -14,12 +14,10 @@ declare(strict_types=1);
 
 namespace WEM\JobOffersBundle\Model;
 
-use Contao\Model;
-
 /**
  * Reads and writes items.
  */
-class Job extends Model
+class Job extends \WEM\UtilsBundle\Model\Model
 {
     /**
      * Table name.
@@ -27,6 +25,13 @@ class Job extends Model
      * @var string
      */
     protected static $strTable = 'tl_wem_job';
+
+    /**
+     * Search fields
+     *
+     * @var Array
+     */
+    public static $arrSearchFields = ["code", "title", "field", "text"];
 
     /**
      * Find items, depends on the arguments.
