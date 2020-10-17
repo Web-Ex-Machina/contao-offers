@@ -1,13 +1,92 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
     <body>
+    	<trans-unit id="tl_module.job_feeds.0">
+			<source>Job feeds</source>
+			<target>Flux d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_feeds.1">
+			<source>Here you can select the job feeds to display</source>
+			<target>Choisissez les flux d'offres à afficher</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_displayTeaser.0">
+			<source>Display teaser</source>
+			<target>Afficher le résumé</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_displayTeaser.1">
+			<source>Check to display the teaser in the list</source>
+			<target>Cochez pour afficher le résumé dans la liste</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_allowAlerts.0">
+			<source>Authorize alerts</source>
+			<target>Autoriser les alertes</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_allowAlerts.1">
+			<source>Check to authorized users to create job offers alerts</source>
+			<target>Cochez pour autoriser les utilisateurs à créer des alertes d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertsGateways.0">
+			<source>Gateways</source>
+			<target>Passerelles</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertsGateways.1">
+			<source>Here you can select the gateways to use</source>
+			<target>Choisissez les passerelles à utiliser</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_addFilters.0">
+			<source>Add filters</source>
+			<target>Ajouter des filtres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_addFilters.1">
+			<source>Check to add filters to the list</source>
+			<target>Cochez pour ajouter des filtres à la liste</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_filters.0">
+			<source>Filters</source>
+			<target>Filtres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_filters.1">
+			<source>Here you can select the filters to use</source>
+			<target>Choisissez les filtres à utiliser</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_addSearch.0">
+			<source>Add search</source>
+			<target>Ajouter une recherche</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_addSearch.1">
+			<source>Check to add a fulltext search to the list</source>
+			<target>Cochez pour ajouter un champ de recherche à la liste</target>
+		</trans-unit>
+
 		<trans-unit id="tl_module.job_template.0">
 			<source>Job template</source>
 			<target>Modèle d'offre</target>
 		</trans-unit>
 		<trans-unit id="tl_module.job_template.1">
-			<source>Here you can select the job template.</source>
-			<target>Choisir un modèle de job.</target>
+			<source>Here you can select the job template</source>
+			<target>Choisir un modèle de job</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_applicationForm.0">
+			<source>Application form</source>
+			<target>Formulaire de candidature</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_applicationForm.1">
+			<source>Here you can select the application form</source>
+			<target>Choisir le formulaire de candidature</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.list_legend">
+			<source>List settings</source>
+			<target>Paramètres de la liste</target>
+		</trans-unit>
+		<trans-unit id="tl_module.form_legend">
+			<source>Form settings</source>
+			<target>Paramètres du formulaire</target>
 		</trans-unit>
     </body>
   </file>
