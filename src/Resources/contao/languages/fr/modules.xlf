@@ -13,6 +13,14 @@
 			<source>Manage job offers</source>
 			<target>Gérer les offres d'emploi</target>
 		</trans-unit>
+		<trans-unit id="MOD.wem-job-alerts.0">
+			<source>Job alerts</source>
+			<target>Alertes</target>
+		</trans-unit>
+		<trans-unit id="MOD.wem-job-alerts.1">
+			<source>Manage job alerts</source>
+			<target>Gérer les alertes d'offres d'emploi</target>
+		</trans-unit>
 
 		<trans-unit id="FMD.jobslist.0">
 			<source>Jobs list</source>

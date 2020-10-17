@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert_condition'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {recipient_legend},field,value
+            {title_legend},field,value
         ',
     ],
 
