@@ -52,7 +52,7 @@ class JobContainer extends \Backend
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
         if (!is_null(\Input::get('tid')) && \strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (1 === \Input::get('state')), (@func_get_arg(12) ?: null));
+            $this->toggleVisibility(\Input::get('tid'), ('1' === \Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 
