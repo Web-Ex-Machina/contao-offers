@@ -80,6 +80,7 @@ class ModuleJobOffersList extends ModuleJobOffers
         // Load bundles, datacontainer and job feeds
         $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
         $this->loadDatacontainer('tl_wem_job');
+        $this->loadLanguageFile('tl_wem_job');
         $this->job_feeds = \StringUtil::deserialize($this->job_feeds);
 
         // Return if there are no archives
@@ -274,7 +275,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                 $filter = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['inputType'],
                     'name' => $f,
-                    'label' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['label'][0] ?: $f,
+                    'label' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_job'][$f][0],
                     'value' => \Input::get($f) ?: '',
                     'options' => [],
                     'multiple' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['eval']['multiple'] ? true : false,
@@ -333,8 +334,8 @@ class ModuleJobOffersList extends ModuleJobOffers
             $this->filters[] = [
                 'type' => 'text',
                 'name' => 'search',
-                'label' => $GLOBALS['WEM']['JOBOFFERS']['search'],
-                'placeholder' => $GLOBALS['WEM']['JOBOFFERS']['searchPlaceholder'],
+                'label' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['search'],
+                'placeholder' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['searchPlaceholder'],
                 'value' => \Input::get('search') ?: '',
             ];
 
