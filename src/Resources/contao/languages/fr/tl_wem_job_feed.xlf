@@ -29,7 +29,7 @@
 
 		<trans-unit id="tl_wem_job_feed.ncEmailAlert.0">
 			<source>Email notification</source>
-			<target>Notififcation email</target>
+			<target>Notification email</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job_feed.ncEmailAlert.1">
 			<source>Choose the email notification who will be sent</source>
