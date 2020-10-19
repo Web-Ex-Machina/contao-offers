@@ -180,6 +180,7 @@ class ModuleJobOffersList extends ModuleJobOffers
 
         // Retrieve filters
         $this->buildFilters();
+        $this->Template->filters = $this->filters;
 
         // Get the total number of items
         $intTotal = JobModel::countItems($this->config);
@@ -269,7 +270,6 @@ class ModuleJobOffersList extends ModuleJobOffers
         // Retrieve and format dropdowns filters
         $filters = deserialize($this->job_filters);
         if (is_array($filters) && !empty($filters)) {
-            $this->filters['select'] = [];
             foreach ($filters as $f) {
                 $filter = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['inputType'],
@@ -308,6 +308,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                         $objOptions = JobModel::findItemsGroupByOneField($f);
 
                         if ($objOptions && 0 < $objOptions->count()) {
+                            $filter['type'] = 'select';
                             while ($objOptions->next()) {
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
@@ -323,13 +324,13 @@ class ModuleJobOffersList extends ModuleJobOffers
                         break;
                 }
 
-                $this->filters['select'][] = $filter;
+                $this->filters[] = $filter;
             }
         }
 
         // Add fulltext search if asked
         if ($this->job_addSearch) {
-            $this->filters['search'] = [
+            $this->filters[] = [
                 'type' => 'text',
                 'name' => 'search',
                 'label' => $GLOBALS['WEM']['JOBOFFERS']['search'],
