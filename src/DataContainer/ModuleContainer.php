@@ -71,7 +71,7 @@ class ModuleContainer extends \Backend
         $fields = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_availableForFilters']) {
+            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_isAvailableForFilters']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
         }

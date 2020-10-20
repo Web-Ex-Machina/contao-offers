@@ -36,7 +36,12 @@ class LoadDataContainerHook
                         'label' => [0 => $objAttributes->label],
                         'default' => $objAttributes->value ?: '',
                         'inputType' => $objAttributes->type,
-                        'eval' => ['tl_class' => $objAttributes->class, 'mandatory' => $objAttributes->mandatory ? true : false],
+                        'eval' => [
+                            'tl_class' => $objAttributes->class,
+                            'mandatory' => $objAttributes->mandatory ? true : false,
+                            'wemjoboffers_isAvailableForAlerts' => $objAttributes->isAlertCondition ? true : false,
+                            'wemjoboffers_isAvailableForFilters' => $objAttributes->isFilter ? true : false,
+                        ],
                         'sql' => ['name' => $objAttributes->name, 'type' => 'string', 'length' => 255, 'default' => $objAttributes->value ?: ''],
                     ];
 

@@ -75,6 +75,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
         'default' => '
             {title_legend},name,label;
             {field_legend},type,mandatory;
+            {settings_legend},isFilter,isAlertCondition;
             {design_legend},insertAfter,class
         ',
     ],
@@ -141,6 +142,18 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'sql' => 'blob NULL',
         ],
         'mandatory' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'isFilter' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'isAlertCondition' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
