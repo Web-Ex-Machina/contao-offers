@@ -84,8 +84,10 @@ abstract class ModuleJobOffers extends \Module
         }
 
         // Parse locations
-        if (deserialize($objArticle->locations)) {
+        if (is_array(deserialize($objArticle->locations))) {
             $objTemplate->locations = implode(', ', deserialize($objArticle->locations));
+        } else {
+            $objTemplate->locations = $objArticle->locations;
         }
 
         // Fetch the job offer file
