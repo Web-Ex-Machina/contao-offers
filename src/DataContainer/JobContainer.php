@@ -148,6 +148,11 @@ class JobContainer extends \Backend
         $objVersions->create();
     }
 
+    /**
+     * Update DCA palettes and add custom attributes
+     *  
+     * @param  [DataContainer] $dc
+     */
     public function updatePalettes($dc)
     {
         if ($dc->id && 'edit' == \Input::get('act')) {
@@ -160,7 +165,9 @@ class JobContainer extends \Backend
 
             $objPalette = PaletteManipulator::create();
             while ($objAttributes->next()) {
-                $objPalette->addField($objAttributes->name, $objAttributes->insertAfter);
+                if(false === strrpos($GLOBALS['TL_DCA']['tl_wem_job']['palettes']['default'], $objAttributes->name)) {
+                    $objPalette->addField($objAttributes->name, $objAttributes->insertAfter);
+                }
             }
             $objPalette->applyToPalette('default', 'tl_wem_job');
         }
