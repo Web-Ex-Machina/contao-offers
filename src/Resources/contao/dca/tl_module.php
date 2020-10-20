@@ -15,17 +15,15 @@ declare(strict_types=1);
 $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_allowAlerts';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_addFilters';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feeds,job_displayTeaser,job_allowAlerts,job_addFilters;
+    {config_legend},job_feeds,job_displayTeaser,job_addFilters;
     {list_legend},numberOfItems,skipFirst,perPage;
     {form_legend},job_applicationForm;
     {template_legend:hide},job_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_allowAlerts'] = 'job_alertsGateways';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_addFilters'] = 'job_filters,job_addSearch';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_feeds'] = [
@@ -41,15 +39,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
-    'sql' => "char(1) NOT NULL default ''",
-];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_allowAlerts'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_allowAlerts'],
-    'exclude' => true,
-    'filter' => true,
-    'flag' => 1,
-    'inputType' => 'checkbox',
-    'eval' => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [
