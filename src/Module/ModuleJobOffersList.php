@@ -19,6 +19,7 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Patchwork\Utf8;
 use WEM\JobOffersBundle\Model\Job as JobModel;
+use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
  * Front end module "offers list".
@@ -340,7 +341,7 @@ class ModuleJobOffersList extends ModuleJobOffers
             ];
 
             if ('' != \Input::get('search')) {
-                $this->config['search'] = \Input::get('search');
+                $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
             }
         }
     }
