@@ -8,7 +8,7 @@
   			<?php foreach ($this->filters as $f): ?>
   			<div class="filter col-3">	
   				<?php if ('select' == $f['type']): ?>
-				<select name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?> placeholder="<?= $f['label']; ?>">
+				<select name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
 					<?php if (!$f['multiple']): ?>
 					<option value=""><?= $f['label']; ?></option>
 					<?php endif; ?>
