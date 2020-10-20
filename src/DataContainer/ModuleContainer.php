@@ -65,6 +65,25 @@ class ModuleContainer extends \Backend
      *
      * @return array
      */
+    public function getJobConditionsOptions()
+    {
+        $this->loadDataContainer('tl_wem_job');
+        $fields = [];
+
+        foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k => $v) {
+            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_isAvailableForAlerts']) {
+                $fields[$k] = $v['label'][0] ?: $k;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Return all job alerts available gateways.
+     *
+     * @return array
+     */
     public function getJobFiltersOptions()
     {
         $this->loadDataContainer('tl_wem_job');
@@ -77,5 +96,39 @@ class ModuleContainer extends \Backend
         }
 
         return $fields;
+    }
+
+    /**
+     * Get Notification Choices for this kind of modules.
+     *
+     * @return [Array]
+     */
+    public function getSubscribeNotificationChoices()
+    {
+        $arrChoices = [];
+        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_joboffers_alerts_subscribe' ORDER BY title");
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
+
+    /**
+     * Get Notification Choices for this kind of modules.
+     *
+     * @return [Array]
+     */
+    public function getUnsubscribeNotificationChoices()
+    {
+        $arrChoices = [];
+        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_joboffers_alerts_unsubscribe' ORDER BY title");
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
     }
 }

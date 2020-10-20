@@ -1,0 +1,35 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<?php if ($this->conditions): ?>
+	<div class="conditions">
+		<form action="{{env::request}}" method="GET" class="row">
+			<?php foreach ($this->conditions as $c): ?>
+			<div class="filter col-3">	
+				<?php if ('select' == $c['type']): ?>
+			<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?>>
+				<?php if (!$c['multiple']): ?>
+				<option value=""><?= $c['label']; ?></option>
+				<?php endif; ?>
+
+				<?php foreach ($c['options'] as $o): ?>
+				<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+				<?php endforeach; ?>
+			</select>
+				<?php else: ?>
+				<input type="text" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
+				<?php endif; ?>
+			</div>	
+			<?php endforeach; ?>
+
+		<div class="col-2 invisible">
+			<input type="submit" class="btn m-0 w-100" value="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['filter']; ?>" />
+		</div>
+	</form>
+	</div>
+<?php endif; ?>
+
+Link GDPR <?= $this->gdprPage ?>
+
+<?php $this->endblock(); ?>

@@ -35,6 +35,7 @@ array_insert(
     [
         'wem-job-offers' => [
             'jobslist' => 'WEM\JobOffersBundle\Module\ModuleJobOffersList',
+            'jobsalert' => 'WEM\JobOffersBundle\Module\ModuleJobOffersAlert',
         ],
     ]
 );
@@ -75,6 +76,22 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
                 'email_subject' => ['jobfeed_*', 'recipient_*'],
                 'email_text' => ['jobfeed_*', 'recipient_*', 'jobstext'],
                 'email_html' => ['jobfeed_*', 'recipient_*', 'jobshtml'],
+                'email_replyTo' => ['admin_email'],
+                'email_sender_address' => ['admin_email'],
+            ],
+            'wem_joboffers_alerts_subscribe' => [
+                'recipients' => ['recipient_email'],
+                'email_subject' => ['jobfeed_*', 'recipient_*'],
+                'email_text' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_html' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_replyTo' => ['admin_email'],
+                'email_sender_address' => ['admin_email'],
+            ],
+            'wem_joboffers_alerts_unsubscribe' => [
+                'recipients' => ['recipient_email'],
+                'email_subject' => ['jobfeed_*', 'recipient_*'],
+                'email_text' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_html' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],

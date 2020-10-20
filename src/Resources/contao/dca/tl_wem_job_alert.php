@@ -93,6 +93,15 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'activatedAt' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['activatedAt'],
+            'default' => time(),
+            'flag' => 8,
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'token' => [
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
 
         'name' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['name'],
@@ -146,15 +155,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
             'reference' => $GLOBALS['TL_LANG']['tl_wem_job_alert']['frequency'],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'sendViaEmail' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['sendViaEmail'],
-            'exclude' => true,
-            'filter' => true,
-            'flag' => 1,
-            'inputType' => 'checkbox',
-            'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
-            'sql' => "char(1) NOT NULL default ''",
         ],
 
         'conditions' => [
