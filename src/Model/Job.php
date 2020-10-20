@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
+ * Copyright (c) 2018-2020 Web ex Machina.
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ *
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ *
+ * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\Model;
@@ -27,11 +28,11 @@ class Job extends \WEM\UtilsBundle\Model\Model
     protected static $strTable = 'tl_wem_job';
 
     /**
-     * Search fields
+     * Search fields.
      *
-     * @var Array
+     * @var array
      */
-    public static $arrSearchFields = ["code", "title", "field", "text"];
+    public static $arrSearchFields = ['code', 'title', 'field', 'text'];
 
     /**
      * Find items, depends on the arguments.
@@ -96,38 +97,66 @@ class Job extends \WEM\UtilsBundle\Model\Model
      */
     public static function formatColumns($arrConfig)
     {
-        $t = static::$strTable;
-        $arrColumns = [];
+        try {
+            $t = static::$strTable;
+            $arrColumns = [];
 
-        if ($arrConfig['pid']) {
-            if (\is_array($arrConfig['pid'])) {
-                $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $arrConfig['pid'])).')';
-            } else {
-                $arrColumns[] = $t.'.pid = '.$arrConfig['pid'];
+            foreach ($arrConfig as $c => $v) {
+                $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
             }
-        }
 
-        if ($arrConfig['title']) {
-            $arrColumns[] = $t.'.title = "'.$arrConfig['title'].'"';
+            return $arrColumns;
+        } catch (Exception $e) {
+            throw $e;
         }
+    }
 
-        if ($arrConfig['field']) {
-            $arrColumns[] = $t.'.field = "'.$arrConfig['field'].'"';
+    /**
+     * Generic statements format.
+     *
+     * @param string $strField    [Column to format]
+     * @param mixed  $varValue    [Value to use]
+     * @param string $strOperator [Operator to use, default "="]
+     *
+     * @return array
+     */
+    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    {
+        try {
+            $arrColumns = [];
+            $t = static::$strTable;
+
+            switch ($strField) {
+                // Search by pid
+                case 'pid':
+                    if (\is_array($varValue)) {
+                        $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
+                    } else {
+                        $arrColumns[] = $t.'.pid = '.$varValue;
+                    }
+                break;
+
+                // Search by country
+                case 'country':
+                    $arrColumns[] = "$t.countries LIKE '%%".$varValue."%'";
+                break;
+
+                // Search for recipient not present in the subtable lead
+                case 'published':
+                    if (1 === $varValue) {
+                        $time = \Date::floorToMinute();
+                        $arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'".($time + 60)."') AND $t.published='1'";
+                    }
+                break;
+
+                // Load parent
+                default:
+                    $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
+            }
+
+            return $arrColumns;
+        } catch (Exception $e) {
+            throw $e;
         }
-
-        if ($arrConfig['country']) {
-            $arrColumns[] = "$t.countries LIKE '%%".$arrConfig['country']."%'";
-        }
-
-        if (1 === $arrConfig['published']) {
-            $time = \Date::floorToMinute();
-            $arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'".($time + 60)."') AND $t.published='1'";
-        }
-
-        if ($arrConfig['not']) {
-            $arrColumns[] = $arrConfig['not'];
-        }
-
-        return $arrColumns;
     }
 }
