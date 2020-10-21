@@ -81,6 +81,52 @@
 			<source>Text</source>
 			<target>SMS</target>
 		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.MSG.alertCreated">
+			<source>Your alert has been created! You will receive soon an email to activate it.</source>
+			<target>Votre alerte a été créée ! Vous allez recevoir un email pour l'activer.</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.MSG.requestSent">
+			<source>Your request has been sent, you should receive an email to confirm it.</source>
+			<target>Votre requête a été envoyée ! Vous allez recevoir un email pour la confirmer.</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.MSG.alertActivated">
+			<source>Your alert has been activated!</source>
+			<target>Votre alerte a été activée!</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.MSG.alertDeleted">
+			<source>Your alert has been deleted.</source>
+			<target>Votre alerte a été supprimée.</target>
+		</trans-unit>
+
+		<trans-unit id="WEM.JOBOFFERS.ERROR.unknownRequest">
+			<source>Unknown request called: %s</source>
+			<target>Requête inconnue : %s</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.argumentMissing">
+			<source>Missing argument: %s</source>
+			<target>Argument manquant : %s</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.invalidEmail">
+			<source>Invalid email</source>
+			<target>Email invalide</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.alertAlreadyExists">
+			<source>You already have an existing alert.</source>
+			<target>Vous avez déjà une alerte existante.</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.alertDoesNotExists">
+			<source>The alert does not exists.</source>
+			<target>L'alerte n'existe pas.</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.invalidLink">
+			<source>This link is invalid.</source>
+			<target>Ce lien est invalide.</target>
+		</trans-unit>
+		<trans-unit id="WEM.JOBOFFERS.ERROR.expiredLink">
+			<source>This link is expired.</source>
+			<target>Ce lien est expiré.</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

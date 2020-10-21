@@ -51,6 +51,23 @@
 			<target>Cocher pour rendre cet attribut obligatoire</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_job_feed_attribute.isFilter.0">
+			<source>Filter</source>
+			<target>Filtre</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed_attribute.isFilter.1">
+			<source>Check to make this attribute available for list filters</source>
+			<target>Cocher pour rendre cet attribut utilisable comme filtre de liste</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed_attribute.isAlertCondition.0">
+			<source>Alert condition</source>
+			<target>Condition d'alerte</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed_attribute.isAlertCondition.1">
+			<source>Check to make this attribute available for alert conditions</source>
+			<target>Cocher pour rendre cet attribut utilisable comme condition d'alerte</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_job_feed_attribute.insertAfter.0">
 			<source>Insert after</source>
 			<target>Insérer après</target>
@@ -74,7 +91,11 @@
 		</trans-unit>
 		<trans-unit id="tl_wem_job_feed_attribute.field_legend">
 			<source>Settings</source>
-			<target>Paramètres</target>
+			<target>Configuration</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed_attribute.settings_legend">
+			<source>Advanced settings</source>
+			<target>Paramètres avancés</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job_feed_attribute.design_legend">
 			<source>Design</source>

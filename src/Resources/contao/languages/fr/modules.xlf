@@ -28,7 +28,15 @@
 		</trans-unit>
 		<trans-unit id="FMD.jobslist.1">
 			<source>Adds a list of jobs items to the page</source>
-			<target>Ajoute une liste d'offres à la page.</target>
+			<target>Ajoute une liste d'offres à la page</target>
+		</trans-unit>
+		<trans-unit id="FMD.jobsalert.0">
+			<source>Jobs alert</source>
+			<target>Alerte d'offres</target>
+		</trans-unit>
+		<trans-unit id="FMD.jobsalert.1">
+			<source>Adds an alert subscription form to the page</source>
+			<target>Ajoute un formulaire d'inscription aux alertes à la page</target>
 		</trans-unit>
     </body>
   </file>

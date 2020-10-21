@@ -84,7 +84,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                     case 'subscribe':
                         // Check if we have a valid email
                         if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
-                            throw new \Exception('Email invalid');
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidEmail']);
                         }
 
                         // Check if we have conditions
@@ -97,7 +97,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                         // Check if we already have an existing alert with this email and this conditions
                         if (0 < Alert::countItems(['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions])) {
-                            throw new \Exception('Alert already exists');
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertAlreadyExists']);
                         }
 
                         // Save as many alerts as they are feeds set up for this module
@@ -135,21 +135,21 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'message' => 'Your alert has been created ! You should receive soon an email to activate it.',
+                            'message' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertCreated'],
                         ];
                     break;
 
                     case 'unsubscribe':
                         // Check if we have a valid email
                         if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
-                            throw new \Exception('Email invalid');
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidEmail']);
                         }
 
                         $objAlert = Alert::findItems(['email' => \Input::post('email'), 'feed' => $this->job_feed], 1);
 
                         // Check if the alert exists or if the alert is already active
                         if (!$objAlert) {
-                            throw new \Exception('You do not have an alert');
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertDoesNotExists']);
                         }
 
                         // Check if the alert was not activated
@@ -160,12 +160,12 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'message' => 'Your request has been submitted, you should receive an email to confirm it.',
+                            'message' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['requestSent'],
                         ];
                     break;
 
                     default:
-                        throw new \Exception(sprintf('Unknown request called : %s', \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
@@ -184,14 +184,14 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                 // Check if the alert exists or if the alert is already active
                 if (!$objAlert || 0 < $objAlert->activatedAt) {
-                    throw new \Exception('This link is invalid');
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
                 }
 
                 // Check if the alert is expired (we do not want to activate alerts created more than one hour ago)
                 if (strtotime('-1 hour ago') > $objAlert->createdAt) {
                     $objAlert->delete();
 
-                    throw new \Exception('This link is expired');
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['expiredLink']);
                 }
 
                 // Update the alert
@@ -201,7 +201,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                 // Build a message
                 $this->Template->isRequest = true;
-                $this->Template->message = 'Your alert has been activated !';
+                $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertActivated'];
 
                 return;
             } catch (\Exception $e) {
@@ -218,7 +218,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                 // Check if the alert exists or if the alert is already active
                 if (!$objAlert) {
-                    throw new \Exception('This link is invalid');
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
                 }
 
                 // Delete the alert
@@ -226,7 +226,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                 // Build a message
                 $this->Template->isRequest = true;
-                $this->Template->message = 'Your alert has been deleted.';
+                $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertDeleted'];
 
                 return;
             } catch (\Exception $e) {

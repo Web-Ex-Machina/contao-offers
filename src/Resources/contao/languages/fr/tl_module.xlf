@@ -1,6 +1,14 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
     <body>
+    	<trans-unit id="tl_module.job_feed.0">
+			<source>Job feed</source>
+			<target>Flux d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_feed.1">
+			<source>Here you can select the job feed to display</source>
+			<target>Choisissez le flux d'offre à afficher</target>
+		</trans-unit>
     	<trans-unit id="tl_module.job_feeds.0">
 			<source>Job feeds</source>
 			<target>Flux d'offres</target>
@@ -53,6 +61,15 @@
 			<target>Choisissez les filtres à utiliser</target>
 		</trans-unit>
 
+		<trans-unit id="tl_module.job_conditions.0">
+			<source>Conditions</source>
+			<target>Conditions</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_conditions.1">
+			<source>Here you can select the conditions to use</source>
+			<target>Choisissez les conditions à utiliser</target>
+		</trans-unit>
+
 		<trans-unit id="tl_module.job_addSearch.0">
 			<source>Add search</source>
 			<target>Ajouter une recherche</target>
@@ -78,6 +95,49 @@
 		<trans-unit id="tl_module.job_applicationForm.1">
 			<source>Here you can select the application form</source>
 			<target>Choisir le formulaire de candidature</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageGdpr.0">
+			<source>GDPR compliance</source>
+			<target>Réglement RGPD</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageGdpr.1">
+			<source>Here you can select the page to reach the GDPR compliance</source>
+			<target>Choisir la page pour accéder au réglement RGPD</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageSubscribe.0">
+			<source>Subscription page</source>
+			<target>Page d'inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageSubscribe.1">
+			<source>Here you can select the page where users validate their subscription</source>
+			<target>Choisir la page où les utilisateurs valideront leur inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncSubscribe.0">
+			<source>Subscription notification</source>
+			<target>Notification d'inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncSubscribe.1">
+			<source>Here you can select the notification sent to users to validate their subscription</source>
+			<target>Choisir la notification envoyée aux utilisateurs pour valider leur inscription</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageUnsubscribe.0">
+			<source>Unsubscription page</source>
+			<target>Page de désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageUnsubscribe.1">
+			<source>Here you can select the page where users validate their unsubscription</source>
+			<target>Choisir la page où les utilisateurs valideront leur désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncUnsubscribe.0">
+			<source>UNsubscription notification</source>
+			<target>Notification de désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncUnsubscribe.1">
+			<source>Here you can select the notification sent to users to validate their unsubscription</source>
+			<target>Choisir la notification envoyée aux utilisateurs pour valider leur désinscription</target>
 		</trans-unit>
 
 		<trans-unit id="tl_module.list_legend">

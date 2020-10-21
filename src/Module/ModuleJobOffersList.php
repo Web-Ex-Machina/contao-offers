@@ -114,7 +114,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                 switch (\Input::post('action')) {
                     case 'seeDetails':
                         if (!\Input::post('job')) {
-                            throw new \Exception('Missing job argument');
+                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['argumentMissing'], 'job'));
                         }
                         $objJob = JobModel::findByPk(\Input::post('job'));
 
@@ -125,7 +125,7 @@ class ModuleJobOffersList extends ModuleJobOffers
 
                     case 'apply':
                         if (!\Input::post('job')) {
-                            throw new \Exception('Missing job argument');
+                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['argumentMissing'], 'job'));
                         }
 
                         // Put the job in session
@@ -136,7 +136,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                     break;
 
                     default:
-                        throw new \Exception(sprintf('Unknown request called : %s', \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
