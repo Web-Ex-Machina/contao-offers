@@ -20,6 +20,7 @@ use Patchwork\Utf8;
 use WEM\JobOffersBundle\Model\Alert;
 use WEM\JobOffersBundle\Model\AlertCondition;
 use WEM\JobOffersBundle\Model\Job as JobModel;
+use WEM\JobOffersBundle\Model\JobFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -128,14 +129,14 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         }
 
                         // Build and send a notification
-                        $arrTokens = $this->getNotificationTokens();
+                        $arrTokens = $this->getNotificationTokens($objAlert);
                         $objNotification = Notification::findByPk($this->job_ncSubscribe);
                         $objNotification->send($arrTokens);
 
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'message' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertCreated'],
+                            'msg' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertCreated'],
                         ];
                     break;
 
@@ -153,14 +154,14 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         }
 
                         // Check if the alert was not activated
-                        $arrTokens = $this->getNotificationTokens();
+                        $arrTokens = $this->getNotificationTokens($objAlert);
                         $objNotification = Notification::findByPk($this->job_ncUnsubscribe);
                         $objNotification->send($arrTokens);
 
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'message' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['requestSent'],
+                            'msg' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['requestSent'],
                         ];
                     break;
 
@@ -342,6 +343,8 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         $arrTokens['recipient_position'] = $objAlert->position;
         $arrTokens['recipient_phone'] = $objAlert->phone;
         $arrTokens['recipient_email'] = $objAlert->email;
+
+        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
         return $arrTokens;
     }

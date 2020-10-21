@@ -319,11 +319,11 @@ class ModuleJobOffersList extends ModuleJobOffers
                                 ];
                             }
                         }
-
-                        if ('' != \Input::get($f)) {
-                            $this->config[$f] = \Input::get($f);
-                        }
                         break;
+                }
+
+                if ('' != \Input::get($f)) {
+                    $this->config[$f] = \Input::get($f);
                 }
 
                 $this->filters[] = $filter;
