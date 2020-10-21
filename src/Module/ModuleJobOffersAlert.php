@@ -168,7 +168,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
                 }
             } catch (\Exception $e) {
-                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
+                $arrResponse = ['status' => 'error', 'msg' => $e->getMessage(), 'trace' => $e->getTrace()];
             }
 
             // Add Request Token to JSON answer and return
