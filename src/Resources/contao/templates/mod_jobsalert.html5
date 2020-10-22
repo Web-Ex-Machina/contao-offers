@@ -3,30 +3,37 @@
 <?php $this->block('content'); ?>
 
 <?php if (!$this->isRequest): ?>
-		<input type="email" name="email" placeholder="Email" class="" required>
-		<?php if ($this->conditions): ?>
-			<div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
-				<?php foreach ($this->conditions as $c): ?>
-					<?php if ('select' == $c['type']): ?>
-						<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?> class="">
-							<?php if (!$c['multiple']): ?>
-							<option value="">- <?= $c['label']; ?> -</option>
-							<?php endif; ?>
-
-							<?php foreach ($c['options'] as $o): ?>
-							<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
-							<?php endforeach; ?>
-						</select>
-					<?php else: ?>
-						<input type="text" class="" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<button type="button" class="btn-bd-white btn-sm center btn-load icon-last" data-process="subscribeFeed">S'abonner</button>
-			</div>
-		<?php endif; ?>
-		<div class="ft-0-8-em ">
-			<a href="<?= $this->gdprPage ?>" target="_blank" class="">Protection des données</a>
+	<div class="d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
+		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--cente">
+			<p class="lead ft-1-5-em">Soyez informé des dernières nouveautés et offres d'emploi disponibles !</p>
 		</div>
+		<div class="bg-primary form">
+			<input type="email" name="email" placeholder="Email" class="" >
+			<?php if ($this->conditions): ?>
+				<div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
+					<?php foreach ($this->conditions as $c): ?>
+						<?php if ('select' == $c['type']): ?>
+							<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?> class="">
+								<?php if (!$c['multiple']): ?>
+								<option value="">- <?= $c['label']; ?> -</option>
+								<?php endif; ?>
+
+								<?php foreach ($c['options'] as $o): ?>
+								<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php else: ?>
+							<input type="text" class="" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
+						<?php endif; ?>
+					<?php endforeach; ?>
+					<div class="flex-alignitems--center">
+						<a href="<?= $this->gdprPage ?>" target="_blank" class="ft-0-8-em flexgrow--1">Protection des données</a>
+						<button type="button" class="btn-bd-white btn-sm center btn-load icon-last m-bottom-0" data-process="subscribeFeed">S'abonner</button>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
 	<script>
 		var rt = '{{request_token}}';
 		var subscribeFeed = function(btn){
