@@ -3,31 +3,6 @@
 <?php $this->block('content'); ?>
 
   <?php if ($this->filters): ?>
-  	<!-- <div class="filters">
-  		<form action="{{env::request}}" method="GET" class="row">
-  			<?php foreach ($this->filters as $f): ?>
-  			<div class="filter col-3">	
-  				<?php if ('select' == $f['type']): ?>
-				<select name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
-					<?php if (!$f['multiple']): ?>
-					<option value=""><?= $f['label']; ?></option>
-					<?php endif; ?>
-
-					<?php foreach ($f['options'] as $o): ?>
-					<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
-					<?php endforeach; ?>
-				</select>
-  				<?php else: ?>
-  				<input type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
-  				<?php endif; ?>
-  			</div>	
-  			<?php endforeach; ?>
-
-			<div class="col-2">
-				<input type="submit" class="btn m-0 w-100" value="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['filter']; ?>" />
-			</div>
-		</form>
-  	</div> -->
 	<form action="{{env::request}}" method="GET">
 	    <div class="filters flex-alignitems--center-wrap m-bottom" data-container="jobOffers" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
 	    	<?php foreach ($this->filters as $f): ?>
@@ -46,7 +21,6 @@
 	  		<?php endforeach; ?>
 	    </div>
 	</form>
-
   <?php endif; ?>
 
   <?php if (empty($this->articles)): ?>
