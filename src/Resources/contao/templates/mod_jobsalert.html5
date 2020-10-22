@@ -2,34 +2,73 @@
 
 <?php $this->block('content'); ?>
 
-<?php if ($this->conditions): ?>
-	<div class="conditions">
-		<form action="{{env::request}}" method="GET" class="row">
-			<?php foreach ($this->conditions as $c): ?>
-			<div class="filter col-3">	
-				<?php if ('select' == $c['type']): ?>
-			<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?>>
-				<?php if (!$c['multiple']): ?>
-				<option value=""><?= $c['label']; ?></option>
-				<?php endif; ?>
+<?php if (!$this->isRequest): ?>
+		<input type="email" name="email" placeholder="Email" class="" required>
+		<?php if ($this->conditions): ?>
+			<div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
+				<?php foreach ($this->conditions as $c): ?>
+					<?php if ('select' == $c['type']): ?>
+						<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?> class="">
+							<?php if (!$c['multiple']): ?>
+							<option value="">- <?= $c['label']; ?> -</option>
+							<?php endif; ?>
 
-				<?php foreach ($c['options'] as $o): ?>
-				<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+							<?php foreach ($c['options'] as $o): ?>
+							<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php else: ?>
+						<input type="text" class="" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
+					<?php endif; ?>
 				<?php endforeach; ?>
-			</select>
-				<?php else: ?>
-				<input type="text" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
-				<?php endif; ?>
-			</div>	
-			<?php endforeach; ?>
-
-		<div class="col-2 invisible">
-			<input type="submit" class="btn m-0 w-100" value="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['filter']; ?>" />
+				<button type="button" class="btn-bd-white btn-sm center btn-load icon-last" data-process="subscribeFeed">S'abonner</button>
+			</div>
+		<?php endif; ?>
+		<div class="ft-0-8-em ">
+			<a href="<?= $this->gdprPage ?>" target="_blank" class="">Protection des données</a>
 		</div>
-	</form>
-	</div>
-<?php endif; ?>
-
-Link GDPR <?= $this->gdprPage ?>
-
+	<script>
+		var rt = '{{request_token}}';
+		var subscribeFeed = function(btn){
+			return new Promise(function(resolve,reject){
+				var data = {
+					email: $('.mod_jobsalert input[name="email"]').val(),
+					conditions: {}
+				}
+				$('.mod_jobsalert .conditions').find('input,select').each(function(){
+					data.conditions[this.name] = this.value;
+				});
+			    $.ajax({
+					timeout: 10000,
+					url: window.location.pathname,
+					type: 'post',
+					data:{
+						'TL_AJAX':true ,
+						'REQUEST_TOKEN':rt ,
+						'action': 'subscribe',
+						'email': data.email,
+						'conditions': data.conditions,
+					},
+					// beforeSend: function(xhr) {console.log(xhr); },
+				}).done(function(data){
+					try{var results = $.parseJSON(data); } 
+					catch(e){reject();}
+					console.log(results);
+					notif_fade[results.status](results.msg);
+					if (results.status == "success") {
+						resolve();
+					} else {
+						console.log(results);
+						reject();
+					}
+				}).fail(function(jqXHR, textStatus){
+					reject();
+				});
+			});
+		}
+	</script>
+	<pre class="hidden"><?php var_dump($this); ?></pre>
+<?php else: ?>
+	<?= $this->message ?>
+<?php endif ?>
 <?php $this->endblock(); ?>
