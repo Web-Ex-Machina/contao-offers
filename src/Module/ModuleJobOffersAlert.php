@@ -97,15 +97,26 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         }
 
                         // Check if we already have an existing alert with this email and this conditions
-                        if (0 < Alert::countItems(['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions])) {
+                        if (0 < Alert::countItems(
+                            ['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions, 'active' => 1]
+                        )) {
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertAlreadyExists']);
                         }
 
-                        // Save as many alerts as they are feeds set up for this module
-                        $objAlert = new Alert();
+                        // The alert might be inactive, so instead of delete it
+                        // and create a new alert, try to retrieve an existing but disable one
+                        $objAlert = Alert::findItems(
+                            ['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions, 'active' => 0],
+                            1
+                        );
+
+                        if(!$objAlert) {
+                            $objAlert = new Alert();
+                            $objAlert->createdAt = time();
+                        }
+            
                         $objAlert->tstamp = time();
                         $objAlert->lastJob = time();
-                        $objAlert->createdAt = time();
                         $objAlert->activatedAt = 0;
                         $objAlert->name = \Input::post('name') ?: '';
                         $objAlert->position = \Input::post('position') ?: '';

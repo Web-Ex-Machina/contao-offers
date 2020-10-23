@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_alert'] = [
         ],
         'activatedAt' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['activatedAt'],
-            'default' => time(),
+            'default' => 0,
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],

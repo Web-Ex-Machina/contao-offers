@@ -140,6 +140,15 @@ class Alert extends \WEM\UtilsBundle\Model\Model
                     }
                 break;
 
+                // Active alert means activatedAt > 0
+                case 'active':
+                    if(1 === $varValue) {
+                        $arrColumns[] = "$t.activatedAt > 0";
+                    } else if(0 === $varValue) {
+                        $arrColumns[] = "$t.activatedAt = 0";
+                    }
+                break;
+
                 // Load parent
                 default:
                     $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
