@@ -164,6 +164,10 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertDoesNotExists']);
                         }
 
+                        // Generate a token for this request
+                        $objAlert->token = StringUtil::generateToken(); // @todo -> add code system to confirm requests as alternatives to links/token
+                        $objAlert->save();
+
                         // Check if the alert was not activated
                         $arrTokens = $this->getNotificationTokens($objAlert);
                         $objNotification = Notification::findByPk($this->job_ncUnsubscribe);
@@ -192,7 +196,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         // Catch Subscribe GET request
         if (\Input::get('token') && 'subscribe' === \Input::get('wem_action')) {
             try {
-                $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
+                $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token'), 'active' => false], 1);
 
                 // Check if the alert exists or if the alert is already active
                 if (!$objAlert || 0 < $objAlert->activatedAt) {
@@ -200,7 +204,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                 }
 
                 // Check if the alert is expired (we do not want to activate alerts created more than one hour ago)
-                if (strtotime('-1 hour ago') > $objAlert->createdAt) {
+                if (strtotime('-1 hour') > $objAlert->createdAt) {
                     $objAlert->delete();
 
                     throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['expiredLink']);
@@ -209,6 +213,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                 // Update the alert
                 $objAlert->tstamp = time();
                 $objAlert->activatedAt = time();
+                $objAlert->token = "";
                 $objAlert->save();
 
                 // Build a message
@@ -224,27 +229,32 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         // Catch Unsubscribe GET request
-        if (\Input::get('token') && 'unsubscribe' === \Input::get('wem_action')) {
-            try {
-                $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
+        if ('unsubscribe' === \Input::get('wem_action')) {
+            if(\Input::get('token')) {
+                try {
+                    $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
 
-                // Check if the alert exists or if the alert is already active
-                if (!$objAlert) {
-                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
+                    // Check if the alert exists or if the alert is already active
+                    if (!$objAlert) {
+                        throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
+                    }
+
+                    // Delete the alert
+                    $objAlert->delete();
+
+                    // Build a message
+                    $this->Template->isRequest = true;
+                    $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertDeleted'];
+
+                    return;
+                } catch (\Exception $e) {
+                    $this->Template->error = true;
+                    $this->Template->message = $e->getMessage();
+                    $this->Template->trace = $e->getTraceAsString();
                 }
-
-                // Delete the alert
-                $objAlert->delete();
-
-                // Build a message
-                $this->Template->isRequest = true;
-                $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertDeleted'];
-
-                return;
-            } catch (\Exception $e) {
-                $this->Template->error = true;
-                $this->Template->message = $e->getMessage();
-                $this->Template->trace = $e->getTraceAsString();
+            } else {
+                $this->Template->unsubscribe = true;
+                $this->Template->unsubscribeLbl = "Supprimer mon alerte emploi";
             }
         }
 
@@ -347,7 +357,8 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         if ($this->job_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageUnsubscribe)) {
-            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
+            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe';
+            $arrTokens['link_unsubscribeConfirm'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
         }
 
         $arrTokens['recipient_name'] = $objAlert->name;
