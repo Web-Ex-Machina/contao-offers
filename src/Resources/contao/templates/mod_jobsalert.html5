@@ -4,9 +4,11 @@
 
 <?php if (!$this->isRequest): ?>
 	<div class="d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
-		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--cente">
-			<p class="lead ft-1-5-em">Soyez informé des dernières nouveautés et offres d'emploi disponibles !</p>
+		<?php if($this->job_alertTeaser): ?>
+		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--center lead ft-1-5-em">
+			<?= $this->job_alertTeaser ?>
 		</div>
+		<?php endif; ?>
 		<div class="bg-primary form">
 			<input type="email" name="email" placeholder="Email" class="" >
 			<?php if ($this->conditions): ?>
