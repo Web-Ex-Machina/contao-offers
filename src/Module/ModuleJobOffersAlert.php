@@ -190,7 +190,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         // Catch Subscribe GET request
-        if (\Input::get('token') && 'subscribe' === \Input::get('action')) {
+        if (\Input::get('token') && 'subscribe' === \Input::get('wem_action')) {
             try {
                 $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
 
@@ -224,7 +224,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         // Catch Unsubscribe GET request
-        if (\Input::get('token') && 'unsubscribe' === \Input::get('action')) {
+        if (\Input::get('token') && 'unsubscribe' === \Input::get('wem_action')) {
             try {
                 $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
 
@@ -343,11 +343,11 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         if ($this->job_pageSubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageSubscribe)) {
-            $arrTokens['link_subscribe'] = $objSubscribePage->getFrontendUrl().'?action=subscribe&token='.$objAlert->token;
+            $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?action=wem_subscribe&token='.$objAlert->token;
         }
 
         if ($this->job_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageUnsubscribe)) {
-            $arrTokens['link_unsubscribe'] = $objSubscribePage->getFrontendUrl().'?action=unsubscribe&token='.$objAlert->token;
+            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?action=wem_unsubscribe&token='.$objAlert->token;
         }
 
         $arrTokens['recipient_name'] = $objAlert->name;
