@@ -343,11 +343,11 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         }
 
         if ($this->job_pageSubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageSubscribe)) {
-            $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?action=wem_subscribe&token='.$objAlert->token;
+            $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=subscribe&token='.$objAlert->token;
         }
 
         if ($this->job_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageUnsubscribe)) {
-            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?action=wem_unsubscribe&token='.$objAlert->token;
+            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
         }
 
         $arrTokens['recipient_name'] = $objAlert->name;
