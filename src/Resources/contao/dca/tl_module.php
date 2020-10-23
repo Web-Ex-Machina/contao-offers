@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
 ';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['jobsalert'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feed,job_conditions,job_pageGdpr,job_pageSubscribe,job_ncSubscribe,job_pageUnsubscribe,job_ncUnsubscribe;
+    {config_legend},job_feed,job_alertTeaser,job_conditions,job_pageGdpr,job_pageSubscribe,job_ncSubscribe,job_pageUnsubscribe,job_ncUnsubscribe;
     {template_legend:hide},customTpl;
     {expert_legend:hide},guests,cssID
 ';
@@ -57,6 +57,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['job_alertTeaser'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_alertTeaser'],
+    'exclude' => true,
+    'search' => true,
+    'inputType' => 'textarea',
+    'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
+    'explanation' => 'insertTags',
+    'sql' => 'mediumtext NULL',
 ];
 // @todo add several gateways for alerts
 $GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [

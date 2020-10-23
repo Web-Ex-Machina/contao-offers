@@ -140,6 +140,15 @@
 			<target>Choisir la notification envoyée aux utilisateurs pour valider leur désinscription</target>
 		</trans-unit>
 
+		<trans-unit id="tl_module.job_alertTeaser.0">
+			<source>Teaser</source>
+			<target>Accroche</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertTeaser.1">
+			<source>Enter the alert subscription teaser</source>
+			<target>Saisir une accroche pour l'inscription aux alertes</target>
+		</trans-unit>
+
 		<trans-unit id="tl_module.list_legend">
 			<source>List settings</source>
 			<target>Paramètres de la liste</target>
