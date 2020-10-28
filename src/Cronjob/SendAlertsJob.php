@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Copyright (c) 2019-2020 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-job-offers
  * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\Cronjob;
@@ -60,8 +59,10 @@ class SendAlertsJob
         $objAlerts = Alert::findItems($c);
 
         // Quit the job if there is no alerts to retrieve
-        if (!$objAlerts || 0 == $objAlerts->count()) {
+        if (!$objAlerts || 0 === $objAlerts->count()) {
             \System::log('Nothing to send, abort !', __METHOD__, 'WEMJOBOFFERS');
+
+            return;
         }
 
         // Now, loop on the alerts and check if there is jobs matching its conditions
@@ -70,12 +71,12 @@ class SendAlertsJob
             $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
 
             // It should not happen but hey. Expect the unexpected ಠ_ಠ
-            if (!$objConditions || 0 == $objConditions->count()) {
+            if (!$objConditions || 0 === $objConditions->count()) {
                 continue;
             }
 
             // Retrieve the feed linked
-            if (array_key_exists($objAlerts->feed, $arrJobFeedCache)) {
+            if (\array_key_exists($objAlerts->feed, $arrJobFeedCache)) {
                 $objFeed = $arrJobFeedCache[$objAlerts->feed]['model'];
             } else {
                 $objFeed = $objAlerts->getRelated('feed');
@@ -121,7 +122,7 @@ class SendAlertsJob
             $objJobs = Job::findItems($arrConditions);
 
             // Skip if no jobs were found
-            if (!$objJobs || 0 == $objJobs->count()) {
+            if (!$objJobs || 0 === $objJobs->count()) {
                 continue;
             }
 
@@ -135,7 +136,7 @@ class SendAlertsJob
 
             // Loop on the jobs, format everything and send the notification \o/
             while ($objJobs->next()) {
-                if (array_key_exists($objJobs->id, $arrJobCache)) {
+                if (\array_key_exists($objJobs->id, $arrJobCache)) {
                     $arrJobBuffer[] = $arrJobCache[$objJobs->id];
                 } else {
                     $arrJobBuffer[] = $this->parseJob($objJobs->current(), $objFeed->tplAlertJob);
