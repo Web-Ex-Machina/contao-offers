@@ -1,7 +1,7 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="MOD.wem-job-offers">
+    	<trans-unit id="MOD.wemjoboffers">
 			<source>Job offers</source>
 			<target>Offres d'emploi</target>
 		</trans-unit>

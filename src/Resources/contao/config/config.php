@@ -17,7 +17,7 @@ array_insert(
     $GLOBALS['BE_MOD'],
     2,
     [
-        'wem-job-offers' => [
+        'wemjoboffers' => [
             'wem-job-offers' => [
                 'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application', 'tl_wem_job_feed_attribute'],
             ],
