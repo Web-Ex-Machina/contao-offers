@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Copyright (c) 2019-2020 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-job-offers
  * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\Module;
@@ -79,7 +78,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
     protected function compile(): void
     {
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX')) {
+        if (\Input::post('TL_AJAX') && $this->id === \Input::post('module')) {
             try {
                 switch (\Input::post('action')) {
                     case 'subscribe':
@@ -110,11 +109,11 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                             1
                         );
 
-                        if(!$objAlert) {
+                        if (!$objAlert) {
                             $objAlert = new Alert();
                             $objAlert->createdAt = time();
                         }
-            
+
                         $objAlert->tstamp = time();
                         $objAlert->lastJob = time();
                         $objAlert->activatedAt = 0;
@@ -213,7 +212,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                 // Update the alert
                 $objAlert->tstamp = time();
                 $objAlert->activatedAt = time();
-                $objAlert->token = "";
+                $objAlert->token = '';
                 $objAlert->save();
 
                 // Build a message
@@ -230,7 +229,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
         // Catch Unsubscribe GET request
         if ('unsubscribe' === \Input::get('wem_action')) {
-            if(\Input::get('token')) {
+            if (\Input::get('token')) {
                 try {
                     $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
 
@@ -254,13 +253,14 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                 }
             } else {
                 $this->Template->unsubscribe = true;
-                $this->Template->unsubscribeLbl = "Supprimer mon alerte emploi";
+                $this->Template->unsubscribeLbl = 'Supprimer mon alerte emploi';
             }
         }
 
         // Retrieve and format conditions
         $this->buildConditions();
         $this->Template->conditions = $this->conditions;
+        $this->Template->moduleId = $this->id;
 
         // Retrieve and send the page for GDPR compliance
         if ($this->job_pageGdpr && $objGdprPage = \PageModel::findByPk($this->job_pageGdpr)) {
@@ -277,7 +277,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
     {
         // Retrieve and format dropdowns conditions
         $conditions = deserialize($this->job_conditions);
-        if (is_array($conditions) && !empty($conditions)) {
+        if (\is_array($conditions) && !empty($conditions)) {
             foreach ($conditions as $c) {
                 $condition = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['inputType'],

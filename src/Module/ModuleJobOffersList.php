@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 /**
  * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Copyright (c) 2019-2020 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-job-offers
  * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
 namespace WEM\JobOffersBundle\Module;
@@ -109,7 +108,7 @@ class ModuleJobOffersList extends ModuleJobOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX')) {
+        if (\Input::post('TL_AJAX') && $this->id === \Input::post('module')) {
             try {
                 switch (\Input::post('action')) {
                     case 'seeDetails':
@@ -119,7 +118,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                         $objJob = JobModel::findByPk(\Input::post('job'));
 
                         $this->job_template = 'job_details';
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseArticle($objJob));
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseJobOffer($objJob));
                         die;
                     break;
 
@@ -230,6 +229,7 @@ class ModuleJobOffersList extends ModuleJobOffers
         if (null !== $objArticles) {
             $this->Template->articles = $this->parseJobOffers($objArticles);
         }
+        $this->Template->moduleId = $this->id;
     }
 
     /**
@@ -271,7 +271,7 @@ class ModuleJobOffersList extends ModuleJobOffers
 
         // Retrieve and format dropdowns filters
         $filters = deserialize($this->job_filters);
-        if (is_array($filters) && !empty($filters)) {
+        if (\is_array($filters) && !empty($filters)) {
             foreach ($filters as $f) {
                 $filter = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['inputType'],
@@ -300,7 +300,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                             $filter['options'][] = [
                                 'value' => $value,
                                 'label' => $label,
-                                'selected' => (\Input::get($f) == $value || (is_array(\Input::get($f)) && in_array($value, \Input::get($f)))),
+                                'selected' => (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f)))),
                             ];
                         }
                         break;
@@ -315,14 +315,14 @@ class ModuleJobOffersList extends ModuleJobOffers
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
                                     'label' => $objOptions->{$f},
-                                    'selected' => \Input::get($f) == $objOptions->{$f},
+                                    'selected' => \Input::get($f) === $objOptions->{$f},
                                 ];
                             }
                         }
                         break;
                 }
 
-                if ('' != \Input::get($f)) {
+                if ('' !== \Input::get($f)) {
                     $this->config[$f] = \Input::get($f);
                 }
 
@@ -340,7 +340,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                 'value' => \Input::get('search') ?: '',
             ];
 
-            if ('' != \Input::get('search')) {
+            if ('' !== \Input::get('search')) {
                 $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
             }
         }

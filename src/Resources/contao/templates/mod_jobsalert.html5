@@ -103,6 +103,7 @@
 					type: 'post',
 					data:{
 						'TL_AJAX':true ,
+						'module': <?= $this->moduleId ?>,
 						'REQUEST_TOKEN':rt ,
 						'action': 'subscribe',
 						'email': data.email,
