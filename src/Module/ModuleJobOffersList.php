@@ -300,7 +300,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                             $filter['options'][] = [
                                 'value' => $value,
                                 'label' => $label,
-                                'selected' => (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f)))),
+                                'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f))))),
                             ];
                         }
                         break;
@@ -315,14 +315,14 @@ class ModuleJobOffersList extends ModuleJobOffers
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
                                     'label' => $objOptions->{$f},
-                                    'selected' => \Input::get($f) === $objOptions->{$f},
+                                    'selected' => (null !== \Input::get($f) && \Input::get($f) === $objOptions->{$f}),
                                 ];
                             }
                         }
                         break;
                 }
 
-                if ('' !== \Input::get($f)) {
+                if (null !== \Input::get($f) && '' !== \Input::get($f)) {
                     $this->config[$f] = \Input::get($f);
                 }
 
@@ -340,7 +340,7 @@ class ModuleJobOffersList extends ModuleJobOffers
                 'value' => \Input::get('search') ?: '',
             ];
 
-            if ('' !== \Input::get('search')) {
+            if ('' !== \Input::get('search') && null !== \Input::get('search')) {
                 $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
             }
         }
