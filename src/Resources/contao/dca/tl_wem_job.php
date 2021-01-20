@@ -135,6 +135,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'postedAt' => [
             'exclude' => true,
+            'default' => time(),
             'sorting' => true,
             'flag' => 8,
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['postedAt'],
@@ -144,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'availableAt' => [
             'exclude' => true,
+            'default' => time(),
             'sorting' => true,
             'flag' => 8,
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['availableAt'],
