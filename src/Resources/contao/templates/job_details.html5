@@ -3,9 +3,9 @@
 		<div class="cols-span-2">
 			<h1 class="sep-bottom"><?= $this->title ?></h1>
 			<p>
-				<?php if($this->field): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></strong> <?= $this->field ?> |<?php endif; ?>
-				<?php if($this->status): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></strong> <?= $this->status ?> |<?php endif; ?>
-				<?php if($this->remuneration): ?><strong><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></strong> <?= $this->remuneration ?><?php endif; ?>
+				<?php if($this->field): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field']) ?></strong> <?= $this->field ?> |<?php endif; ?>
+				<?php if($this->status): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status']) ?></strong> <?= $this->status ?> |<?php endif; ?>
+				<?php if($this->remuneration): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration']) ?></strong> <?= $this->remuneration ?><?php endif; ?>
 			</p>
 			<?= $this->text ?>
 
@@ -19,9 +19,15 @@
 				<?php if($this->hrPicture): ?>
 				<figure class="image_container txt-center"><img src="<?= $this->hrPicture ?>" class="bd-primary-5 rounded-circle p-0" alt="<?= $this->hrName ?>" /></figure>
 				<?php endif; ?>
-				<p>Contact: <?= $this->hrName ?> (<?= $this->hrPosition ?>)<br>
-					<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?> <?= $this->locations ?></p>
-				<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
+				<p>
+					Contact: <?= $this->hrName ?> <?= $this->hrPosition?'('.$this->hrPosition.')':'' ?><br>
+					<?php if ($this->locations): ?>
+						<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?> <?= $this->locations ?>
+					<?php endif ?>
+				</p>
+				<?php if ($this->hrPhone): ?>
+					<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
+				<?php endif ?>
 				<a href="mailto:<?= $this->hrEmail ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a><br />
 				<?php if($this->blnDisplayApplyButton): ?>
 				<button class="btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
