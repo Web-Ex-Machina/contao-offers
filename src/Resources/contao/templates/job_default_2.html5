@@ -1,0 +1,40 @@
+<div class="block-std job job_default <?= $this->class ?>" data-job="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article">
+	<div class="job__title h2">
+		<?= $this->title ?>
+	</div>
+	<?php if($this->locations): ?>
+		<div class="job__location">
+			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
+		</div>
+	<?php endif; ?>
+	<?php if ($this->blnDisplayText): ?>
+		<div class="job__teaser">
+			<?= $this->text ?>
+		</div>
+	<?php endif ?>
+	<?php if ($this->field || $this->remuneration || $this->status || $this->attributes): ?>
+		<div class="job__attributes">
+			<?php if ($this->status): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
+					<div class="job__attribute__value"><?= $this->status ?></div>
+				</div>
+			<?php endif ?>
+			<?php if ($this->field): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
+					<div class="job__attribute__value"><?= $this->field ?></div>
+				</div>
+			<?php endif ?>
+			<?php if ($this->remuneration): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
+					<div class="job__attribute__value"><?= $this->remuneration ?></div>
+				</div>
+			<?php endif ?>
+		</div>
+	<?php endif ?>
+	<div class="job__footer">
+		<div class="btn-load job__more"title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><i class="far fa-plus"></i></div>
+	</div>
+</div>
