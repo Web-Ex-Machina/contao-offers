@@ -1,38 +1,44 @@
 <div class="job job_details">
-	<div class="d-grid cols-3">
-		<div class="cols-span-2">
-			<h1 class="sep-bottom"><?= $this->title ?></h1>
-			<p>
-				<?php if($this->field): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field']) ?></strong> <?= $this->field ?> |<?php endif; ?>
-				<?php if($this->status): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status']) ?></strong> <?= $this->status ?> |<?php endif; ?>
-				<?php if($this->remuneration): ?><strong><?= str_replace(' ', '&nbsp;', $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration']) ?></strong> <?= $this->remuneration ?><?php endif; ?>
-			</p>
+	<div class="job__title h2">
+		<?= $this->title ?>
+	</div>
+	<?php if($this->locations): ?>
+		<div class="job__location">
+			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
+		</div>
+	<?php endif; ?>
+	<?php if ($this->field || $this->remuneration || $this->status || $this->attributes): ?>
+		<div class="job__attributes">
+			<?php if ($this->status): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
+					<div class="job__attribute__value"><?= $this->status ?></div>
+				</div>
+			<?php endif ?>
+			<?php if ($this->field): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
+					<div class="job__attribute__value"><?= $this->field ?></div>
+				</div>
+			<?php endif ?>
+			<?php if ($this->remuneration): ?>
+				<div class="job__attribute">
+					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
+					<div class="job__attribute__value"><?= $this->remuneration ?></div>
+				</div>
+			<?php endif ?>
+		</div>
+	<?php endif ?>
+	<?php if ($this->text): ?>
+		<div class="job__text">
 			<?= $this->text ?>
-
-			<?php if($this->file): ?>
-				<a href="<?= $this->file ?>" target="_blank" class="btn" title="View offer in PDF">View in PDF</a><br />
-			<?php endif; ?>
 		</div>
-		<div class="hr">
-			<div class="bg-greylighter">
-				<h4><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></h4>
-				<?php if($this->hrPicture): ?>
-				<figure class="image_container txt-center"><img src="<?= $this->hrPicture ?>" class="bd-primary-5 rounded-circle p-0" alt="<?= $this->hrName ?>" /></figure>
-				<?php endif; ?>
-				<p>
-					Contact: <?= $this->hrName ?> <?= $this->hrPosition?'('.$this->hrPosition.')':'' ?><br>
-					<?php if ($this->locations): ?>
-						<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['location'] ?> <?= $this->locations ?>
-					<?php endif ?>
-				</p>
-				<?php if ($this->hrPhone): ?>
-					<a href="tel:<?= $this->hrPhone ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a><br />
-				<?php endif ?>
-				<a href="mailto:<?= $this->hrEmail ?>" class="btn" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a><br />
-				<?php if($this->blnDisplayApplyButton): ?>
-				<button class="btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
-				<?php endif; ?>
-			</div>
-		</div>
-	</div>	
+	<?php endif ?>
+	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></div>
+	<p><b>Contact:</b> <?= $this->hrName ?> (<?= $this->hrPosition ?>)</p>
+	<a href="tel:<?= $this->hrPhone ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><i class="fa fa-phone"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a>
+	<a href="mailto:<?= $this->hrEmail ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><i class="fa fa-envelope"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a>
+	<?php if($this->blnDisplayApplyButton): ?>
+		<button class="btn-sm btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
+	<?php endif; ?>
 </div>
