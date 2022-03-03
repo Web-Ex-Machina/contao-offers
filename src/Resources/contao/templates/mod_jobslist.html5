@@ -4,21 +4,30 @@
 
   <?php if ($this->filters): ?>
 	<form action="{{env::request}}" method="GET">
-	    <div class="filters flex-alignitems--center-wrap m-bottom" data-container="jobOffers" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
-	    	<?php foreach ($this->filters as $f): ?>
-				<?php if ('select' == $f['type']): ?>
-					<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
-						<?php if (!$f['multiple']): ?>
-						<option value="">- <?= $f['label']; ?> -</option>
-						<?php endif; ?>
-						<?php foreach ($f['options'] as $o): ?>
-						<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
-						<?php endforeach; ?>
-					</select>
-				<?php else: ?>
-					<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
-				<?php endif; ?>
-	  		<?php endforeach; ?>
+	    <div class="filters m-bottom" data-container="jobOffers" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
+	    	<div class="filters__line line--1">
+	    		<div class="filters__col col--left">
+			    	<?php foreach ($this->filters as $f): ?>
+							<?php if ('select' == $f['type']): ?>
+								<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
+									<?php if (!$f['multiple']): ?>
+									<option value="">- <?= $f['label']; ?> -</option>
+									<?php endif; ?>
+									<?php foreach ($f['options'] as $o): ?>
+									<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+									<?php endforeach; ?>
+								</select>
+							<?php else: ?>
+								<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
+							<?php endif; ?>
+			  		<?php endforeach; ?>
+		  		</div>
+		  		<div class="filters__col col--right">
+						<div class="input-group">
+							<button type="submit" class="squared btn"><i class="fal fa-search"></i></button>
+						</div>
+					</div>
+		  	</div>
 	    </div>
 	</form>
   <?php endif; ?>
@@ -27,7 +36,7 @@
     <p class="empty"><?= $this->empty; ?></p>
   <?php else: ?>
   	
-  	<div class="row" id="jobOffers">
+  	<div class="" id="jobOffers">
     <?= implode('', $this->articles); ?>
 	</div>
     <?= $this->pagination; ?>
