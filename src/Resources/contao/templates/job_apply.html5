@@ -1,4 +1,7 @@
 <div class="job job_form">
+	<div class="job__title h2 m-bottom">
+		Postuler pour l'offre <?= $this->title ?>
+	</div>
 	<?= $this->form ?>
 
 	<script type="text/javascript">
