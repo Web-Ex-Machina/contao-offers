@@ -53,7 +53,7 @@
 
 		<trans-unit id="tl_wem_job.field.0">
 			<source>Job field</source>
-			<target>Discipline</target>
+			<target>Emploi</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.field.1">
 			<source>Enter the job field</source>
