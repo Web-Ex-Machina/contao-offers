@@ -183,6 +183,30 @@
 			<source>Show application data ID %s</source>
 			<target>Show application data ID %s</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showCv.0">
+			<source>Show application CV</source>
+			<target>Show application CV</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showCv.1">
+			<source>Show application CV ID %s</source>
+			<target>Show application CV ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showApplicationLetter.0">
+			<source>Show application's application letter</source>
+			<target>Show application's application letter</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showApplicationLetter.1">
+			<source>Show application's application letter ID %s</source>
+			<target>Show application's application letter ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showCvModalTitle">
+			<source>Show application CV</source>
+			<target>Show application CV</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_application.showApplicationLetterModalTitle.0">
+			<source>Show application's application letter</source>
+			<target>Show application's application letter</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

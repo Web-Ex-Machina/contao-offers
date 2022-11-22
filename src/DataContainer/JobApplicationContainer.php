@@ -31,4 +31,28 @@ class JobApplicationContainer
             $GLOBALS['TL_LANG']['CNT'][$row['country']]
         );
     }
+
+    public function showCv(array $row, string $href, string $label, string $title, string $icon, string $attributes):string
+    {
+        if(!$row['cv']){
+            return '';
+        }
+        $objFile = \FilesModel::findByUUID($row['cv']);
+        if(!$objFile){
+            return '';
+        }
+        return '<a href="#" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':\''.$objFile->path.'\'});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
+    }
+
+    public function showApplicationLetter(array $row, string $href, string $label, string $title, string $icon, string $attributes):string
+    {
+        if(!$row['applicationLetter']){
+            return '';
+        }
+        $objFile = \FilesModel::findByUUID($row['applicationLetter']);
+        if(!$objFile){
+            return '';
+        }
+        return '<a href="#" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':\''.$objFile->path.'\'});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
+    }
 }

@@ -62,6 +62,20 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
+            'show_cv' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['showCv'],
+                'title'=> &$GLOBALS['TL_LANG']['tl_wem_job_application']['showCvModalTitle'],
+                'href' => 'key=show_cv',
+                'icon' => 'pickfile.gif',
+                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'showCv'],
+            ],
+            'show_applicationLetter' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['showApplicationLetter'],
+                'title'=> &$GLOBALS['TL_LANG']['tl_wem_job_application']['showApplicationLetterModalTitle'],
+                'href' => 'key=show_applicationLetter',
+                'icon' => 'tablewizard.gif',
+                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'showApplicationLetter'],
+            ],
         ],
     ],
 
