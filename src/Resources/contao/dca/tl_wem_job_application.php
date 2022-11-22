@@ -15,7 +15,8 @@ declare(strict_types=1);
 $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
     // Config
     'config' => [
-        'dataContainer' => 'Table',
+        // 'dataContainer' => 'Table',
+        'dataContainer' => \WEM\JobOffersBundle\Dca\Driver\DC_Table::class,
         'ptable' => 'tl_wem_job',
         'switchToEdit' => true,
         'enableVersioning' => true,
@@ -25,6 +26,10 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
                 'pid' => 'index',
             ],
         ],
+
+        'ondelete_callback' => [['wem.personal_data_manager.dca.config.callback.delete', '__invoke']],
+        'onshow_callback' => [['wem.personal_data_manager.dca.config.callback.show', '__invoke']],
+        'onsubmit_callback' => [['wem.personal_data_manager.dca.config.callback.submit', '__invoke']],
     ],
 
     // List
@@ -36,6 +41,9 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'panelLayout' => 'filter;sort,search,limit',
             'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'listItems'],
             'child_record_class' => 'no_padding',
+        ],
+        'label'=>[
+            'label_callback' => ['wem.personal_data_manager.dca.listing.callback.list_label_label_for_list', '__invoke'],
         ],
         'global_operations' => [
             'all' => [
@@ -130,6 +138,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'lastname' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['lastname'],
@@ -138,6 +147,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
 
         // {street_legend},street,postal,city,country;
@@ -147,6 +157,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'w100 clr'],
             'sql' => 'text NULL',
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'postal' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['postal'],
@@ -155,6 +166,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'city' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['city'],
@@ -163,6 +175,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'country' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['country'],
@@ -173,6 +186,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'options' => System::getCountries(),
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(2) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
 
         // {contact_legend},phone,email,comments;
@@ -182,6 +196,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'email' => [
             'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['email'],
@@ -198,6 +213,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr'],
             'sql' => 'mediumtext NULL',
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
 
         // {files_legend},cv,applicationLetter;

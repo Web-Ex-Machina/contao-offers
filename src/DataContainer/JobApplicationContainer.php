@@ -41,7 +41,7 @@ class JobApplicationContainer
         if(!$objFile){
             return '';
         }
-        return '<a href="#" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':\''.$objFile->path.'\'});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
+        return '<a href="contao/popup.php?src=' . base64_encode($objFile->path) . '" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':this.href});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
     }
 
     public function showApplicationLetter(array $row, string $href, string $label, string $title, string $icon, string $attributes):string
@@ -53,6 +53,6 @@ class JobApplicationContainer
         if(!$objFile){
             return '';
         }
-        return '<a href="#" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':\''.$objFile->path.'\'});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
+        return '<a href="contao/popup.php?src=' . base64_encode($objFile->path) . '" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars($title).'\',\'url\':this.href});return false"; title="'.$label.'">'. \Contao\Image::getHtml($icon, $label).'</a>';
     }
 }

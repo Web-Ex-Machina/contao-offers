@@ -15,12 +15,47 @@ declare(strict_types=1);
 namespace WEM\JobOffersBundle\Model;
 
 use Contao\Model;
+use WEM\PersonalDataManagerBundle\Model\Traits\PersonalDataTrait as PDMTrait;
 
 /**
  * Reads and writes items.
  */
 class Application extends Model
 {
+    use PDMTrait;
+    protected static $personalDataFieldsNames = [
+        'firstname',
+        'lastname',
+        'phone',
+        'street',
+        'postal',
+        'city',
+        'country',
+        'comments',
+    ];
+    protected static $personalDataFieldsDefaultValues = [
+        'firstname' => 'managed_by_pdm',
+        'lastname' => 'managed_by_pdm',
+        'phone' => 'nc',
+        'street' => 'managed_by_pdm',
+        'postal' => 'nc',
+        'city' => 'managed_by_pdm',
+        'country' => '0',
+        'comments' => 'managed_by_pdm',
+    ];
+    protected static $personalDataFieldsAnonymizedValues = [
+        'firstname' => 'anonymized',
+        'lastname' => 'anonymized',
+        'phone' => 'anonymized',
+        'street' => 'anonymized',
+        'postal' => 'anonymized',
+        'city' => 'anonymized',
+        'country' => '0',
+        'comments' => 'anonymized',
+    ];
+    protected static $personalDataPidField = 'id';
+    protected static $personalDataEmailField = 'email';
+    protected static $personalDataPtable = 'tl_wem_job_application';
     /**
      * Table name.
      *
