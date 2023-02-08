@@ -1,5 +1,5 @@
 {
-    "name": "webexmachina/contao-job-offers",
+    "name": "webexmachina/contao-offers",
     "description": "Job Offers for Contao Open Source CMS",
      "keywords": ["frontend", "job", "application", "offer", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
