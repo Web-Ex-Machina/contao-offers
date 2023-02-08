@@ -1,0 +1,111 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job_feed.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_wem_job_feed.title.0">
+			<source>Title</source>
+			<target>Intitulé</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.title.1">
+			<source>Enter the feed title</source>
+			<target>Saisissez l'intitulé du flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.alias.0">
+			<source>Alias</source>
+			<target>Alias</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.alias.1">
+			<source>The feed alias will be automaticly generated depending on its title</source>
+			<target>L'alias du flux sera automatiquement généré en accord avec son intitulé</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_feed.attributes.0">
+			<source>Attributes</source>
+			<target>Attributs</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.attributes.1">
+			<source>Manage job feed attributes</source>
+			<target>Gérer les attributs de ce flux</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_feed.ncEmailAlert.0">
+			<source>Email notification</source>
+			<target>Notification email</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.ncEmailAlert.1">
+			<source>Choose the email notification who will be sent</source>
+			<target>Sélectionner la notification email qui sera envoyée</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.tplJobAlert.0">
+			<source>Job template</source>
+			<target>Modèle d'offre</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.tplJobAlert.1">
+			<source>Choose the template who will be used to format job offers in the alert</source>
+			<target>Sélectionner le modèle qui sera utilisé pour afficher les offres d'emploi de l'alerte</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_feed.title_legend">
+			<source>General data</source>
+			<target>Informations générales</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.attributes_legend">
+			<source>Attributes</source>
+			<target>Attributs</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.alert_legend">
+			<source>Alerts settings</source>
+			<target>Paramètres des alertes</target>
+		</trans-unit>
+
+    	<trans-unit id="tl_wem_job_feed.new.0">
+			<source>New feed</source>
+			<target>Nouveau flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.new.1">
+			<source>Create a new job offers feed</source>
+			<target>Créer un nouveau flux d'offres d'emploi</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.edit.0">
+			<source>Edit feed</source>
+			<target>Editer le flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.edit.1">
+			<source>Edit job offers feed ID %s</source>
+			<target>Editer le flux d'offres d'emploi ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.copy.0">
+			<source>Copy feed</source>
+			<target>Dupliquer le flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.copy.1">
+			<source>Copy job offers feed ID %s</source>
+			<target>Dupliquer le flux d'offres d'emploi ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.delete.0">
+			<source>Delete feed</source>
+			<target>Supprimer le flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.delete.1">
+			<source>Delete job offers feed ID %s</source>
+			<target>Supprimer le flux d'offres d'emploi ID %s</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.show.0">
+			<source>Show feed data</source>
+			<target>Voir les informations du flux</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.show.1">
+			<source>Show job offers feed data ID %s</source>
+			<target>Voir les informations du flux d'offres d'emploi ID %s</target>
+		</trans-unit>
+
+		<trans-unit id="tl_wem_job_feed.jobs.0">
+			<source>Jobs</source>
+			<target>Offres d'emploi</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_job_feed.jobs.1">
+			<source>Manage feed job offers</source>
+			<target>Gérer les offres d'emploi de ce feed</target>
+		</trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,13 +1,161 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_module.php" source-language="en" target-language="fr">
     <body>
+    	<trans-unit id="tl_module.job_feed.0">
+			<source>Job feed</source>
+			<target>Flux d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_feed.1">
+			<source>Here you can select the job feed to display</source>
+			<target>Choisissez le flux d'offre à afficher</target>
+		</trans-unit>
+    	<trans-unit id="tl_module.job_feeds.0">
+			<source>Job feeds</source>
+			<target>Flux d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_feeds.1">
+			<source>Here you can select the job feeds to display</source>
+			<target>Choisissez les flux d'offres à afficher</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_displayTeaser.0">
+			<source>Display teaser</source>
+			<target>Afficher le résumé</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_displayTeaser.1">
+			<source>Check to display the teaser in the list</source>
+			<target>Cochez pour afficher le résumé dans la liste</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_allowAlerts.0">
+			<source>Authorize alerts</source>
+			<target>Autoriser les alertes</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_allowAlerts.1">
+			<source>Check to authorized users to create job offers alerts</source>
+			<target>Cochez pour autoriser les utilisateurs à créer des alertes d'offres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertsGateways.0">
+			<source>Gateways</source>
+			<target>Passerelles</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertsGateways.1">
+			<source>Here you can select the gateways to use</source>
+			<target>Choisissez les passerelles à utiliser</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_addFilters.0">
+			<source>Add filters</source>
+			<target>Ajouter des filtres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_addFilters.1">
+			<source>Check to add filters to the list</source>
+			<target>Cochez pour ajouter des filtres à la liste</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_filters.0">
+			<source>Filters</source>
+			<target>Filtres</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_filters.1">
+			<source>Here you can select the filters to use</source>
+			<target>Choisissez les filtres à utiliser</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_conditions.0">
+			<source>Conditions</source>
+			<target>Conditions</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_conditions.1">
+			<source>Here you can select the conditions to use</source>
+			<target>Choisissez les conditions à utiliser</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_addSearch.0">
+			<source>Add search</source>
+			<target>Ajouter une recherche</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_addSearch.1">
+			<source>Check to add a fulltext search to the list</source>
+			<target>Cochez pour ajouter un champ de recherche à la liste</target>
+		</trans-unit>
+
 		<trans-unit id="tl_module.job_template.0">
 			<source>Job template</source>
 			<target>Modèle d'offre</target>
 		</trans-unit>
 		<trans-unit id="tl_module.job_template.1">
-			<source>Here you can select the job template.</source>
-			<target>Choisir un modèle de job.</target>
+			<source>Here you can select the job template</source>
+			<target>Choisir un modèle de job</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_applicationForm.0">
+			<source>Application form</source>
+			<target>Formulaire de candidature</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_applicationForm.1">
+			<source>Here you can select the application form</source>
+			<target>Choisir le formulaire de candidature</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageGdpr.0">
+			<source>GDPR compliance</source>
+			<target>Réglement RGPD</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageGdpr.1">
+			<source>Here you can select the page to reach the GDPR compliance</source>
+			<target>Choisir la page pour accéder au réglement RGPD</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageSubscribe.0">
+			<source>Subscription page</source>
+			<target>Page d'inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageSubscribe.1">
+			<source>Here you can select the page where users validate their subscription</source>
+			<target>Choisir la page où les utilisateurs valideront leur inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncSubscribe.0">
+			<source>Subscription notification</source>
+			<target>Notification d'inscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncSubscribe.1">
+			<source>Here you can select the notification sent to users to validate their subscription</source>
+			<target>Choisir la notification envoyée aux utilisateurs pour valider leur inscription</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_pageUnsubscribe.0">
+			<source>Unsubscription page</source>
+			<target>Page de désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_pageUnsubscribe.1">
+			<source>Here you can select the page where users validate their unsubscription</source>
+			<target>Choisir la page où les utilisateurs valideront leur désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncUnsubscribe.0">
+			<source>UNsubscription notification</source>
+			<target>Notification de désinscription</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_ncUnsubscribe.1">
+			<source>Here you can select the notification sent to users to validate their unsubscription</source>
+			<target>Choisir la notification envoyée aux utilisateurs pour valider leur désinscription</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.job_alertTeaser.0">
+			<source>Teaser</source>
+			<target>Accroche</target>
+		</trans-unit>
+		<trans-unit id="tl_module.job_alertTeaser.1">
+			<source>Enter the alert subscription teaser</source>
+			<target>Saisir une accroche pour l'inscription aux alertes</target>
+		</trans-unit>
+
+		<trans-unit id="tl_module.list_legend">
+			<source>List settings</source>
+			<target>Paramètres de la liste</target>
+		</trans-unit>
+		<trans-unit id="tl_module.form_legend">
+			<source>Form settings</source>
+			<target>Paramètres du formulaire</target>
 		</trans-unit>
     </body>
   </file>

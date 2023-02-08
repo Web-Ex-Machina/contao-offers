@@ -18,21 +18,14 @@ namespace WEM\JobOffersBundle\Model;
 /**
  * Reads and writes items.
  */
-class Job extends \WEM\UtilsBundle\Model\Model
+class Alert extends \WEM\UtilsBundle\Model\Model
 {
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_wem_job';
-
-    /**
-     * Search fields.
-     *
-     * @var array
-     */
-    public static $arrSearchFields = ['code', 'title', 'field', 'text'];
+    protected static $strTable = 'tl_wem_job_alert';
 
     /**
      * Find items, depends on the arguments.
@@ -127,25 +120,32 @@ class Job extends \WEM\UtilsBundle\Model\Model
             $t = static::$strTable;
 
             switch ($strField) {
-                // Search by pid
-                case 'pid':
+                // Search by feed
+                case 'feed':
                     if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
+                        $arrColumns[] = "$t.feed IN(".implode(',', array_map('\intval', $varValue)).')';
                     } else {
-                        $arrColumns[] = $t.'.pid = '.$varValue;
+                        $arrColumns[] = $t.'.feed = '.$varValue;
                     }
                 break;
 
-                // Search by country
-                case 'country':
-                    $arrColumns[] = "$t.countries LIKE '%%".$varValue."%'";
+                // Search by conditions (value needs to be an array)
+                case 'conditions':
+                    foreach ($varValue as $c => $v) {
+                        $arrColumns[] = sprintf(
+                            "$t.id IN (SELECT twjac.pid FROM tl_wem_job_alert_condition AS twjac WHERE twjac.field = '%s' AND twjac.value = '%s')",
+                            $c,
+                            $v
+                        );
+                    }
                 break;
 
-                // Search for recipient not present in the subtable lead
-                case 'published':
-                    if (1 === $varValue) {
-                        $time = \Date::floorToMinute();
-                        $arrColumns[] = "($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'".($time + 60)."') AND $t.published='1'";
+                // Active alert means activatedAt > 0
+                case 'active':
+                    if(1 === $varValue) {
+                        $arrColumns[] = "$t.activatedAt > 0";
+                    } else if(0 === $varValue) {
+                        $arrColumns[] = "$t.activatedAt = 0";
                     }
                 break;
 

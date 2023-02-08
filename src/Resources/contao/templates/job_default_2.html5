@@ -1,4 +1,4 @@
-<div class="job job_details">
+<div class="block-std job job_default <?= $this->class ?>" data-job="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article">
 	<div class="job__title h2">
 		<?= $this->title ?>
 	</div>
@@ -7,6 +7,11 @@
 			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
 		</div>
 	<?php endif; ?>
+	<?php if ($this->blnDisplayText): ?>
+		<div class="job__teaser">
+			<?= $this->text ?>
+		</div>
+	<?php endif ?>
 	<?php if ($this->field || $this->remuneration || $this->status || $this->attributes): ?>
 		<div class="job__attributes">
 			<?php if ($this->status): ?>
@@ -29,16 +34,7 @@
 			<?php endif ?>
 		</div>
 	<?php endif ?>
-	<?php if ($this->text): ?>
-		<div class="job__text">
-			<?= $this->text ?>
-		</div>
-	<?php endif ?>
-	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></div>
-	<p><b>Contact:</b> <?= $this->hrName ?> (<?= $this->hrPosition ?>)</p>
-	<a href="tel:<?= $this->hrPhone ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><i class="fa fa-phone"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a>
-	<a href="mailto:<?= $this->hrEmail ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><i class="fa fa-envelope"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a>
-	<?php if($this->blnDisplayApplyButton): ?>
-		<button class="btn-sm btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
-	<?php endif; ?>
+	<div class="job__footer">
+		<div class="btn-load job__more"title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><i class="far fa-plus"></i></div>
+	</div>
 </div>

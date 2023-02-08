@@ -1,0 +1,132 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+<?php if ($this->error): ?>
+	<p class="lead ft-1-5-em">Erreur :</p>
+	<p><?= $this->message ?></p>
+	<?= $this->trace ?>
+<?php elseif ($this->isRequest): ?>
+	<p><?= $this->message ?></p>
+<?php elseif ($this->unsubscribe): ?>
+	<div class="bg-primary form">
+		<p class="lead ft-white"><?= $this->unsubscribeLbl ?></p>
+		<input type="email" name="email" placeholder="Email" class="" />
+		<div class="flex-alignitems--center">
+			<a href="<?= $this->gdprPage ?>" target="_blank" class="ft-0-8-em flexgrow--1">Protection des données</a>
+			<button type="button" class="btn-bd-white btn-sm center btn-load icon-last m-bottom-0" data-process="unsubscribeFeed">Se désabonner</button>
+		</div>
+	</div>
+	<script>
+		var rt = '{{request_token}}';
+		var unsubscribeFeed = function(btn){
+			return new Promise(function(resolve,reject){
+				var data = {
+					email: $('.mod_jobsalert input[name="email"]').val()
+				}
+				
+			    $.ajax({
+					timeout: 10000,
+					url: window.location.pathname,
+					type: 'post',
+					data:{
+						'TL_AJAX':true ,
+						'REQUEST_TOKEN':rt ,
+						'action': 'unsubscribe',
+						'email': data.email
+					},
+					// beforeSend: function(xhr) {console.log(xhr); },
+				}).done(function(data){
+					try{var results = $.parseJSON(data); } 
+					catch(e){reject();}
+					// console.log(results);
+					notif_fade[results.status](results.msg);
+					if (results.status == "success") {
+						resolve();
+					} else {
+						// console.log(results);
+						reject();
+					}
+				}).fail(function(jqXHR, textStatus){
+					reject();
+				});
+			});
+		}
+	</script>
+<?php else: ?>
+	<div class="d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
+		<?php if($this->job_alertTeaser): ?>
+		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--center lead ft-1-5-em">
+			<?= $this->job_alertTeaser ?>
+		</div>
+		<?php endif; ?>
+		<div class="bg-primary form">
+			<input type="email" name="email" placeholder="Email" class="" >
+			<?php if ($this->conditions): ?>
+				<div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
+					<?php foreach ($this->conditions as $c): ?>
+						<?php if ('select' == $c['type']): ?>
+							<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?> class="">
+								<?php if (!$c['multiple']): ?>
+								<option value="">- <?= $c['label']; ?> -</option>
+								<?php endif; ?>
+
+								<?php foreach ($c['options'] as $o): ?>
+								<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php else: ?>
+							<input type="text" class="" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
+						<?php endif; ?>
+					<?php endforeach; ?>
+					<div class="flex-alignitems--center">
+						<a href="<?= $this->gdprPage ?>" target="_blank" class="ft-0-8-em flexgrow--1">Protection des données</a>
+						<button type="button" class="btn-bd-white btn-sm center btn-load icon-last m-bottom-0" data-process="subscribeFeed">S'abonner</button>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
+	<script>
+		var rt = '{{request_token}}';
+		var subscribeFeed = function(btn){
+			return new Promise(function(resolve,reject){
+				var data = {
+					email: $('.mod_jobsalert input[name="email"]').val(),
+					conditions: {}
+				}
+				$('.mod_jobsalert .conditions').find('input,select').each(function(){
+					data.conditions[this.name] = this.value;
+				});
+			    $.ajax({
+					timeout: 10000,
+					url: window.location.pathname,
+					type: 'post',
+					data:{
+						'TL_AJAX':true ,
+						'module': <?= $this->moduleId ?>,
+						'REQUEST_TOKEN':rt ,
+						'action': 'subscribe',
+						'email': data.email,
+						'conditions': data.conditions,
+					},
+					// beforeSend: function(xhr) {console.log(xhr); },
+				}).done(function(data){
+					try{var results = $.parseJSON(data); } 
+					catch(e){reject();}
+					// console.log(results);
+					notif_fade[results.status](results.msg);
+					if (results.status == "success") {
+						resolve();
+					} else {
+						// console.log(results);
+						reject();
+					}
+				}).fail(function(jqXHR, textStatus){
+					reject();
+				});
+			});
+		}
+	</script>
+<?php endif ?>
+
+<?php $this->endblock(); ?>

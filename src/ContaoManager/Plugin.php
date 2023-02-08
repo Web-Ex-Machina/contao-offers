@@ -34,7 +34,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(JobOffersBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class])
+                ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManager::class])
                 ->setReplace(['wem-job-offers']),
         ];
     }
