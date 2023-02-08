@@ -29,6 +29,11 @@
 			<?php endif ?>
 		</div>
 	<?php endif ?>
+	<?php if ($this->file && $this->isImage): ?>
+	<div class="job__figure">
+		<img src="<?= $this->file ?>" alt="<?= $this->title ?>" />
+	</div>
+	<?php endif; ?>
 	<?php if ($this->text): ?>
 		<div class="job__text">
 			<?= $this->text ?>
