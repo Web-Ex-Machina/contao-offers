@@ -52,6 +52,7 @@ if ('BE' === TL_MODE) {
 // Hooks
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [WEM\JobOffersBundle\Hooks\LoadDataContainerHook::class, 'addAttributesToJobDca'];
 $GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\JobOffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
+$GLOBALS['TL_HOOKS']['processFormData'][] = [WEM\JobOffersBundle\Hooks\ProcessFormDataHook::class, '__invoke'];
 
 // Models
 $GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Alert::getTable()] = 'WEM\JobOffersBundle\Model\Alert';
