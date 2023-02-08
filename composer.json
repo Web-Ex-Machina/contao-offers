@@ -1,7 +1,7 @@
 {
     "name": "webexmachina/contao-offers",
-    "description": "Job Offers for Contao Open Source CMS",
-     "keywords": ["frontend", "job", "application", "offer", "webexmachina", "module", "contao"],
+    "description": "Offers & Ads for Contao Open Source CMS",
+     "keywords": ["frontend", "jobs", "application", "offer", "ads", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
@@ -13,8 +13,8 @@
     ],
     "support":{
         "website":"https://www.webexmachina.fr/",
-        "issues":"https://github.com/web-ex-machina/contao-job-offers/issues",
-        "source":"https://github.com/web-ex-machina/contao-job-offers"
+        "issues":"https://github.com/web-ex-machina/contao-offers/issues",
+        "source":"https://github.com/web-ex-machina/contao-offers"
     },
     "require": {
         "php": "^5.6|^7.0",
