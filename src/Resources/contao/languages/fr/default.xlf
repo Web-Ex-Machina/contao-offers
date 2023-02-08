@@ -65,8 +65,8 @@
 				<target>Voir l'offre</target>
 			</trans-unit>
 			<trans-unit id="WEM.JOBOFFERS.apply">
-				<source>Apply</source>
-				<target>Postuler</target>
+				<source>Contact</source>
+				<target>Contact</target>
 			</trans-unit>
 			<trans-unit id="WEM.JOBOFFERS.search">
 				<source>Search</source>
