@@ -27,8 +27,8 @@
 			</trans-unit>
 
 			<trans-unit id="WEM.JOBOFFERS.applyTitle">
-				<source>Interested? Apply here!</source>
-				<target>Intéressé(e)? Postulez içi!</target>
+				<source>Interested? Contact us!</source>
+				<target>Intéressé(e)? Contactez-nous !</target>
 			</trans-unit>
 			<trans-unit id="WEM.JOBOFFERS.byPhone">
 				<source>By phone</source>
