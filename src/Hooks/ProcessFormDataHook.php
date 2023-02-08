@@ -30,6 +30,11 @@ class ProcessFormDataHook
                 // get the last submitted application
                 $objApplication = Application::findItems([],1,0,['order'=>'tstamp DESC']);
                 if($objApplication){
+                    $objApplication = $objApplication->next()->current();
+                    $fieldsManagedByPdm = Application::getPersonalDataFieldsNames();
+                    foreach($fieldsManagedByPdm as $field){
+                        $objApplication->markModified($field);
+                    }
                     $objApplication->save();
                 }
             }
