@@ -174,7 +174,7 @@ class ModuleJobOffersList extends ModuleJobOffers
         }
 
         $this->Template->articles = [];
-        $this->Template->empty = $GLOBALS['TL_LANG']['MSC']['emptyList'];
+        $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['empty'];
 
         // Add pids
         $this->config = ['pid' => $this->job_feeds, 'published' => 1];
