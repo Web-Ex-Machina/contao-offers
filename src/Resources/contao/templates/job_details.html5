@@ -2,7 +2,7 @@
 	<div class="job__title h2">
 		<?= $this->title ?>
 	</div>
-	<?php if($this->locations): ?>
+	<?php if ($this->locations): ?>
 		<div class="job__location">
 			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
 		</div>
@@ -35,10 +35,14 @@
 		</div>
 	<?php endif ?>
 	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></div>
-	<p><b>Contact:</b> <?= $this->hrName ?> (<?= $this->hrPosition ?>)</p>
+	<p><b>Contact :</b> <?= $this->hrName ?><?php if ($this->hrPosition): ?> (<?= $this->hrPosition ?>)<?php endif; ?></p>
+	<?php if ($this->hrPhone): ?>
 	<a href="tel:<?= $this->hrPhone ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?>"><i class="fa fa-phone"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byPhone'] ?></a>
+	<?php endif; ?>
+	<?php if ($this->hrEmail): ?>
 	<a href="mailto:<?= $this->hrEmail ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?>"><i class="fa fa-envelope"></i><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byEmail'] ?></a>
-	<?php if($this->blnDisplayApplyButton): ?>
+	<?php endif; ?>
+	<?php if ($this->blnDisplayApplyButton): ?>
 		<button class="btn-sm btn-load" data-process="openApplicationModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['byForm'] ?></button>
 	<?php endif; ?>
 </div>

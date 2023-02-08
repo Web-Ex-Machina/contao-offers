@@ -93,6 +93,7 @@ abstract class ModuleJobOffers extends \Module
         // Fetch the job offer file
         if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
             $objTemplate->file = $objFile->path;
+            $objTemplate->isImage = @is_array(getimagesize($objFile->path));
         } else {
             $objTemplate->file = null;
         }
