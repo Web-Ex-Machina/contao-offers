@@ -6,32 +6,32 @@
 			<target>Code</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.code.1">
-			<source>Enter the job offer code</source>
-			<target>Saisissez le code de l'offre d'emploi</target>
+			<source>Enter the offer code</source>
+			<target>Saisissez le code de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.title.0">
 			<source>Title</source>
 			<target>Intitulé</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.title.1">
-			<source>Enter the job offer title</source>
-			<target>Saisissez l'intitulé de l'offre d'emploi</target>
+			<source>Enter the offer title</source>
+			<target>Saisissez l'intitulé de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.postedAt.0">
 			<source>Date of filing</source>
 			<target>Date de dépot</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.postedAt.1">
-			<source>Enter the job offer date of filing</source>
-			<target>Saisissez la date de dépot de l'offre d'emploi</target>
+			<source>Enter the offer date of filing</source>
+			<target>Saisissez la date de dépot de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.availableAt.0">
 			<source>Date of availability</source>
 			<target>Date de disponibilité</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.availableAt.1">
-			<source>Enter the job offer date of availability</source>
-			<target>Saisissez la date de disponibilité de l'offre d'emploi</target>
+			<source>Enter the offer date of availability</source>
+			<target>Saisissez la date de disponibilité de l'annonce</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.countries.0">
@@ -39,8 +39,8 @@
 			<target>Pays</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.countries.1">
-			<source>Select the job offer countries</source>
-			<target>Sélectionnez les pays de l'offre d'emploi</target>
+			<source>Select the offer countries</source>
+			<target>Sélectionnez les pays de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.locations.0">
 			<source>Locations</source>
@@ -57,23 +57,23 @@
 		</trans-unit>
 		<trans-unit id="tl_wem_job.field.1">
 			<source>Enter the job field</source>
-			<target>Saisissez la discipline de l'offre d'emploi</target>
+			<target>Saisissez la discipline de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.remuneration.0">
 			<source>Remuneration</source>
 			<target>Rémunération</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.remuneration.1">
-			<source>Enter the job offer remuneration</source>
-			<target>Saisissez la rémunération de l'offre d'emploi</target>
+			<source>Enter the offer remuneration</source>
+			<target>Saisissez la rémunération de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.status.0">
 			<source>Status</source>
 			<target>Statut</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.status.1">
-			<source>Enter the job offer status</source>
-			<target>Saisissez le statut de l'offre d'emploi</target>
+			<source>Enter the offer status</source>
+			<target>Saisissez le statut de l'annonce</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.text.0">
@@ -81,8 +81,8 @@
 			<target>Descriptif</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.text.1">
-			<source>Enter the job offer content</source>
-			<target>Saisissez le descriptif de l'offre d'emploi</target>
+			<source>Enter the offer content</source>
+			<target>Saisissez le descriptif de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.file.0">
 			<source>File</source>
@@ -90,7 +90,7 @@
 		</trans-unit>
 		<trans-unit id="tl_wem_job.file.1">
 			<source>Select the job file</source>
-			<target>Sélectionner le fichier de l'offre d'emploi</target>
+			<target>Sélectionner le fichier de l'annonce</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.published.0">
@@ -98,8 +98,8 @@
 			<target>Publier l'offre</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.published.1">
-			<source>Check to publish the job offer</source>
-			<target>Cochez pour publier l'offre d'emploi</target>
+			<source>Check to publish the offer</source>
+			<target>Cochez pour publier l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.start.0">
 			<source>Publish from</source>
@@ -107,15 +107,15 @@
 		</trans-unit>
 		<trans-unit id="tl_wem_job.start.1">
 			<source>Enter the date on which the job posting should appear on the site</source>
-			<target>Indiquez la date à laquelle l'offre d'emploi doit apparaître sur le site</target>
+			<target>Indiquez la date à laquelle l'annonce doit apparaître sur le site</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.stop.0">
 			<source>Publish until</source>
 			<target>Publier jusqu'au</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.stop.1">
-			<source>Enter the date on which the job offer should be removed from the site</source>
-			<target>Indiquez la date à laquelle l'offre d'emploi doit être retirée du le site</target>
+			<source>Enter the date on which the offer should be removed from the site</source>
+			<target>Indiquez la date à laquelle l'annonce doit être retirée du le site</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_job.hrName.0">
@@ -123,39 +123,39 @@
 			<target>Nom du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrName.1">
-			<source>Enter the job offer contact name</source>
-			<target>Saisissez le nom du contact de l'offre d'emploi</target>
+			<source>Enter the offer contact name</source>
+			<target>Saisissez le nom du contact de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPosition.0">
 			<source>Contact position</source>
 			<target>Poste du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPosition.1">
-			<source>Enter the job offer contact position</source>
-			<target>Saisissez le poste du contact de l'offre d'emploi</target>
+			<source>Enter the offer contact position</source>
+			<target>Saisissez le poste du contact de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPhone.0">
 			<source>Contact phone</source>
 			<target>Téléphone du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPhone.1">
-			<source>Enter the job offer contact phone</source>
-			<target>Saisissez le téléphone du contact de l'offre d'emploi</target>
+			<source>Enter the offer contact phone</source>
+			<target>Saisissez le téléphone du contact de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrEmail.0">
 			<source>Contact email</source>
 			<target>Email du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrEmail.1">
-			<source>Enter the job offer contact email</source>
-			<target>Saisissez l'email du contact de l'offre d'emploi</target>
+			<source>Enter the offer contact email</source>
+			<target>Saisissez l'email du contact de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPicture.0">
 			<source>Contact picture</source>
 			<target>Photo du contact</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.hrPicture.1">
-			<source>Select the job offer contact picture</source>
+			<source>Select the offer contact picture</source>
 			<target>Sélectionnez la photo du contact</target>
 		</trans-unit>
 
@@ -194,52 +194,52 @@
 		</trans-unit>
 
     	<trans-unit id="tl_wem_job.new.0">
-			<source>New job offer</source>
-			<target>Nouvelle offre d'emploi</target>
+			<source>New offer</source>
+			<target>Nouvelle annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.new.1">
-			<source>Create a new job offer</source>
-			<target>Créer une nouvelle offre d'emploi</target>
+			<source>Create a new offer</source>
+			<target>Créer une nouvelle annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.edit.0">
-			<source>Edit job offer</source>
-			<target>Editer l'offre d'emploi</target>
+			<source>Edit offer</source>
+			<target>Editer l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.edit.1">
-			<source>Edit job offer ID %s</source>
-			<target>Editer l'offre d'emploi ID %s</target>
+			<source>Edit offer ID %s</source>
+			<target>Editer l'annonce ID %s</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.copy.0">
-			<source>Copy job offer</source>
-			<target>Dupliquer l'offre d'emploi</target>
+			<source>Copy offer</source>
+			<target>Dupliquer l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.copy.1">
-			<source>Copy job offer ID %s</source>
-			<target>Dupliquer l'offre d'emploi ID %s</target>
+			<source>Copy offer ID %s</source>
+			<target>Dupliquer l'annonce ID %s</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.delete.0">
-			<source>Delete job offer</source>
-			<target>Supprimer l'offre d'emploi</target>
+			<source>Delete offer</source>
+			<target>Supprimer l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.delete.1">
-			<source>Delete job offer ID %s</source>
-			<target>Supprimer l'offre d'emploi ID %s</target>
+			<source>Delete offer ID %s</source>
+			<target>Supprimer l'annonce ID %s</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.show.0">
-			<source>Show job offer data</source>
-			<target>Voir les informations de l'offre d'emploi</target>
+			<source>Show offer data</source>
+			<target>Voir les informations de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.show.1">
-			<source>Show job offer data ID %s</source>
-			<target>Voir les informations de l'offre d'emploi ID %s</target>
+			<source>Show offer data ID %s</source>
+			<target>Voir les informations de l'annonce ID %s</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.applications.0">
-			<source>Show job offer applications</source>
-			<target>Voir les candidatures de l'offre d'emploi</target>
+			<source>Show offer applications</source>
+			<target>Voir les candidatures de l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_job.applications.1">
-			<source>Show job offer applications ID %s</source>
-			<target>Voir les candidatures de l'offre d'emploi ID %s</target>
+			<source>Show offer applications ID %s</source>
+			<target>Voir les candidatures de l'annonce ID %s</target>
 		</trans-unit>
     </body>
   </file>

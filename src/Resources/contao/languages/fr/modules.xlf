@@ -2,16 +2,16 @@
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="fr">
     <body>
     	<trans-unit id="MOD.wemjoboffers">
-			<source>Job offers</source>
-			<target>Offres d'emploi</target>
+			<source>Offers</source>
+			<target>Annonces</target>
 		</trans-unit>
 		<trans-unit id="MOD.wem-job-offers.0">
-			<source>Job offers</source>
-			<target>Offres d'emploi</target>
+			<source>Offers</source>
+			<target>Annonces</target>
 		</trans-unit>
 		<trans-unit id="MOD.wem-job-offers.1">
-			<source>Manage job offers</source>
-			<target>Gérer les offres d'emploi</target>
+			<source>Manage offers</source>
+			<target>Gérer les annonces</target>
 		</trans-unit>
 		<trans-unit id="MOD.wem-job-alerts.0">
 			<source>Job alerts</source>
@@ -19,7 +19,7 @@
 		</trans-unit>
 		<trans-unit id="MOD.wem-job-alerts.1">
 			<source>Manage job alerts</source>
-			<target>Gérer les alertes d'offres d'emploi</target>
+			<target>Gérer les alertes d'annonces</target>
 		</trans-unit>
 
 		<trans-unit id="FMD.jobslist.0">
