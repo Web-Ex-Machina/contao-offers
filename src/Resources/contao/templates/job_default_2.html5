@@ -12,26 +12,36 @@
 			<?= $this->text ?>
 		</div>
 	<?php endif ?>
-	<?php if ($this->field || $this->remuneration || $this->status || $this->attributes): ?>
+	<?php if ($this->blnDisplayAttributes || 1==1): ?>
 		<div class="job__attributes">
-			<?php if ($this->status): ?>
-				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
-					<div class="job__attribute__value"><?= $this->status ?></div>
-				</div>
+			<?php if ($this->field || $this->remuneration || $this->status): ?>
+				<?php if ($this->field): ?>
+					<div class="job__attribute">
+						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
+						<div class="job__attribute__value"><?= $this->field ?></div>
+					</div>
+				<?php endif ?>
+				<?php if ($this->remuneration): ?>
+					<div class="job__attribute">
+						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
+						<div class="job__attribute__value"><?= $this->remuneration ?></div>
+					</div>
+				<?php endif ?>
+				<?php if ($this->status): ?>
+					<div class="job__attribute">
+						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
+						<div class="job__attribute__value"><?= $this->status ?></div>
+					</div>
+				<?php endif ?>
+				<div class="job__attribute"></div>
+				<div class="job__attribute"></div>
 			<?php endif ?>
-			<?php if ($this->field): ?>
+			<?php foreach ($this->attributes as $key => $attribute): ?>
 				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
-					<div class="job__attribute__value"><?= $this->field ?></div>
+					<div class="job__attribute__title"><?= $attribute['label'] ?></div>
+					<div class="job__attribute__value"><?= $attribute['value'] ?></div>
 				</div>
-			<?php endif ?>
-			<?php if ($this->remuneration): ?>
-				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
-					<div class="job__attribute__value"><?= $this->remuneration ?></div>
-				</div>
-			<?php endif ?>
+			<?php endforeach ?>
 		</div>
 	<?php endif ?>
 	<div class="job__footer">
