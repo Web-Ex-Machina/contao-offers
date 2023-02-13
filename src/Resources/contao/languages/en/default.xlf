@@ -6,20 +6,20 @@
 			<target>Published: %s</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.status">
-			<source>Position:</source>
-			<target>Position:</target>
+			<source>Position</source>
+			<target>Position</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.remuneration">
-			<source>Remuneration:</source>
-			<target>Remuneration:</target>
+			<source>Remuneration</source>
+			<target>Remuneration</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.location">
-			<source>Location:</source>
-			<target>Location:</target>
+			<source>Location</source>
+			<target>Location</target>
 		</trans-unit>
 		<trans-unit id="WEM.JOBOFFERS.field">
-			<source>Field:</source>
-			<target>Field:</target>
+			<source>Field</source>
+			<target>Field</target>
 		</trans-unit>
 
 		<trans-unit id="WEM.JOBOFFERS.applyTitle">
