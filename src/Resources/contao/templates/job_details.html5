@@ -27,8 +27,6 @@
 					<div class="job__attribute__value"><?= $this->status ?></div>
 				</div>
 			<?php endif ?>
-			<div class="job__attribute"></div>
-			<div class="job__attribute"></div>
 		<?php endif ?>
 		<?php foreach ($this->attributes as $key => $attribute): ?>
 			<div class="job__attribute">
@@ -43,7 +41,7 @@
 	</div>
 	<?php endif; ?>
 	<?php if ($this->text): ?>
-		<div class="job__text">
+		<div class="job__text m-bottom-x2">
 			<?= $this->text ?>
 		</div>
 	<?php endif ?>
