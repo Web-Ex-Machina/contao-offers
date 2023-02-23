@@ -7,42 +7,42 @@
 			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
 		</div>
 	<?php endif; ?>
-	<div class="job__attributes">
-		<?php if ($this->field || $this->remuneration || $this->status): ?>
-			<?php if ($this->field): ?>
+	<?php if ($this->attributes): ?>
+		<div class="job__attributes">
+			<?php foreach ($this->attributes as $key => $value): ?>
 				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
-					<div class="job__attribute__value"><?= $this->field ?></div>
+					<div class="job__attribute__title"><?= $key ?></div>
+					<div class="job__attribute__value"><?= $value ?></div>
 				</div>
-			<?php endif ?>
-			<?php if ($this->remuneration): ?>
-				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
-					<div class="job__attribute__value"><?= $this->remuneration ?></div>
-				</div>
-			<?php endif ?>
-			<?php if ($this->status): ?>
-				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
-					<div class="job__attribute__value"><?= $this->status ?></div>
-				</div>
-			<?php endif ?>
-		<?php endif ?>
-		<?php foreach ($this->attributes as $key => $attribute): ?>
-			<div class="job__attribute">
-				<div class="job__attribute__title"><?= $attribute['label'] ?></div>
-				<div class="job__attribute__value"><?= $attribute['value'] ?></div>
-			</div>
-		<?php endforeach ?>
-	</div>
-	<?php if ($this->file && $this->isImage): ?>
-	<div class="job__figure">
-		<img src="<?= $this->file ?>" alt="<?= $this->title ?>" />
-	</div>
-	<?php endif; ?>
+			<?php endforeach ?>
+		</div>
+	<?php endif ?>	
 	<?php if ($this->text): ?>
 		<div class="job__text m-bottom-x2">
 			<?= $this->text ?>
+		<?php if (count($this->pictures)>0): ?>
+			<div class="job__figure img-container r_4-3 fit--contain">
+				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
+			</div>
+		<?php endif; ?>
+		<?php if(count($this->pictures)>1): ?>
+			<div class="sliderFW nav--hidden gap--1-em" data-nbitems="4" data-minsizeitem="80" data-height="" data-duration="1000" data-delay="5600" data-auto="true" data-arrows="false" data-transition="" data-swipe="true" data-loop="true" data-keypress="false">
+			  <div class="sliderFW__container ft-1-rem" >
+			    <div class="sliderFW__rail">
+			    	<?php foreach ($this->pictures as $key => $picture): ?>
+				      <div class="sliderFW__item">
+				        <div class="sliderFW__item__bg">
+							<img src="<?= $picture['thumbnail']?:$picture['path'] ?>" data-src="<?php echo $picture['path'] ?>" alt="<?= $picture['meta']['alt']?:$picture['name'] ?>" />
+				        </div>
+				        <div class="sliderFW__item__content p-0">
+				        	<div class="img-container r_1-1"></div>
+				        </div>
+				      </div>
+			    	<?php endforeach ?>
+			    </div>
+			  </div>
+			</div>
+		<?php endif; ?>
 		</div>
 	<?php endif ?>
 	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['applyTitle'] ?></div>

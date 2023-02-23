@@ -1,48 +1,43 @@
-<div class="block-std job job_default <?= $this->class ?>" data-job="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article">
-	<div class="job__title h2">
-		<?= $this->title ?>
-	</div>
-	<?php if($this->locations): ?>
-		<div class="job__location">
-			<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
-		</div>
-	<?php endif; ?>
-	<?php if ($this->blnDisplayText): ?>
-		<div class="job__teaser">
-			<?= $this->text ?>
-		</div>
-	<?php endif ?>
-	<?php if ($this->blnDisplayAttributes || 1==1): ?>
-		<div class="job__attributes">
-			<?php if ($this->field || $this->remuneration || $this->status): ?>
-				<?php if ($this->field): ?>
-					<div class="job__attribute">
-						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['field'] ?></div>
-						<div class="job__attribute__value"><?= $this->field ?></div>
+<!-- <button data-sidepanel="dpanel-arrData-<?= $this->id ?>" class="btn-sm">Dump arrData-<?= $this->id ?></button><div class="sidepanel" data-name="dpanel-arrData-<?= $this->id ?>" data-width="50vw" data-direction="right"><? dump($this->arrData); ?></div> -->
+<div class="block-card job job_default<?= $this->class ?>" data-job="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article" data-preset="inline">
+	<div class="block-card__wrapper">
+		<?php if ($this->blnDisplayPictures && count($this->pictures)>0): ?>
+			<div class="block-card__figure job__figure r_4-3 fit--contain">
+				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
+			</div>
+		<?php endif ?>
+		<div class="block-card__content">
+			<div class="job__title h2">
+				<?= $this->title ?>
+			</div>
+			<div class="block-card__text_">
+				<?php if($this->locations): ?>
+					<div class="job__location">
+						<span class="job__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
+					</div>
+				<?php endif; ?>
+				<?php if ($this->blnDisplayText): ?>
+					<div class="job__teaser">
+						<?= $this->text ?>
 					</div>
 				<?php endif ?>
-				<?php if ($this->remuneration): ?>
-					<div class="job__attribute">
-						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['remuneration'] ?></div>
-						<div class="job__attribute__value"><?= $this->remuneration ?></div>
-					</div>
+				<?php if ($this->blnDisplayAttributes): ?>
+					<?php if ($this->attributes): ?>
+						<div class="job__attributes">
+							<?php foreach ($this->attributes as $key => $value): ?>
+								<div class="job__attribute">
+									<div class="job__attribute__title"><?= $key ?></div>
+									<div class="job__attribute__value"><?= $value ?></div>
+								</div>
+							<?php endforeach ?>
+						</div>
+					<?php endif ?>
 				<?php endif ?>
-				<?php if ($this->status): ?>
-					<div class="job__attribute">
-						<div class="job__attribute__title"><?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['status'] ?></div>
-						<div class="job__attribute__value"><?= $this->status ?></div>
-					</div>
-				<?php endif ?>
-			<?php endif ?>
-			<?php foreach ($this->attributes as $key => $attribute): ?>
-				<div class="job__attribute">
-					<div class="job__attribute__title"><?= $attribute['label'] ?></div>
-					<div class="job__attribute__value"><?= $attribute['value'] ?></div>
+			</div>
+			<div class="block-card__action job__footer">
+				<div class="btn-load job__more" title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false">
 				</div>
-			<?php endforeach ?>
+			</div>
 		</div>
-	<?php endif ?>
-	<div class="job__footer">
-		<div class="btn-load job__more"title="<?= $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-job="<?= $this->id ?>" data-icon="false" data-result="false"><i class="far fa-plus"></i></div>
 	</div>
 </div>

@@ -42,21 +42,28 @@
     <?= $this->pagination; ?>
 
     <script type="text/javascript">
-    	<?php if ($this->openModalOnLoad): ?>
     	window.addEventListener('load', function() {
-			setTimeout(function(){
-				var modal = new app.ModalFW({
+	    	<?php if ($this->openModalOnLoad): ?>
+					setTimeout(function(){
+						var modal = new app.ModalFW({
 		          name : 'jobApplyModal',
 		          content: <?= $this->openModalOnLoadContent; ?>,
 		          onClose: function(){
 		            modal.destroy();
 		          }
 		        }).open();
-		    },10);
-		});
-    	<?php endif; ?>
+			    },10);
+	    	<?php endif; ?>
 
-		var openDetailsModal = function(btn){
+
+	    	$('body').on('click','.job_details .sliderFW__subitem,.job_details .sliderFW__item',function(){
+	    		if (!$(this).find('.sliderFW__subitem').length) {
+		    		$(this).closest('.job_details').find('.job__figure img').attr('src',$(this).find('.sliderFW__item__bg img').attr('data-src')).attr('alt',$(this).find('.sliderFW__item__bg img').attr('alt'))
+	    		}
+	    	})
+			});
+
+			var openDetailsModal = function(btn){
 		    return new Promise(function(resolve,reject){
 		      var job = btn.$el.attr('data-job');
 		      $.ajax({
@@ -73,6 +80,7 @@
 		        var modal = new app.ModalFW({
 		          name : 'jobDetailsModal',
 		          content: html,
+		          width: '972px',
 		          onClose: function(){
 		            modal.destroy();
 		          }
