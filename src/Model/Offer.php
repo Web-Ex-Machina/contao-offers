@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\OfferOffersBundle\Model;
+namespace WEM\OffersBundle\Model;
 
 /**
  * Reads and writes items.
