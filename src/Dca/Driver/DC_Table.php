@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WEM\JobOffersBundle\Dca\Driver;
+namespace WEM\OffersBundle\Dca\Driver;
 
 use WEM\PersonalDataManagerBundle\Dca\Driver\PDMDCTableTrait;
 

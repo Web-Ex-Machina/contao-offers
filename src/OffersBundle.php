@@ -12,15 +12,15 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle;
+namespace WEM\OffersBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Configures the Contao job offers bundle.
+ * Configures the Contao  offers bundle.
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class JobOffersBundle extends Bundle
+class OffersBundle extends Bundle
 {
 }

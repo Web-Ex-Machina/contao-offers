@@ -13,17 +13,17 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Model;
+namespace WEM\OffersBundle\Model;
 
 /**
  * Reads and writes items.
  */
-class JobFeedAttribute extends \WEM\UtilsBundle\Model\Model
+class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
 {
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_wem_job_feed_attribute';
+    protected static $strTable = 'tl_wem_offer_feed_attribute';
 }

@@ -12,11 +12,11 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
+$GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ptable' => 'tl_wem_job_feed',
+        'ptable' => 'tl_wem_offer_feed',
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'fields' => ['name ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'listItems'],
+            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -46,23 +46,19 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_attribute']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'copy' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_attribute']['copy'],
                 'href' => 'act=copy',
                 'icon' => 'copy.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_attribute']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_attribute']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
@@ -98,7 +94,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_attribute']['createdAt'],
             'default' => time(),
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -123,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getFieldOptions'],
+            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldOptions'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
             'reference' => &$GLOBALS['TL_LANG']['FFL'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
@@ -163,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedAttributeContainer::class, 'getJobFields'],
+            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFields'],
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['name' => 'insertAfter', 'type' => 'string', 'length' => 64, 'default' => ''],
         ],

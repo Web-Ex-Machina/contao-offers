@@ -12,12 +12,11 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job_application'] = [
+$GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
     // Config
     'config' => [
-        // 'dataContainer' => 'Table',
-        'dataContainer' => \WEM\JobOffersBundle\Dca\Driver\DC_Table::class,
-        'ptable' => 'tl_wem_job',
+        'dataContainer' => WEM\OffersBundle\Dca\Driver\DC_Table::class,
+        'ptable' => 'tl_wem_offer',
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
@@ -39,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'fields' => ['country DESC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'listItems'],
+            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'listItems'],
             'child_record_class' => 'no_padding',
         ],
         'label'=>[
@@ -55,34 +54,27 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
             'show_cv' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['showCv'],
-                'title'=> &$GLOBALS['TL_LANG']['tl_wem_job_application']['showCvModalTitle'],
                 'href' => 'key=show_cv',
                 'icon' => 'pickfile.gif',
-                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'showCv'],
+                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showCv'],
             ],
             'show_applicationLetter' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['showApplicationLetter'],
-                'title'=> &$GLOBALS['TL_LANG']['tl_wem_job_application']['showApplicationLetterModalTitle'],
                 'href' => 'key=show_applicationLetter',
                 'icon' => 'tablewizard.gif',
-                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobApplicationContainer::class, 'showApplicationLetter'],
+                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showApplicationLetter'],
             ],
         ],
     ],
@@ -113,26 +105,23 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
         // {statut_legend},createdAt,status;
         'createdAt' => [
             'exclude' => true,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['createdAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'status' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
             'default' => 'not-answered',
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'options' => ['not-answered', 'refused', 'accepted'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['status'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_wem_offer_application']['status'],
             'eval' => ['helpwizard' => true, 'mandatory' => true, 'chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default 'not-answered'",
         ],
 
         // {name_legend},firstname,lastname;
         'firstname' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['firstname'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
@@ -141,7 +130,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'lastname' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['lastname'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
@@ -152,7 +140,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
 
         // {street_legend},street,postal,city,country;
         'street' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['street'],
             'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'w100 clr'],
@@ -160,7 +147,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'postal' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['postal'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
@@ -169,7 +155,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'city' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['city'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
@@ -178,7 +163,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'country' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['country'],
             'exclude' => true,
             'filter' => true,
             'sorting' => true,
@@ -191,7 +175,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
 
         // {contact_legend},phone,email,comments;
         'phone' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['phone'],
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
@@ -199,7 +182,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
         'email' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['email'],
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
@@ -207,7 +189,6 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'comments' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['comments'],
             'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
@@ -218,14 +199,12 @@ $GLOBALS['TL_DCA']['tl_wem_job_application'] = [
 
         // {files_legend},cv,applicationLetter;
         'cv' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['cv'],
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
             'sql' => 'binary(16) NULL',
         ],
         'applicationLetter' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_application']['applicationLetter'],
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],

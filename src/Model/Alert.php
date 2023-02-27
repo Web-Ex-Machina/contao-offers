@@ -13,7 +13,7 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Model;
+namespace WEM\OffersBundle\Model;
 
 /**
  * Reads and writes items.
@@ -25,7 +25,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
      *
      * @var string
      */
-    protected static $strTable = 'tl_wem_job_alert';
+    protected static $strTable = 'tl_wem_offer_alert';
 
     /**
      * Find items, depends on the arguments.
@@ -133,7 +133,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
                 case 'conditions':
                     foreach ($varValue as $c => $v) {
                         $arrColumns[] = sprintf(
-                            "$t.id IN (SELECT twjac.pid FROM tl_wem_job_alert_condition AS twjac WHERE twjac.field = '%s' AND twjac.value = '%s')",
+                            "$t.id IN (SELECT twjac.pid FROM tl_wem_offer_alert_condition AS twjac WHERE twoac.field = '%s' AND twoac.value = '%s')",
                             $c,
                             $v
                         );
@@ -142,9 +142,9 @@ class Alert extends \WEM\UtilsBundle\Model\Model
 
                 // Active alert means activatedAt > 0
                 case 'active':
-                    if(1 === $varValue) {
+                    if (1 === $varValue) {
                         $arrColumns[] = "$t.activatedAt > 0";
-                    } else if(0 === $varValue) {
+                    } elseif (0 === $varValue) {
                         $arrColumns[] = "$t.activatedAt = 0";
                     }
                 break;

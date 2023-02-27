@@ -12,11 +12,11 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\DataContainer;
+namespace WEM\OffersBundle\DataContainer;
 
-class JobAlertContainer
+class OfferAlertContainer
 {
-	/**
+    /**
      * Design each row of the DCA.
      *
      * @return string
@@ -31,14 +31,14 @@ class JobAlertContainer
     }
 
     /**
-     * Get available job feeds.
+     * Get available feeds.
      *
      * @return [Array]
      */
-    public function getJobFeeds()
+    public function getFeeds()
     {
         $arrChoices = [];
-        $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_job_feed ORDER BY title");
+        $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
 
         while ($objFeeds->next()) {
             $arrChoices[$objFeeds->id] = $objFeeds->title;

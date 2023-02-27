@@ -29,7 +29,7 @@
     },
     "autoload":{
         "psr-4": {
-            "WEM\\JobOffersBundle\\": "src/"
+            "WEM\\OffersBundle\\": "src/"
         },
         "classmap": [
             "src/Resources/contao/"
@@ -42,6 +42,6 @@
         ]
     },
     "extra":{
-        "contao-manager-plugin": "WEM\\JobOffersBundle\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"
     }
 }

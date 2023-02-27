@@ -12,14 +12,16 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Cronjob;
+namespace WEM\OffersBundle\Cronjob;
 
+use Contao\FrontendTemplate;
+use Contao\System;
 use NotificationCenter\Model\Notification;
-use WEM\JobOffersBundle\Model\Alert;
-use WEM\JobOffersBundle\Model\AlertCondition;
-use WEM\JobOffersBundle\Model\Job;
+use WEM\OffersBundle\Model\Alert;
+use WEM\OffersBundle\Model\AlertCondition;
+use WEM\OffersBundle\Model\Offer;
 
-class SendAlertsJob
+class SendAlerts
 {
     /**
      * Retrieve and send all the new job offers matching user alerts.
@@ -29,15 +31,15 @@ class SendAlertsJob
     public function do(): void
     {
         // Log the start of the job and setup some vars
-        \System::log('Cronjob SendAlertsJob started', __METHOD__, 'WEMJOBOFFERS');
+        System::log('Cronjob SendAlerts started', __METHOD__, 'WEMOFFERS');
 
         $t = Alert::getTable();
         $t2 = AlertCondition::getTable();
-        $t3 = Job::getTable();
+        $t3 = Offer::getTable();
         $nbAlerts = 0;
-        $nbJobs = 0;
-        $arrJobFeedCache = [];
-        $arrJobCache = [];
+        $nbOffers = 0;
+        $arrFeedCache = [];
+        $arrCache = [];
 
         // We need to retrieve the alerts depending on their frequency
         // hourly
@@ -60,7 +62,7 @@ class SendAlertsJob
 
         // Quit the job if there is no alerts to retrieve
         if (!$objAlerts || 0 === $objAlerts->count()) {
-            \System::log('Nothing to send, abort !', __METHOD__, 'WEMJOBOFFERS');
+            System::log('Nothing to send, abort !', __METHOD__, 'WEMOFFERS');
 
             return;
         }
@@ -76,16 +78,16 @@ class SendAlertsJob
             }
 
             // Retrieve the feed linked
-            if (\array_key_exists($objAlerts->feed, $arrJobFeedCache)) {
-                $objFeed = $arrJobFeedCache[$objAlerts->feed]['model'];
+            if (\array_key_exists($objAlerts->feed, $arrFeedCache)) {
+                $objFeed = $arrFeedCache[$objAlerts->feed]['model'];
             } else {
                 $objFeed = $objAlerts->getRelated('feed');
-                $arrJobFeedCache[$objAlerts->feed]['model'] = $objFeed;
-                $arrJobFeedCache[$objAlerts->feed]['tokens'] = [];
+                $arrFeedCache[$objAlerts->feed]['model'] = $objFeed;
+                $arrFeedCache[$objAlerts->feed]['tokens'] = [];
 
                 // Format and store tokens
                 foreach ($objFeed->row() as $k => $v) {
-                    $arrJobFeedCache[$objAlerts->feed]['tokens']['jobfeed_'.$k] = $v;
+                    $arrFeedCache[$objAlerts->feed]['tokens']['offersfeed_'.$k] = $v;
                 }
             }
 
@@ -118,35 +120,35 @@ class SendAlertsJob
                     $arrConditions['where'][] = sprintf('%s.postedAt > %s', $t3, strtotime('-1 hour'));
             }
 
-            // Retrieve jobs matching the conditions
-            $objJobs = Job::findItems($arrConditions);
+            // Retrieve items matching the conditions
+            $objItems = Offer::findItems($arrConditions);
 
-            // Skip if no jobs were found
-            if (!$objJobs || 0 === $objJobs->count()) {
+            // Skip if no items were found
+            if (!$objItems || 0 === $objItems->count()) {
                 continue;
             }
 
             // Prepare some tokens for notification
             $arrTokens = [];
-            $arrJobBuffer = [];
+            $arrBuffer = [];
 
             foreach ($objAlerts->row() as $k => $v) {
                 $arrTokens['recipient_'.$k] = $v;
             }
 
-            // Loop on the jobs, format everything and send the notification \o/
-            while ($objJobs->next()) {
-                if (\array_key_exists($objJobs->id, $arrJobCache)) {
-                    $arrJobBuffer[] = $arrJobCache[$objJobs->id];
+            // Loop on the items, format everything and send the notification \o/
+            while ($objItems->next()) {
+                if (\array_key_exists($objItems->id, $arrCache)) {
+                    $arrBuffer[] = $arrCache[$objItems->id];
                 } else {
-                    $arrJobBuffer[] = $this->parseJob($objJobs->current(), $objFeed->tplAlertJob);
+                    $arrBuffer[] = $this->parseItem($objItems->current(), $objFeed->tplAlertJob);
                 }
 
-                ++$nbJobs;
+                ++$nbOffers;
             }
 
-            $arrTokens['jobshtml'] = implode('', $arrJobBuffer);
-            $arrTokens['jobstext'] = strip_tags($arrTokens['jobshtml']);
+            $arrTokens['offershtml'] = implode('', $arrBuffer);
+            $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
                 ++$nbAlerts;
@@ -155,27 +157,27 @@ class SendAlertsJob
         }
 
         // Step 5 - Log the results (how many alerts sents & how job offers sent)
-        \System::log(sprintf('Cronjob done, %s alerts and %s jobs sent', $nbAlerts, $nbJobs), __METHOD__, 'WEMJOBOFFERS');
+        System::log(sprintf('Cronjob done, %s alerts and %s offers sent', $nbAlerts, $nbOffers), __METHOD__, 'WEMOFFERS');
     }
 
     /**
      * Format a job block for the notification.
      *
-     * @param WEM\JobOffersBundle\Model\Job $objJob
-     * @param string                        $strTemplate
+     * @param WEM\OffersBundle\Model\Offer $objItem
+     * @param string                       $strTemplate
      *
      * @return string
      */
-    protected function parseJob($objJob, $strTemplate = 'job_alert_default')
+    protected function parseItem($objItem, $strTemplate = 'offer_alert_default')
     {
-        $objTemplate = new \FrontendTemplate($strTemplate);
-        $objTemplate->setData($objJob->row());
+        $objTemplate = new FrontendTemplate($strTemplate);
+        $objTemplate->setData($objItem->row());
 
         // HOOK: add custom logic
         if (isset($GLOBALS['TL_HOOKS']['parseArticles']) && \is_array($GLOBALS['TL_HOOKS']['parseArticles'])) {
             foreach ($GLOBALS['TL_HOOKS']['parseArticles'] as $callback) {
                 $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}($objTemplate, $objJob->row(), $this);
+                $this->{$callback[0]}->{$callback[1]}($objTemplate, $objItem->row(), $this);
             }
         }
 

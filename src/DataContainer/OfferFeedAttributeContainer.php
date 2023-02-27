@@ -12,9 +12,9 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\DataContainer;
+namespace WEM\OffersBundle\DataContainer;
 
-class JobFeedAttributeContainer extends \Backend
+class OfferFeedAttributeContainer extends \Backend
 {
     /**
      * Format items list.
@@ -41,9 +41,8 @@ class JobFeedAttributeContainer extends \Backend
     {
         $fields = array();
 
-        foreach ($GLOBALS['TL_FFL'] as $k=>$v)
-        {
-            if($k !== 'text' && $k !== 'select') {
+        foreach ($GLOBALS['TL_FFL'] as $k=>$v) {
+            if ($k !== 'text' && $k !== 'select') {
                 continue;
             }
 
@@ -60,13 +59,12 @@ class JobFeedAttributeContainer extends \Backend
      *
      * @todo use palettes instead of fields to group fields by legends
      */
-    public function getJobFields()
+    public function getFields()
     {
-        $this->loadDataContainer('tl_wem_job');
+        $this->loadDataContainer('tl_wem_offer');
         $fields = array();
 
-        foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k=>$v)
-        {
+        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k=>$v) {
             $fields[$k] = $v['label'][0] ?: $k;
         }
 

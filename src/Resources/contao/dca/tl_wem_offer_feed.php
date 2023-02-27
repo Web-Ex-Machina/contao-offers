@@ -12,11 +12,11 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
+$GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ctable' => ['tl_wem_job', 'tl_wem_job_feed_attribute'],
+        'ctable' => ['tl_wem_offer', 'tl_wem_offer_feed_attribute'],
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
@@ -49,29 +49,24 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
             'attributes' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['attributes'],
-                'href' => 'table=tl_wem_job_feed_attribute',
+                'href' => 'table=tl_wem_offer_feed_attribute',
                 'icon' => 'header.gif',
             ],
-            'jobs' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['jobs'],
-                'href' => 'table=tl_wem_job',
+            'offers' => [
+                'href' => 'table=tl_wem_offer',
                 'icon' => 'folderOP.gif',
             ]
         ],
@@ -82,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
         'default' => '
             {title_legend},title,alias;
             {attributes_legend},attributes;
-            {alert_legend},ncEmailAlert,tplJobAlert
+            {alert_legend},ncEmailAlert,tplOfferAlert
         ',
     ],
 
@@ -113,18 +108,17 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
             'search' => true,
             'eval' => ['rgxp' => 'alias', 'doNotCopy' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'save_callback' => [
-                [WEM\JobOffersBundle\DataContainer\JobFeedContainer::class, 'generateAlias'],
+                [WEM\OffersBundle\DataContainer\OfferFeedContainer::class, 'generateAlias'],
             ],
             'sql' => "varchar(255) BINARY NOT NULL default ''",
         ],
 
         'attributes' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_alert']['attributes'],
             'inputType' => 'dcaWizard',
-            'foreignTable' => 'tl_wem_job_feed_attribute',
+            'foreignTable' => 'tl_wem_offer_feed_attribute',
             'foreignField' => 'pid',
             'params' => [
-                'do' => 'wem-job-offers',
+                'do' => 'wem-offers',
             ],
             'eval' => [
                 'fields' => ['name', 'label', 'type'],
@@ -136,19 +130,17 @@ $GLOBALS['TL_DCA']['tl_wem_job_feed'] = [
         ],
 
         'ncEmailAlert' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed']['ncEmailAlert'],
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\JobOffersBundle\DataContainer\JobFeedContainer::class, 'getAlertEmailNotificationChoices'],
+            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedContainer::class, 'getAlertEmailNotificationChoices'],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'tplJobAlert' => [
+        'tplOfferAlert' => [
             'exclude'                 => true,
             'inputType'               => 'select',
-            'options_callback' => static function ()
-            {
-                return Controller::getTemplateGroup('job_alert_');
+            'options_callback' => static function () {
+                return Controller::getTemplateGroup('offer_alert_');
             },
             'eval'                    => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(64) NOT NULL default ''"

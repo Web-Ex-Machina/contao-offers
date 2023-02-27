@@ -13,13 +13,18 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\DataContainer;
+namespace WEM\OffersBundle\DataContainer;
 
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\Image;
+use Contao\Versions;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use WEM\JobOffersBundle\Model\Job;
-use WEM\JobOffersBundle\Model\JobFeedAttribute;
+use WEM\OffersBundle\Model\Offer;
+use WEM\OffersBundle\Model\OfferFeedAttribute;
 
-class JobContainer extends \Backend
+class OfferContainer extends \Backend
 {
     /**
      * Format items list.
@@ -51,8 +56,8 @@ class JobContainer extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!is_null(\Input::get('tid')) && \strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), ('1' === \Input::get('state')), (@func_get_arg(12) ?: null));
+        if (!is_null(Input::get('tid')) && \strlen(Input::get('tid'))) {
+            $this->toggleVisibility(Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 
@@ -62,7 +67,7 @@ class JobContainer extends \Backend
             $icon = 'invisible.svg';
         }
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.\StringUtil::specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label, 'data-state="'.($row['published'] ? 1 : 0).'"').'</a> ';
+        return '<a href="'.$this->addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label, 'data-state="'.($row['published'] ? 1 : 0).'"').'</a> ';
     }
 
     /**
@@ -72,19 +77,19 @@ class JobContainer extends \Backend
      * @param bool          $blnVisible
      * @param DataContainer $dc
      */
-    public function toggleVisibility($intId, $blnVisible, \DataContainer $dc = null): void
+    public function toggleVisibility($intId, $blnVisible, DataContainer $dc = null): void
     {
         // Set the ID and action
-        \Input::setGet('id', $intId);
-        \Input::setGet('act', 'toggle');
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
 
         if ($dc) {
             $dc->id = $intId; // see #8043
         }
 
         // Trigger the onload_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onload_callback'] as $callback) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['config']['onload_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['config']['onload_callback'] as $callback) {
                 if (\is_array($callback)) {
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($dc);
@@ -96,7 +101,7 @@ class JobContainer extends \Backend
 
         // Set the current record
         if ($dc) {
-            $objRow = $this->Database->prepare('SELECT * FROM tl_wem_job WHERE id=?')
+            $objRow = $this->Database->prepare('SELECT * FROM tl_wem_offer WHERE id=?')
                                      ->limit(1)
                                      ->execute($intId)
             ;
@@ -106,12 +111,12 @@ class JobContainer extends \Backend
             }
         }
 
-        $objVersions = new \Versions('tl_wem_job', $intId);
+        $objVersions = new Versions('tl_wem_offer', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields']['published']['save_callback'] as $callback) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields']['published']['save_callback'] as $callback) {
                 if (\is_array($callback)) {
                     $this->import($callback[0]);
                     $blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, $dc);
@@ -124,7 +129,7 @@ class JobContainer extends \Backend
         $time = time();
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_wem_job SET tstamp=$time, published='".($blnVisible ? '1' : '')."' WHERE id=?")
+        $this->Database->prepare("UPDATE tl_wem_offer SET tstamp=$time, published='".($blnVisible ? '1' : '')."' WHERE id=?")
                        ->execute($intId)
         ;
 
@@ -134,8 +139,8 @@ class JobContainer extends \Backend
         }
 
         // Trigger the onsubmit_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'])) {
-            foreach ($GLOBALS['TL_DCA']['tl_wem_job']['config']['onsubmit_callback'] as $callback) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['config']['onsubmit_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['config']['onsubmit_callback'] as $callback) {
                 if (\is_array($callback)) {
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($dc);
@@ -150,14 +155,14 @@ class JobContainer extends \Backend
 
     /**
      * Update DCA palettes and add custom attributes
-     *  
+     *
      * @param  [DataContainer] $dc
      */
     public function updatePalettes($dc)
     {
-        if ($dc->id && 'edit' == \Input::get('act')) {
-            $objJob = Job::findByPk($dc->id);
-            $objAttributes = JobFeedAttribute::findItems(['pid' => $objJob->pid]);
+        if ($dc->id && 'edit' == Input::get('act')) {
+            $objJob = Offer::findByPk($dc->id);
+            $objAttributes = OfferFeedAttribute::findItems(['pid' => $objJob->pid]);
 
             if (!$objAttributes || 0 == $objAttributes->count()) {
                 return;
@@ -165,11 +170,11 @@ class JobContainer extends \Backend
 
             $objPalette = PaletteManipulator::create();
             while ($objAttributes->next()) {
-                if(false === strrpos($GLOBALS['TL_DCA']['tl_wem_job']['palettes']['default'], $objAttributes->name)) {
+                if (false === strrpos($GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'], $objAttributes->name)) {
                     $objPalette->addField($objAttributes->name, $objAttributes->insertAfter);
                 }
             }
-            $objPalette->applyToPalette('default', 'tl_wem_job');
+            $objPalette->applyToPalette('default', 'tl_wem_offer');
         }
     }
 }

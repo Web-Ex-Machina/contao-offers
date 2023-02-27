@@ -12,13 +12,13 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\ContaoManager;
+namespace WEM\OffersBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-use WEM\JobOffersBundle\JobOffersBundle;
+use WEM\OffersBundle\OffersBundle;
 
 /**
  * Plugin for the Contao Manager.
@@ -33,9 +33,9 @@ class Plugin implements BundlePluginInterface
     public function getBundles(ParserInterface $parser)
     {
         return [
-            BundleConfig::create(JobOffersBundle::class)
+            BundleConfig::create(OffersBundle::class)
                 ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManager::class])
-                ->setReplace(['wem-job-offers']),
+                ->setReplace(['wem-offers']),
         ];
     }
 }

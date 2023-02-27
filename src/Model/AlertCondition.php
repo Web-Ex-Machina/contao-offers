@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Model;
+namespace WEM\OffersBundle\Model;
 
 /**
  * Reads and writes items.
@@ -24,5 +24,5 @@ class AlertCondition extends \WEM\UtilsBundle\Model\Model
      *
      * @var string
      */
-    protected static $strTable = 'tl_wem_job_alert_condition';
+    protected static $strTable = 'tl_wem_offer_alert_condition';
 }

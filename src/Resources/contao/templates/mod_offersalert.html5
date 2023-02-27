@@ -21,7 +21,7 @@
 		var unsubscribeFeed = function(btn){
 			return new Promise(function(resolve,reject){
 				var data = {
-					email: $('.mod_jobsalert input[name="email"]').val()
+					email: $('.mod_offersalert input[name="email"]').val()
 				}
 				
 			    $.ajax({
@@ -54,9 +54,9 @@
 	</script>
 <?php else: ?>
 	<div class="d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
-		<?php if($this->job_alertTeaser): ?>
+		<?php if ($this->offer_alertTeaser): ?>
 		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--center lead ft-1-5-em">
-			<?= $this->job_alertTeaser ?>
+			<?= $this->offer_alertTeaser ?>
 		</div>
 		<?php endif; ?>
 		<div class="bg-primary form">
@@ -91,10 +91,10 @@
 		var subscribeFeed = function(btn){
 			return new Promise(function(resolve,reject){
 				var data = {
-					email: $('.mod_jobsalert input[name="email"]').val(),
+					email: $('.mod_offersalert input[name="email"]').val(),
 					conditions: {}
 				}
-				$('.mod_jobsalert .conditions').find('input,select').each(function(){
+				$('.mod_offersalert .conditions').find('input,select').each(function(){
 					data.conditions[this.name] = this.value;
 				});
 			    $.ajax({

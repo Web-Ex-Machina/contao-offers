@@ -12,12 +12,12 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-$GLOBALS['TL_DCA']['tl_wem_job'] = [
+$GLOBALS['TL_DCA']['tl_wem_offer'] = [
     // Config
     'config' => [
         'dataContainer' => 'Table',
-        'ptable' => 'tl_wem_job_feed',
-        'ctable' => ['tl_wem_job_application'],
+        'ptable' => 'tl_wem_offer_feed',
+        'ctable' => ['tl_wem_offer_application'],
         'switchToEdit' => true,
         'enableVersioning' => true,
         'sql' => [
@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             ],
         ],
         'onload_callback' => [
-            [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'updatePalettes'],
+            [WEM\OffersBundle\DataContainer\OfferContainer::class, 'updatePalettes'],
         ]
     ],
 
@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'fields' => ['code ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'listItems'],
+            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -50,36 +50,30 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'operations' => [
             'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif',
             ],
             'copy' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['copy'],
                 'href' => 'act=copy',
                 'icon' => 'copy.gif',
             ],
             'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif',
             ],
             'toggle' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['toggle'],
                 'icon' => 'visible.svg',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => [WEM\JobOffersBundle\DataContainer\JobContainer::class, 'toggleIcon'],
+                'button_callback' => [WEM\OffersBundle\DataContainer\OfferContainer::class, 'toggleIcon'],
                 'showInHeader' => true,
             ],
             'applications' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['applications'],
-                'href' => 'table=tl_wem_job_application',
+                'href' => 'table=tl_wem_offer_application',
                 'icon' => 'folderOP.gif',
             ],
         ],
@@ -90,9 +84,8 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         'default' => '
             {title_legend},code,title,postedAt,availableAt;
             {location_legend},countries,locations;
-            {details_legend},field,remuneration,status;
             {content_legend},text,file;
-            {hr_legend},hrName,hrPosition,hrPhone,hrEmail,hrPicture;
+            {hr_legend},hrName,hrPosition,hrPhone,hrEmail;
             {publish_legend},published,start,stop
         ',
     ],
@@ -109,14 +102,12 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['createdAt'],
             'default' => time(),
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
 
         'code' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['code'],
             'exclude' => true,
             'search' => true,
             'sorting' => true,
@@ -126,7 +117,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'title' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['title'],
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
@@ -138,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'default' => time(),
             'sorting' => true,
             'flag' => 8,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['postedAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",
@@ -148,56 +137,29 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'default' => time(),
             'sorting' => true,
             'flag' => 8,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['availableAt'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'date', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'countries' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['countries'],
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'chosen' => true, 'wemjoboffers_isAvailableForAlerts' => true, 'wemjoboffers_isAvailableForFilters' => true],
+            'eval' => ['multiple' => true, 'chosen' => true, 'wemoffers_isAvailableForAlerts' => true, 'wemoffers_isAvailableForFilters' => true],
             'options_callback' => function () {
                 return System::getCountries();
             },
             'sql' => 'blob NULL',
         ],
         'locations' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['locations'],
             'exclude' => true,
             'search' => true,
             'inputType' => 'listWizard',
-            'eval' => ['wemjoboffers_isAvailableForAlerts' => true],
+            'eval' => ['wemoffers_isAvailableForAlerts' => true],
             'sql' => 'blob NULL',
         ],
 
-        'field' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['field'],
-            'exclude' => true,
-            'filter' => true,
-            'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_isAvailableForAlerts' => true, 'wemjoboffers_isAvailableForFilters' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'remuneration' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['remuneration'],
-            'exclude' => true,
-            'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'status' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['status'],
-            'exclude' => true,
-            'inputType' => 'text',
-            'eval' => ['tl_class' => 'w50', 'maxlength' => 255, 'wemjoboffers_isAvailableForFilters' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-
         'hrName' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrName'],
             'default' => BackendUser::getInstance()->name,
             'exclude' => true,
             'search' => true,
@@ -206,7 +168,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'hrPosition' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPosition'],
             'default' => '',
             'exclude' => true,
             'inputType' => 'text',
@@ -214,7 +175,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'hrPhone' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPhone'],
             'default' => '',
             'exclude' => true,
             'inputType' => 'text',
@@ -222,23 +182,14 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'hrEmail' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrEmail'],
             'default' => BackendUser::getInstance()->email,
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'hrPicture' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['hrPicture'],
-            'exclude' => true,
-            'inputType' => 'fileTree',
-            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr', 'extensions' => Config::get('validImageTypes')],
-            'sql' => 'binary(16) NULL',
-        ],
 
         'text' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['text'],
             'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
@@ -247,7 +198,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
             'sql' => 'mediumtext NULL',
         ],
         'file' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['file'],
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -255,7 +205,6 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
 
         'published' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['published'],
             'exclude' => true,
             'filter' => true,
             'flag' => 1,
@@ -265,14 +214,12 @@ $GLOBALS['TL_DCA']['tl_wem_job'] = [
         ],
         'start' => [
             'exclude' => true,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['start'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'stop' => [
             'exclude' => true,
-            'label' => &$GLOBALS['TL_LANG']['tl_wem_job']['stop'],
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(10) NOT NULL default ''",

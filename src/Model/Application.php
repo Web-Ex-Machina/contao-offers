@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Model;
+namespace WEM\OffersBundle\Model;
 
 use Contao\Model;
 use WEM\PersonalDataManagerBundle\Model\Traits\PersonalDataTrait as PDMTrait;
@@ -55,13 +55,13 @@ class Application extends Model
     ];
     protected static $personalDataPidField = 'id';
     protected static $personalDataEmailField = 'email';
-    protected static $personalDataPtable = 'tl_wem_job_application';
+    protected static $personalDataPtable = 'tl_wem_offer_application';
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_wem_job_application';
+    protected static $strTable = 'tl_wem_offer_application';
 
     /**
      * Find items, depends on the arguments.

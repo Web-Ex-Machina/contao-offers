@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\DependencyInjection;
+namespace WEM\OffersBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class JobOffersExtension extends Extension
+class OffersExtension extends Extension
 {
     /**
      * {@inheritdoc}

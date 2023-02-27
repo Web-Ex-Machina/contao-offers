@@ -1,146 +1,146 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/wem-job-offers/languages/en/tl_wem_job_feed_attribute.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-offers/languages/en/tl_wem_offer_feed_attribute.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="tl_wem_job_feed_attribute.name.0">
+    	<trans-unit id="tl_wem_offer_feed_attribute.name.0">
 			<source>Name</source>
 			<target>Nom</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.name.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.name.1">
 			<source>Enter the attribute name (standardized, in english)</source>
 			<target>Indiquez le nom de l'attribute (standardisé, en anglais)</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.label.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.label.0">
 			<source>Label</source>
 			<target>Label</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.label.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.label.1">
 			<source>Enter the attribute label</source>
 			<target>Indiquez le label de l'attribut</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_job_feed_attribute.type.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.type.0">
 			<source>Type</source>
 			<target>Type</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.type.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.type.1">
 			<source>Select the attribute type</source>
 			<target>Sélectionner le type de l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.value.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.value.0">
 			<source>Default value</source>
 			<target>Valeur par défaut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.value.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.value.1">
 			<source>Enter the attribute default value</source>
 			<target>Indiquez la valeur par défaut de l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.options.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.options.0">
 			<source>Options</source>
 			<target>Options</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.options.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.options.1">
 			<source>Enter the attribute options</source>
 			<target>Indiquez les options de l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.mandatory.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.mandatory.0">
 			<source>Mandatory</source>
 			<target>Obligatoire</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.mandatory.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.mandatory.1">
 			<source>Check to make this attribute mandatory</source>
 			<target>Cocher pour rendre cet attribut obligatoire</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_job_feed_attribute.isFilter.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.isFilter.0">
 			<source>Filter</source>
 			<target>Filtre</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.isFilter.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.isFilter.1">
 			<source>Check to make this attribute available for list filters</source>
 			<target>Cocher pour rendre cet attribut utilisable comme filtre de liste</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.isAlertCondition.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.isAlertCondition.0">
 			<source>Alert condition</source>
 			<target>Condition d'alerte</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.isAlertCondition.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.isAlertCondition.1">
 			<source>Check to make this attribute available for alert conditions</source>
 			<target>Cocher pour rendre cet attribut utilisable comme condition d'alerte</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_job_feed_attribute.insertAfter.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.insertAfter.0">
 			<source>Insert after</source>
 			<target>Insérer après</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.insertAfter.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.insertAfter.1">
 			<source>The attribute will be displayed after the selected field</source>
 			<target>L'attribut sera affiché après le champ sélectionné</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.class.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.class.0">
 			<source>Class</source>
 			<target>Classe</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.class.1">
+		<trans-unit id="tl_wem_offer_feed_attribute.class.1">
 			<source>Enter an optional CSS class</source>
 			<target>Indiquez une éventuelle classe CSS</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_job_feed_attribute.title_legend">
+		<trans-unit id="tl_wem_offer_feed_attribute.title_legend">
 			<source>General data</source>
 			<target>Informations générales</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.field_legend">
+		<trans-unit id="tl_wem_offer_feed_attribute.field_legend">
 			<source>Settings</source>
 			<target>Configuration</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.settings_legend">
+		<trans-unit id="tl_wem_offer_feed_attribute.settings_legend">
 			<source>Advanced settings</source>
 			<target>Paramètres avancés</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.design_legend">
+		<trans-unit id="tl_wem_offer_feed_attribute.design_legend">
 			<source>Design</source>
 			<target>Affichage</target>
 		</trans-unit>
 
-    	<trans-unit id="tl_wem_job_feed_attribute.new.0">
+    	<trans-unit id="tl_wem_offer_feed_attribute.new.0">
 			<source>New attribute</source>
 			<target>Nouvel attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.new.1">
-			<source>Create a new job offers attribute</source>
+		<trans-unit id="tl_wem_offer_feed_attribute.new.1">
+			<source>Create a new offers attribute</source>
 			<target>Créer un nouvel attribut d'offre d'emploi</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.edit.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.edit.0">
 			<source>Edit attribute</source>
 			<target>Editer le flux</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.edit.1">
-			<source>Edit job offers attribute ID %s</source>
-			<target>Editer l'attribut d'offres d'emploi ID %s</target>
+		<trans-unit id="tl_wem_offer_feed_attribute.edit.1">
+			<source>Edit offers attribute ID %s</source>
+			<target>Editer l'attribut d'annonces ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.copy.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.copy.0">
 			<source>Copy attribute</source>
 			<target>Dupliquer l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.copy.1">
-			<source>Copy job offers attribute ID %s</source>
-			<target>Dupliquer l'attribut d'offres d'emploi ID %s</target>
+		<trans-unit id="tl_wem_offer_feed_attribute.copy.1">
+			<source>Copy offers attribute ID %s</source>
+			<target>Dupliquer l'attribut d'annonces ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.delete.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.delete.0">
 			<source>Delete attribute</source>
 			<target>Supprimer l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.delete.1">
-			<source>Delete job offers attribute ID %s</source>
-			<target>Supprimer l'attribut d'offres d'emploi ID %s</target>
+		<trans-unit id="tl_wem_offer_feed_attribute.delete.1">
+			<source>Delete offers attribute ID %s</source>
+			<target>Supprimer l'attribut d'annonces ID %s</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.show.0">
+		<trans-unit id="tl_wem_offer_feed_attribute.show.0">
 			<source>Show attribute data</source>
 			<target>Voir les informations de l'attribut</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_job_feed_attribute.show.1">
-			<source>Show job offers attribute data ID %s</source>
-			<target>Voir les informations de l'attribut d'offres d'emploi ID %s</target>
+		<trans-unit id="tl_wem_offer_feed_attribute.show.1">
+			<source>Show offers attribute data ID %s</source>
+			<target>Voir les informations de l'attribut d'annonces ID %s</target>
 		</trans-unit>
     </body>
   </file>

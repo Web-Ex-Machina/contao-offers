@@ -1,0 +1,42 @@
+<div class="block-card offer offer_default<?= $this->class ?>" data-offer="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article" data-preset="inline">
+	<div class="block-card__wrapper">
+		<?php if ($this->blnDisplayPictures && count($this->pictures)>0): ?>
+			<div class="block-card__figure offer__figure r_4-3 fit--contain">
+				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
+			</div>
+		<?php endif ?>
+		<div class="block-card__content">
+			<div class="offer__title h2">
+				<?= $this->title ?>
+			</div>
+			<div class="block-card__text_">
+				<?php if($this->locations): ?>
+					<div class="offer__location">
+						<span class="offer__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
+					</div>
+				<?php endif; ?>
+				<?php if ($this->blnDisplayText): ?>
+					<div class="offer__teaser">
+						<?= $this->text ?>
+					</div>
+				<?php endif ?>
+				<?php if ($this->blnDisplayAttributes): ?>
+					<?php if ($this->attributes): ?>
+						<div class="offer__attributes">
+							<?php foreach ($this->attributes as $key => $value): ?>
+								<div class="offer__attribute">
+									<div class="offer__attribute__title"><?= $key ?></div>
+									<div class="offer__attribute__value"><?= $value ?></div>
+								</div>
+							<?php endforeach ?>
+						</div>
+					<?php endif ?>
+				<?php endif ?>
+			</div>
+			<div class="block-card__action offer__footer">
+				<div class="btn-load offer__more" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
