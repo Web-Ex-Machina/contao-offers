@@ -12,12 +12,12 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Module;
+namespace WEM\OffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Patchwork\Utf8;
-use WEM\JobOffersBundle\Model\Job as JobModel;
+use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -25,7 +25,7 @@ use WEM\UtilsBundle\Classes\StringUtil;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class ModuleJobOffersList extends ModuleJobOffers
+class ModuleOffersList extends ModuleOffers
 {
     /**
      * List config.
@@ -57,7 +57,7 @@ class ModuleJobOffersList extends ModuleJobOffers
      *
      * @var string
      */
-    protected $strTemplate = 'mod_jobslist';
+    protected $strTemplate = 'mod_offerslist';
 
     /**
      * Display a wildcard in the back end.
@@ -68,7 +68,7 @@ class ModuleJobOffersList extends ModuleJobOffers
     {
         if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['jobslist'][0]).' ###';
+            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['offerslist'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
@@ -79,12 +79,12 @@ class ModuleJobOffersList extends ModuleJobOffers
 
         // Load bundles, datacontainer and job feeds
         $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
-        $this->loadDatacontainer('tl_wem_job');
-        $this->loadLanguageFile('tl_wem_job');
-        $this->job_feeds = \StringUtil::deserialize($this->job_feeds);
+        $this->loadDatacontainer('tl_wem_offer');
+        $this->loadLanguageFile('tl_wem_offer');
+        $this->offer_feeds = \StringUtil::deserialize($this->offer_feeds);
 
         // Return if there are no archives
-        if (empty($this->job_feeds) || !\is_array($this->job_feeds)) {
+        if (empty($this->offer_feeds) || !\is_array($this->offer_feeds)) {
             return '';
         }
 
@@ -103,7 +103,7 @@ class ModuleJobOffersList extends ModuleJobOffers
         $objSession = \Session::getInstance();
 
         // If we have setup a form, allow module to use it later
-        if ($this->job_applicationForm) {
+        if ($this->offer_applicationForm) {
             $this->blnDisplayApplyButton = true;
         }
 
@@ -112,30 +112,30 @@ class ModuleJobOffersList extends ModuleJobOffers
             try {
                 switch (\Input::post('action')) {
                     case 'seeDetails':
-                        if (!\Input::post('job')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['argumentMissing'], 'job'));
+                        if (!\Input::post('offer')) {
+                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
-                        $objJob = JobModel::findByPk(\Input::post('job'));
+                        $objItem = OfferModel::findByPk(\Input::post('offer'));
 
-                        $this->job_template = 'job_details';
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseJobOffer($objJob));
+                        $this->offer_template = 'offer_details';
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
                         die;
                     break;
 
                     case 'apply':
-                        if (!\Input::post('job')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['argumentMissing'], 'job'));
+                        if (!\Input::post('offer')) {
+                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
 
-                        // Put the job in session
-                        $objSession->set('wem_job_offer', \Input::post('job'));
+                        // Put the offer in session
+                        $objSession->set('wem_offer', \Input::post('offer'));
 
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('job')));
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
                         die;
                     break;
 
                     default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
@@ -147,10 +147,10 @@ class ModuleJobOffersList extends ModuleJobOffers
             die;
         }
 
-        if ($this->job_applicationForm
-            && '' !== $objSession->get('wem_job_offer')
+        if ($this->offer_applicationForm
+            && '' !== $objSession->get('wem_offer')
         ) {
-            $strForm = $this->getApplicationForm($objSession->get('wem_job_offer'));
+            $strForm = $this->getApplicationForm($objSession->get('wem_offer'));
 
             // Fetch the application form if defined
             if (Input::post('FORM_SUBMIT')) {
@@ -174,17 +174,17 @@ class ModuleJobOffersList extends ModuleJobOffers
         }
 
         $this->Template->articles = [];
-        $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['empty'];
+        $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
 
         // Add pids
-        $this->config = ['pid' => $this->job_feeds, 'published' => 1];
+        $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
         // Retrieve filters
         $this->buildFilters();
         $this->Template->filters = $this->filters;
 
         // Get the total number of items
-        $intTotal = JobModel::countItems($this->config);
+        $intTotal = OfferModel::countItems($this->config);
 
         if ($intTotal < 1) {
             return;
@@ -223,11 +223,11 @@ class ModuleJobOffersList extends ModuleJobOffers
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        $objArticles = JobModel::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
+        $objArticles = OfferModel::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
         if (null !== $objArticles) {
-            $this->Template->articles = $this->parseJobOffers($objArticles);
+            $this->Template->articles = $this->parseOffers($objArticles);
         }
         $this->Template->moduleId = $this->id;
     }
@@ -235,22 +235,22 @@ class ModuleJobOffersList extends ModuleJobOffers
     /**
      * Parse and return an application form for a job.
      *
-     * @param int    $intJob      [Job ID]
+     * @param int    $intId      [Job ID]
      * @param string $strTemplate [Template name]
      *
      * @return string
      */
-    protected function getApplicationForm($intJob, $strTemplate = 'job_apply')
+    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
     {
-        $strForm = $this->getForm($this->job_applicationForm);
+        $strForm = $this->getForm($this->offer_applicationForm);
 
-        $objJob = JobModel::findByPk($intJob);
+        $objItem = OfferModel::findByPk($intId);
 
         $objTemplate = new \FrontendTemplate($strTemplate);
-        $objTemplate->id = $objJob->id;
-        $objTemplate->code = $objJob->code;
-        $objTemplate->title = $objJob->title;
-        $objTemplate->recipient = $objJob->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $objTemplate->id = $objItem->id;
+        $objTemplate->code = $objItem->code;
+        $objTemplate->title = $objItem->title;
+        $objTemplate->recipient = $objItem->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
         $objTemplate->time = time();
         $objTemplate->token = \RequestToken::get();
         $objTemplate->form = $strForm;
@@ -265,35 +265,35 @@ class ModuleJobOffersList extends ModuleJobOffers
      */
     protected function buildFilters()
     {
-        if (!$this->job_addFilters) {
+        if (!$this->offer_addFilters) {
             return;
         }
 
         // Retrieve and format dropdowns filters
-        $filters = deserialize($this->job_filters);
+        $filters = deserialize($this->offer_filters);
         if (\is_array($filters) && !empty($filters)) {
             foreach ($filters as $f) {
                 $filter = [
-                    'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['inputType'],
+                    'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['inputType'],
                     'name' => $f,
-                    'label' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_job'][$f][0],
+                    'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
                     'value' => \Input::get($f) ?: '',
                     'options' => [],
-                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['eval']['multiple'] ? true : false,
+                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['eval']['multiple'] ? true : false,
                 ];
 
-                switch ($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['inputType']) {
+                switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['inputType']) {
                     case 'select':
-                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options_callback'])) {
-                            $strClass = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options_callback'][0];
-                            $strMethod = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options_callback'][1];
+                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'])) {
+                            $strClass = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'][0];
+                            $strMethod = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'][1];
 
                             $this->import($strClass);
                             $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options_callback'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options_callback']($this);
-                        } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$f]['options'];
+                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'])) {
+                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback']($this);
+                        } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options'])) {
+                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options'];
                         }
 
                         foreach ($options as $value => $label) {
@@ -307,7 +307,7 @@ class ModuleJobOffersList extends ModuleJobOffers
 
                     case 'text':
                     default:
-                        $objOptions = JobModel::findItemsGroupByOneField($f);
+                        $objOptions = OfferModel::findItemsGroupByOneField($f);
 
                         if ($objOptions && 0 < $objOptions->count()) {
                             $filter['type'] = 'select';
@@ -331,12 +331,12 @@ class ModuleJobOffersList extends ModuleJobOffers
         }
 
         // Add fulltext search if asked
-        if ($this->job_addSearch) {
+        if ($this->offer_addSearch) {
             $this->filters[] = [
                 'type' => 'text',
                 'name' => 'search',
-                'label' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['search'],
-                'placeholder' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['searchPlaceholder'],
+                'label' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['search'],
+                'placeholder' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['searchPlaceholder'],
                 'value' => \Input::get('search') ?: '',
             ];
 

@@ -13,14 +13,14 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Module;
+namespace WEM\OffersBundle\Module;
 
 /**
  * Common functions for job offers modules.
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-abstract class ModuleJobOffers extends \Module
+abstract class ModuleOffers extends \Module
 {
     /**
      * Parse one or more items and return them as array.
@@ -30,7 +30,7 @@ abstract class ModuleJobOffers extends \Module
      *
      * @return array
      */
-    protected function parseJobOffers($objArticles, $blnAddArchive = false)
+    protected function parseOffers($objArticles, $blnAddArchive = false)
     {
         $limit = $objArticles->count();
 
@@ -42,10 +42,9 @@ abstract class ModuleJobOffers extends \Module
         $arrArticles = [];
 
         while ($objArticles->next()) {
-            /** @var NewsModel $objArticle */
             $objArticle = $objArticles->current();
 
-            $arrArticles[] = $this->parseJobOffer($objArticle, $blnAddArchive, ((1 === ++$count) ? ' first' : '').(($count === $limit) ? ' last' : '').((0 === ($count % 2)) ? ' odd' : ' even'), $count);
+            $arrArticles[] = $this->parseOffer($objArticle, $blnAddArchive, ((1 === ++$count) ? ' first' : '').(($count === $limit) ? ' last' : '').((0 === ($count % 2)) ? ' odd' : ' even'), $count);
         }
 
         return $arrArticles;
@@ -61,9 +60,9 @@ abstract class ModuleJobOffers extends \Module
      *
      * @return string
      */
-    protected function parseJobOffer($objArticle, $blnAddArchive = false, $strClass = '', $intCount = 0)
+    protected function parseOffer($objArticle, $blnAddArchive = false, $strClass = '', $intCount = 0)
     {
-        $objTemplate = new \FrontendTemplate($this->job_template);
+        $objTemplate = new \FrontendTemplate($this->offer_template);
         $objTemplate->setData($objArticle->row());
 
         if ('' !== $objArticle->cssClass) {
@@ -78,11 +77,6 @@ abstract class ModuleJobOffers extends \Module
         $objTemplate->timestamp = $objArticle->postedAt;
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
 
-        // Retrieve and parse the HR Picture
-        if ($objArticle->hrPicture && $objFile = \FilesModel::findByUuid($objArticle->hrPicture)) {
-            $objTemplate->hrPicture = \Image::get($objFile->path, 300, 300);
-        }
-
         // Parse locations
         if (is_array(deserialize($objArticle->locations))) {
             $objTemplate->locations = implode(', ', deserialize($objArticle->locations));
@@ -90,7 +84,7 @@ abstract class ModuleJobOffers extends \Module
             $objTemplate->locations = $objArticle->locations;
         }
 
-        // Fetch the job offer file
+        // Fetch the offer offer file
         if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
             $objTemplate->file = $objFile->path;
             $objTemplate->isImage = @is_array(getimagesize($objFile->path));
@@ -101,36 +95,19 @@ abstract class ModuleJobOffers extends \Module
         // Notice the template if we want/can display apply button
         if ($this->blnDisplayApplyButton) {
             $objTemplate->blnDisplayApplyButton = true;
-            $objTemplate->applyUrl = $this->addToUrl('apply='.$objArticle->id, true, ['job']);
-
-            // Comply with i18nl10n constraints
-            if (\array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
-                $objTemplate->applyUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->applyUrl;
-            }
+            $objTemplate->applyUrl = $this->addToUrl('apply='.$objArticle->id, true, ['offer']);
         }
 
         // Notice the template if we want to display the text
-        if ($this->job_displayTeaser) {
+        if ($this->offer_displayTeaser) {
             $objTemplate->blnDisplayText = true;
         } else {
-            $objTemplate->detailsUrl = $this->addToUrl('seeDetails='.$objArticle->id, true, ['job']);
-
-            // Comply with i18nl10n constraints
-            if (\array_key_exists('VerstaerkerI18nl10nBundle', $this->bundles)) {
-                $objTemplate->detailsUrl = $GLOBALS['TL_LANGUAGE'].'/'.$objTemplate->detailsUrl;
-            }
+            $objTemplate->detailsUrl = $this->addToUrl('seeDetails='.$objArticle->id, true, ['offer']);
         }
 
         // Notify the template we must open this item apply modal
         if ($this->openApplyModalOnStart && $objArticle->id === $this->openApplyModalOnStart) {
             $objTemplate->openApplyModalOnStart = true;
-        }
-
-        // Tag the response
-        if (\System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
-            /** @var ResponseTagger $responseTagger */
-            $responseTagger = \System::getContainer()->get('fos_http_cache.http.symfony_response_tagger');
-            $responseTagger->addTags(['contao.db.tl_pzl_job.'.$objArticle->id]);
         }
 
         return $objTemplate->parse();

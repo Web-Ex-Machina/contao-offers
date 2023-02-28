@@ -12,14 +12,14 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\Module;
+namespace WEM\OffersBundle\Module;
 
 use NotificationCenter\Model\Notification;
 use Patchwork\Utf8;
-use WEM\JobOffersBundle\Model\Alert;
-use WEM\JobOffersBundle\Model\AlertCondition;
-use WEM\JobOffersBundle\Model\Job as JobModel;
-use WEM\JobOffersBundle\Model\JobFeed;
+use WEM\OffersBundle\Model\Alert;
+use WEM\OffersBundle\Model\AlertCondition;
+use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -27,7 +27,7 @@ use WEM\UtilsBundle\Classes\StringUtil;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class ModuleJobOffersAlert extends ModuleJobOffers
+class ModuleOffersAlert extends ModuleOffers
 {
     /**
      * List conditions.
@@ -39,7 +39,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
      *
      * @var string
      */
-    protected $strTemplate = 'mod_jobsalert';
+    protected $strTemplate = 'mod_offersalert';
 
     /**
      * Display a wildcard in the back end.
@@ -50,7 +50,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
     {
         if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['jobslist'][0]).' ###';
+            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
@@ -61,11 +61,11 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
         // Load bundles, datacontainer and job feeds
         $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
-        $this->loadDatacontainer('tl_wem_job');
-        $this->loadLanguageFile('tl_wem_job');
+        $this->loadDatacontainer('tl_wem_offer');
+        $this->loadLanguageFile('tl_wem_offer');
 
         // Return if there are no archives
-        if (!$this->job_feed) {
+        if (!$this->offer_feed) {
             return '';
         }
 
@@ -84,7 +84,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                     case 'subscribe':
                         // Check if we have a valid email
                         if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
-                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidEmail']);
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidEmail']);
                         }
 
                         // Check if we have conditions
@@ -97,15 +97,15 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                         // Check if we already have an existing alert with this email and this conditions
                         if (0 < Alert::countItems(
-                            ['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions, 'active' => 1]
+                            ['email' => \Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 1]
                         )) {
-                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertAlreadyExists']);
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['alertAlreadyExists']);
                         }
 
                         // The alert might be inactive, so instead of delete it
                         // and create a new alert, try to retrieve an existing but disable one
                         $objAlert = Alert::findItems(
-                            ['email' => \Input::post('email'), 'feed' => $this->job_feed, 'conditions' => $arrConditions, 'active' => 0],
+                            ['email' => \Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 0],
                             1
                         );
 
@@ -123,7 +123,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                         $objAlert->email = \Input::post('email');
                         $objAlert->frequency = \Input::post('frequency') ?: 'daily'; // @todo -> add default frequency as setting
                         $objAlert->token = StringUtil::generateToken(); // @todo -> add code system to confirm requests as alternatives to links/token
-                        $objAlert->feed = $this->job_feed; // @todo -> build a multi feed alert
+                        $objAlert->feed = $this->offer_feed; // @todo -> build a multi feed alert
                         $objAlert->save();
 
                         if (!empty($arrConditions)) {
@@ -140,27 +140,27 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                         // Build and send a notification
                         $arrTokens = $this->getNotificationTokens($objAlert);
-                        $objNotification = Notification::findByPk($this->job_ncSubscribe);
+                        $objNotification = Notification::findByPk($this->offer_ncSubscribe);
                         $objNotification->send($arrTokens);
 
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'msg' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertCreated'],
+                            'msg' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['alertCreated'],
                         ];
                     break;
 
                     case 'unsubscribe':
                         // Check if we have a valid email
                         if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
-                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidEmail']);
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidEmail']);
                         }
 
-                        $objAlert = Alert::findItems(['email' => \Input::post('email'), 'feed' => $this->job_feed], 1);
+                        $objAlert = Alert::findItems(['email' => \Input::post('email'), 'feed' => $this->offer_feed], 1);
 
                         // Check if the alert exists or if the alert is already active
                         if (!$objAlert) {
-                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['alertDoesNotExists']);
+                            throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['alertDoesNotExists']);
                         }
 
                         // Generate a token for this request
@@ -169,18 +169,18 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                         // Check if the alert was not activated
                         $arrTokens = $this->getNotificationTokens($objAlert);
-                        $objNotification = Notification::findByPk($this->job_ncUnsubscribe);
+                        $objNotification = Notification::findByPk($this->offer_ncUnsubscribe);
                         $objNotification->send($arrTokens);
 
                         // Write the response
                         $arrResponse = [
                             'status' => 'success',
-                            'msg' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['requestSent'],
+                            'msg' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['requestSent'],
                         ];
                     break;
 
                     default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getMessage(), 'trace' => $e->getTrace()];
@@ -195,18 +195,18 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         // Catch Subscribe GET request
         if (\Input::get('token') && 'subscribe' === \Input::get('wem_action')) {
             try {
-                $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token'), 'active' => false], 1);
+                $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => \Input::get('token'), 'active' => false], 1);
 
                 // Check if the alert exists or if the alert is already active
                 if (!$objAlert || 0 < $objAlert->activatedAt) {
-                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidLink']);
                 }
 
                 // Check if the alert is expired (we do not want to activate alerts created more than one hour ago)
                 if (strtotime('-1 hour') > $objAlert->createdAt) {
                     $objAlert->delete();
 
-                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['expiredLink']);
+                    throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['expiredLink']);
                 }
 
                 // Update the alert
@@ -217,7 +217,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                 // Build a message
                 $this->Template->isRequest = true;
-                $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertActivated'];
+                $this->Template->message = $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['alertActivated'];
 
                 return;
             } catch (\Exception $e) {
@@ -231,11 +231,11 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         if ('unsubscribe' === \Input::get('wem_action')) {
             if (\Input::get('token')) {
                 try {
-                    $objAlert = Alert::findItems(['feed' => $this->job_feed, 'token' => \Input::get('token')], 1);
+                    $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => \Input::get('token')], 1);
 
                     // Check if the alert exists or if the alert is already active
                     if (!$objAlert) {
-                        throw new \Exception($GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['ERROR']['invalidLink']);
+                        throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidLink']);
                     }
 
                     // Delete the alert
@@ -243,7 +243,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
 
                     // Build a message
                     $this->Template->isRequest = true;
-                    $this->Template->message = $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['MSG']['alertDeleted'];
+                    $this->Template->message = $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['alertDeleted'];
 
                     return;
                 } catch (\Exception $e) {
@@ -263,7 +263,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
         $this->Template->moduleId = $this->id;
 
         // Retrieve and send the page for GDPR compliance
-        if ($this->job_pageGdpr && $objGdprPage = \PageModel::findByPk($this->job_pageGdpr)) {
+        if ($this->offer_pageGdpr && $objGdprPage = \PageModel::findByPk($this->offer_pageGdpr)) {
             $this->Template->gdprPage = $objGdprPage->getFrontendUrl();
         }
     }
@@ -276,30 +276,30 @@ class ModuleJobOffersAlert extends ModuleJobOffers
     protected function buildConditions()
     {
         // Retrieve and format dropdowns conditions
-        $conditions = deserialize($this->job_conditions);
+        $conditions = deserialize($this->offer_conditions);
         if (\is_array($conditions) && !empty($conditions)) {
             foreach ($conditions as $c) {
                 $condition = [
-                    'type' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['inputType'],
+                    'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType'],
                     'name' => $c,
-                    'label' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_job'][$c][0],
+                    'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
                     'value' => \Input::get($c) ?: '',
                     'options' => [],
-                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['eval']['multiple'] ? true : false,
+                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple'] ? true : false,
                 ];
 
-                switch ($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['inputType']) {
+                switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType']) {
                     case 'select':
-                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options_callback'])) {
-                            $strClass = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options_callback'][0];
-                            $strMethod = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options_callback'][1];
+                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
+                            $strClass = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'][0];
+                            $strMethod = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'][1];
 
                             $this->import($strClass);
                             $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options_callback'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options_callback']($this);
-                        } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_job']['fields'][$c]['options'];
+                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
+                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback']($this);
+                        } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options'])) {
+                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options'];
                         }
 
                         foreach ($options as $value => $label) {
@@ -313,7 +313,7 @@ class ModuleJobOffersAlert extends ModuleJobOffers
                     // Keep it because it works but it should not be used...
                     case 'text':
                     default:
-                        $objOptions = JobModel::findItemsGroupByOneField($c);
+                        $objOptions = OfferModel::findItemsGroupByOneField($c);
 
                         if ($objOptions && 0 < $objOptions->count()) {
                             $condition['type'] = 'select';
@@ -343,20 +343,20 @@ class ModuleJobOffersAlert extends ModuleJobOffers
     {
         $arrTokens = [];
 
-        $objFeed = JobFeed::findByPk($objAlert->feed);
+        $objFeed = OfferFeed::findByPk($objAlert->feed);
         foreach ($objFeed->row() as $strKey => $varValue) {
-            $arrTokens['jobfeed_'.$strKey] = $varValue;
+            $arrTokens['offerfeed_'.$strKey] = $varValue;
         }
 
         foreach ($objAlert->row() as $strKey => $varValue) {
             $arrTokens['subscription_'.$strKey] = $varValue;
         }
 
-        if ($this->job_pageSubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageSubscribe)) {
+        if ($this->offer_pageSubscribe && $objSubscribePage = \PageModel::findByPk($this->offer_pageSubscribe)) {
             $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=subscribe&token='.$objAlert->token;
         }
 
-        if ($this->job_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->job_pageUnsubscribe)) {
+        if ($this->offer_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->offer_pageUnsubscribe)) {
             $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe';
             $arrTokens['link_unsubscribeConfirm'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
         }
