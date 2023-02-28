@@ -20,6 +20,7 @@ array_insert(
         'wemoffers' => [
             'wem-offers' => [
                 'tables' => ['tl_wem_offer_feed', 'tl_wem_offer', 'tl_wem_offer_application', 'tl_wem_offer_feed_attribute'],
+                'sendNotificationToApplication' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'sendNotificationToApplication'],
             ],
             'wem-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
@@ -84,6 +85,14 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
                 'email_subject' => ['feed_*', 'recipient_*'],
                 'email_text' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
                 'email_html' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_replyTo' => ['admin_email'],
+                'email_sender_address' => ['admin_email'],
+            ],
+            'wem_offers_answer_to_application' => [
+                'recipients' => ['recipient_email'],
+                'email_subject' => ['feed_*', 'offer_*', 'recipient_*'],
+                'email_text' => ['feed_*', 'offer_*', 'recipient_*',],
+                'email_html' => ['feed_*', 'offer_*', 'recipient_*',],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],

@@ -2,33 +2,41 @@
   <file datatype="php" original="system/tl_nc_notificationules/wem-offers/languages/en/tl_nc_notification.php" source-language="en" target-language="fr">
     <body>
     	<trans-unit id="tl_nc_notification.type.wem_offers">
-			<source>Offers</source>
-			<target>Offres</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_email.0">
-			<source>Offers alert</source>
-			<target>Alertes d'annonces</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_email.1">
-			<source>Notification triggered by cronjob</source>
-			<target>Notification déclenchée par tâche programmée (cronjob)</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_subscribe.0">
-			<source>Alert subscription confirmation</source>
-			<target>Confirmation d'inscription à une alerte</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_subscribe.1">
-			<source>Notification triggered when a user subscribes to an alert</source>
-			<target>Notification déclenchée quand un utilisateur s'inscrit à une alerte</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_unsubscribe.0">
-			<source>Alert unsubscription confirmation</source>
-			<target>Confirmation de désinscription à une alerte</target>
-		</trans-unit>
-		<trans-unit id="tl_nc_notification.type.wem_offers_alerts_unsubscribe.1">
-			<source>Notification triggered when a user unsubscribes to an alert</source>
-			<target>Notification déclenchée quand un utilisateur se désinscrit à une alerte</target>
-		</trans-unit>
+				<source>Offers</source>
+				<target>Offres</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_email.0">
+				<source>Offers alert</source>
+				<target>Alertes d'annonces</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_email.1">
+				<source>Notification triggered by cronjob</source>
+				<target>Notification déclenchée par tâche programmée (cronjob)</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_subscribe.0">
+				<source>Alert subscription confirmation</source>
+				<target>Confirmation d'inscription à une alerte</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_subscribe.1">
+				<source>Notification triggered when a user subscribes to an alert</source>
+				<target>Notification déclenchée quand un utilisateur s'inscrit à une alerte</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_unsubscribe.0">
+				<source>Alert unsubscription confirmation</source>
+				<target>Confirmation de désinscription à une alerte</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_alerts_unsubscribe.1">
+				<source>Notification triggered when a user unsubscribes to an alert</source>
+				<target>Notification déclenchée quand un utilisateur se désinscrit à une alerte</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_answer_to_application.0">
+				<source>Answer to an application</source>
+				<target>Réponse à une candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_nc_notification.type.wem_offers_answer_to_application.1">
+				<source>Send a notification to an application from backend</source>
+				<target>Envoi d'une notification à une candidature depuis le backend</target>
+			</trans-unit>
     </body>
   </file>
 </xliff>

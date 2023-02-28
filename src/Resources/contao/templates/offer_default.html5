@@ -2,7 +2,7 @@
 	<div class="block-card__wrapper">
 		<?php if ($this->blnDisplayPictures && count($this->pictures)>0): ?>
 			<div class="block-card__figure offer__figure r_4-3 fit--contain">
-				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
+				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt'] ?: $this->pictures[0]['name'] ?>" />
 			</div>
 		<?php endif ?>
 		<div class="block-card__content">
@@ -10,7 +10,7 @@
 				<?= $this->title ?>
 			</div>
 			<div class="block-card__text_">
-				<?php if($this->locations): ?>
+				<?php if ($this->locations): ?>
 					<div class="offer__location">
 						<span class="offer__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
 					</div>
@@ -34,8 +34,14 @@
 				<?php endif ?>
 			</div>
 			<div class="block-card__action offer__footer">
-				<div class="btn-load offer__more" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
-				</div>
+				<button class="btn-load offer__more" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+					<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
+				</button>
+				<?php if ($this->blnDisplayApplyButton): ?>
+				<button class="btn-load" data-process="openApplicationModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
+				</button>
+				<?php endif; ?>
+
 			</div>
 		</div>
 	</div>

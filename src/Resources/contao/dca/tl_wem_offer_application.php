@@ -76,6 +76,10 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
                 'icon' => 'tablewizard.gif',
                 'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showApplicationLetter'],
             ],
+            'sendNotificationToApplication' => [
+                'href' => 'key=sendNotificationToApplication',
+                'icon' => 'rows.gif',
+            ],
         ],
     ],
 

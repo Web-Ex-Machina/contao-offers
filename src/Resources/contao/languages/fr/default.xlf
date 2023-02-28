@@ -52,6 +52,15 @@
 				<target>Que recherchez-vous ?</target>
 			</trans-unit>
 
+			<trans-unit id="WEM.OFFERS.answerNotification.0">
+				<source>Notification</source>
+				<target>Notification</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.answerNotification.1">
+				<source>Select the notification to send</source>
+				<target>Sélectionnez la notification à envoyer</target>
+			</trans-unit>
+
 			<trans-unit id="WEM.OFFERS.GATEWAY.email">
 				<source>Email</source>
 				<target>Email</target>
@@ -59,6 +68,15 @@
 			<trans-unit id="WEM.OFFERS.GATEWAY.sms">
 				<source>Text</source>
 				<target>SMS</target>
+			</trans-unit>
+
+			<trans-unit id="WEM.OFFERS.BTN.previewAnswer">
+				<source>Preview answer</source>
+				<target>Apercu de la réponse</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.BTN.sendAnswer">
+				<source>Send answer</source>
+				<target>Envoyer la réponse</target>
 			</trans-unit>
 
 			<trans-unit id="WEM.OFFERS.MSG.alertCreated">
@@ -76,6 +94,10 @@
 			<trans-unit id="WEM.OFFERS.MSG.alertDeleted">
 				<source>Your alert has been deleted.</source>
 				<target>Votre alerte a été supprimée.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.MSG.answerSent">
+				<source>Your answer has been sent!</source>
+				<target>Votre réponse a été envoyée !</target>
 			</trans-unit>
 
 			<trans-unit id="WEM.OFFERS.ERROR.unknownRequest">
@@ -105,6 +127,18 @@
 			<trans-unit id="WEM.OFFERS.ERROR.expiredLink">
 				<source>This link is expired.</source>
 				<target>Ce lien est expiré.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noAnswerNotificationsAvailable">
+				<source>There is no answers notifications available, please create one in the Notification Center.</source>
+				<target>Il n'y a pas de notifications de réponses disponible, veuillez en créer une dans le Centre des Notifications.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noAnswerNotificationSelected">
+				<source>Please select an answer notification.</source>
+				<target>Sélectionnez une notification de réponse.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noMessagesFoundInNotification">
+				<source>Please add messages to the notification.</source>
+				<target>Veuillez ajouter des messages à la notification sélectionnée.</target>
 			</trans-unit>
     </body>
   </file>
