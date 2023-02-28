@@ -34,11 +34,13 @@
 				<?php endif ?>
 			</div>
 			<div class="block-card__action offer__footer">
-				<button class="btn-load offer__more" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+				<<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?> class="btn-load offer__more <?php if (!$this->blnDisplayApplyButton): ?>ft-primary<?php endif; ?>" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+					<?php if ($this->blnDisplayApplyButton): ?>
 					<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
-				</button>
+					<?php endif; ?>
+				</<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?>>
 				<?php if ($this->blnDisplayApplyButton): ?>
-				<button class="btn-load" data-process="openApplicationModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
+				&nbsp;<button class="btn-load" data-process="openApplicationModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
 				</button>
 				<?php endif; ?>
 
