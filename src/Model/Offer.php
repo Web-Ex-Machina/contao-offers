@@ -32,7 +32,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @var array
      */
-    public static $arrSearchFields = ['code', 'title', 'field', 'text'];
+    public static $arrSearchFields = ['code', 'title', 'text'];
 
     /**
      * Find items, depends on the arguments.
