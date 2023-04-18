@@ -27,6 +27,16 @@
 			<target>Cochez pour afficher le résumé dans la liste</target>
 		</trans-unit>
 
+		<trans-unit id="tl_module.offer_displayAttributes.0">
+			<source>Display attributes</source>
+			<target>Afficher les attributs</target>
+		</trans-unit>
+		<trans-unit id="tl_module.offer_displayAttributes.1">
+			<source>Check to display the attributes in the list</source>
+			<target>Cochez pour afficher les attrbuts dans la liste</target>
+		</trans-unit>
+
+
 		<trans-unit id="tl_module.offers_allowAlerts.0">
 			<source>Authorize alerts</source>
 			<target>Autoriser les alertes</target>

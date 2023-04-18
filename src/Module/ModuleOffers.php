@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use WEM\OffersBundle\Model\OfferFeedAttribute;
+
 /**
  * Common functions for job offers modules.
  *
@@ -97,6 +99,26 @@ abstract class ModuleOffers extends \Module
             $objTemplate->blnDisplayApplyButton = true;
             $objTemplate->applyUrl = $this->addToUrl('apply='.$objArticle->id, true, ['offer']);
         }
+
+
+        // Notice the template if we want to display attributes
+        if ($this->offer_displayAttributes) {
+            $this->blnDisplayAttributes = true;
+        }
+        // all attributes are contained within the $objArticle itself.
+        $attributes = [];
+
+        $objAttributes = OfferFeedAttribute::findItems(['pid' => $objArticle->pid]);
+
+        if ($objAttributes && 0 < $objAttributes->count()) {
+            $arrArticleData = $objArticle->row();
+            while ($objAttributes->next()) {
+                if (array_key_exists($objAttributes->name, $arrArticleData)) {
+                    $attributes[$objAttributes->name] = $arrArticleData[$objAttributes->name];
+                }
+            }
+        }
+        $objTemplate->attributes = $attributes;
 
         // Notice the template if we want to display the text
         if ($this->offer_displayTeaser) {

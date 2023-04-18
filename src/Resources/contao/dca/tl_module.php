@@ -18,7 +18,7 @@ $this->loadDataContainer('tl_content');
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_addFilters';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},offer_feeds,offer_displayTeaser,offer_addFilters;
+    {config_legend},offer_feeds,offer_displayTeaser,offer_displayAttributes,offer_addFilters;
     {list_legend},numberOfItems,skipFirst,perPage;
     {form_legend},offer_applicationForm;
     {template_legend:hide},offer_template,customTpl;
@@ -156,4 +156,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_ncUnsubscribe'] = [
     'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getUnsubscribeNotificationChoices'],
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_displayAttributes'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
+    'sql' => "char(1) NOT NULL default ''",
 ];
