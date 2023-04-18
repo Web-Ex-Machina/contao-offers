@@ -1,29 +1,35 @@
 <?php $this->extend('block_unsearchable'); ?>
 
 <?php $this->block('content'); ?>
-
   <?php if ($this->filters): ?>
 	<form action="{{env::request}}" method="GET">
 	    <div class="filters m-bottom" data-container="offers" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
-	    	<div class="filters__line line--1">
+	    	<div class="filters__line line--2">
 	    		<div class="filters__col col--left">
 			    	<?php foreach ($this->filters as $f): ?>
-							<?php if ('select' == $f['type']): ?>
-								<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
-									<?php if (!$f['multiple']): ?>
-									<option value="">- <?= $f['label']; ?> -</option>
-									<?php endif; ?>
-									<?php foreach ($f['options'] as $o): ?>
-									<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
-									<?php endforeach; ?>
-								</select>
-							<?php else: ?>
-								<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
-							<?php endif; ?>
+			    		<?php if ($f['name'] != 'search'): ?>
+								<?php if ('select' == $f['type']): ?>
+									<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
+										<?php if (!$f['multiple']): ?>
+										<option value="">- <?= $f['label']; ?> -</option>
+										<?php endif; ?>
+										<?php foreach ($f['options'] as $o): ?>
+										<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+										<?php endforeach; ?>
+									</select>
+								<?php else: ?>
+									<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
+								<?php endif; ?>
+			    		<?php endif ?>
 			  		<?php endforeach; ?>
 		  		</div>
 		  		<div class="filters__col col--right">
 						<div class="input-group">
+							<?php foreach ($this->filters as $f): ?>
+			    			<?php if ($f['name'] == 'search'): ?>
+									<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
+			    			<?php endif ?>
+			  			<?php endforeach; ?>
 							<button type="submit" class="squared btn"><i class="fal fa-search"></i></button>
 						</div>
 					</div>
@@ -55,7 +61,9 @@
 			    },10);
 	    	<?php endif; ?>
 
-
+	    	$('.mod_offerslist .filter').on('change',function(){
+					$(this).closest('form').submit();
+				});
 	    	$('body').on('click','.offer_details .sliderFW__subitem,.offer_details .sliderFW__item',function(){
 	    		if (!$(this).find('.sliderFW__subitem').length) {
 		    		$(this).closest('.offer_details').find('.offer__figure img').attr('src',$(this).find('.sliderFW__item__bg img').attr('data-src')).attr('alt',$(this).find('.sliderFW__item__bg img').attr('alt'))
