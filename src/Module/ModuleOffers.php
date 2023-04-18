@@ -102,9 +102,7 @@ abstract class ModuleOffers extends \Module
 
 
         // Notice the template if we want to display attributes
-        if ($this->offer_displayAttributes) {
-            $this->blnDisplayAttributes = true;
-        }
+        $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
         // all attributes are contained within the $objArticle itself.
         $attributes = [];
 
