@@ -20,6 +20,7 @@ use Contao\StringUtil;
 use Contao\Session;
 use Contao\File;
 use Contao\System;
+use WEM\OffersBundle\Model\Offer;
 
 class StoreFormDataHook
 {
@@ -29,7 +30,16 @@ class StoreFormDataHook
             if ('offer-application' === $objForm->formID) {
                 // Unset fields who are not in tl_wem_offer_application table
                 $strCode = $arrSet['code'];
-                unset($arrSet['recipient'], $arrSet['code'], $arrSet['title']);
+                unset($arrSet['recipient'], $arrSet['code'], $arrSet['title'], $arrSet['fdm[first_appearance]'], $arrSet['fdm[first_interaction]'], $arrSet['fdm[current_page]'], $arrSet['fdm[current_page_url]'], $arrSet['fdm[referer_page_url]']);
+
+                $arrSet['pid'] = null;
+                $objOffer = Offer::findBy('code', $strCode);
+                if ($objOffer) {
+                    $arrSet['pid'] = $objOffer->next()->current()->id;
+                }
+
+                // do something for countries
+                $arrSet['country'] = strtolower($arrSet['country']);
 
                 // Convert files path into uuid
                 if ($arrSet['cv'] && $objFile = FilesModel::findOneByPath($arrSet['cv'])) {

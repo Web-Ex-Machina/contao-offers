@@ -38,12 +38,14 @@ class OfferApplicationContainer extends Backend
      */
     public function listItems($row)
     {
+        $objItem = Application::findByPk($row['id']);
+
         return sprintf(
             '(%s) %s <span style="color:#888">[%s - %s]</span>',
             $GLOBALS['TL_LANG']['tl_wem_offer_application']['status'][$row['status']],
-            $row['firstname'].' '.$row['lastname'],
-            $row['city'],
-            $GLOBALS['TL_LANG']['CNT'][$row['country']]
+            $objItem->firstname.' '.$objItem->lastname,
+            $objItem->city,
+            $GLOBALS['TL_LANG']['CNT'][strtolower($objItem->country)]
         );
     }
 

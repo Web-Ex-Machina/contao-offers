@@ -42,6 +42,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'child_record_class' => 'no_padding',
         ],
         'label'=>[
+            'fields'=>['firstname','lastname','city','country'],
             'label_callback' => ['wem.personal_data_manager.dca.listing.callback.list_label_label_for_list', '__invoke'],
         ],
         'global_operations' => [
