@@ -185,12 +185,22 @@ class OfferApplicationContainer extends Backend
             '/[^\S ]+\</s',     // strip whitespaces before tags, except space
             '/(\s)+/s',         // shorten multiple whitespace sequences
             '/<!--(.|\s)*?-->/' // Remove HTML comments
+            ,'/"/' // Escape double quotes
+            ,'/\'/' // Escape single quotes
+            ,'/\n/' // Remove new lines
+            ,'/\r/' // Remove new lines
+            ,'/\r\n/' // Remove new lines
         );
 
         $replace = array(
             '>',
             '<',
             '\\1',
+            '',
+            '\"',
+            '\\\'',
+            '',
+            '',
             ''
         );
 
