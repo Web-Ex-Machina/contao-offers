@@ -133,7 +133,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
                 case 'conditions':
                     foreach ($varValue as $c => $v) {
                         $arrColumns[] = sprintf(
-                            "$t.id IN (SELECT twjac.pid FROM tl_wem_offer_alert_condition AS twjac WHERE twoac.field = '%s' AND twoac.value = '%s')",
+                            "$t.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%s' AND twoac.value = '%s')",
                             $c,
                             $v
                         );
