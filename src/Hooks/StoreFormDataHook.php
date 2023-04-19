@@ -40,6 +40,7 @@ class StoreFormDataHook
 
                 // do something for countries
                 $arrSet['country'] = strtolower($arrSet['country']);
+                $arrSet['createdAt'] = time();
 
                 // Convert files path into uuid
                 if ($arrSet['cv'] && $objFile = FilesModel::findOneByPath($arrSet['cv'])) {
