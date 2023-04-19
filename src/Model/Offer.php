@@ -159,4 +159,74 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             throw $e;
         }
     }
+
+    /**
+     * Get offer attributes as array
+     * @return array ['attribute_name'=>['label'=>$label, 'raw_value'=>$value,'human_readable_value'=>$human_readable_value]]
+     */
+    public function getAttributesFull(): array
+    {
+        $attributes = [];
+
+        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid]);
+
+        if ($objAttributes && 0 < $objAttributes->count()) {
+            $arrArticleData = $this->row();
+            while ($objAttributes->next()) {
+                if (array_key_exists($objAttributes->name, $arrArticleData)) {
+                    $attributes[$objAttributes->name] = [
+                        'label'=>$objAttributes->label,
+                        'raw_value'=>$arrArticleData[$objAttributes->name],
+                        'human_readable_value'=>$arrArticleData[$objAttributes->name]
+                    ];
+
+                    switch ($objAttributes->type) {
+                        case "select":
+                            $options = unserialize($objAttributes->options ?? '');
+                            foreach ($options as $option) {
+                                if ($option['value'] === $arrArticleData[$objAttributes->name]) {
+                                    $attributes[$objAttributes->name]['human_readable'] = $option['label'];
+                                }
+                            }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Get offer attributes as array
+     * @return array ['attribute_label'=>$human_readable_value,...]
+     */
+    public function getAttributesSimple(): array
+    {
+        $attributes = [];
+
+        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid]);
+
+        if ($objAttributes && 0 < $objAttributes->count()) {
+            $arrArticleData = $this->row();
+            while ($objAttributes->next()) {
+                if (array_key_exists($objAttributes->name, $arrArticleData)) {
+                    $attributes[$objAttributes->label] = $arrArticleData[$objAttributes->name];
+
+                    switch ($objAttributes->type) {
+                        case "select":
+                            $options = unserialize($objAttributes->options ?? '');
+                            foreach ($options as $option) {
+                                if ($option['value'] === $arrArticleData[$objAttributes->name]) {
+                                    $attributes[$objAttributes->label] = $option['label'];
+                                }
+                            }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $attributes;
+    }
 }

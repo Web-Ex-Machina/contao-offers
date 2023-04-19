@@ -104,19 +104,7 @@ abstract class ModuleOffers extends \Module
         // Notice the template if we want to display attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
         // all attributes are contained within the $objArticle itself.
-        $attributes = [];
-
-        $objAttributes = OfferFeedAttribute::findItems(['pid' => $objArticle->pid]);
-
-        if ($objAttributes && 0 < $objAttributes->count()) {
-            $arrArticleData = $objArticle->row();
-            while ($objAttributes->next()) {
-                if (array_key_exists($objAttributes->name, $arrArticleData)) {
-                    $attributes[$objAttributes->name] = $arrArticleData[$objAttributes->name];
-                }
-            }
-        }
-        $objTemplate->attributes = $attributes;
+        $objTemplate->attributes = $objArticle->getAttributesSimple();
 
         // Notice the template if we want to display the text
         if ($this->offer_displayTeaser) {
