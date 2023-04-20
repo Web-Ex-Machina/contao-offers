@@ -14,22 +14,27 @@
 	<?= $attributeData['human_readable_value']; ?>
 	<br />
 <?php endforeach; ?>
-<strong>Contact</strong> : <?= $this->hrName; ?>
-
-<?php if($this->hrPosition): ?>
-&nbsp;/ <?=$this->hrPosition;?>
-<?php endif; ?>
-
-<?php if($this->hrPhone): ?>
-&nbsp;/ <a href="tel:<?= $this->hrPhone; ?>"><?=$this->hrPhone;?></a>
-<?php endif; ?>
-
-<?php if($this->hrEmail): ?>
-&nbsp;/ <a href="mailto:<?= $this->hrEmail; ?>?subject=Candidature%20&agrave;%20l'annonce%20[<?= $this->code; ?>]%20<?= $this->title; ?>"><?=$this->hrEmail;?></a>
-<?php endif; ?>
-<br />
-
 <strong>Description</strong> :
 <br />
 <?= $this->text; ?>
+<br />
+
+<strong>Contact</strong> : <?= $this->hrName; ?>
+<br />
+<strong>Nom</strong> : <?= $this->hrName; ?>
+<?php if($this->hrPosition): ?>
+<strong>Poste</strong> : <?=$this->hrPosition;?>
+<br />
+<?php endif; ?>
+
+<?php if($this->hrPhone): ?>
+<strong>Téléphone</strong> : <a href="tel:<?= $this->hrPhone; ?>"><?=$this->hrPhone;?></a>
+<br />
+<?php endif; ?>
+
+<?php if($this->hrEmail): ?>
+<!-- pre-fill with subject and body ? -->
+<strong>Email</strong> : <a href="mailto:<?= $this->hrEmail; ?>"><?=$this->hrEmail;?></a>
+<br />
+<?php endif; ?>
 <br />

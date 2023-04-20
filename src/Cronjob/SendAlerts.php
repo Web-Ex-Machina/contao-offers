@@ -156,7 +156,6 @@ class SendAlerts
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
 
             $arrTokens['link_unsubscribe'] = '';
-            $arrTokens['link_unsubscribe_label'] = 'Se désinscrire';
             $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
