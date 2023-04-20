@@ -16,6 +16,9 @@ namespace WEM\OffersBundle\Cronjob;
 
 use Contao\FrontendTemplate;
 use Contao\System;
+use Contao\Environment;
+use Contao\ModuleModel;
+use Contao\PageModel;
 use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
@@ -151,6 +154,15 @@ class SendAlerts
 
             $arrTokens['offershtml'] = implode('<hr>', $arrBuffer);
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
+
+            //@todo : make the unsubscribe link work
+            //(we don't have access to the HTTP environment here)
+            $arrTokens['link_unsubscribe'] = '';
+            $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
+            if ($objModuleOffersAlert) {
+                $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
+                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getFrontendUrl().'?action=unsubscribe&token='.$objAlerts->token;
+            }
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
                 ++$nbAlerts;

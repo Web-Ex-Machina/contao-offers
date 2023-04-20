@@ -212,7 +212,7 @@ class ModuleOffersAlert extends ModuleOffers
                 // Update the alert
                 $objAlert->tstamp = time();
                 $objAlert->activatedAt = time();
-                $objAlert->token = '';
+                // $objAlert->token = '';
                 $objAlert->save();
 
                 // Build a message

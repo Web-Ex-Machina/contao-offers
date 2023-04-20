@@ -67,8 +67,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
             'wem_offers_alerts_email' => [
                 'recipients' => ['recipient_email'],
                 'email_subject' => ['feed_*', 'recipient_*'],
-                'email_text' => ['feed_*', 'recipient_*', 'offerstext'],
-                'email_html' => ['feed_*', 'recipient_*', 'offershtml'],
+                'email_text' => ['feed_*', 'recipient_*', 'offerstext','link_*'],
+                'email_html' => ['feed_*', 'recipient_*', 'offershtml','link_*'],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],
