@@ -155,18 +155,20 @@ class SendAlerts
             $arrTokens['offershtml'] = implode('<hr>', $arrBuffer);
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
 
-            //@todo : make the unsubscribe link work
-            //(we don't have access to the HTTP environment here)
             $arrTokens['link_unsubscribe'] = '';
+            $arrTokens['link_unsubscribe_label'] = 'Se désinscrire';
             $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
-                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getFrontendUrl().'?action=unsubscribe&token='.$objAlerts->token;
+                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
             }
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
                 ++$nbAlerts;
                 $objNotification->send($arrTokens);
+                $objAlert = $objAlerts->current();
+                $objAlert->lastJob = time();
+                $objAlert->save();
             }
         }
 
