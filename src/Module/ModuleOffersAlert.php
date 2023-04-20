@@ -203,7 +203,7 @@ class ModuleOffersAlert extends ModuleOffers
                 }
 
                 // Check if the alert is expired (we do not want to activate alerts created more than one hour ago)
-                if (strtotime('-1 hour') > $objAlert->createdAt) {
+                if (strtotime('-1 hour') > $objAlert->tstamp) {
                     $objAlert->delete();
 
                     throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['expiredLink']);

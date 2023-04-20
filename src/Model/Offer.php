@@ -185,7 +185,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                             $options = unserialize($objAttributes->options ?? '');
                             foreach ($options as $option) {
                                 if ($option['value'] === $arrArticleData[$objAttributes->name]) {
-                                    $attributes[$objAttributes->name]['human_readable'] = $option['label'];
+                                    $attributes[$objAttributes->name]['human_readable_value'] = $option['label'];
                                 }
                             }
                         break;

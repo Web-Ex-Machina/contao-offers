@@ -1,1 +1,35 @@
-TOFILL
+<strong>Offre</strong> : [<?=$this->code; ?>] <?=$this->title; ?>
+<br />
+<strong>Postée le</strong> : <?= $this->availableAt; ?>
+<br />
+<strong>Pays</strong> : <?= implode(', ',$this->countries); ?>
+<br />
+<strong>Villes</strong> : <?= implode(', ',$this->locations); ?>
+<br />
+<?php foreach($this->attributes as $attributeName => $attributeData): ?>
+	<strong>
+		<!-- use translation key ?-->
+		<?= $attributeData['label']; ?>
+	</strong> :
+	<?= $attributeData['human_readable_value']; ?>
+	<br />
+<?php endforeach; ?>
+<strong>Contact</strong> : <?= $this->hrName; ?>
+
+<?php if($this->hrPosition): ?>
+&nbsp;/ <?=$this->hrPosition;?>
+<?php endif; ?>
+
+<?php if($this->hrPhone): ?>
+&nbsp;/ <a href="tel:<?= $this->hrPhone; ?>"><?=$this->hrPhone;?></a>
+<?php endif; ?>
+
+<?php if($this->hrEmail): ?>
+&nbsp;/ <a href="mailto:<?= $this->hrEmail; ?>?subject=Candidature%20&agrave;%20l'annonce%20[<?= $this->code; ?>]%20<?= $this->title; ?>"><?=$this->hrEmail;?></a>
+<?php endif; ?>
+<br />
+
+<strong>Description</strong> :
+<br />
+<?= $this->text; ?>
+<br />

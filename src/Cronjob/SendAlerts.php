@@ -46,6 +46,7 @@ class SendAlerts
         // or daily and lastJob < time - 1 day
         // or weekly and lastJob < time - 1 week
         // or monthly and lastJob < time - 1 month
+        $c = ['active'=>1];
         $arrWhere = [];
         $arrWhere[] = sprintf(
             "(
@@ -58,6 +59,7 @@ class SendAlerts
             strtotime('-1 week'),
             strtotime('-1 month'),
         );
+        $c['where'] = $arrWhere;
         $objAlerts = Alert::findItems($c);
 
         // Quit the job if there is no alerts to retrieve
@@ -141,13 +143,13 @@ class SendAlerts
                 if (\array_key_exists($objItems->id, $arrCache)) {
                     $arrBuffer[] = $arrCache[$objItems->id];
                 } else {
-                    $arrBuffer[] = $this->parseItem($objItems->current(), $objFeed->tplAlertJob);
+                    $arrBuffer[] = $this->parseItem($objItems->current(), $objFeed->tplOfferAlert);
                 }
 
                 ++$nbOffers;
             }
 
-            $arrTokens['offershtml'] = implode('', $arrBuffer);
+            $arrTokens['offershtml'] = implode('<hr>', $arrBuffer);
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
@@ -173,13 +175,30 @@ class SendAlerts
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
 
-        // HOOK: add custom logic
-        if (isset($GLOBALS['TL_HOOKS']['parseArticles']) && \is_array($GLOBALS['TL_HOOKS']['parseArticles'])) {
-            foreach ($GLOBALS['TL_HOOKS']['parseArticles'] as $callback) {
-                $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}($objTemplate, $objItem->row(), $this);
-            }
+        $objTemplate->postedAt = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->postedAt);
+        $objTemplate->availableAt = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->availableAt);
+
+        $countriesSystem = System::getCountries();
+        $countries = [];
+        $countriesShort = unserialize($objItem->countries ?? '');
+        foreach ($countriesShort as $countryShort) {
+            $countries[] = $countriesSystem[$countryShort];
         }
+        $objTemplate->countries = $countries;
+
+        $locations = unserialize($objItem->locations ?? '');
+        $objTemplate->locations = $locations ?? [];
+        $objTemplate->attributes = $objItem->getAttributesFull();
+
+        // Disabled because parseArticles hook expects a \Contao\Module as 3rd parameter
+        // @todo : re-enable it when solution found
+        // HOOK: add custom logic
+        // if (isset($GLOBALS['TL_HOOKS']['parseArticles']) && \is_array($GLOBALS['TL_HOOKS']['parseArticles'])) {
+        //     foreach ($GLOBALS['TL_HOOKS']['parseArticles'] as $callback) {
+        //         $obj = System::importStatic($callback[0]);
+        //         $obj->{$callback[1]}($objTemplate, $objItem->row(), $this);
+        //     }
+        // }
 
         return $objTemplate->parse();
     }
