@@ -12,6 +12,8 @@ use Contao\Date;
 use Contao\Config;
 use Contao\Model;
 use Contao\File;
+use Contao\FilesModel;
+use Contao\Validator;
 
 class UiHook{
 	
@@ -57,10 +59,6 @@ class UiHook{
 
     public function renderSingleItemBodyOriginalModelSingleFieldValue(int $pid, string $ptable, string $email, string $field, $value, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        if (empty($buffer)) {
-            return sprintf('<i>%s</i>', $this->translator->trans('WEM.SMARTGEAR.DEFAULT.NotFilled', [], 'contao_default'));
-        }
-
         switch ($ptable) {
             case Application::getTable():
                 switch ($field) {
@@ -69,8 +67,25 @@ class UiHook{
                         // $objFeed = $objOffer->getRelated('pid');
                         $buffer = '['.$objOffer->code.'] '.$objOffer->title;
                     break;
+                    case 'status':
+                    	$buffer = $this->translator->trans('tl_wem_offer_application.status.'.$value,[],'contao_default');
+                    break;
                     case 'createdAt':
                         $buffer = Date::parse(Config::get('datimFormat'), (int) $value);
+                    break;
+                    case 'cv':
+                    case 'applicationLetter':
+                    // dump($buffer);
+                    // dump(Validator::isStringUuid($buffer));
+                        if (Validator::isStringUuid($buffer)) {
+                            $objFileModel = FilesModel::findByUuid($buffer);
+                            if (!$objFileModel) {
+                                $buffer = $this->translator->trans('WEMSG.FDM.PDMUI.fileNotFound', [], 'contao_default');
+                            } else {
+                                $buffer = $objFileModel->name;
+                            }
+                        }
+                        // $buffer = 'A file';
                     break;
                 }
             break;
@@ -86,7 +101,7 @@ class UiHook{
                 switch ($personalData->field) {
                     case 'cv':
                     case 'applicationLetter':
-                        $buffer = 'A file';
+                        $buffer = 'A file'; // @todo : update when those file will be tagged as containing personal data
                     break;
                 }
             break;

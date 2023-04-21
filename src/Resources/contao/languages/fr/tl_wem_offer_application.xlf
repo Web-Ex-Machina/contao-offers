@@ -30,6 +30,10 @@
 				<target>Acceptée</target>
 			</trans-unit>
 
+	    	<trans-unit id="tl_wem_offer_application.pid.0">
+				<source>Offer</source>
+				<target>Offre</target>
+			</trans-unit>
 	    	<trans-unit id="tl_wem_offer_application.firstname.0">
 				<source>Firstname</source>
 				<target>Prénom</target>
