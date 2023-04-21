@@ -75,6 +75,15 @@
 			<target>Cocher pour envoyer cette alerte par email</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_offer_alert.lastJob.0">
+			<source>Last job</source>
+			<target>Dernier envoi</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_alert.activatedAt.0">
+			<source>Activated at</source>
+			<target>Activée le</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_offer_alert.conditions.0">
 			<source>Filters</source>
 			<target>Filtres</target>

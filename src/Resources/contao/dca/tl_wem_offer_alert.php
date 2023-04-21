@@ -30,13 +30,14 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     'list' => [
         'sorting' => [
             'mode' => 1,
-            'fields' => ['name', 'email'],
-            'flag' => 1,
+            'fields' => ['activatedAt'],
+            'flag' => 12,
             'panelLayout' => 'filter;search,limit',
         ],
         'label' => [
-            'fields' => ['name', 'email'],
+            'fields' => ['email','feed','frequency','lastJob','activatedAt'],
             'format' => '%s - %s',
+            'showColumns' => true,
             'label_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'listItems'],
         ],
         'global_operations' => [
@@ -68,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     'palettes' => [
         'default' => '
             {recipient_legend},name,position,phone,email;
-            {alert_legend},feed,frequency,sendViaEmail;
+            {alert_legend},feed,frequency;
             {filters_legend},conditions
         ',
     ],
@@ -123,6 +124,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
         'email' => [
             'default' => BackendUser::getInstance()->email,
             'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -130,6 +132,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
 
         'feed' => [
             'exclude' => true,
+            'search' => true,
             'inputType' => 'select',
             'options_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'getFeeds'],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -139,6 +142,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
         ],
         'frequency' => [
             'exclude' => true,
+            'search' => true,
             'inputType' => 'select',
             'options' => ['hourly', 'daily', 'weekly', 'monthly'],
             'reference' => $GLOBALS['TL_LANG']['tl_wem_offer_alert']['frequency'],
@@ -151,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'foreignTable' => 'tl_wem_offer_alert_condition',
             'foreignField' => 'pid',
             'params' => [
-                'do' => 'wem-offer-alerts',
+                'do' => 'wem-offers-alerts',
             ],
             'eval' => [
                 'fields' => ['field', 'value'],

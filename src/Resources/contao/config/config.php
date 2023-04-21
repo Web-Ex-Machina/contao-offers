@@ -22,7 +22,7 @@ array_insert(
                 'tables' => ['tl_wem_offer_feed', 'tl_wem_offer', 'tl_wem_offer_application', 'tl_wem_offer_feed_attribute'],
                 'sendNotificationToApplication' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'sendNotificationToApplication'],
             ],
-            'wem-alerts' => [
+            'wem-offers-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
             ],
         ],

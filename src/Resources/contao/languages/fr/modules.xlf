@@ -13,11 +13,11 @@
 			<source>Manage offers</source>
 			<target>Gérer les annonces</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-alerts.0">
+		<trans-unit id="MOD.wem-offers-alerts.0">
 			<source>Alerts</source>
 			<target>Alertes</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-alerts.1">
+		<trans-unit id="MOD.wem-offers-alerts.1">
 			<source>Manage offers alerts</source>
 			<target>Gérer les alertes d'annonces</target>
 		</trans-unit>

@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use WEM\OffersBundle\Model\Alert;
+use WEM\OffersBundle\Model\OfferFeed;
+
 class OfferAlertContainer
 {
     /**
@@ -21,13 +24,23 @@ class OfferAlertContainer
      *
      * @return string
      */
-    public function listItems($row)
+    public function listItems(array $row, string $label, \Contao\DataContainer $dc, array $labels): array
     {
-        return sprintf(
-            '%s <span style="color:#888">[%s]</span>',
-            $row['name'],
-            $row['email']
-        );
+        // return sprintf(
+        //     '%s <span style="color:#888">[%s]</span>',
+        //     $row['name'],
+        //     $row['email']
+        // );
+
+        $objFeed = OfferFeed::findByPk($row['feed']);
+
+        $labels[0] = $row['email'];
+        $labels[1] = $objFeed ? $objFeed->title : $row['feed'];
+        $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']];
+        $labels[3] = !empty($row['lastJob']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['lastJob']) : '-';
+        $labels[4] = !empty($row['activatedAt']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['activatedAt']) : '-';
+
+        return $labels;
     }
 
     /**
