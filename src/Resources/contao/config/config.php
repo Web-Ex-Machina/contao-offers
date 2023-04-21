@@ -45,6 +45,14 @@ array_insert(
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [WEM\OffersBundle\Hooks\LoadDataContainerHook::class, 'addAttributesToJobDca'];
 $GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\OffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
 $GLOBALS['TL_HOOKS']['processFormData'][] = [WEM\OffersBundle\Hooks\ProcessFormDataHook::class, '__invoke'];
+// PDM UI
+$GLOBALS['WEM_HOOKS']['renderSingleItemTitle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemTitle'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingle'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingleFieldValue'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingle'];
+$GLOBALS['WEM_HOOKS']['buildSingleItemBodyPersonalDataSingleButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemBodyPersonalDataSingleButtons'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldLabel'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldLabel'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldValue'];
 
 // Models
 $GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Alert::getTable()] = WEM\OffersBundle\Model\Alert::class;

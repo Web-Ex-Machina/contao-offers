@@ -79,6 +79,16 @@
 				<target>Envoyer la réponse</target>
 			</trans-unit>
 
+
+			<trans-unit id="WEM.OFFERS.PDMUI.buttonShowFile">
+				<source>Show</source>
+				<target>Afficher</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.buttonDownloadFile">
+				<source>Download</source>
+				<target>Télécharger</target>
+			</trans-unit>
+
 			<trans-unit id="WEM.OFFERS.MSG.alertCreated">
 				<source>Your alert has been created! You will receive soon an email to activate it.</source>
 				<target>Votre alerte a été créée ! Vous allez recevoir un email pour l'activer.</target>

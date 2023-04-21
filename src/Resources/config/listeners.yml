@@ -1,0 +1,7 @@
+services:
+  offers.listener.personal_data_ui:
+    class: WEM\OffersBundle\Hooks\PersonalDataManager\UiHook
+    arguments:
+      $translator: '@contao.translation.translator'
+      $personalDataManagerUi: '@wem.personal_data_manager.service.personal_data_manager_ui'
+    public: true

@@ -37,5 +37,6 @@ class OffersExtension extends Extension
         );
 
         $loader->load('services.yml');
+        $loader->load('listeners.yml');
     }
 }
