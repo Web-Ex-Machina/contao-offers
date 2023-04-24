@@ -159,6 +159,10 @@
 				<source>File not found</source>
 				<target>Fichier introuvable</target>
 			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderTitle">
+				<source>Application</source>
+				<target>Réponse à une offre</target>
+			</trans-unit>
 			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShowTitle">
 				<source>Show</source>
 				<target>Voir</target>

@@ -47,7 +47,8 @@ class UiHook{
     {
         switch ($ptable) {
             case Application::getTable():
-                $buffer = 'Candidature';
+                $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationHeaderTitle', [], 'contao_default');
+
             break;
         }
 

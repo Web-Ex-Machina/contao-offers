@@ -34,22 +34,9 @@ class StoreFormDataHook
 
                 $arrSet['pid'] = null;
 
-                // @todo : receive "Annonce WEM Test #2" when in DB is stored as "Annonce WEM Test &#35;2"
                 if ($objOffer = Offer::findBy('code', $strCode)) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', html_entity_decode($strCode))){
-                //     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', htmlentities($strCode))){
-                //     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', htmlspecialchars($strCode))){
-                //     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', mb_convert_encoding($strCode,'UTF-8'))){
-                //     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', \Contao\StringUtil::specialchars($strCode))){
-                //     $arrSet['pid'] = $objOffer->next()->current()->id;
-                // }elseif($objOffer = Offer::findBy('code', \Contao\StringUtil::specialcharsUrl($strCode))){
-                    // $arrSet['pid'] = $objOffer->next()->current()->id;
-                }elseif($objOffer = Offer::findBy('code', str_replace('#','&#35;',$strCode))){
+                }elseif($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))){
                     $arrSet['pid'] = $objOffer->next()->current()->id;
                 }else{
                     throw new Exception('Unable to retrieve offer');
