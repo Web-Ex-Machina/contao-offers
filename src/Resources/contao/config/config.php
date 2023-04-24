@@ -47,6 +47,7 @@ $GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\OffersBundle\Hooks\StoreFormDataH
 $GLOBALS['TL_HOOKS']['processFormData'][] = [WEM\OffersBundle\Hooks\ProcessFormDataHook::class, '__invoke'];
 // PDM UI
 $GLOBALS['WEM_HOOKS']['renderSingleItemTitle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemTitle'];
+$GLOBALS['WEM_HOOKS']['buildSingleItemButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemButtons'];
 $GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingle'];
 $GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingleFieldValue'];
 $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingle'];

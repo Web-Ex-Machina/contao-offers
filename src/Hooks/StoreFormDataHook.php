@@ -33,6 +33,7 @@ class StoreFormDataHook
                 unset($arrSet['recipient'], $arrSet['code'], $arrSet['title'], $arrSet['fdm[first_appearance]'], $arrSet['fdm[first_interaction]'], $arrSet['fdm[current_page]'], $arrSet['fdm[current_page_url]'], $arrSet['fdm[referer_page_url]']);
 
                 $arrSet['pid'] = null;
+
                 // @todo : receive "Annonce WEM Test #2" when in DB is stored as "Annonce WEM Test &#35;2"
                 if ($objOffer = Offer::findBy('code', $strCode)) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
@@ -44,6 +45,12 @@ class StoreFormDataHook
                 //     $arrSet['pid'] = $objOffer->next()->current()->id;
                 // }elseif($objOffer = Offer::findBy('code', mb_convert_encoding($strCode,'UTF-8'))){
                 //     $arrSet['pid'] = $objOffer->next()->current()->id;
+                // }elseif($objOffer = Offer::findBy('code', \Contao\StringUtil::specialchars($strCode))){
+                //     $arrSet['pid'] = $objOffer->next()->current()->id;
+                // }elseif($objOffer = Offer::findBy('code', \Contao\StringUtil::specialcharsUrl($strCode))){
+                    // $arrSet['pid'] = $objOffer->next()->current()->id;
+                }elseif($objOffer = Offer::findBy('code', str_replace('#','&#35;',$strCode))){
+                    $arrSet['pid'] = $objOffer->next()->current()->id;
                 }else{
                     throw new Exception('Unable to retrieve offer');
                 }

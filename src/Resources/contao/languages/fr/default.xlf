@@ -150,6 +150,29 @@
 				<source>Please add messages to the notification.</source>
 				<target>Veuillez ajouter des messages à la notification sélectionnée.</target>
 			</trans-unit>
+
+			<trans-unit id="WEM.OFFERS.PDMUI.noFileUploaded">
+				<source>No file uplpoaded</source>
+				<target>Aucun fichier envoyé</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.fileNotFound">
+				<source>File not found</source>
+				<target>Fichier introuvable</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShowTitle">
+				<source>Show</source>
+				<target>Voir</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShow">
+				<source>Show offer application</source>
+				<target>Voir la candidature</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle">
+				<source>Show offer</source>
+				<target>Voir l'offre</target>
+			</trans-unit>
+
+
     </body>
   </file>
 </xliff>

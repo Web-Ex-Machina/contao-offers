@@ -8,25 +8,38 @@ use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Classes\FileUtil;
 use WEM\PersonalDataManagerBundle\Model\PersonalData;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
+use Contao\System;
 use Contao\Date;
 use Contao\Config;
 use Contao\Model;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Validator;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class UiHook{
 	
     /** @var TranslatorInterface */
     protected $translator;
+
+    /** @var CsrfTokenManagerInterface */
+    private $csrfTokenManager;
+
+    /** @var string */
+    private $csrfTokenName;
+
     /** @var personalDataManagerUi */
     protected $personalDataManagerUi;
 
     public function __construct(
         TranslatorInterface $translator,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        string $csrfTokenName,
         personalDataManagerUi $personalDataManagerUi
     ) {
         $this->translator = $translator;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
         $this->personalDataManagerUi = $personalDataManagerUi;
     }
 
@@ -39,6 +52,22 @@ class UiHook{
         }
 
         return $buffer;
+    }
+
+    public function buildSingleItemButtons(int $pid, string $ptable, string $email, $nothing, array $personalDatas, Model $originalModel, array $buttons): array
+    {
+        switch ($ptable) {
+            case Application::getTable():
+                $buttons['show'] = sprintf(
+                    '<a href="%s" title="%s" class="pdm-button pdm-button_show pdm-item__button_show">%s</a>',
+                    sprintf('%s?do=wem-offers&table=tl_wem_offer_application&id=%s&act=edit&rt=%s',System::getContainer()->getParameter('contao.backend.route_prefix'),$pid, $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue()),
+                    $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShowTitle', [], 'contao_default'),
+                    $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShow', [], 'contao_default')
+                );
+            break;
+        }
+
+        return $buttons;
     }
 
     public function renderSingleItemBodyOriginalModelSingle(int $pid, string $ptable, string $email, string $field, $value, array $personalDatas, Model $originalModel, string $buffer): string
@@ -63,9 +92,14 @@ class UiHook{
             case Application::getTable():
                 switch ($field) {
                     case 'pid':
-                        $objOffer = Offer::findOneBy('id', $pid);
-                        // $objFeed = $objOffer->getRelated('pid');
-                        $buffer = '['.$objOffer->code.'] '.$objOffer->title;
+                        $objOffer = Offer::findOneBy('id', $value);
+                        $buffer = sprintf(
+                            '<a href="%s" title="%s">[%s] %s</a>',
+                            sprintf('%s?do=wem-offers&table=tl_wem_offer&id=%s&act=edit&rt=%s',System::getContainer()->getParameter('contao.backend.route_prefix'),$pid, $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue()),
+                            $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle', [], 'contao_default'),
+                            $objOffer->code,
+                            $objOffer->title
+                        );
                     break;
                     case 'status':
                     	$buffer = $this->translator->trans('tl_wem_offer_application.status.'.$value,[],'contao_default');
@@ -75,17 +109,17 @@ class UiHook{
                     break;
                     case 'cv':
                     case 'applicationLetter':
-                    // dump($buffer);
-                    // dump(Validator::isStringUuid($buffer));
-                        if (Validator::isStringUuid($buffer)) {
+                        // if (Validator::isStringUuid($buffer)) { // for an unknown reason, the $buffer isn't considered as a UUID
+                        if (!empty($buffer)) {
                             $objFileModel = FilesModel::findByUuid($buffer);
                             if (!$objFileModel) {
-                                $buffer = $this->translator->trans('WEMSG.FDM.PDMUI.fileNotFound', [], 'contao_default');
+                                $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.fileNotFound', [], 'contao_default');
                             } else {
                                 $buffer = $objFileModel->name;
                             }
+                        }else{
+                            $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.noFileUploaded', [], 'contao_default');
                         }
-                        // $buffer = 'A file';
                     break;
                 }
             break;
