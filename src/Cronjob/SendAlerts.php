@@ -203,16 +203,6 @@ class SendAlerts
         $objTemplate->locations = $locations ?? [];
         $objTemplate->attributes = $objItem->getAttributesFull();
 
-        // Disabled because parseArticles hook expects a \Contao\Module as 3rd parameter
-        // @todo : re-enable it when solution found
-        // HOOK: add custom logic
-        // if (isset($GLOBALS['TL_HOOKS']['parseArticles']) && \is_array($GLOBALS['TL_HOOKS']['parseArticles'])) {
-        //     foreach ($GLOBALS['TL_HOOKS']['parseArticles'] as $callback) {
-        //         $obj = System::importStatic($callback[0]);
-        //         $obj->{$callback[1]}($objTemplate, $objItem->row(), $this);
-        //     }
-        // }
-
         return $objTemplate->parse();
     }
 }
