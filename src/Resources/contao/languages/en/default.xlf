@@ -73,6 +73,48 @@
 			<source>Text</source>
 			<target>Text</target>
 		</trans-unit>
+
+		<!-- Alerts -->
+		<trans-unit id="WEM.OFFERS.ALERTS.offerCodeLabel">
+			<source>Offer</source>
+			<target>Offer</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerAvailableAtLabel">
+			<source>Posted on</source>
+			<target>Posted le</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerCountriesLabel">
+			<source>Countries</source>
+			<target>Countries</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerLocationsLabel">
+			<source>Locations</source>
+			<target>Locations</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerTextLabel">
+			<source>Description</source>
+			<target>Description</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerContactLabel">
+			<source>Contact</source>
+			<target>Contact</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerHrNameLabel">
+			<source>Name</source>
+			<target>Name</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerHrPositionLabel">
+			<source>Position</source>
+			<target>Position</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerHrPhoneLabel">
+			<source>Phone</source>
+			<target>Phone</target>
+		</trans-unit>
+		<trans-unit id="WEM.OFFERS.ALERTS.offerHrEmailLabel">
+			<source>Email</source>
+			<target>Email</target>
+		</trans-unit>
     </body>
   </file>
 </xliff>

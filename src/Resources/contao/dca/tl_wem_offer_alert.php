@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'eval' => ['chosen' => true],
             'options_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'getOffersAlertModules'],
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
-            'foreignKey' => 'tl_module.title',
+            'foreignKey' => 'tl_module.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'eager'],
         ],

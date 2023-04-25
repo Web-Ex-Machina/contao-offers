@@ -63,7 +63,7 @@ class SendAlerts
             strtotime('-1 month'),
         );
         $c['where'] = $arrWhere;
-        $objAlerts = Alert::findItems($c);
+        $objAlerts = Alert::findItems($c,0,0,['order'=>'language ASC, moduleOffersAlert ASC']);
 
         // Quit the job if there is no alerts to retrieve
         if (!$objAlerts || 0 === $objAlerts->count()) {
@@ -74,6 +74,10 @@ class SendAlerts
 
         // Now, loop on the alerts and check if there is jobs matching its conditions
         while ($objAlerts->next()) {
+            if(!array_key_exists($objAlerts->language,$arrCache)){
+                $arrCache[$objAlerts->language] = [];
+            }
+
             // Retrieve the alert conditions
             $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
 
@@ -143,10 +147,12 @@ class SendAlerts
 
             // Loop on the items, format everything and send the notification \o/
             while ($objItems->next()) {
-                if (\array_key_exists($objItems->id, $arrCache)) {
-                    $arrBuffer[] = $arrCache[$objItems->id];
+                if (\array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
+                    $arrBuffer[] = $arrCache[$objAlerts->language][$objItems->id];
                 } else {
-                    $arrBuffer[] = $this->parseItem($objItems->current(), $objFeed->tplOfferAlert);
+                    $bufferTmp = $this->parseItem($objItems->current(), $objAlerts->language, $objFeed->tplOfferAlert);
+                    $arrBuffer[] = $bufferTmp;
+                    $arrCache[$objAlerts->language][$objItems->id] = $bufferTmp;
                 }
 
                 ++$nbOffers;
@@ -156,7 +162,10 @@ class SendAlerts
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
 
             $arrTokens['link_unsubscribe'] = '';
-            $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
+            $objModuleOffersAlert = $objAlerts->getRelated('moduleOffersAlert');
+            if (!$objModuleOffersAlert) {
+                $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
+            }
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
                 $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
@@ -164,7 +173,7 @@ class SendAlerts
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
                 ++$nbAlerts;
-                $objNotification->send($arrTokens);
+                $objNotification->send($arrTokens, $objAlerts->language);
                 $objAlert = $objAlerts->current();
                 $objAlert->lastJob = time();
                 $objAlert->save();
@@ -183,8 +192,12 @@ class SendAlerts
      *
      * @return string
      */
-    protected function parseItem($objItem, $strTemplate = 'offer_alert_default')
+    protected function parseItem($objItem, string $language, $strTemplate = 'offer_alert_default')
     {
+        System::loadLanguageFile(\WEM\OffersBundle\Model\OfferFeed::getTable(),$language);
+        System::loadLanguageFile(\WEM\OffersBundle\Model\OfferFeedAttribute::getTable(),$language);
+        System::loadLanguageFile(\WEM\OffersBundle\Model\Offer::getTable(),$language);
+
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
 
@@ -202,6 +215,7 @@ class SendAlerts
         $locations = unserialize($objItem->locations ?? '');
         $objTemplate->locations = $locations ?? [];
         $objTemplate->attributes = $objItem->getAttributesFull();
+        $objTemplate->language = $attributes;
 
         return $objTemplate->parse();
     }
