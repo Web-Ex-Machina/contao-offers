@@ -16,6 +16,7 @@ namespace WEM\OffersBundle\DataContainer;
 
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\OfferFeed;
+use Contao\ModuleModel;
 
 class OfferAlertContainer
 {
@@ -55,6 +56,20 @@ class OfferAlertContainer
 
         while ($objFeeds->next()) {
             $arrChoices[$objFeeds->id] = $objFeeds->title;
+        }
+
+        return $arrChoices;
+    }
+
+    public function getOffersAlertModules(): array
+    {
+        $arrChoices = [];
+
+        $objModules = ModuleModel::findBy('type','offersalert');
+
+        while ($objModules->next()) {
+            $objTheme = $objModules->current()->getRelated('pid');
+            $arrChoices[$objModules->id] = $objModules->name . ' ('.($objTheme ? $objTheme->name : '-').')';
         }
 
         return $arrChoices;

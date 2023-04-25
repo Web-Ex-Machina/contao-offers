@@ -69,7 +69,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     'palettes' => [
         'default' => '
             {recipient_legend},name,position,phone,email;
-            {alert_legend},feed,frequency;
+            {alert_legend},feed,frequency,language,moduleOffersAlert;
             {filters_legend},conditions
         ',
     ],
@@ -129,7 +129,28 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-
+        'language'=>[
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'eval' => ['chosen' => true, 'tl_class' => 'w50'],
+            'options_callback' => function () {
+                return \Contao\System::getLanguages(true);
+            },
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'moduleOffersAlert'=>[
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'select',
+            'eval' => ['chosen' => true],
+            'options_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'getOffersAlertModules'],
+            'eval' => ['chosen' => true, 'tl_class' => 'w50'],
+            'foreignKey' => 'tl_module.title',
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['type' => 'hasOne', 'load' => 'eager'],
+        ],
         'feed' => [
             'exclude' => true,
             'search' => true,

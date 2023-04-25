@@ -124,6 +124,8 @@ class ModuleOffersAlert extends ModuleOffers
                         $objAlert->frequency = \Input::post('frequency') ?: 'daily'; // @todo -> add default frequency as setting
                         $objAlert->token = StringUtil::generateToken(); // @todo -> add code system to confirm requests as alternatives to links/token
                         $objAlert->feed = $this->offer_feed; // @todo -> build a multi feed alert
+                        $objAlert->offersAlertModule = $this->id;
+                        $objAlert->language = $GLOBALS['TL_LANGUAGE'];
                         $objAlert->save();
 
                         if (!empty($arrConditions)) {
