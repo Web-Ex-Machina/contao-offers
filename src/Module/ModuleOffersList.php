@@ -326,6 +326,10 @@ class ModuleOffersList extends ModuleOffers
                         break;
                 }
 
+                if ('select' === $filter['type'] && 1 <= count($filter['options'])) {
+                    continue;
+                }
+
                 if (null !== \Input::get($f) && '' !== \Input::get($f)) {
                     $this->config[$f] = \Input::get($f);
                 }
