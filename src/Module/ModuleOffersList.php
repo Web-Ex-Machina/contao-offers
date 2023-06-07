@@ -312,6 +312,10 @@ class ModuleOffersList extends ModuleOffers
                         if ($objOptions && 0 < $objOptions->count()) {
                             $filter['type'] = 'select';
                             while ($objOptions->next()) {
+                                if (!$objOptions->{$f}) {
+                                    continue;
+                                }
+
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
                                     'label' => $objOptions->{$f},
