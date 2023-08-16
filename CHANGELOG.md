@@ -1,5 +1,9 @@
-Extension "Job Offers" for Contao Open Source CMS
+Extension "Offers" for Contao Open Source CMS
 ========
+X.Y.Z - YYYY-MM-DD
+- UPDATED : bundle now requires [webexmachina/contao-utils](https://github.com/Web-Ex-Machina/contao-utils) ^1.0
+
+
 0.3 - 2020-05-23
 - Add & refactor fields
 - Sort applicants files into subfolders, using the job code
