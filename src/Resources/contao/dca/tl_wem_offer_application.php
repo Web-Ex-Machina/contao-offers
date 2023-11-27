@@ -91,7 +91,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             {name_legend},firstname,lastname;
             {street_legend},street,postal,city,country;
             {contact_legend},phone,email,comments;
-            {files_legend},cv,applicationLetter;
+            {application_legend},disponibility;
+            {files_legend},cv,documents
         ',
     ],
 
@@ -202,18 +203,28 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
         ],
 
-        // {files_legend},cv,applicationLetter;
+        // {application_legend},disponibility;
+        'disponibility' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255],
+            'sql' => "mediumtext NULL",
+            'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
+        ],
+
+        // {files_legend},cv,documents;
         'cv' => [
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
             'sql' => 'binary(16) NULL',
         ],
-        'applicationLetter' => [
+        'documents' => [
             'exclude' => true,
             'inputType' => 'fileTree',
-            'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
-            'sql' => 'binary(16) NULL',
+            'eval' => ['filesOnly' => true, 'multiple' => true, 'fieldType' => 'checkbox', 'tl_class' => 'clr'],
+            'sql' => 'blob NULL',
         ],
     ],
 ];

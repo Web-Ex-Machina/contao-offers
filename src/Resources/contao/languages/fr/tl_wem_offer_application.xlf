@@ -109,6 +109,15 @@
 				<target>Saisissez un commentaire optionnel</target>
 			</trans-unit>
 
+			<trans-unit id="tl_wem_offer_application.disponibility.0">
+				<source>Disponibility</source>
+				<target>Disponibilité</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.disponibility.1">
+				<source>Enter optional disponibility</source>
+				<target>Saisissez la disponibilité (optionnel)</target>
+			</trans-unit>
+
 			<trans-unit id="tl_wem_offer_application.cv.0">
 				<source>CV</source>
 				<target>CV</target>
@@ -117,13 +126,13 @@
 				<source>Select the CV</source>
 				<target>Sélectionnez le CV</target>
 			</trans-unit>
-			<trans-unit id="tl_wem_offer_application.applicationLetter.0">
-				<source>Application letter</source>
-				<target>Lettre de motivation</target>
+			<trans-unit id="tl_wem_offer_application.documents.0">
+				<source>Documents</source>
+				<target>Documents</target>
 			</trans-unit>
-			<trans-unit id="tl_wem_offer_application.applicationLetter.1">
-				<source>Select the application letter</source>
-				<target>Sélectionnez la lettre de motivation</target>
+			<trans-unit id="tl_wem_offer_application.documents.1">
+				<source>Select other documents related to the application</source>
+				<target>Sélectionnez des documents en lien avec la candidature</target>
 			</trans-unit>
 
 			<trans-unit id="tl_wem_offer_application.statut_legend">
