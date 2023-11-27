@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\Module;
 
 use NotificationCenter\Model\Notification;
-use Patchwork\Utf8;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer as OfferModel;
@@ -50,7 +49,7 @@ class ModuleOffersAlert extends ModuleOffers
     {
         if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
+            $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
