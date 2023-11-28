@@ -23,12 +23,12 @@
 	<?php if ($this->text): ?>
 		<div class="offer__text m-bottom-x2">
 			<?= $this->text ?>
-		<?php if (count($this->pictures)>0): ?>
+		<?php if ($this->pictures && count($this->pictures)>0): ?>
 			<div class="offer__figure img-container r_4-3 fit--contain">
 				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
 			</div>
 		<?php endif; ?>
-		<?php if(count($this->pictures)>1): ?>
+		<?php if($this->pictures && count($this->pictures)>1): ?>
 			<div class="sliderFW nav--hidden gap--1-em" data-nbitems="4" data-minsizeitem="80" data-height="" data-duration="1000" data-delay="5600" data-auto="true" data-arrows="false" data-transition="" data-swipe="true" data-loop="true" data-keypress="false">
 			  <div class="sliderFW__container ft-1-rem" >
 			    <div class="sliderFW__rail">

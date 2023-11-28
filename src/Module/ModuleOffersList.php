@@ -107,7 +107,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && $this->id === \Input::post('module')) {
+        if (\Input::post('TL_AJAX') && $this->id === (int) \Input::post('module')) {
             try {
                 switch (\Input::post('action')) {
                     case 'seeDetails':
