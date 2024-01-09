@@ -72,7 +72,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             {title_legend},name,label;
             {field_legend},type,mandatory;
             {settings_legend},isFilter,isAlertCondition;
-            {design_legend},insertAfter,class
+            {design_legend},insertInDca,insertType,class
         ',
     ],
 
@@ -154,13 +154,21 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
-        'insertAfter' => [
+        'insertInDca' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFields'],
+            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['name' => 'insertAfter', 'type' => 'string', 'length' => 64, 'default' => ''],
+            'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 128, 'default' => ''],
+        ],
+        'insertType' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'options' => ['POSITION_BEFORE', 'POSITION_AFTER', 'POSITION_PREPEND', 'POSITION_APPEND'],
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => ['name' => 'insertType', 'type' => 'string', 'length' => 128, 'default' => 'POSITION_APPEND'],
         ],
         'class' => [
             'exclude' => true,
