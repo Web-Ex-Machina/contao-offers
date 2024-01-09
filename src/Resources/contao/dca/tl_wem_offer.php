@@ -50,8 +50,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
         ],
         'operations' => [
             'edit' => [
+                'href' => 'table=tl_content',
+                'icon' => 'edit.svg'
+            ],
+            'editheader' => [
                 'href' => 'act=edit',
-                'icon' => 'edit.gif',
+                'icon' => 'header.svg'
             ],
             'copy' => [
                 'href' => 'act=copy',
