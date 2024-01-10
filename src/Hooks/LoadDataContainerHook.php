@@ -33,34 +33,149 @@ class LoadDataContainerHook
                 }
 
                 while ($objAttributes->next()) {
-                    $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name] = [
-                        'label' => [0 => $objAttributes->label],
-                        'default' => $objAttributes->value ?: '',
-                        'inputType' => $objAttributes->type,
-                        'eval' => [
-                            'tl_class' => $objAttributes->class,
-                            'mandatory' => $objAttributes->mandatory ? true : false,
-                            'wemoffers_isAvailableForAlerts' => $objAttributes->isAlertCondition ? true : false,
-                            'wemoffers_isAvailableForFilters' => $objAttributes->isFilter ? true : false,
-                        ],
-                        'sql' => ['name' => $objAttributes->name, 'type' => 'string', 'length' => 255, 'default' => $objAttributes->value ?: ''],
-                    ];
-
-                    if ('select' == $objAttributes->type) {
-                        $options = deserialize($objAttributes->options);
-
-                        if (null !== $options) {
-                            $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name]['options'] = [];
-                            foreach ($options as $o) {
-                                $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name]['options'][$o['value']] = $o['label'];
-                            }
-                        }
-                    }
+                    $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name] = $this->parseDcaAttribute($objAttributes->row());
                 }
             }
         } catch (\Exception $e) {
             // @todo Translate error message
             System::log(vsprintf('Exception lancée avec le message %s et la trace %s', [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
         }
+    }
+
+    protected function parseDcaAttribute($row)
+    {
+        // Generic data
+        $data = [
+            'label' => [0 => $row['label'] ?: $row['name']],
+            'name' => $row['name'],
+            'inputType' => $row['type'],
+            'eval' => [],
+            'sql' => ['name' => $row['name']],
+        ];
+
+        // Default settings
+        if ($row['default']) {
+            $data['default'] = $row['default'];
+            $data['sql']['default'] = $row['default'];
+        }
+
+        // Maxlength settings
+        if ($row['maxlength']) {
+            $data['eval']['maxlength'] = (int) $row['maxlength'];
+            $data['sql']['length'] = (int) $row['maxlength'];
+        }
+
+        // Available for alerts settings
+        if ($row['wemoffers_isAvailableForAlerts']) {
+            $data['eval']['isAlertCondition'] = true;
+        }
+
+        // Available for filters settings
+        if ($row['wemoffers_isAvailableForFilters']) {
+            $data['eval']['isFilter'] = true;
+        }
+
+        // Mandatory settings
+        if ($row['mandatory']) {
+            $data['eval']['mandatory'] = true;
+        }
+
+        // Class settings
+        if ($row['class']) {
+            $data['eval']['tl_class'] = $row['class'];
+        }
+
+        switch ($row['type']) {
+            case 'text':
+                // Allow HTML settings
+                if ($row['allowHtml']) {
+                    $data['eval']['allowHtml'] = true;
+                }
+
+                $data['sql']['type'] = 'string';
+                break;
+
+            case 'select':
+                $data['sql']['type'] = 'string';
+
+                // Multiple settings
+                if ($row['multiple']) {
+                    $data['eval']['multiple'] = true;
+                }
+
+                // Options
+                $options = deserialize($row['options']);
+
+                if (null !== $options) {
+                    $data['options'] = [];
+                    foreach ($options as $o) {
+                        $data['options'][$o['value']] = $o['label'];
+                    }
+                }
+                break;
+
+            case 'picker':
+                // Fkey settings
+                if ($row['fkey']) {
+                    $data['foreignKey'] = $row['fkey'];
+                }
+
+                // Multiple settings
+                if ($row['multiple']) {
+                    $data['eval']['multiple'] = true;
+                    $data['sql']['type'] = 'blob';
+                    $data['sql']['default'] = 'NULL';
+                    $data['relation'] = ['type'=>'hasMany', 'load'=>'lazy'];
+                } else {
+                    $data['sql'] = 'int(10) unsigned NOT NULL default 0';
+                    $data['relation'] = ['type'=>'hasOne', 'load'=>'lazy'];
+                }
+                break;
+
+            case 'fileTree':
+                // filesOnly settings
+                if ($row['filesOnly']) {
+                    $data['eval']['filesOnly'] = true;
+                }
+
+                // extensions settings
+                if ($row['fieldType']) {
+                    $data['eval']['fieldType'] = $row['fieldType'];
+                }
+
+                // extensions settings
+                if ($row['extensions']) {
+                    $data['eval']['extensions'] = $row['extensions'];
+                }
+
+                // Multiple settings
+                if ($row['multiple']) {
+                    $data['eval']['multiple'] = true;
+                    $data['sql']['type'] = 'blob';
+                    $data['sql']['default'] = 'NULL';
+                } else {
+                    $data['sql']['type'] = 'binary';
+                    $data['sql']['length'] = 16;
+                    $data['sql']['default'] = 'NULL';
+                }
+                break;
+
+            case 'listWizard':
+                // Allow HTML settings
+                if ($row['allowHtml']) {
+                    $data['eval']['allowHtml'] = true;
+                }
+                
+                // Multiple settings
+                if ($row['multiple']) {
+                    $data['eval']['multiple'] = true;
+                }
+
+                $data['sql']['type'] = 'blob';
+                $data['sql']['default'] = 'NULL';
+                break;
+        }
+
+        return $data;
     }
 }

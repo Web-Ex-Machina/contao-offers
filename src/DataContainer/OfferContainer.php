@@ -171,7 +171,11 @@ class OfferContainer extends \Backend
             $objPalette = PaletteManipulator::create();
             while ($objAttributes->next()) {
                 if (false === strrpos($GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'], $objAttributes->name)) {
-                    $objPalette->addField($objAttributes->name, $objAttributes->insertAfter);
+                    $objPalette->addField(
+                        $objAttributes->name, 
+                        $objAttributes->insertInDca, 
+                        constant('Contao\CoreBundle\DataContainer\PaletteManipulator::' . $objAttributes->insertType)
+                    );
                 }
             }
             $objPalette->applyToPalette('default', 'tl_wem_offer');
