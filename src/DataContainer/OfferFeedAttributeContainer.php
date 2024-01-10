@@ -39,17 +39,7 @@ class OfferFeedAttributeContainer extends \Backend
      */
     public function getFieldOptions()
     {
-        $fields = array();
-
-        foreach ($GLOBALS['TL_FFL'] as $k=>$v) {
-            if ($k !== 'text' && $k !== 'select') {
-                continue;
-            }
-
-            $fields[] = $k;
-        }
-
-        return $fields;
+        return ['text', 'select', 'picker', 'fileTree', 'listWizard'];
     }
 
     /**

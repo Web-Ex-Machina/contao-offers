@@ -80,6 +80,9 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     'subpalettes' => [
         'type_text' => 'value',
         'type_select' => 'options',
+        'type_picker' => 'fkey',
+        'type_fileTree' => 'multiple,filesOnly,fieldType,extensions',
+        'type_listWizard' => 'multiple,allowHtml,maxlength',
     ],
 
     // Fields
@@ -120,12 +123,11 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'inputType' => 'select',
             'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldOptions'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
-            'reference' => &$GLOBALS['TL_LANG']['FFL'],
+            'reference' => &$GLOBALS['TL_LANG']['CTE'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
         ],
         'value' => [
             'exclude' => true,
-            'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -135,6 +137,46 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'inputType' => 'optionWizard',
             'eval' => ['mandatory' => true, 'allowHtml' => true],
             'sql' => 'blob NULL',
+        ],
+        'fkey' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'multiple' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'filesOnly' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'fieldType' => [
+            'exclude' => true,
+            'inputType' => 'select',
+            'options' => ['radio', 'checkbox'],
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => ['name' => 'fieldType', 'type' => 'string', 'length' => 128, 'default' => 'radio'],
+        ],
+        'extensions' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'maxlength' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'allowHtml' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'sql' => "char(1) NOT NULL default ''",
         ],
         'mandatory' => [
             'exclude' => true,
@@ -164,7 +206,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         ],
         'insertType' => [
             'exclude' => true,
-            'filter' => true,
             'inputType' => 'select',
             'options' => ['POSITION_BEFORE', 'POSITION_AFTER', 'POSITION_PREPEND', 'POSITION_APPEND'],
             'eval' => ['tl_class' => 'w50'],
@@ -172,7 +213,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         ],
         'class' => [
             'exclude' => true,
-            'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
