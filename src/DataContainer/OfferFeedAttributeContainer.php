@@ -68,11 +68,11 @@ class OfferFeedAttributeContainer extends \Backend
 
             foreach ($arrWidgets as $w) {
                 if (false !== strpos($w, "_legend")) {
-                    $arrOptions['legends'][] = $w;
+                    $arrOptions['legends'][] = trim(str_replace(["{", "}", "_hidden"], ["", "", ""], $w));
                     continue;
                 }
 
-                $arrOptions['fields'][] = $w;
+                $arrOptions['fields'][] = trim($w);
 
                 $arrSubfields = $this->getFieldsFromSubpalette($w);
 
@@ -104,7 +104,7 @@ class OfferFeedAttributeContainer extends \Backend
             }
 
             foreach($arrSubfields as $s) {
-                $arrFields[] = $s;
+                $arrFields[] = trim($s);
 
                 $arrSubfields = $this->getFieldsFromSubpalette($s);
 

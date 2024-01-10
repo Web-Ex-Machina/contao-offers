@@ -147,11 +147,13 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         'multiple' => [
             'exclude' => true,
             'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'filesOnly' => [
             'exclude' => true,
             'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'fieldType' => [
@@ -202,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'inputType' => 'select',
             'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 128, 'default' => ''],
+            'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'insertType' => [
             'exclude' => true,
