@@ -2,24 +2,22 @@
 	<div class="offer__title h2">
 		<?= $this->title ?>
 	</div>
-	<?php if($this->locations): ?>
-		<div class="offer__location">
-			<span class="offer__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
-		</div>
-	<?php endif; ?>
+
 	<?php if ($this->attributes): ?>
 		<div class="offer__attributes">
-			<?php foreach ($this->attributes as $key => $value): ?>
-				<div class="offer__attribute">
-					<div class="offer__attribute__title"><?= $key ?></div>
-					<div class="offer__attribute__value"><?= $value ?></div>
-				</div>
+			<?php foreach ($this->attributes as $attribute): ?>
+			<div class="offer__attribute">
+				<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
+				<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
+			</div>
 			<?php endforeach ?>
+
 			<?php if (count($this->attributes)>3): ?>
 				<?php echo str_repeat('<div class="offer__attribute empty" aria-hidden="true"></div>', 3 - (count($this->attributes) % 3)) ?>
 			<?php endif ?>
 		</div>
-	<?php endif ?>	
+	<?php endif ?>
+
 	<?php if ($this->teaser): ?>
 		<div class="offer__text m-bottom-x2">
 			<?= $this->teaser ?>
@@ -48,14 +46,8 @@
 		<?php endif; ?>
 		</div>
 	<?php endif ?>
+	
 	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['applyTitle'] ?></div>
-	<p><b>Contact :</b> <?= $this->hrName ?><?php if ($this->hrPosition): ?> (<?= $this->hrPosition ?>)<?php endif; ?></p>
-	<?php if ($this->hrPhone): ?>
-	<a href="tel:<?= $this->hrPhone ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byPhone'] ?>"><i class="fa fa-phone"></i><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byPhone'] ?></a>
-	<?php endif; ?>
-	<?php if ($this->hrEmail): ?>
-	<a href="mailto:<?= $this->hrEmail ?>" class="btn-sm icon-last" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byEmail'] ?>"><i class="fa fa-envelope"></i><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byEmail'] ?></a>
-	<?php endif; ?>
 	<?php if ($this->blnDisplayApplyButton): ?>
 		<button class="btn-sm btn-load" data-process="openApplicationModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byForm'] ?></button>
 	<?php endif; ?>

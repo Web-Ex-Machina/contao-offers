@@ -10,30 +10,27 @@
 				<?= $this->title ?>
 			</div>
 			<div class="block-card__text_">
-				<?php if ($this->locations): ?>
-					<div class="offer__location">
-						<span class="offer__location__icon"><i class="far fa-map-marker-alt"></i></span> <?= $this->locations ?>
-					</div>
-				<?php endif; ?>
+
 				<?php if ($this->blnDisplayText): ?>
-					<div class="offer__teaser">
-						<?= $this->teaser ?>
-					</div>
+				<div class="offer__teaser">
+					<?= $this->teaser ?>
+				</div>
 				<?php endif ?>
-				<?php if ($this->blnDisplayAttributes): ?>
-					<?php if ($this->attributes): ?>
-						<div class="offer__attributes">
-							<?php foreach ($this->attributes as $key => $value): ?>
-								<div class="offer__attribute">
-									<div class="offer__attribute__title"><?= $key ?></div>
-									<div class="offer__attribute__value"><?= $value ?></div>
-								</div>
-							<?php endforeach ?>
-							<?php if (count($this->attributes)>3): ?>
-								<?php echo str_repeat('<div class="offer__attribute empty" aria-hidden="true"></div>', 3 - (count($this->attributes) % 3)) ?>
-							<?php endif ?>
-						</div>
+
+				<?php if ($this->blnDisplayAttributes && $this->attributes): ?>
+				<div class="offer__attributes">
+					
+					<?php foreach ($this->attributes as $attribute): ?>
+					<div class="offer__attribute">
+						<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
+						<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
+					</div>
+					<?php endforeach ?>
+
+					<?php if (count($this->attributes)>3): ?>
+						<?php echo str_repeat('<div class="offer__attribute empty" aria-hidden="true"></div>', 3 - (count($this->attributes) % 3)) ?>
 					<?php endif ?>
+				</div>
 				<?php endif ?>
 			</div>
 			<div class="block-card__action offer__footer">

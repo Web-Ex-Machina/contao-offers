@@ -15,6 +15,10 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\ContentModel;
+use Contao\FrontendTemplate;
+use Contao\StringUtil;
+use Contao\System;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 /**
@@ -64,34 +68,75 @@ abstract class ModuleOffers extends \Module
      */
     protected function parseOffer($objArticle, $blnAddArchive = false, $strClass = '', $intCount = 0)
     {
-        $objTemplate = new \FrontendTemplate($this->offer_template);
+        $objTemplate = new FrontendTemplate($this->offer_template);
         $objTemplate->setData($objArticle->row());
 
         if ('' !== $objArticle->cssClass) {
-            $strClass = ' '.$objArticle->cssClass.$strClass;
+            $strClass = ' '.$objArticle->cssClass . $strClass;
         }
 
         $objTemplate->class = $strClass;
         $objTemplate->count = $intCount; // see #5708
 
         // Add the meta information
-        $objTemplate->date = (int) $objArticle->postedAt;
-        $objTemplate->timestamp = $objArticle->postedAt;
-        $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->postedAt);
+        $objTemplate->date = (int) $objArticle->date;
+        $objTemplate->timestamp = $objArticle->date;
+        $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objArticle->date);
 
-        // Parse locations
-        if (is_array(deserialize($objArticle->locations))) {
-            $objTemplate->locations = implode(', ', deserialize($objArticle->locations));
-        } else {
-            $objTemplate->locations = $objArticle->locations;
+        // Add an image
+        if ($objArticle->addImage)
+        {
+            $figure = System::getContainer()
+                ->get('contao.image.studio')
+                ->createFigureBuilder()
+                ->from($objArticle->singleSRC)
+                ->setSize($objArticle->size)
+                ->enableLightbox((bool) $objArticle->fullsize)
+                ->buildIfResourceExists();
+
+            if (null !== $figure)
+            {
+                $figure->applyLegacyTemplateData($this->Template, $objArticle->imagemargin, $objArticle->floating);
+            }
         }
 
-        // Fetch the offer offer file
-        if ($objFile = \FilesModel::findByUuid($objArticle->file)) {
-            $objTemplate->file = $objFile->path;
-            $objTemplate->isImage = @is_array(getimagesize($objFile->path));
-        } else {
-            $objTemplate->file = null;
+        // Retrieve item teaser
+        if ($objArticle->teaser)
+        {
+            $objTemplate->hasTeaser = true;
+            $objTemplate->teaser = $objArticle->teaser;
+            $objTemplate->teaser = StringUtil::encodeEmail($objTemplate->teaser);
+        }
+
+        // Retrieve item content
+        $id = $objArticle->id;
+
+        $objTemplate->text = function () use ($id)
+        {
+            $strText = '';
+            $objElement = ContentModel::findPublishedByPidAndTable($id, 'tl_wem_offer');
+
+            if ($objElement !== null)
+            {
+                while ($objElement->next())
+                {
+                    $strText .= $this->getContentElement($objElement->current());
+                }
+            }
+
+            return $strText;
+        };
+
+        $objTemplate->hasText = static function () use ($objArticle)
+        {
+            return ContentModel::countPublishedByPidAndTable($objArticle->id, 'tl_wem_offer') > 0;
+        };
+
+        // Retrieve item attributes
+        $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
+
+        if ((bool) $this->offer_displayAttributes) {
+            $objTemplate->attributes = $objArticle->getAttributesFull();
         }
 
         // Notice the template if we want/can display apply button
@@ -99,12 +144,6 @@ abstract class ModuleOffers extends \Module
             $objTemplate->blnDisplayApplyButton = true;
             $objTemplate->applyUrl = $this->addToUrl('apply='.$objArticle->id, true, ['offer']);
         }
-
-
-        // Notice the template if we want to display attributes
-        $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
-        // all attributes are contained within the $objArticle itself.
-        $objTemplate->attributes = $objArticle->getAttributesSimple();
 
         // Notice the template if we want to display the text
         if ($this->offer_displayTeaser) {

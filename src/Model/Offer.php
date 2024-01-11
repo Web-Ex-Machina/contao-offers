@@ -174,22 +174,13 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             $arrArticleData = $this->row();
             while ($objAttributes->next()) {
                 if (array_key_exists($objAttributes->name, $arrArticleData)) {
-                    $attributes[$objAttributes->name] = [
-                        'label'=>$objAttributes->label,
-                        'raw_value'=>$arrArticleData[$objAttributes->name],
-                        'human_readable_value'=>$arrArticleData[$objAttributes->name]
-                    ];
+                    $varValue = $this->getAttributeValue($objAttributes->current());
 
-                    switch ($objAttributes->type) {
-                        case "select":
-                            $options = unserialize($objAttributes->options ?? '');
-                            foreach ($options as $option) {
-                                if ($option['value'] === $arrArticleData[$objAttributes->name]) {
-                                    $attributes[$objAttributes->name]['human_readable_value'] = $option['label'];
-                                }
-                            }
-                        break;
-                    }
+                    $attributes[$objAttributes->name] = [
+                        'label' => $objAttributes->label,
+                        'raw_value' => $varValue,
+                        'human_readable_value' => $varValue
+                    ];
                 }
             }
         }
@@ -211,22 +202,41 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             $arrArticleData = $this->row();
             while ($objAttributes->next()) {
                 if (array_key_exists($objAttributes->name, $arrArticleData)) {
-                    $attributes[$objAttributes->label] = $arrArticleData[$objAttributes->name];
-
-                    switch ($objAttributes->type) {
-                        case "select":
-                            $options = unserialize($objAttributes->options ?? '');
-                            foreach ($options as $option) {
-                                if ($option['value'] === $arrArticleData[$objAttributes->name]) {
-                                    $attributes[$objAttributes->label] = $option['label'];
-                                }
-                            }
-                        break;
-                    }
+                    $attributes[$objAttributes->name] = $this->getAttributeValue($objAttributes->current());
                 }
             }
         }
 
         return $attributes;
+    }
+
+    protected function getAttributeValue($objAttribute)
+    {
+        switch($objAttribute->type) {
+            case "select":
+                $options = deserialize($objAttribute->options ?? []);
+                foreach ($options as $option) {
+                    if ($option['value'] === $arrArticleData[$objAttributes->name]) {
+                        return $option;
+                    }
+                }
+            break;
+
+            case "picker":
+                return $this->getRelated($objAttribute->name);
+            break;
+
+            case "fileTree":
+                $objFile = \FilesModel::findByUuid($this->{$objAttribute->name});
+                return $objFile ?: null;
+            break;
+
+            case "listWizard":
+                return deserialize($this->{$objAttribute->name});
+            break;
+
+            default:
+                return $this->{$objAttribute->name};
+        }
     }
 }
