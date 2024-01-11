@@ -12,6 +12,8 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+System::loadLanguageFile('tl_content');
+
 $GLOBALS['TL_DCA']['tl_wem_offer'] = [
     // Config
     'config' => [
@@ -89,7 +91,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
         'default' => '
             {title_legend},code,title,date;
             {content_legend},teaser;
-            {image_legend},addImage;
+            {media_legend},addImage;
             {publish_legend},published,start,stop
         ',
     ],
@@ -147,12 +149,13 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
+            'eval' => ['rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
             'explanation' => 'insertTags',
             'sql' => 'mediumtext NULL',
         ],
         'addImage' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_content']['addImage'],
             'exclude'                 => true,
             'inputType'               => 'checkbox',
             'eval'                    => array('submitOnChange'=>true),

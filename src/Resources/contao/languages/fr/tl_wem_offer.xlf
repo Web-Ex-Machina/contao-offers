@@ -17,55 +17,22 @@
 			<source>Enter the offer title</source>
 			<target>Saisissez l'intitulé de l'annonce</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_offer.postedAt.0">
+		<trans-unit id="tl_wem_offer.date.0">
 			<source>Date of filing</source>
 			<target>Date de dépot</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_offer.postedAt.1">
+		<trans-unit id="tl_wem_offer.date.1">
 			<source>Enter the offer date of filing</source>
 			<target>Saisissez la date de dépot de l'annonce</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_offer.availableAt.0">
-			<source>Date of availability</source>
-			<target>Date de disponibilité</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.availableAt.1">
-			<source>Enter the offer date of availability</source>
-			<target>Saisissez la date de disponibilité de l'annonce</target>
-		</trans-unit>
 
-		<trans-unit id="tl_wem_offer.countries.0">
-			<source>Countries</source>
-			<target>Pays</target>
+		<trans-unit id="tl_wem_offer.teaser.0">
+			<source>Teaser</source>
+			<target>Accroche</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_offer.countries.1">
-			<source>Select the offer countries</source>
-			<target>Sélectionnez les pays de l'annonce</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.locations.0">
-			<source>Locations</source>
-			<target>Lieux</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.locations.1">
-			<source>Enter more precise locations</source>
-			<target>Saisir des lieux plus précis</target>
-		</trans-unit>
-
-		<trans-unit id="tl_wem_offer.text.0">
-			<source>Content</source>
-			<target>Descriptif</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.text.1">
-			<source>Enter the offer content</source>
-			<target>Saisissez le descriptif de l'annonce</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.file.0">
-			<source>File</source>
-			<target>Fichier</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.file.1">
-			<source>Select the offer file</source>
-			<target>Sélectionner le fichier de l'annonce</target>
+		<trans-unit id="tl_wem_offer.teaser.1">
+			<source>Enter the offer teaser</source>
+			<target>Saisissez l'accroche de l'annonce</target>
 		</trans-unit>
 
 		<trans-unit id="tl_wem_offer.published.0">
@@ -93,58 +60,17 @@
 			<target>Indiquez la date à laquelle l'annonce doit être retirée du le site</target>
 		</trans-unit>
 
-		<trans-unit id="tl_wem_offer.hrName.0">
-			<source>Contact name</source>
-			<target>Nom du contact</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrName.1">
-			<source>Enter the offer contact name</source>
-			<target>Saisissez le nom du contact de l'annonce</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrPosition.0">
-			<source>Contact position</source>
-			<target>Poste du contact</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrPosition.1">
-			<source>Enter the offer contact position</source>
-			<target>Saisissez le poste du contact de l'annonce</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrPhone.0">
-			<source>Contact phone</source>
-			<target>Téléphone du contact</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrPhone.1">
-			<source>Enter the offer contact phone</source>
-			<target>Saisissez le téléphone du contact de l'annonce</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrEmail.0">
-			<source>Contact email</source>
-			<target>Email du contact</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.hrEmail.1">
-			<source>Enter the offer contact email</source>
-			<target>Saisissez l'email du contact de l'annonce</target>
-		</trans-unit>
-
 		<trans-unit id="tl_wem_offer.title_legend">
 			<source>Global informations</source>
 			<target>Informations générales</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.location_legend">
-			<source>Location details</source>
-			<target>Informations sur le lieu</target>
-		</trans-unit>
-		<trans-unit id="tl_wem_offer.details_legend">
-			<source>Offer details</source>
-			<target>Informations sur l'annonce</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_offer.content_legend">
 			<source>Contents</source>
 			<target>Contenus</target>
 		</trans-unit>
-		<trans-unit id="tl_wem_offer.hr_legend">
-			<source>HR Settings</source>
-			<target>Paramètres RH</target>
+		<trans-unit id="tl_wem_offer.media_legend">
+			<source>Media</source>
+			<target>Médias</target>
 		</trans-unit>
 		<trans-unit id="tl_wem_offer.publish_legend">
 			<source>Publish settings</source>
