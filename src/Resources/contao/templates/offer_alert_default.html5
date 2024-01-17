@@ -1,37 +1,14 @@
 <strong><?=$this->trans('WEM.OFFERS.ALERTS.offerCodeLabel',[],'contao_default',$this->language); ?></strong> : [<?=$this->code; ?>] <?=$this->title; ?>
 <br />
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerAvailableAtLabel',[],'contao_default',$this->language); ?></strong> : <?= $this->availableAt; ?>
+<strong><?=$this->trans('WEM.OFFERS.ALERTS.dateLabel',[],'contao_default',$this->language); ?></strong> : <?= $this->date; ?>
 <br />
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerCountriesLabel',[],'contao_default',$this->language); ?></strong> : <?= implode(', ',$this->countries); ?>
-<br />
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerLocationsLabel',[],'contao_default',$this->language); ?></strong> : <?= implode(', ',$this->locations); ?>
-<br />
-<?php foreach($this->attributes as $attributeName => $attributeData): ?>
-	<strong><?= $attributeData['label']; ?></strong> :<?= $attributeData['human_readable_value']; ?>
-	<br />
-<?php endforeach; ?>
 <strong><?=$this->trans('WEM.OFFERS.ALERTS.offerTextLabel',[],'contao_default',$this->language); ?></strong> :
 <br />
 <?= $this->text; ?>
 <br />
 
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerContactLabel',[],'contao_default',$this->language); ?></strong>
-<br />
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerHrNameLabel',[],'contao_default',$this->language); ?></strong> : <?= $this->hrName; ?>
-<br />
-<?php if($this->hrPosition): ?>
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerHrPositionLabel',[],'contao_default',$this->language); ?></strong> : <?=$this->hrPosition;?>
-<br />
-<?php endif; ?>
+<?php foreach($this->attributes as $attributeName => $attributeData): ?>
+	<strong><?= $attributeData['label']; ?></strong> :<?= $attributeData['human_readable_value']; ?>
+	<br />
+<?php endforeach; ?>
 
-<?php if($this->hrPhone): ?>
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerHrPhoneLabel',[],'contao_default',$this->language); ?></strong> : <a href="tel:<?= $this->hrPhone; ?>"><?=$this->hrPhone;?></a>
-<br />
-<?php endif; ?>
-
-<?php if($this->hrEmail): ?>
-<!-- pre-fill with subject and body ? -->
-<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerHrEmailLabel',[],'contao_default'); ?></strong> : <a href="mailto:<?= $this->hrEmail; ?>"><?=$this->hrEmail;?></a>
-<br />
-<?php endif; ?>
-<br />
