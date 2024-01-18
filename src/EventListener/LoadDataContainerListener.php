@@ -13,14 +13,17 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\OffersBundle\Hooks;
+namespace WEM\OffersBundle\EventListener;
 
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
-class LoadDataContainerHook
+class LoadDataContainerListener
 {
+    public function __construct() {
+    }
+
     public function addAttributesToJobDca($strTable)
     {
         try {

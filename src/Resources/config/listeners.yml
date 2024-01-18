@@ -1,9 +1,21 @@
 services:
   offers.listener.personal_data_ui:
-    class: WEM\OffersBundle\Hooks\PersonalDataManager\UiHook
+    class: WEM\OffersBundle\EventListener\PersonalDataManager\UiListener
     arguments:
       $translator: '@contao.translation.translator'
       $csrfTokenManager: '@contao.csrf.token_manager'
       $csrfTokenName: '%contao.csrf_token_name%'
       $personalDataManagerUi: '@wem.personal_data_manager.service.personal_data_manager_ui'
+    public: true
+
+  offers.listener.load_datacontainer:
+    class: WEM\OffersBundle\EventListener\LoadDataContainerListener
+    public: true
+
+  offers.listener.process_formdata:
+    class: WEM\OffersBundle\EventListener\ProcessFormDataListener
+    public: true
+
+  offers.listener.store_formdata:
+    class: WEM\OffersBundle\EventListener\StoreFormDataListener
     public: true

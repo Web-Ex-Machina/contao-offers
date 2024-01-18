@@ -1,6 +1,6 @@
 <?php
 
-namespace WEM\OffersBundle\Hooks\PersonalDataManager;
+namespace WEM\OffersBundle\EventListener\PersonalDataManager;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WEM\OffersBundle\Model\Application;
@@ -17,8 +17,8 @@ use Contao\FilesModel;
 use Contao\Validator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-class UiHook{
-	
+class UiListener
+{	
     /** @var TranslatorInterface */
     protected $translator;
 

@@ -42,9 +42,9 @@ array_insert(
 );
 
 // Hooks
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [WEM\OffersBundle\Hooks\LoadDataContainerHook::class, 'addAttributesToJobDca'];
-$GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\OffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
-$GLOBALS['TL_HOOKS']['processFormData'][] = [WEM\OffersBundle\Hooks\ProcessFormDataHook::class, '__invoke'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = ['offers.listener.load_datacontainer', 'addAttributesToJobDca'];
+$GLOBALS['TL_HOOKS']['storeFormData'][] = ['offers.listener.process_formdata', 'storeFormData'];
+$GLOBALS['TL_HOOKS']['processFormData'][] = ['offers.listener.store_formdata', '__invoke'];
 // PDM UI
 $GLOBALS['WEM_HOOKS']['renderSingleItemTitle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemTitle'];
 $GLOBALS['WEM_HOOKS']['buildSingleItemButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemButtons'];

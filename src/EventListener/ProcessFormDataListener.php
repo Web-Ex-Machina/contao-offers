@@ -12,15 +12,18 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\OffersBundle\Hooks;
+namespace WEM\OffersBundle\EventListener;
 
 use WEM\OffersBundle\Model\Application;
 use Exception;
 use Contao\Form;
 use Contao\System;
 
-class ProcessFormDataHook
+class ProcessFormDataListener
 {
+    public function __construct() {
+    }
+    
     public function __invoke(
         array $submittedData,
         array $formData,

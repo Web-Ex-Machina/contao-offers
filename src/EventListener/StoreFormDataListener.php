@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\OffersBundle\Hooks;
+namespace WEM\OffersBundle\EventListener;
 
 use Exception;
 use Contao\FilesModel;
@@ -22,8 +22,11 @@ use Contao\File;
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 
-class StoreFormDataHook
+class StoreFormDataListener
 {
+    public function __construct() {
+    }
+    
     public function storeFormData($arrSet, $objForm)
     {
         try {
