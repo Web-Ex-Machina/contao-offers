@@ -1,8 +1,10 @@
 Extension "Offers" for Contao Open Source CMS
 ========
-X.Y.Z - YYYY-MM-DD
-- UPDATED : bundle now requires [webexmachina/contao-utils](https://github.com/Web-Ex-Machina/contao-utils) ^1.0
+2.0.0 - 2024-01-18
+- UPDATED: bundle now requires [webexmachina/contao-utils](https://github.com/Web-Ex-Machina/contao-utils) ^1.0
+- UPDATED: Various fixes and changes in order to make this bundle more flexible
 
+_Void_
 
 0.3 - 2020-05-23
 - Add & refactor fields
