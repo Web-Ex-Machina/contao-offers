@@ -96,6 +96,11 @@ class LoadDataContainerListener
                 }
 
                 $data['sql']['type'] = 'string';
+
+                if ($row['value']) {
+                    $data['default'] = $row['value'];
+                    $data['sql']['default'] = $row['value'];
+                }
                 break;
 
             case 'select':
@@ -108,11 +113,34 @@ class LoadDataContainerListener
 
                 // Options
                 $options = deserialize($row['options']);
-
                 if (null !== $options) {
                     $data['options'] = [];
+                    $blnIsGroup = false;
+                    $blnIsChild = true;
+                    $key = null;
                     foreach ($options as $o) {
-                        $data['options'][$o['value']] = $o['label'];
+                        if((bool) $o['group']){
+                            $blnIsGroup = true;
+                            $blnIsChild = false;
+                            $key = $o['label'];
+                        }else{
+                            $blnIsGroup = false;
+                            $blnIsChild = true;
+                        }
+
+                        if(null === $key){
+                            $data['options'][$o['value']] = $o['label'];
+                        }elseif($blnIsGroup){
+                            // $data['options'][$key] = ['label'=>$o['label'],'options'=>[]];
+                        }elseif($blnIsChild){
+                            $data['options'][$key][$o['value']] = $o['label'];
+                        }
+
+                        if ($o['default']) {
+                            $data['default'] = $o['default'];
+                            $data['sql']['default'] = $o['default'];
+                        }
+
                     }
                 }
                 break;
