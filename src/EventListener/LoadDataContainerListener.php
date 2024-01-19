@@ -102,6 +102,9 @@ class LoadDataContainerListener
                 if ($row['value']) {
                     $data['default'] = $row['value'];
                     $data['sql']['default'] = $row['value'];
+                } else {
+                    $data['default'] = "";
+                    $data['sql']['default'] = "";
                 }
                 break;
 
