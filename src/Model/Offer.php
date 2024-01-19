@@ -32,7 +32,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @var array
      */
-    public static $arrSearchFields = ['code', 'title', 'text'];
+    public static $arrSearchFields = ['code', 'title', 'teaser'];
 
     /**
      * Find items, depends on the arguments.
@@ -224,10 +224,12 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             break;
 
             case "picker":
+            return ''; // temp
                 return $this->getRelated($objAttribute->name);
             break;
 
             case "fileTree":
+            return ''; // temp
                 $objFile = \FilesModel::findByUuid($this->{$objAttribute->name});
                 return $objFile ?: null;
             break;
