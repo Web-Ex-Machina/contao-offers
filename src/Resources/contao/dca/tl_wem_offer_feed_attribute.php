@@ -116,13 +116,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-
         'type' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldOptions'],
-            'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50 clr'],
             'reference' => &$GLOBALS['TL_LANG']['CTE'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
         ],
@@ -178,6 +177,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         'allowHtml' => [
             'exclude' => true,
             'inputType' => 'checkbox',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50 cbx'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'mandatory' => [
