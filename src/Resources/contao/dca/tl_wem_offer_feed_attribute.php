@@ -71,18 +71,18 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         'default' => '
             {title_legend},name,label;
             {field_legend},type,mandatory;
-            {settings_legend},isFilter,isAlertCondition;
             {design_legend},insertInDca,insertType,class
         ',
+            // {settings_legend},isFilter,isAlertCondition;
     ],
 
     // Subpalettes
     'subpalettes' => [
-        'type_text' => 'value',
-        'type_select' => 'options',
+        'type_text' => 'value,isFilter,isAlertCondition',
+        'type_select' => 'options,isFilter,isAlertCondition',
         'type_picker' => 'fkey',
         'type_fileTree' => 'multiple,filesOnly,fieldType,extensions',
-        'type_listWizard' => 'multiple,allowHtml,maxlength',
+        'type_listWizard' => 'multiple,allowHtml,maxlength,isFilter,isAlertCondition',
     ],
 
     // Fields
@@ -190,12 +190,14 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w50 cbx'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'isAlertCondition' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w50 cbx'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'insertInDca' => [

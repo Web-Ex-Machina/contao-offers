@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
                 'do' => 'wem-offers',
             ],
             'eval' => [
-                'fields' => ['name', 'label', 'type'],
+                'fields' => ['name', 'label', 'type','isFilter','isAlertCondition'],
                 'orderField' => 'name ASC',
                 'showOperations' => true,
                 'operations' => ['edit', 'delete'],

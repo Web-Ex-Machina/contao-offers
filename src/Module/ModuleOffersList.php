@@ -318,7 +318,7 @@ class ModuleOffersList extends ModuleOffers
                     case 'listWizard':
                         $objOptions = OfferModel::findItemsGroupByOneField($f);
 
-                        if ($objOptions && 0 < $objOptions->count()) {
+                        if ($objOptions) {
                             $filter['type'] = 'select';
                             if($filter['multiple']){
                                 $filter['name'].='[]'; 
