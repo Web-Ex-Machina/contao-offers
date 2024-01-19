@@ -20,6 +20,7 @@ use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Contao\System;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
+use WEM\OffersBundle\Model\Offer;
 
 /**
  * Common functions for job offers modules.
@@ -59,7 +60,7 @@ abstract class ModuleOffers extends \Module
     /**
      * Parse an item and return it as string.
      *
-     * @param NewsModel $objArticle
+     * @param Offer     $objArticle
      * @param bool      $blnAddArchive
      * @param string    $strClass
      * @param int       $intCount
@@ -97,6 +98,8 @@ abstract class ModuleOffers extends \Module
             if (null !== $figure)
             {
                 $figure->applyLegacyTemplateData($this->Template, $objArticle->imagemargin, $objArticle->floating);
+                $objTemplate->blnDisplayPictures = true;
+                $objTemplate->pictures = [$figure->getLegacyTemplateData()];
             }
         }
 

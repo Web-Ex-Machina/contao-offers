@@ -2,7 +2,7 @@
 	<div class="block-card__wrapper">
 		<?php if ($this->blnDisplayPictures && count($this->pictures)>0): ?>
 			<div class="block-card__figure offer__figure r_4-3 fit--contain">
-				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt'] ?: $this->pictures[0]['name'] ?>" />
+				<img src="<?= $this->pictures[0]['src'] ?>" alt="<?= $this->pictures[0]['alt'] ?: $this->pictures[0]['name'] ?>" />
 			</div>
 		<?php endif ?>
 		<div class="block-card__content">

@@ -23,7 +23,7 @@
 			<?= $this->teaser ?>
 		<?php if ($this->pictures && count($this->pictures)>0): ?>
 			<div class="offer__figure img-container r_4-3 fit--contain">
-				<img src="<?= $this->pictures[0]['path'] ?>" alt="<?= $this->pictures[0]['meta']['alt']?:$this->pictures[0]['name'] ?>" />
+				<img src="<?= $this->pictures[0]['src'] ?>" alt="<?= $this->pictures[0]['alt'] ?: $this->pictures[0]['name'] ?>" />
 			</div>
 		<?php endif; ?>
 		<?php if($this->pictures && count($this->pictures)>1): ?>
