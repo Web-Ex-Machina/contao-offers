@@ -73,7 +73,8 @@ class ModuleContainer extends Backend
         $fields = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForAlerts']) {
+            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForAlerts']) {
+            if (!empty($v['eval']) && true === $v['eval']['isAlertCondition']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
         }
@@ -92,7 +93,8 @@ class ModuleContainer extends Backend
         $fields = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForFilters']) {
+            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForFilters']) {
+            if (!empty($v['eval']) && true === $v['eval']['isFilter']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
         }

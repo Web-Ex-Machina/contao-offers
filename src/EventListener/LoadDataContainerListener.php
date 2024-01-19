@@ -69,12 +69,14 @@ class LoadDataContainerListener
         }
 
         // Available for alerts settings
-        if ($row['wemoffers_isAvailableForAlerts']) {
+        // if ($row['wemoffers_isAvailableForAlerts']) {
+        if ($row['isAlertCondition']) {
             $data['eval']['isAlertCondition'] = true;
         }
 
         // Available for filters settings
-        if ($row['wemoffers_isAvailableForFilters']) {
+        // if ($row['wemoffers_isAvailableForFilters']) {
+        if ($row['isFilter']) {
             $data['eval']['isFilter'] = true;
         }
 

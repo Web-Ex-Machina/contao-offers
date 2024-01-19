@@ -271,6 +271,7 @@ class ModuleOffersList extends ModuleOffers
         // Retrieve and format dropdowns filters
         $filters = deserialize($this->offer_filters);
         if (\is_array($filters) && !empty($filters)) {
+            // dump($filters);
             foreach ($filters as $f) {
                 $filter = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['inputType'],
@@ -296,14 +297,51 @@ class ModuleOffersList extends ModuleOffers
                         }
 
                         foreach ($options as $value => $label) {
-                            $filter['options'][] = [
-                                'value' => $value,
-                                'label' => $label,
-                                'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f))))),
-                            ];
+                            if(is_array($label)){
+                                foreach ($label as $subValue => $subLabel) {
+                                    $filter['options'][$value]['options'][] = [
+                                        'value' => $subValue,
+                                        'label' => $subLabel,
+                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f))))),
+                                    ];
+                                }
+                            }else{
+                                $filter['options'][] = [
+                                    'value' => $value,
+                                    'label' => $label,
+                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f))))),
+                                ];
+                            }
+                        }
+
+                        break;
+                    case 'listWizard':
+                        $objOptions = OfferModel::findItemsGroupByOneField($f);
+
+                        if ($objOptions && 0 < $objOptions->count()) {
+                            $filter['type'] = 'select';
+                            if($filter['multiple']){
+                                $filter['name'].='[]'; 
+                            }
+                            while ($objOptions->next()) {
+                                if (!$objOptions->{$f}) {
+                                    continue;
+                                }
+
+                                $subOptions = deserialize($objOptions->{$f});
+                                foreach($subOptions as $subOption){
+                                    $filter['options'][$subOption] = [
+                                        'value' => $subOption,
+                                        'label' => $subOption,
+                                        'selected' => !$filter['multiple']
+                                            ? (null !== \Input::get($f) && \Input::get($f) === $subOption)
+                                            : (null !== \Input::get($f) && in_array($subOption,\Input::get($f ?? [])))
+                                            ,
+                                    ];
+                                }
+                            }
                         }
                         break;
-
                     case 'text':
                     default:
                         $objOptions = OfferModel::findItemsGroupByOneField($f);
@@ -325,7 +363,7 @@ class ModuleOffersList extends ModuleOffers
                         break;
                 }
 
-                if ('select' === $filter['type'] && 1 <= count($filter['options'])) {
+                if ('select' === $filter['type'] && 1 >= count($filter['options'])) {
                     continue;
                 }
 

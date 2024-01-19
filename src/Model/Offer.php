@@ -151,7 +151,22 @@ class Offer extends \WEM\UtilsBundle\Model\Model
 
                 // Load parent
                 default:
-                    $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
+                    if(array_key_exists($strField,$GLOBALS['TL_DCA'][self::$strTable]['fields'])){
+                        switch($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['inputType']){
+                            case 'listWizard':
+                                $varValue = !is_array($varValue) ? [$varValue] : $varValue;
+                                $arrSubColumns = [];
+                                foreach($varValue as $subValue){
+                                    $arrSubColumns[] = sprintf("$t.$strField LIKE '%%;s:%s:\"%s\";%%'",strlen($subValue),$subValue);
+                                }
+                                $arrColumns[] = '('.implode(' AND ', $arrSubColumns).')';
+                                // dump($arrColumns);
+                            break;
+                        }
+                    }else{
+
+                        $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
+                    }
             }
 
             return $arrColumns;

@@ -9,12 +9,20 @@
 			    	<?php foreach ($this->filters as $f): ?>
 			    		<?php if ($f['name'] != 'search'): ?>
 								<?php if ('select' == $f['type']): ?>
-									<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?><?= $f['multiple'] ? ' placeholder="'. $f['label'] .'"' : ''; ?>>
+									<select class="filter" name="<?= $f['name']; ?>"<?= $f['multiple'] ? ' multiple' : ''; ?> placeholder="<?php echo $f['placeholder'] ?: $f['label'] ?>">
 										<?php if (!$f['multiple']): ?>
 										<option value="">- <?= $f['label']; ?> -</option>
 										<?php endif; ?>
-										<?php foreach ($f['options'] as $o): ?>
-										<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+										<?php foreach ($f['options'] as $index=>$o): ?>
+										<?php if(array_key_exists('options',$o)): ?>
+											<optgroup label="<?= $index; ?>">
+											<?php foreach ($o['options'] as $oo): ?>
+												<option value="<?= $oo['value']; ?>"<?= $oo['selected'] ? ' selected' : ''; ?>><?= $oo['label']; ?></option>
+											<?php endforeach; ?>
+											</optgroup>
+										<?php else: ?>
+												<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+										<?php endif; ?>
 										<?php endforeach; ?>
 									</select>
 								<?php else: ?>
