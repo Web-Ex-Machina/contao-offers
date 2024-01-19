@@ -214,10 +214,11 @@ class Offer extends \WEM\UtilsBundle\Model\Model
     {
         switch($objAttribute->type) {
             case "select":
+                $arrArticleData = $this->row();
                 $options = deserialize($objAttribute->options ?? []);
                 foreach ($options as $option) {
-                    if ($option['value'] === $arrArticleData[$objAttributes->name]) {
-                        return $option;
+                    if ($option['value'] === $arrArticleData[$objAttribute->name]) {
+                        return $option['label'];
                     }
                 }
             break;
@@ -232,7 +233,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             break;
 
             case "listWizard":
-                return deserialize($this->{$objAttribute->name});
+                return $this->{$objAttribute->name} ? implode(',',deserialize($this->{$objAttribute->name})) : '';
             break;
 
             default:
