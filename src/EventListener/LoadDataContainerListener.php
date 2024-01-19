@@ -111,6 +111,7 @@ class LoadDataContainerListener
                 // Multiple settings
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;
+                    $data['sql']['type'] = 'blob';
                 }
 
                 // Options

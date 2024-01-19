@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     // Subpalettes
     'subpalettes' => [
         'type_text' => 'value,isFilter,isAlertCondition',
-        'type_select' => 'options,isFilter,isAlertCondition',
+        'type_select' => 'options,multiple,isFilter,isAlertCondition',
         'type_picker' => 'fkey',
         'type_fileTree' => 'multiple,filesOnly,fieldType,extensions',
         'type_listWizard' => 'multiple,allowHtml,maxlength,isFilter,isAlertCondition',
