@@ -76,8 +76,7 @@ class ModuleOffersList extends ModuleOffers
             return $objTemplate->parse();
         }
 
-        // Load bundles, datacontainer and job feeds
-        $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
+        // Load datacontainer and job feeds
         $this->loadDatacontainer('tl_wem_offer');
         $this->loadLanguageFile('tl_wem_offer');
         $this->offer_feeds = \StringUtil::deserialize($this->offer_feeds);
@@ -271,29 +270,30 @@ class ModuleOffersList extends ModuleOffers
         // Retrieve and format dropdowns filters
         $filters = deserialize($this->offer_filters);
         if (\is_array($filters) && !empty($filters)) {
-            // dump($filters);
             foreach ($filters as $f) {
+                $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
+
                 $filter = [
-                    'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['inputType'],
+                    'type' => $field['inputType'],
                     'name' => $f,
-                    'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
+                    'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
                     'value' => \Input::get($f) ?: '',
                     'options' => [],
-                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['eval']['multiple'] ? true : false,
+                    'multiple' => $field['eval']['multiple'] ? true : false,
                 ];
 
-                switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['inputType']) {
+                switch ($field['inputType']) {
                     case 'select':
-                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'])) {
-                            $strClass = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'][0];
-                            $strMethod = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'][1];
+                        if (\is_array($field['options_callback'])) {
+                            $strClass = $field['options_callback'][0];
+                            $strMethod = $field['options_callback'][1];
 
                             $this->import($strClass);
                             $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options_callback']($this);
-                        } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options'])) {
-                            $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f]['options'];
+                        } elseif (\is_callable($field['options_callback'])) {
+                            $options = $field['options_callback']($this);
+                        } elseif (\is_array($field['options'])) {
+                            $options = $field['options'];
                         }
 
                         foreach ($options as $value => $label) {
@@ -315,6 +315,7 @@ class ModuleOffersList extends ModuleOffers
                         }
 
                         break;
+
                     case 'listWizard':
                         $objOptions = OfferModel::findItemsGroupByOneField($f);
 
@@ -342,6 +343,7 @@ class ModuleOffersList extends ModuleOffers
                             }
                         }
                         break;
+
                     case 'text':
                     default:
                         $objOptions = OfferModel::findItemsGroupByOneField($f);
