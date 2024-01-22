@@ -3,7 +3,7 @@
 <?php $this->block('content'); ?>
   <?php if ($this->filters): ?>
 	<form action="{{env::request}}" method="GET">
-	    <div class="filters m-bottom" data-container="offers" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
+	    <div class="filters m-bottom" data-container="offers-<?= $this->id ?>" data-items="item" data-autocomplete="false" data-count="false" data-reset="true" data-submit="true">
 	    	<div class="filters__line line--2">
 	    		<div class="filters__col col--left">
 			    	<?php foreach ($this->filters as $f): ?>
@@ -50,9 +50,10 @@
     <p class="empty"><?= $this->empty; ?></p>
   <?php else: ?>
   	
-  	<div class="" id="offers">
-    <?= implode('', $this->articles); ?>
-	</div>
+	  <div class="offers__list" id="offers-<?= $this->id ?>">
+	    <?= implode('', $this->articles); ?>
+		</div>
+
     <?= $this->pagination; ?>
 
     <script type="text/javascript">
