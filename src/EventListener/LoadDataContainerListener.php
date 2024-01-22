@@ -119,6 +119,11 @@ class LoadDataContainerListener
                     $data['sql']['type'] = 'blob';
                 }
 
+                // Chosen settings
+                if ($row['chosen']) {
+                    $data['eval']['chosen'] = true;
+                }
+
                 // Options
                 $options = deserialize($row['options']);
                 if (null !== $options) {
