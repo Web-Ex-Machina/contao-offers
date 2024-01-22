@@ -116,7 +116,7 @@ class LoadDataContainerListener
                 // Multiple settings
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;
-                    $data['sql']['type'] = 'blob';
+                    $data['sql'] = 'blob NULL';
                 }
 
                 // Chosen settings
@@ -167,8 +167,7 @@ class LoadDataContainerListener
                 // Multiple settings
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;
-                    $data['sql']['type'] = 'blob';
-                    $data['sql']['default'] = 'NULL';
+                    $data['sql'] = 'blob NULL';
                     $data['relation'] = ['type'=>'hasMany', 'load'=>'lazy'];
                 } else {
                     $data['sql'] = 'int(10) unsigned NOT NULL default 0';
@@ -195,8 +194,7 @@ class LoadDataContainerListener
                 // Multiple settings
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;
-                    $data['sql']['type'] = 'blob';
-                    $data['sql']['default'] = 'NULL';
+                    $data['sql'] = 'blob NULL';
                 } else {
                     $data['sql']['type'] = 'binary';
                     $data['sql']['length'] = 16;
@@ -215,8 +213,7 @@ class LoadDataContainerListener
                     $data['eval']['multiple'] = true;
                 }
 
-                $data['sql']['type'] = 'blob';
-                $data['sql']['default'] = 'NULL';
+                $data['sql'] = 'blob NULL';
                 break;
         }
 
