@@ -231,11 +231,25 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             case "select":
                 $arrArticleData = $this->row();
                 $options = deserialize($objAttribute->options ?? []);
+
+                if ($objAttribute->multiple) {
+                    $arrArticleData[$objAttribute->name] = deserialize($arrArticleData[$objAttribute->name]);
+                    $return = [];
+                }
+
                 foreach ($options as $option) {
-                    if ($option['value'] === $arrArticleData[$objAttribute->name]) {
-                        return $option['label'];
+                    if ($objAttribute->multiple && is_array($arrArticleData[$objAttribute->name]) && in_array($option['value'], $arrArticleData[$objAttribute->name])) {
+                        $return[] = $option['label'];
+                    } else if(!$objAttribute->multiple && $option['value'] === $arrArticleData[$objAttribute->name]) {
+                        $return = $option['label'];
                     }
                 }
+
+                if ($objAttribute->multiple) {
+                    $return = implode(", ", $return);
+                }
+
+                return $return;
             break;
 
             case "picker":
