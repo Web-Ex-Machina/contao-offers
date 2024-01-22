@@ -73,7 +73,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             {field_legend},type,mandatory;
             {design_legend},insertInDca,insertType,class
         ',
-            // {settings_legend},isFilter,isAlertCondition;
     ],
 
     // Subpalettes

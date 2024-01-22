@@ -42,6 +42,22 @@
 			<source>Enter the attribute options</source>
 			<target>Indiquez les options de l'attribut</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.multiple.0">
+			<source>Multiple</source>
+			<target>Multiple</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.multiple.1">
+			<source>Check to make this attribute multiple</source>
+			<target>Cocher pour rendre cet attribut multiple</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.chosen.0">
+			<source>Chosen</source>
+			<target>Chosen</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.chosen.1">
+			<source>Check to make this attribute chosen</source>
+			<target>Cocher pour rendre cet attribut chosen</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_offer_feed_attribute.mandatory.0">
 			<source>Mandatory</source>
 			<target>Obligatoire</target>
