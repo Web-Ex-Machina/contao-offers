@@ -151,8 +151,24 @@ class Offer extends \WEM\UtilsBundle\Model\Model
 
                 // Load parent
                 default:
-                    if(array_key_exists($strField,$GLOBALS['TL_DCA'][self::$strTable]['fields'])){
-                        switch($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['inputType']){
+                    if (array_key_exists($strField, $GLOBALS['TL_DCA'][self::$strTable]['fields'])) {
+                        switch ($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['inputType']) {
+                            case 'select':
+
+                                if ($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['eval']['multiple']) {
+                                    $varValue = !is_array($varValue) ? [$varValue] : $varValue;
+                                    $arrSubColumns = [];
+
+                                    foreach ($varValue as $subValue) {
+                                        $arrSubColumns[] = sprintf("$t.$strField LIKE '%%;s:%s:\"%s\";%%'", strlen($subValue), $subValue);
+                                    }
+
+                                    $arrColumns[] = '('.implode(' OR ', $arrSubColumns).')';
+                                } else {
+                                    $arrColumns[] = "$t.$strField = '$varValue'";
+                                }
+                            break;
+
                             case 'listWizard':
                                 $varValue = !is_array($varValue) ? [$varValue] : $varValue;
                                 $arrSubColumns = [];
@@ -163,8 +179,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                                 // dump($arrColumns);
                             break;
                         }
-                    }else{
-
+                    } else {
                         $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
                     }
             }

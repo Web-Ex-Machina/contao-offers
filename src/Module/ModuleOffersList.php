@@ -180,7 +180,7 @@ class ModuleOffersList extends ModuleOffers
         // Retrieve filters
         $this->buildFilters();
         $this->Template->filters = $this->filters;
-
+        
         // Get the total number of items
         $intTotal = OfferModel::countItems($this->config);
 
