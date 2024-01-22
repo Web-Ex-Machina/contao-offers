@@ -38,7 +38,7 @@
 									<input class="filter" type="text" name="<?= $f['name']; ?>" value="<?= $f['value']; ?>" placeholder="<?= $f['placeholder']; ?>" />
 			    			<?php endif ?>
 			  			<?php endforeach; ?>
-							<button type="submit" class="squared btn"><i class="fal fa-search"></i></button>
+							<button type="submit" class="btn"><i class="fal fa-search"></i></button>
 						</div>
 					</div>
 		  	</div>

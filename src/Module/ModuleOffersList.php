@@ -275,7 +275,7 @@ class ModuleOffersList extends ModuleOffers
 
                 $filter = [
                     'type' => $field['inputType'],
-                    'name' => $f,
+                    'name' => $field['eval']['multiple'] ? $f.'[]' : $f,
                     'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
                     'value' => \Input::get($f) ?: '',
                     'options' => [],
