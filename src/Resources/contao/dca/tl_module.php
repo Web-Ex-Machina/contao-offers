@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_alertTeaser'] = [
     'exclude' => true,
     'search' => true,
     'inputType' => 'textarea',
-    'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
+    'eval' => ['rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
     'explanation' => 'insertTags',
     'sql' => 'mediumtext NULL',
 ];
@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_conditions'] = [
     'exclude' => true,
     'inputType' => 'select',
     'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getConditionsOptions'],
-    'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
+    'eval' => ['chosen' => true, 'multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_addSearch'] = [
