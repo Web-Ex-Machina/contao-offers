@@ -110,6 +110,8 @@ class LoadDataContainerListener
 
             case 'select':
                 $data['sql']['type'] = 'string';
+                $data['default'] = "";
+                $data['sql']['default'] = "";
 
                 // Multiple settings
                 if ($row['multiple']) {
