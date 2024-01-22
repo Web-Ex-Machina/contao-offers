@@ -16,6 +16,7 @@ $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_addFilters';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_displayAttributes';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
     {title_legend},name,headline,type;
     {config_legend},offer_feeds,offer_displayTeaser,offer_displayAttributes,offer_addFilters;
@@ -32,6 +33,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
 ';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_addFilters'] = 'offer_filters,offer_addSearch';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_displayAttributes'] = 'offer_attributes';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_feed'] = [
     'exclude' => true,
@@ -162,4 +164,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_displayAttributes'] = [
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_attributes'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAttributesOptions'],
+    'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
+    'sql' => 'blob NULL',
 ];

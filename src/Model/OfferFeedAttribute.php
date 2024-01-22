@@ -26,4 +26,70 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @var string
      */
     protected static $strTable = 'tl_wem_offer_feed_attribute';
+
+    /**
+     * Find items, depends on the arguments.
+     *
+     * @param array
+     * @param int
+     * @param int
+     * @param array
+     *
+     * @return Collection
+     */
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    {
+        $t = static::$strTable;
+        $arrColumns = static::formatColumns($arrConfig);
+
+        if ($intLimit > 0) {
+            $arrOptions['limit'] = $intLimit;
+        }
+
+        if ($intOffset > 0) {
+            $arrOptions['offset'] = $intOffset;
+        }
+
+        if (!isset($arrOptions['order'])) {
+            $arrOptions['order'] = "$t.createdAt DESC";
+        }
+
+        if (empty($arrColumns)) {
+            return static::findAll($arrOptions);
+        }
+
+        return static::findBy($arrColumns, null, $arrOptions);
+    }
+
+    /**
+     * Generic statements format.
+     *
+     * @param string $strField    [Column to format]
+     * @param mixed  $varValue    [Value to use]
+     * @param string $strOperator [Operator to use, default "="]
+     *
+     * @return array
+     */
+    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    {
+        try {
+            $arrColumns = [];
+            $t = static::$strTable;
+
+            switch ($strField) {
+                // Search by pid
+                case 'pid':
+                    if (\is_array($varValue)) {
+                        $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
+                    } else {
+                        $arrColumns[] = $t.'.pid = '.$varValue;
+                    }
+                break;
+            }
+
+            return $arrColumns;
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }

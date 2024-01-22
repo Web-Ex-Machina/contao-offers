@@ -35,6 +35,14 @@
 			<source>Check to display the attributes in the list</source>
 			<target>Cochez pour afficher les attrbuts dans la liste</target>
 		</trans-unit>
+		<trans-unit id="tl_module.offer_attributes.0">
+			<source>Attributes</source>
+			<target>Attributs</target>
+		</trans-unit>
+		<trans-unit id="tl_module.offer_attributes.1">
+			<source>Here you can select the attributes to display</source>
+			<target>Choisissez les attributs à afficher</target>
+		</trans-unit>
 
 
 		<trans-unit id="tl_module.offer_allowAlerts.0">

@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class ModuleContainer extends Backend
 {
@@ -134,5 +135,33 @@ class ModuleContainer extends Backend
         }
 
         return $arrChoices;
+    }
+
+    /**
+     * Return all offer attributes available.
+     *
+     * @return array
+     */
+    public function getAttributesOptions()
+    {
+        $arrPids = deserialize($this->activeRecord->offer_feeds);
+        $c = [];
+
+        if (null !== $arrPids && !empty($arrPids)) {
+            $c = ['pid' => $arrPids];
+        }
+
+        $objAttributes = OfferFeedAttribute::findItems($c);
+
+        if (!$objAttributes) {
+            return [];
+        }
+
+        $fields = [];
+        while ($objAttributes->next()) {
+            $fields[$objAttributes->name] = $objAttributes->label ?: $objAttributes->name;
+        }
+
+        return $fields;
     }
 }
