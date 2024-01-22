@@ -179,11 +179,11 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      * Get offer attributes as array
      * @return array ['attribute_name'=>['label'=>$label, 'raw_value'=>$value,'human_readable_value'=>$human_readable_value]]
      */
-    public function getAttributesFull(): array
+    public function getAttributesFull($varAttributes = []): array
     {
         $attributes = [];
 
-        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid]);
+        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttributes]);
 
         if ($objAttributes && 0 < $objAttributes->count()) {
             $arrArticleData = $this->row();
@@ -207,11 +207,11 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      * Get offer attributes as array
      * @return array ['attribute_label'=>$human_readable_value,...]
      */
-    public function getAttributesSimple(): array
+    public function getAttributesSimple($varAttributes = []): array
     {
         $attributes = [];
 
-        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid]);
+        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttributes]);
 
         if ($objAttributes && 0 < $objAttributes->count()) {
             $arrArticleData = $this->row();
@@ -239,12 +239,10 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             break;
 
             case "picker":
-            return ''; // temp
                 return $this->getRelated($objAttribute->name);
             break;
 
             case "fileTree":
-            return ''; // temp
                 $objFile = \FilesModel::findByUuid($this->{$objAttribute->name});
                 return $objFile ?: null;
             break;

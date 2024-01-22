@@ -85,6 +85,15 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
                         $arrColumns[] = $t.'.pid = '.$varValue;
                     }
                 break;
+
+                // Search by name
+                case 'name':
+                    if (\is_array($varValue)) {
+                        $arrColumns[] = "$t.name IN('".implode("','", $varValue)."')";
+                    } else {
+                        $arrColumns[] = $t.'.name = "'.$varValue.'"';
+                    }
+                break;
             }
 
             return $arrColumns;

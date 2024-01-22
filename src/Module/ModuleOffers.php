@@ -138,8 +138,8 @@ abstract class ModuleOffers extends \Module
         // Retrieve item attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
 
-        if ((bool) $this->offer_displayAttributes) {
-            $objTemplate->attributes = $objArticle->getAttributesFull();
+        if ((bool) $this->offer_displayAttributes && null !== $this->offer_attributes) {
+            $objTemplate->attributes = $objArticle->getAttributesFull(deserialize($this->offer_attributes));
         }
 
         // Notice the template if we want/can display apply button
