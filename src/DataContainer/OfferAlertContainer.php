@@ -82,7 +82,7 @@ class OfferAlertContainer extends Backend
     public function sendAlerts(): void
     {
         $objJob = new SendAlerts();
-        $objJob->do();
+        $objJob->do(false);
 
         Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);
 

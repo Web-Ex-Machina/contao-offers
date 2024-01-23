@@ -31,7 +31,7 @@ class SendAlerts
      *
      * Executed every hour
      */
-    public function do(): void
+    public function do($blnUpdateAlertLastJob = true): void
     {
         // Log the start of the job and setup some vars
         System::log('Cronjob SendAlerts started', __METHOD__, 'WEMOFFERS');
@@ -174,9 +174,12 @@ class SendAlerts
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
                 ++$nbAlerts;
                 $objNotification->send($arrTokens, $objAlerts->language);
-                $objAlert = $objAlerts->current();
-                $objAlert->lastJob = time();
-                $objAlert->save();
+
+                if ($blnUpdateAlertLastJob) {
+                    $objAlert = $objAlerts->current();
+                    $objAlert->lastJob = time();
+                    $objAlert->save();
+                }
             }
         }
 
