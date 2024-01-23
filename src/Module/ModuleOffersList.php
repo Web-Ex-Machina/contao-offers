@@ -240,6 +240,10 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
     {
+        if (!$this->offer_applicationForm) {
+            return '';
+        }
+        
         $strForm = $this->getForm($this->offer_applicationForm);
 
         $objItem = OfferModel::findByPk($intId);
@@ -248,7 +252,7 @@ class ModuleOffersList extends ModuleOffers
         $objTemplate->id = $objItem->id;
         $objTemplate->code = $objItem->code;
         $objTemplate->title = $objItem->title;
-        $objTemplate->recipient = $objItem->hrEmail ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
         $objTemplate->time = time();
         $objTemplate->token = \RequestToken::get();
         $objTemplate->form = $strForm;

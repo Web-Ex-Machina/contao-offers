@@ -17,6 +17,7 @@ namespace WEM\OffersBundle\Module;
 
 use Contao\ContentModel;
 use Contao\FrontendTemplate;
+use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
@@ -27,7 +28,7 @@ use WEM\OffersBundle\Model\Offer;
  *
  * @author Web ex Machina <https://www.webexmachina.fr>
  */
-abstract class ModuleOffers extends \Module
+abstract class ModuleOffers extends Module
 {
     /**
      * Parse one or more items and return them as array.
@@ -107,8 +108,7 @@ abstract class ModuleOffers extends \Module
         if ($objArticle->teaser)
         {
             $objTemplate->hasTeaser = true;
-            $objTemplate->teaser = $objArticle->teaser;
-            $objTemplate->teaser = StringUtil::encodeEmail($objTemplate->teaser);
+            $objTemplate->teaser = StringUtil::encodeEmail($objArticle->teaser);
         }
 
         // Retrieve item content
