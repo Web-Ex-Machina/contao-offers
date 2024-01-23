@@ -125,6 +125,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
         try {
             $arrColumns = [];
             $t = static::$strTable;
+            \Controller::loadDatacontainer($t);
 
             switch ($strField) {
                 // Search by pid
@@ -149,13 +150,21 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                     }
                 break;
 
+                // Wizard for active items
+                case 'published':
+                    if (1 === $varValue) {
+                        $arrColumns[] = "$t.published = 1 AND ($t.start = 0 OR $t.start <= ".time().") AND ($t.stop = 0 OR $t.stop >= ".time().')';
+                    } elseif (-1 === $varValue) {
+                        $arrColumns[] = "$t.published = '' AND ($t.start = 0 OR $t.start >= ".time().") AND ($t.stop = 0 OR $t.stop <= ".time().')';
+                    }
+                break;
+
                 // Load parent
                 default:
-                    if (array_key_exists($strField, $GLOBALS['TL_DCA'][self::$strTable]['fields'])) {
-                        switch ($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['inputType']) {
+                    if (array_key_exists($strField, $GLOBALS['TL_DCA'][$t]['fields'])) {
+                        switch ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['inputType']) {
                             case 'select':
-
-                                if ($GLOBALS['TL_DCA'][self::$strTable]['fields'][$strField]['eval']['multiple']) {
+                                if ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['eval']['multiple']) {
                                     $varValue = !is_array($varValue) ? [$varValue] : $varValue;
                                     $arrSubColumns = [];
 

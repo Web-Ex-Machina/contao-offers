@@ -50,20 +50,23 @@ class SendAlerts
         // or weekly and lastJob < time - 1 week
         // or monthly and lastJob < time - 1 month
         $c = ['active'=>1];
-        $arrWhere = [];
-        $arrWhere[] = sprintf(
-            "(
-                $t.frequency = 'hourly'
-                OR ($t.frequency = 'daily' AND $t.lastJob < %s)
-                OR ($t.frequency = 'weekly' AND $t.lastJob < %s)
-                OR ($t.frequency = 'monthly' AND $t.lastJob < %s)
-            )",
-            strtotime('-1 day'),
-            strtotime('-1 week'),
-            strtotime('-1 month'),
-        );
-        $c['where'] = $arrWhere;
-        $objAlerts = Alert::findItems($c,0,0,['order'=>'language ASC, moduleOffersAlert ASC']);
+
+        if ($blnUpdateAlertLastJob) {
+            $arrWhere = [];
+            $arrWhere[] = sprintf(
+                "(
+                    $t.frequency = 'hourly'
+                    OR ($t.frequency = 'daily' AND $t.lastJob < %s)
+                    OR ($t.frequency = 'weekly' AND $t.lastJob < %s)
+                    OR ($t.frequency = 'monthly' AND $t.lastJob < %s)
+                )",
+                strtotime('-1 day'),
+                strtotime('-1 week'),
+                strtotime('-1 month'),
+            );
+            $c['where'] = $arrWhere;
+        }
+        $objAlerts = Alert::findItems($c, 0, 0, ['order'=>'language ASC, moduleOffersAlert ASC']);
 
         // Quit the job if there is no alerts to retrieve
         if (!$objAlerts || 0 === $objAlerts->count()) {
@@ -72,18 +75,13 @@ class SendAlerts
             return;
         }
 
+        $arrCache = [];
+        $arrFeedCache = [];
+
         // Now, loop on the alerts and check if there is jobs matching its conditions
         while ($objAlerts->next()) {
-            if(!array_key_exists($objAlerts->language,$arrCache)){
+            if (!array_key_exists($objAlerts->language, $arrCache)){
                 $arrCache[$objAlerts->language] = [];
-            }
-
-            // Retrieve the alert conditions
-            $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
-
-            // It should not happen but hey. Expect the unexpected ಠ_ಠ
-            if (!$objConditions || 0 === $objConditions->count()) {
-                continue;
             }
 
             // Retrieve the feed linked
@@ -106,27 +104,32 @@ class SendAlerts
             $arrConditions['published'] = 1;
             $arrConditions['where'] = [];
 
+            // Retrieve the alert conditions
+            $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
+
             // Format alert conditions for request
             // @todo > Take in consideration that we can have multiple values per field.
             // Ex : 2 cities for locations, 2 cities for country etc...
-            while ($objConditions->next()) {
-                $arrConditions[$objConditions->field] = $objConditions->value;
+            if ($objConditions && 0 < $objConditions->count()) {
+                while ($objConditions->next()) {
+                    $arrConditions[$objConditions->field] = $objConditions->value;
+                }
             }
 
             // Depending on frequency, adjust job time condition
             switch ($objAlerts->frequency) {
                 case 'daily':
-                    $arrConditions['where'][] = sprintf('%s.postedAt > %s', $t3, strtotime('-1 day'));
+                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 day'));
                     break;
                 case 'weekly':
-                    $arrConditions['where'][] = sprintf('%s.postedAt > %s', $t3, strtotime('-1 week'));
+                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 week'));
                     break;
                 case 'monthly':
-                    $arrConditions['where'][] = sprintf('%s.postedAt > %s', $t3, strtotime('-1 month'));
+                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 month'));
                     break;
                 case 'hourly':
                 default:
-                    $arrConditions['where'][] = sprintf('%s.postedAt > %s', $t3, strtotime('-1 hour'));
+                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 hour'));
             }
 
             // Retrieve items matching the conditions
@@ -139,6 +142,7 @@ class SendAlerts
 
             // Prepare some tokens for notification
             $arrTokens = [];
+            $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
             $arrBuffer = [];
 
             foreach ($objAlerts->row() as $k => $v) {
@@ -147,7 +151,7 @@ class SendAlerts
 
             // Loop on the items, format everything and send the notification \o/
             while ($objItems->next()) {
-                if (\array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
+                if (is_array($arrCache[$objAlerts->language]) && \array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
                     $arrBuffer[] = $arrCache[$objAlerts->language][$objItems->id];
                 } else {
                     $bufferTmp = $this->parseItem($objItems->current(), $objAlerts->language, $objFeed->tplOfferAlert);

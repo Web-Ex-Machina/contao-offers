@@ -31,12 +31,6 @@ class OfferAlertContainer extends Backend
      */
     public function listItems(array $row, string $label, \Contao\DataContainer $dc, array $labels): array
     {
-        // return sprintf(
-        //     '%s <span style="color:#888">[%s]</span>',
-        //     $row['name'],
-        //     $row['email']
-        // );
-
         $objFeed = OfferFeed::findByPk($row['feed']);
 
         $labels[0] = $row['email'];
