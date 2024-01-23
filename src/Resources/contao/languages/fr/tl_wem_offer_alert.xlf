@@ -94,7 +94,7 @@
 				<target>Filtres</target>
 			</trans-unit>
 
-	    	<trans-unit id="tl_wem_offer_alert.new.0">
+	    <trans-unit id="tl_wem_offer_alert.new.0">
 				<source>New alert</source>
 				<target>Nouvelle alerte</target>
 			</trans-unit>
@@ -133,6 +133,15 @@
 			<trans-unit id="tl_wem_offer_alert.show.1">
 				<source>Show offer alert data ID %s</source>
 				<target>Voir les informations de l'alerte d'offre ID %s</target>
+			</trans-unit>
+
+			<trans-unit id="tl_wem_offer_alert.sendAlerts.0">
+				<source>Send alerts</source>
+				<target>Envoyer les alertes</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_alert.sendAlerts.1">
+				<source>Click to trigger the alerts manually</source>
+				<target>Cliquez pour déclencher les alertes manuellement</target>
 			</trans-unit>
     </body>
   </file>

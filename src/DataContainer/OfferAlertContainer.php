@@ -14,11 +14,15 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\Backend;
+use Contao\Environment;
+use Contao\Message;
+use Contao\ModuleModel;
+use WEM\OffersBundle\Cronjob\SendAlerts;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\OfferFeed;
-use Contao\ModuleModel;
 
-class OfferAlertContainer
+class OfferAlertContainer extends Backend
 {
     /**
      * Design each row of the DCA.
@@ -73,5 +77,16 @@ class OfferAlertContainer
         }
 
         return $arrChoices;
+    }
+
+    public function sendAlerts(): void
+    {
+        $objJob = new SendAlerts();
+        $objJob->do();
+
+        Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);
+
+        $referer = preg_replace('/&(amp;)?(key)=[^&]*/', '', Environment::get('request'));
+        $this->redirect($referer);
     }
 }

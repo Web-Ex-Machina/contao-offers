@@ -41,6 +41,10 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'label_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'listItems'],
         ],
         'global_operations' => [
+            'sendAlerts' => [
+                'href' => 'key=sendAlerts',
+                'class' => 'header_css_import',
+            ],
             'all' => [
                 'href' => 'act=select',
                 'class' => 'header_edit_all',

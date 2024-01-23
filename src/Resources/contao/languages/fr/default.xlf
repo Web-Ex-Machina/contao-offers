@@ -13,6 +13,10 @@
 				<source>Email</source>
 				<target>Email</target>
 			</trans-unit>
+			<trans-unit id="WEM.OFFERS.jobExecuted">
+				<source>Job has been executed</source>
+				<target>La tâche a été executée</target>
+			</trans-unit>
 
 			<trans-unit id="WEM.OFFERS.applyTitle">
 				<source>Interested? Contact us!</source>

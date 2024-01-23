@@ -24,6 +24,7 @@ array_insert(
             ],
             'wem-offers-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
+                'sendAlerts' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'sendAlerts'],
             ],
         ],
     ]
