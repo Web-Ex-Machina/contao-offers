@@ -42,10 +42,6 @@ array_insert(
     ]
 );
 
-// Hooks
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = ['offers.listener.load_datacontainer', 'addAttributesToJobDca'];
-$GLOBALS['TL_HOOKS']['storeFormData'][] = ['offers.listener.process_formdata', 'storeFormData'];
-$GLOBALS['TL_HOOKS']['processFormData'][] = ['offers.listener.store_formdata', '__invoke'];
 // PDM UI
 $GLOBALS['WEM_HOOKS']['renderSingleItemTitle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemTitle'];
 $GLOBALS['WEM_HOOKS']['buildSingleItemButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemButtons'];

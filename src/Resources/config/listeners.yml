@@ -12,10 +12,14 @@ services:
     class: WEM\OffersBundle\EventListener\LoadDataContainerListener
     public: true
 
-  offers.listener.process_formdata:
-    class: WEM\OffersBundle\EventListener\ProcessFormDataListener
-    public: true
+  WEM\OffersBundle\EventListener\LoadDataContainerListener:
+    tags:
+      - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
 
-  offers.listener.store_formdata:
-    class: WEM\OffersBundle\EventListener\StoreFormDataListener
-    public: true
+  WEM\OffersBundle\EventListener\ProcessFormDataListener:
+    tags:
+      - { name: contao.hook, hook: processFormData, method: __invoke, priority: 100 }
+
+  WEM\OffersBundle\EventListener\StoreFormDataListener:
+    tags:
+      - { name: contao.hook, hook: storeFormData, method: storeFormData, priority: 100 }
