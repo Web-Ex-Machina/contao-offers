@@ -44,7 +44,6 @@
 			<target>Choisissez les attributs à afficher</target>
 		</trans-unit>
 
-
 		<trans-unit id="tl_module.offer_allowAlerts.0">
 			<source>Authorize alerts</source>
 			<target>Autoriser les alertes</target>

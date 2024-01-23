@@ -9,9 +9,9 @@
 				<source>Published: %s</source>
 				<target>Publiée: %s</target>
 			</trans-unit>
-			<trans-unit id="WEM.OFFERS.location">
-				<source>Location</source>
-				<target>Lieu</target>
+			<trans-unit id="WEM.OFFERS.email">
+				<source>Email</source>
+				<target>Email</target>
 			</trans-unit>
 
 			<trans-unit id="WEM.OFFERS.applyTitle">
@@ -50,6 +50,18 @@
 			<trans-unit id="WEM.OFFERS.searchPlaceholder">
 				<source>What do you seek?</source>
 				<target>Que recherchez-vous ?</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.privacy">
+				<source>Privacy policy</source>
+				<target>Politique de confidentialité</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.subscribe">
+				<source>Subscribe</source>
+				<target>S'abonner</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.unsubscribe">
+				<source>Unsubscribe</source>
+				<target>Se désabonner</target>
 			</trans-unit>
 
 			<trans-unit id="WEM.OFFERS.answerNotification.0">

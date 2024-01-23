@@ -58,8 +58,7 @@ class ModuleOffersAlert extends ModuleOffers
             return $objTemplate->parse();
         }
 
-        // Load bundles, datacontainer and job feeds
-        $this->bundles = \System::getContainer()->getParameter('kernel.bundles');
+        // Load datacontainer and offers languages
         $this->loadDatacontainer('tl_wem_offer');
         $this->loadLanguageFile('tl_wem_offer');
 
@@ -77,7 +76,7 @@ class ModuleOffersAlert extends ModuleOffers
     protected function compile(): void
     {
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && $this->id === \Input::post('module')) {
+        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
             try {
                 switch (\Input::post('action')) {
                     case 'subscribe':
@@ -116,9 +115,6 @@ class ModuleOffersAlert extends ModuleOffers
                         $objAlert->tstamp = time();
                         $objAlert->lastJob = time();
                         $objAlert->activatedAt = 0;
-                        $objAlert->name = \Input::post('name') ?: '';
-                        $objAlert->position = \Input::post('position') ?: '';
-                        $objAlert->phone = \Input::post('phone') ?: '';
                         $objAlert->email = \Input::post('email');
                         $objAlert->frequency = \Input::post('frequency') ?: 'daily'; // @todo -> add default frequency as setting
                         $objAlert->token = StringUtil::generateToken(); // @todo -> add code system to confirm requests as alternatives to links/token
@@ -346,7 +342,7 @@ class ModuleOffersAlert extends ModuleOffers
 
         $objFeed = OfferFeed::findByPk($objAlert->feed);
         foreach ($objFeed->row() as $strKey => $varValue) {
-            $arrTokens['offerfeed_'.$strKey] = $varValue;
+            $arrTokens['feed_'.$strKey] = $varValue;
         }
 
         foreach ($objAlert->row() as $strKey => $varValue) {
@@ -362,9 +358,6 @@ class ModuleOffersAlert extends ModuleOffers
             $arrTokens['link_unsubscribeConfirm'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
         }
 
-        $arrTokens['recipient_name'] = $objAlert->name;
-        $arrTokens['recipient_position'] = $objAlert->position;
-        $arrTokens['recipient_phone'] = $objAlert->phone;
         $arrTokens['recipient_email'] = $objAlert->email;
 
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];

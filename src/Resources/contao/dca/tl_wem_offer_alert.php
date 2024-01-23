@@ -42,7 +42,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
         ],
         'global_operations' => [
             'all' => [
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
@@ -68,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {recipient_legend},name,position,phone,email;
+            {recipient_legend},email;
             {alert_legend},feed,frequency,language,moduleOffersAlert;
             {filters_legend},conditions
         ',
@@ -99,28 +98,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
 
-        'name' => [
-            'default' => BackendUser::getInstance()->name,
-            'exclude' => true,
-            'search' => true,
-            'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'position' => [
-            'default' => '',
-            'exclude' => true,
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'phone' => [
-            'default' => '',
-            'exclude' => true,
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
         'email' => [
             'default' => BackendUser::getInstance()->email,
             'exclude' => true,
