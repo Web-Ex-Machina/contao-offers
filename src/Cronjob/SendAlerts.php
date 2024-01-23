@@ -207,22 +207,10 @@ class SendAlerts
 
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
-
-        $objTemplate->postedAt = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->postedAt);
-        $objTemplate->availableAt = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->availableAt);
-
-        $countriesSystem = System::getCountries();
-        $countries = [];
-        $countriesShort = unserialize($objItem->countries ?? '');
-        foreach ($countriesShort as $countryShort) {
-            $countries[] = $countriesSystem[$countryShort];
-        }
-        $objTemplate->countries = $countries;
-
-        $locations = unserialize($objItem->locations ?? '');
-        $objTemplate->locations = $locations ?? [];
+        
+        $objTemplate->date = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->date);
         $objTemplate->attributes = $objItem->getAttributesFull();
-        $objTemplate->language = $attributes;
+        $objTemplate->language = $language;
 
         return $objTemplate->parse();
     }

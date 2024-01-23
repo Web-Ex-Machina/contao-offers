@@ -4,7 +4,7 @@
 <br />
 <strong><?=$this->trans('WEM.OFFERS.ALERTS.offerTextLabel',[],'contao_default',$this->language); ?></strong> :
 <br />
-<?= $this->text; ?>
+<?= $this->teaser; ?>
 <br />
 
 <?php foreach($this->attributes as $attributeName => $attributeData): ?>

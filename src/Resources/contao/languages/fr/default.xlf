@@ -172,41 +172,13 @@
 				<source>Offer</source>
 				<target>Offre</target>
 			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerAvailableAtLabel">
+			<trans-unit id="WEM.OFFERS.ALERTS.dateLabel">
 				<source>Posted on</source>
 				<target>Postée le</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerCountriesLabel">
-				<source>Countries</source>
-				<target>Pays</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerLocationsLabel">
-				<source>Locations</source>
-				<target>Villes</target>
 			</trans-unit>
 			<trans-unit id="WEM.OFFERS.ALERTS.offerTextLabel">
 				<source>Description</source>
 				<target>Description</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerContactLabel">
-				<source>Contact</source>
-				<target>Contact</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerHrNameLabel">
-				<source>Name</source>
-				<target>Nom</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerHrPositionLabel">
-				<source>Position</source>
-				<target>Poste</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerHrPhoneLabel">
-				<source>Phone</source>
-				<target>Téléphone</target>
-			</trans-unit>
-			<trans-unit id="WEM.OFFERS.ALERTS.offerHrEmailLabel">
-				<source>Email</source>
-				<target>Email</target>
 			</trans-unit>
 
 			<!-- Personal Data Manager UI -->
