@@ -187,6 +187,9 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                                 $arrColumns[] = '('.implode(' AND ', $arrSubColumns).')';
                                 // dump($arrColumns);
                             break;
+
+                            default:
+                                $arrColumns[] = "$t.$strField = '$varValue'";
                         }
                     } else {
                         $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
