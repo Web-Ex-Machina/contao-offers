@@ -57,7 +57,7 @@ class LoadDataContainerListener
         ];
 
         // Default settings
-        if ($row['default']) {
+        if (array_key_exists('default', $row)) {
             $data['default'] = $row['default'];
             $data['sql']['default'] = $row['default'];
         }
@@ -132,7 +132,7 @@ class LoadDataContainerListener
                     $blnIsChild = true;
                     $key = null;
                     foreach ($options as $o) {
-                        if((bool) $o['group']){
+                        if(array_key_exists('group', $o) && true === (bool) $o['group']){
                             $blnIsGroup = true;
                             $blnIsChild = false;
                             $key = $o['label'];
@@ -149,7 +149,7 @@ class LoadDataContainerListener
                             $data['options'][$key][$o['value']] = $o['label'];
                         }
 
-                        if ($o['default']) {
+                        if (array_key_exists('default', $o)) {
                             $data['default'] = $o['default'];
                             $data['sql']['default'] = $o['default'];
                         }

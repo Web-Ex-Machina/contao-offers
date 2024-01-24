@@ -37,7 +37,7 @@ class ProcessFormDataListener
                 $objApplication = Application::findItems([], 1, 0, ['order'=>'tstamp DESC']);
                 if ($objApplication) {
                     $objApplication = $objApplication->next()->current();
-                    $fieldsManagedByPdm = Application::getPersonalDataFieldsNames();
+                    $fieldsManagedByPdm = (new Application())->getPersonalDataFieldsNames();
                     foreach ($fieldsManagedByPdm as $field) {
                         $objApplication->markModified($field);
                     }
