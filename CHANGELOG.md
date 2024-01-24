@@ -4,7 +4,11 @@ Extension "Offers" for Contao Open Source CMS
 - UPDATED: bundle now requires [webexmachina/contao-utils](https://github.com/Web-Ex-Machina/contao-utils) ^1.0
 - UPDATED: Various fixes and changes in order to make this bundle more flexible
 
-_Void_
+1.0.1 - 2022-03-16
+- Update template & translations
+
+1.0.0 - 2021-01-29
+- Add default time for `postedAt` and `availableAt` fields
 
 0.3 - 2020-05-23
 - Add & refactor fields
