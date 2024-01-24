@@ -51,6 +51,7 @@ $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingle'][] = ['offers.lis
 $GLOBALS['WEM_HOOKS']['buildSingleItemBodyPersonalDataSingleButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemBodyPersonalDataSingleButtons'];
 $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldLabel'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldLabel'];
 $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldValue'];
+$GLOBALS['WEM_HOOKS']['getHrefByPidAndPtableAndEmail'][] = ['offers.listener.personal_data_manager', 'getHrefByPidAndPtableAndEmail'];
 
 // Models
 $GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Alert::getTable()] = WEM\OffersBundle\Model\Alert::class;

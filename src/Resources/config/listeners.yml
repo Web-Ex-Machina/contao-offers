@@ -8,6 +8,14 @@ services:
       $personalDataManagerUi: '@wem.personal_data_manager.service.personal_data_manager_ui'
     public: true
 
+  offers.listener.personal_data_manager:
+    class: WEM\OffersBundle\EventListener\PersonalDataManager\ManagerListener
+    arguments:
+      $csrfTokenManager: '@contao.csrf.token_manager'
+      $csrfTokenName: '%contao.csrf_token_name%'
+      $personalDataManager: '@wem.personal_data_manager.service.personal_data_manager'
+    public: true
+
   offers.listener.load_datacontainer:
     class: WEM\OffersBundle\EventListener\LoadDataContainerListener
     public: true
