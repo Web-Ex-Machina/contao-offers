@@ -3,14 +3,13 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\EventListener;
@@ -21,17 +20,18 @@ use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class LoadDataContainerListener
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
 
-    public function addAttributesToJobDca($strTable)
+    public function addAttributesToJobDca($strTable): void
     {
         try {
             if ('tl_wem_offer' === $strTable) {
                 // For everytime we load a tl_wem_offer DCA, we want to load all the existing attributes as fields
                 $objAttributes = OfferFeedAttribute::findAll();
 
-                if (!$objAttributes || 0 == $objAttributes->count()) {
+                if (!$objAttributes || 0 === $objAttributes->count()) {
                     return;
                 }
 
@@ -40,8 +40,7 @@ class LoadDataContainerListener
                 }
             }
         } catch (\Exception $e) {
-            // @todo Translate error message
-            System::log(vsprintf('Exception lancée avec le message %s et la trace %s', [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
         }
     }
 
@@ -57,7 +56,7 @@ class LoadDataContainerListener
         ];
 
         // Default settings
-        if (array_key_exists('default', $row)) {
+        if (\array_key_exists('default', $row)) {
             $data['default'] = $row['default'];
             $data['sql']['default'] = $row['default'];
         }
@@ -103,15 +102,15 @@ class LoadDataContainerListener
                     $data['default'] = $row['value'];
                     $data['sql']['default'] = $row['value'];
                 } else {
-                    $data['default'] = "";
-                    $data['sql']['default'] = "";
+                    $data['default'] = '';
+                    $data['sql']['default'] = '';
                 }
                 break;
 
             case 'select':
                 $data['sql']['type'] = 'string';
-                $data['default'] = "";
-                $data['sql']['default'] = "";
+                $data['default'] = '';
+                $data['sql']['default'] = '';
 
                 // Multiple settings
                 if ($row['multiple']) {
@@ -132,28 +131,27 @@ class LoadDataContainerListener
                     $blnIsChild = true;
                     $key = null;
                     foreach ($options as $o) {
-                        if(array_key_exists('group', $o) && true === (bool) $o['group']){
+                        if (\array_key_exists('group', $o) && true === (bool) $o['group']) {
                             $blnIsGroup = true;
                             $blnIsChild = false;
                             $key = $o['label'];
-                        }else{
+                        } else {
                             $blnIsGroup = false;
                             $blnIsChild = true;
                         }
 
-                        if(null === $key){
+                        if (null === $key) {
                             $data['options'][$o['value']] = $o['label'];
-                        }elseif($blnIsGroup){
+                        } elseif ($blnIsGroup) {
                             // $data['options'][$key] = ['label'=>$o['label'],'options'=>[]];
-                        }elseif($blnIsChild){
+                        } elseif ($blnIsChild) {
                             $data['options'][$key][$o['value']] = $o['label'];
                         }
 
-                        if (array_key_exists('default', $o)) {
+                        if (\array_key_exists('default', $o)) {
                             $data['default'] = $o['default'];
                             $data['sql']['default'] = $o['default'];
                         }
-
                     }
                 }
                 break;
@@ -168,10 +166,10 @@ class LoadDataContainerListener
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;
                     $data['sql'] = 'blob NULL';
-                    $data['relation'] = ['type'=>'hasMany', 'load'=>'lazy'];
+                    $data['relation'] = ['type' => 'hasMany', 'load' => 'lazy'];
                 } else {
                     $data['sql'] = 'int(10) unsigned NOT NULL default 0';
-                    $data['relation'] = ['type'=>'hasOne', 'load'=>'lazy'];
+                    $data['relation'] = ['type' => 'hasOne', 'load' => 'lazy'];
                 }
                 break;
 
@@ -207,7 +205,7 @@ class LoadDataContainerListener
                 if ($row['allowHtml']) {
                     $data['eval']['allowHtml'] = true;
                 }
-                
+
                 // Multiple settings
                 if ($row['multiple']) {
                     $data['eval']['multiple'] = true;

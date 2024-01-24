@@ -1,120 +1,152 @@
 <?xml version="1.0" ?><xliff version="1.1">
   <file datatype="php" original="system/modules/wem-job-offers/languages/en/default.php" source-language="en" target-language="en">
     <body>
-		<trans-unit id="WEM.JOBOFFERS.datePublished">
-			<source>Published: %s</source>
-			<target>Published: %s</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.status">
-			<source>Position</source>
-			<target>Position</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.remuneration">
-			<source>Remuneration</source>
-			<target>Remuneration</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.location">
-			<source>Location</source>
-			<target>Location</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.field">
-			<source>Field</source>
-			<target>Field</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.datePublished">
+				<source>Published: %s</source>
+				<target>Published: %s</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.status">
+				<source>Position</source>
+				<target>Position</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.remuneration">
+				<source>Remuneration</source>
+				<target>Remuneration</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.location">
+				<source>Location</source>
+				<target>Location</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.field">
+				<source>Field</source>
+				<target>Field</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.applyTitle">
-			<source>Interested? Apply here!</source>
-			<target>Interested? Apply here!</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byPhone">
-			<source>By phone</source>
-			<target>By phone</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byEmail">
-			<source>By email</source>
-			<target>By email</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byForm">
-			<source>By form</source>
-			<target>By form</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.applyTitle">
+				<source>Interested? Apply here!</source>
+				<target>Interested? Apply here!</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byPhone">
+				<source>By phone</source>
+				<target>By phone</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byEmail">
+				<source>By email</source>
+				<target>By email</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byForm">
+				<source>By form</source>
+				<target>By form</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.allLocations">
-			<source>All location</source>
-			<target>All location</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.allPositions">
-			<source>All positions</source>
-			<target>All positions</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.allFields">
-			<source>All fields</source>
-			<target>All fields</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.allLocations">
+				<source>All location</source>
+				<target>All location</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.allPositions">
+				<source>All positions</source>
+				<target>All positions</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.allFields">
+				<source>All fields</source>
+				<target>All fields</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.filter">
-			<source>Filter</source>
-			<target>Filter</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.seeOffer">
-			<source>See offer</source>
-			<target>See offer</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.apply">
-			<source>Apply</source>
-			<target>Apply</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.filter">
+				<source>Filter</source>
+				<target>Filter</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.seeOffer">
+				<source>See offer</source>
+				<target>See offer</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.apply">
+				<source>Apply</source>
+				<target>Apply</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.GATEWAY.email">
-			<source>Email</source>
-			<target>Email</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.GATEWAY.sms">
-			<source>Text</source>
-			<target>Text</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.GATEWAY.email">
+				<source>Email</source>
+				<target>Email</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.GATEWAY.sms">
+				<source>Text</source>
+				<target>Text</target>
+			</trans-unit>
 
-		<!-- Alerts -->
-		<trans-unit id="WEM.OFFERS.ALERTS.offerCodeLabel">
-			<source>Offer</source>
-			<target>Offer</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerAvailableAtLabel">
-			<source>Posted on</source>
-			<target>Posted le</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerCountriesLabel">
-			<source>Countries</source>
-			<target>Countries</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerLocationsLabel">
-			<source>Locations</source>
-			<target>Locations</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerTextLabel">
-			<source>Description</source>
-			<target>Description</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerContactLabel">
-			<source>Contact</source>
-			<target>Contact</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerHrNameLabel">
-			<source>Name</source>
-			<target>Name</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerHrPositionLabel">
-			<source>Position</source>
-			<target>Position</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerHrPhoneLabel">
-			<source>Phone</source>
-			<target>Phone</target>
-		</trans-unit>
-		<trans-unit id="WEM.OFFERS.ALERTS.offerHrEmailLabel">
-			<source>Email</source>
-			<target>Email</target>
-		</trans-unit>
+			<!-- Errors -->
+    	<trans-unit id="WEM.OFFERS.ERROR.generic">
+				<source>Exception thrown with message %s and trace %s</source>
+				<target>Exception thrown with message %s and trace %s</target>
+			</trans-unit>
+
+			<!-- Alerts -->
+			<trans-unit id="WEM.OFFERS.ALERTS.offerCodeLabel">
+				<source>Offer</source>
+				<target>Offer</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerAvailableAtLabel">
+				<source>Posted on</source>
+				<target>Posted le</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerCountriesLabel">
+				<source>Countries</source>
+				<target>Countries</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerLocationsLabel">
+				<source>Locations</source>
+				<target>Locations</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerTextLabel">
+				<source>Description</source>
+				<target>Description</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerContactLabel">
+				<source>Contact</source>
+				<target>Contact</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerHrNameLabel">
+				<source>Name</source>
+				<target>Name</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerHrPositionLabel">
+				<source>Position</source>
+				<target>Position</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerHrPhoneLabel">
+				<source>Phone</source>
+				<target>Phone</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerHrEmailLabel">
+				<source>Email</source>
+				<target>Email</target>
+			</trans-unit>
+
+			<!-- Personal Data Manager UI -->
+			<trans-unit id="WEM.OFFERS.PDMUI.noFileUploaded">
+				<source>No file uploaded</source>
+				<target>No file uploaded</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.fileNotFound">
+				<source>File not found</source>
+				<target>File not found</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderTitle">
+				<source>Application</source>
+				<target>Application</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShowTitle">
+				<source>Show</source>
+				<target>Show</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShow">
+				<source>Show offer application</source>
+				<target>Show offer application</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle">
+				<source>Show offer</source>
+				<target>Show offer</target>
+			</trans-unit>
     </body>
   </file>
 </xliff>

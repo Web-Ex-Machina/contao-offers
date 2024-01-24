@@ -3,30 +3,31 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\EventListener;
 
-use Exception;
-use Contao\FilesModel;
-use Contao\StringUtil;
-use Contao\Session;
 use Contao\File;
+use Contao\FilesModel;
+use Contao\Session;
+use Contao\StringUtil;
 use Contao\System;
+use Exception;
 use WEM\OffersBundle\Model\Offer;
 
 class StoreFormDataListener
 {
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     public function storeFormData($arrSet, $objForm)
     {
         try {
@@ -39,9 +40,9 @@ class StoreFormDataListener
 
                 if ($objOffer = Offer::findBy('code', $strCode)) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
-                }elseif($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))){
+                } elseif ($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
-                }else{
+                } else {
                     throw new Exception('Unable to retrieve offer');
                 }
 
@@ -94,8 +95,7 @@ class StoreFormDataListener
 
             return $arrSet;
         } catch (Exception $e) {
-            // @todo Translate error message
-            System::log(vsprintf('Exception lancée avec le message %s et la trace %s', [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
         }
     }
 }

@@ -166,6 +166,10 @@
 				<source>Please add messages to the notification.</source>
 				<target>Veuillez ajouter des messages à la notification sélectionnée.</target>
 			</trans-unit>
+    	<trans-unit id="WEM.OFFERS.ERROR.generic">
+				<source>Exception thrown with message %s and trace %s</source>
+				<target>Exception lancée avec le message %s et la trace %s</target>
+			</trans-unit>
 
 			<!-- Alerts -->
 			<trans-unit id="WEM.OFFERS.ALERTS.offerCodeLabel">
@@ -206,7 +210,6 @@
 				<source>Show offer</source>
 				<target>Voir l'offre</target>
 			</trans-unit>
-
     </body>
   </file>
 </xliff>
