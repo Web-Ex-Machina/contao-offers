@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Contao Offers for Contao Open Source CMS
+ * Copyright (c) 2018-2024 Web ex Machina.
  *
  * @category ContaoBundle
  *
  * @author   Web ex Machina <contact@webexmachina.fr>
  *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @see     https://github.com/Web-Ex-Machina/contao-offers/
  */
 
 namespace WEM\OffersBundle\Model;
@@ -185,7 +185,6 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                                     $arrSubColumns[] = sprintf("$t.$strField LIKE '%%;s:%s:\"%s\";%%'",strlen($subValue),$subValue);
                                 }
                                 $arrColumns[] = '('.implode(' AND ', $arrSubColumns).')';
-                                // dump($arrColumns);
                             break;
 
                             default:
