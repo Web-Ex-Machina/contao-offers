@@ -251,7 +251,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
         return $attributes;
     }
 
-    protected function getAttributeValue($objAttribute)
+    public function getAttributeValue($objAttribute)
     {
         switch($objAttribute->type) {
             case "select":

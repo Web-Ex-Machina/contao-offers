@@ -100,7 +100,6 @@ abstract class ModuleOffers extends Module
             if (null !== $figure)
             {
                 $figure->applyLegacyTemplateData($objTemplate, $objArticle->imagemargin, $objArticle->floating);
-                $objTemplate->picture = $figure->getLegacyTemplateData();
             }
         }
 
