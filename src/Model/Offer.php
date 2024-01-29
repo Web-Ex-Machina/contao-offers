@@ -287,6 +287,13 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             break;
 
             case "fileTree":
+                $figureBuilder = \System::getContainer()
+                    ->get('contao.image.studio')
+                    ->createFigureBuilder()
+                    ->setSize($this->size)
+                    ->setLightboxGroupIdentifier('lb' . $this->id)
+                    ->enableLightbox((bool) $this->fullsize);
+
                 if ($varAttribute->multiple) {
                     $objFiles = \FilesModel::findMultipleByUuids(\StringUtil::deserialize($this->{$varAttribute->name}));
 
@@ -296,14 +303,23 @@ class Offer extends \WEM\UtilsBundle\Model\Model
 
                     $arrFiles = [];
                     while ($objFiles->next()) {
-                        $arrFiles[] = $objFiles->row();
+                        $figure = $figureBuilder
+                            ->fromPath($objFiles->path)
+                            ->build();
+
+                        $arrFiles[] = $figure->getLegacyTemplateData();
                     }
 
                     return $arrFiles ?: null;
                 }
 
                 $objFile = \FilesModel::findByUuid($this->{$varAttribute->name});
-                return $objFile->row() ?: null;
+
+                $figure = $figureBuilder
+                    ->fromPath($objFile->path)
+                    ->build();
+
+                return $figure->getLegacyTemplateData() ?: null;
             break;
 
             case "listWizard":
