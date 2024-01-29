@@ -251,27 +251,31 @@ class Offer extends \WEM\UtilsBundle\Model\Model
         return $attributes;
     }
 
-    public function getAttributeValue($objAttribute)
+    public function getAttributeValue($varAttribute)
     {
-        switch($objAttribute->type) {
+        if ("string" === gettype($varAttribute)) {
+            $varAttribute = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttribute], 1);
+        }
+
+        switch($varAttribute->type) {
             case "select":
                 $arrArticleData = $this->row();
-                $options = deserialize($objAttribute->options ?? []);
+                $options = deserialize($varAttribute->options ?? []);
 
-                if ($objAttribute->multiple) {
-                    $arrArticleData[$objAttribute->name] = deserialize($arrArticleData[$objAttribute->name]);
+                if ($varAttribute->multiple) {
+                    $arrArticleData[$varAttribute->name] = deserialize($arrArticleData[$varAttribute->name]);
                     $return = [];
                 }
 
                 foreach ($options as $option) {
-                    if ($objAttribute->multiple && is_array($arrArticleData[$objAttribute->name]) && in_array($option['value'], $arrArticleData[$objAttribute->name])) {
+                    if ($varAttribute->multiple && is_array($arrArticleData[$varAttribute->name]) && in_array($option['value'], $arrArticleData[$varAttribute->name])) {
                         $return[] = $option['label'];
-                    } else if(!$objAttribute->multiple && $option['value'] === $arrArticleData[$objAttribute->name]) {
+                    } else if(!$varAttribute->multiple && $option['value'] === $arrArticleData[$varAttribute->name]) {
                         $return = $option['label'];
                     }
                 }
 
-                if ($objAttribute->multiple) {
+                if ($varAttribute->multiple) {
                     $return = implode(", ", $return);
                 }
 
@@ -279,20 +283,35 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             break;
 
             case "picker":
-                return $this->getRelated($objAttribute->name);
+                return $this->getRelated($varAttribute->name);
             break;
 
             case "fileTree":
-                $objFile = \FilesModel::findByUuid($this->{$objAttribute->name});
-                return $objFile ?: null;
+                if ($varAttribute->multiple) {
+                    $objFiles = \FilesModel::findMultipleByUuids(\StringUtil::deserialize($this->{$varAttribute->name}));
+
+                    if (!$objFiles) {
+                        return null;
+                    }
+
+                    $arrFiles = [];
+                    while ($objFiles->next()) {
+                        $arrFiles[] = $objFiles->row();
+                    }
+
+                    return $arrFiles ?: null;
+                }
+
+                $objFile = \FilesModel::findByUuid($this->{$varAttribute->name});
+                return $objFile->row() ?: null;
             break;
 
             case "listWizard":
-                return $this->{$objAttribute->name} ? implode(',',deserialize($this->{$objAttribute->name})) : '';
+                return $this->{$varAttribute->name} ? implode(',',deserialize($this->{$varAttribute->name})) : '';
             break;
 
             default:
-                return $this->{$objAttribute->name};
+                return $this->{$varAttribute->name};
         }
     }
 }
