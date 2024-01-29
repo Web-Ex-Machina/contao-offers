@@ -77,6 +77,7 @@ abstract class ModuleOffers extends Module
             $strClass = ' '.$objArticle->cssClass . $strClass;
         }
 
+        $objTemplate->model = $objArticle;
         $objTemplate->class = $strClass;
         $objTemplate->count = $intCount; // see #5708
 
