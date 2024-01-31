@@ -154,11 +154,6 @@ abstract class ModuleOffers extends Module
             $objTemplate->detailsUrl = $this->addToUrl('seeDetails='.$objArticle->id, true, ['offer']);
         }
 
-        // Notify the template we must open this item apply modal
-        if ($this->openApplyModalOnStart && $objArticle->id === $this->openApplyModalOnStart) {
-            $objTemplate->openApplyModalOnStart = true;
-        }
-
         return $objTemplate->parse();
     }
 }

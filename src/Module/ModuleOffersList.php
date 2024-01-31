@@ -227,7 +227,16 @@ class ModuleOffersList extends ModuleOffers
         if (null !== $objArticles) {
             $this->Template->articles = $this->parseOffers($objArticles);
         }
+
         $this->Template->moduleId = $this->id;
+
+        // Catch auto_item
+        if (Input::get('auto_item')) {
+            $objOffer = OfferModel::findByPk(Input::get('auto_item'));
+            
+            $this->Template->openModalOnLoad = true;
+            $this->Template->offerId = $objOffer->id;
+        }
     }
 
     /**
