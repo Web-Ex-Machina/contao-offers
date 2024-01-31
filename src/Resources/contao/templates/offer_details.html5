@@ -1,4 +1,8 @@
-<div class="offer offer_details">
+<?php
+	$pictures = $this->model->getAttributeValue('pictures');
+?>
+
+<div class="offer__details">
 	<div class="offer__title h2">
 		<?= $this->title ?>
 	</div>
@@ -6,49 +10,44 @@
 	<?php if ($this->attributes): ?>
 		<div class="offer__attributes">
 			<?php foreach ($this->attributes as $attribute): ?>
-			<div class="offer__attribute">
-				<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
-				<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
-			</div>
+				<?php if ($attribute['label'] && $attribute['human_readable_value']): ?>
+					<div class="offer__attribute">
+						<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
+						<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
+					</div>
+				<?php endif ?>
 			<?php endforeach ?>
-
-			<?php if (count($this->attributes)>3): ?>
-				<?php echo str_repeat('<div class="offer__attribute empty" aria-hidden="true"></div>', 3 - (count($this->attributes) % 3)) ?>
-			<?php endif ?>
 		</div>
 	<?php endif ?>
-
-	<?php if ($this->teaser): ?>
-		<div class="offer__text m-bottom-x2">
+	<div class="offer__text">
+		<?php if ($this->teaser): ?>
 			<?= $this->teaser ?>
-		<?php if ($this->pictures && count($this->pictures)>0): ?>
-			<div class="offer__figure img-container r_4-3 fit--contain">
-				<img src="<?= $this->pictures[0]['src'] ?>" alt="<?= $this->pictures[0]['alt'] ?: $this->pictures[0]['name'] ?>" />
-			</div>
-		<?php endif; ?>
-		<?php if($this->pictures && count($this->pictures)>1): ?>
-			<div class="sliderFW nav--hidden gap--1-em" data-nbitems="4" data-minsizeitem="80" data-height="" data-duration="1000" data-delay="5600" data-auto="true" data-arrows="false" data-transition="" data-swipe="true" data-loop="true" data-keypress="false">
-			  <div class="sliderFW__container ft-1-rem" >
-			    <div class="sliderFW__rail">
-			    	<?php foreach ($this->pictures as $key => $picture): ?>
-				      <div class="sliderFW__item">
-				        <div class="sliderFW__item__bg">
-							<img src="<?= $picture['thumbnail']?:$picture['path'] ?>" data-src="<?php echo $picture['path'] ?>" alt="<?= $picture['meta']['alt']?:$picture['name'] ?>" />
-				        </div>
-				        <div class="sliderFW__item__content p-0">
-				        	<div class="img-container r_1-1"></div>
-				        </div>
-				      </div>
-			    	<?php endforeach ?>
-			    </div>
-			  </div>
-			</div>
-		<?php endif; ?>
+		<?php endif ?>
+		<div class="offer__figure offer__mainPicture">
+			<?php if ($this->picture): ?>
+				<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
+			<?php elseif($pictures && count($pictures)>0): ?>
+				<img src="<?php echo $pictures[0]['src'] ?>" alt="<?php echo $pictures[0]['picture']['alt']?:'' ?>" />
+			<?php endif; ?>
 		</div>
-	<?php endif ?>
+		<?php if($pictures && count($pictures)>0): ?>
+		    <div class="offer__gallery">
+				<?php if ($this->picture): ?>
+			    	<div class="offer__figure active">
+						<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
+					</div>
+				<?php endif; ?>
+		    	<?php foreach ($pictures as $key => $picture): ?>
+			      <div class="offer__figure <?php echo !$this->picture && $key==0?'active':'' ?>">
+					<img src="<?= $picture['thumbnail']?:$picture['src'] ?>"  alt="<?= $picture['picture']['alt']?:'' ?>" />
+			      </div>
+		    	<?php endforeach ?>
+		    </div>
+		<?php endif; ?>
+	</div>
 	
 	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['applyTitle'] ?></div>
 	<?php if ($this->blnDisplayApplyButton): ?>
-		<button class="btn-sm btn-load" data-process="openApplicationModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byForm'] ?></button>
+		<button class="btn-sm offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byForm'] ?></button>
 	<?php endif; ?>
 </div>

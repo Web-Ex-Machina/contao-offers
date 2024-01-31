@@ -8,22 +8,24 @@
 <?php elseif ($this->isRequest): ?>
 	<p><?= $this->message ?></p>
 <?php elseif ($this->unsubscribe): ?>
-	<div class="bg-primary form">
-		<p class="lead ft-white"><?= $this->unsubscribeLbl ?></p>
+	<div class="bg-primary <?php echo $this->class ?>__form">
+		<p><?= $this->unsubscribeLbl ?></p>
 		<input type="email" name="email" placeholder="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['email'] ?>" class="" />
-		<div class="flex-alignitems--center">
-			<a href="<?= $this->gdprPage ?>" target="_blank" class="ft-0-8-em flexgrow--1"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
-			<button type="button" class="btn-bd-white btn-sm center btn-load icon-last m-bottom-0" data-process="unsubscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['unsubscribe'] ?></button>
+		<div class="<?php echo $this->class ?>__actions">
+			<a href="<?= $this->gdprPage ?>" target="_blank"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
+			<button type="button" class="btn-bd-white btn-sm " data-process="unsubscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['unsubscribe'] ?></button>
 		</div>
 	</div>
 	<script>
+		window.addEventListener("load", function(e) {
+		 	$('[data-process="unsubscribeFeed"]').on('click',unsubscribeFeed);
+		});
 		var rt = '{{request_token}}';
 		var unsubscribeFeed = function(btn){
 			return new Promise(function(resolve,reject){
 				var data = {
 					email: $('.mod_offersalert input[name="email"]').val()
 				}
-				
 			    $.ajax({
 					timeout: 10000,
 					url: window.location.pathname,
@@ -51,15 +53,15 @@
 		}
 	</script>
 <?php else: ?>
-	<div class="d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
+	<div class="<?php echo $this->class ?>__wrapper d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
 		
 		<?php if ($this->offer_alertTeaser): ?>
-		<div class="bg-greylight text cols-span-2 cols-span-md-1 flex-alignitems--center lead ft-1-5-em">
+		<div class="<?php echo $this->class ?>__text bg-greylight text cols-span-2 cols-span-md-1">
 			<?= $this->offer_alertTeaser ?>
 		</div>
 		<?php endif; ?>
 
-		<div class="bg-primary form">
+		<div class="bg-primary <?php echo $this->class ?>__form">
 			<input type="email" name="email" placeholder="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['email'] ?>" class="" >
 			
 			<?php if ($this->conditions): ?>
@@ -82,14 +84,17 @@
 			</div>
 			<?php endif; ?>
 
-			<div class="flex-alignitems--center">
-				<a href="<?= $this->gdprPage ?>" target="_blank" class="ft-0-8-em flexgrow--1"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
-				<button type="button" class="btn-bd-white btn-sm center btn-load icon-last m-bottom-0" data-process="subscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['subscribe'] ?></button>
+			<div class="<?php echo $this->class ?>__actions">
+				<a href="<?= $this->gdprPage ?>" target="_blank"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
+				<button type="button" class="btn-bd-white btn-sm" data-process="subscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['subscribe'] ?></button>
 			</div>
 		</div>
 	</div>
 
 	<script>
+		window.addEventListener("load", function(e) {
+		 	$('[data-process="subscribeFeed"]').on('click',subscribeFeed);
+		});
 		var rt = '{{request_token}}';
 		var subscribeFeed = function(btn){
 			return new Promise(function(resolve,reject){
