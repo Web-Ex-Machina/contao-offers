@@ -16,6 +16,7 @@ namespace WEM\OffersBundle\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
+use Contao\Combiner;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -237,6 +238,14 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
         }
+
+        // assets
+        $strVersion = 1;
+        $objCssCombiner = new Combiner();
+        $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
+
+        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
+        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
     }
 
     /**
