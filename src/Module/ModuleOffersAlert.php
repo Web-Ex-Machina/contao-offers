@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\Combiner;
 use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
@@ -263,6 +264,13 @@ class ModuleOffersAlert extends ModuleOffers
         if ($this->offer_pageGdpr && $objGdprPage = \PageModel::findByPk($this->offer_pageGdpr)) {
             $this->Template->gdprPage = $objGdprPage->getFrontendUrl();
         }
+
+        // assets
+        $strVersion = 1;
+        $objCssCombiner = new Combiner();
+        $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
+
+        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
     }
 
     /**
