@@ -232,10 +232,10 @@ class ModuleOffersList extends ModuleOffers
 
         // Catch auto_item
         if (Input::get('auto_item')) {
-            $objOffer = OfferModel::findByPk(Input::get('auto_item'));
+            $objOffer = OfferModel::findItems(['code' => Input::get('auto_item')], 1);
             
             $this->Template->openModalOnLoad = true;
-            $this->Template->offerId = $objOffer->id;
+            $this->Template->offerId = $objOffer->first()->id;
         }
     }
 
