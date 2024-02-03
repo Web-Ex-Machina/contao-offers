@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\Combiner;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
-use Contao\Combiner;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -107,7 +107,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && $this->id === (int) \Input::post('module')) {
+        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
             try {
                 switch (\Input::post('action')) {
                     case 'seeDetails':
@@ -118,7 +118,7 @@ class ModuleOffersList extends ModuleOffers
 
                         $this->offer_template = 'offer_details';
                         echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
-                        die;
+                        exit;
                     break;
 
                     case 'apply':
@@ -130,7 +130,7 @@ class ModuleOffersList extends ModuleOffers
                         $objSession->set('wem_offer', \Input::post('offer'));
 
                         echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
-                        die;
+                        exit;
                     break;
 
                     default:
@@ -143,7 +143,7 @@ class ModuleOffersList extends ModuleOffers
             // Add Request Token to JSON answer and return
             $arrResponse['rt'] = \RequestToken::get();
             echo json_encode($arrResponse);
-            die;
+            exit;
         }
 
         if ($this->offer_applicationForm
@@ -181,7 +181,7 @@ class ModuleOffersList extends ModuleOffers
         // Retrieve filters
         $this->buildFilters();
         $this->Template->filters = $this->filters;
-        
+
         // Get the total number of items
         $intTotal = OfferModel::countItems($this->config);
 
@@ -234,7 +234,7 @@ class ModuleOffersList extends ModuleOffers
         // Catch auto_item
         if (Input::get('auto_item')) {
             $objOffer = OfferModel::findItems(['code' => Input::get('auto_item')], 1);
-            
+
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
         }
@@ -251,7 +251,7 @@ class ModuleOffersList extends ModuleOffers
     /**
      * Parse and return an application form for a job.
      *
-     * @param int    $intId      [Job ID]
+     * @param int    $intId       [Job ID]
      * @param string $strTemplate [Template name]
      *
      * @return string
@@ -261,7 +261,7 @@ class ModuleOffersList extends ModuleOffers
         if (!$this->offer_applicationForm) {
             return '';
         }
-        
+
         $strForm = $this->getForm($this->offer_applicationForm);
 
         $objItem = OfferModel::findByPk($intId);
@@ -319,19 +319,19 @@ class ModuleOffersList extends ModuleOffers
                         }
 
                         foreach ($options as $value => $label) {
-                            if(is_array($label)){
+                            if (\is_array($label)) {
                                 foreach ($label as $subValue => $subLabel) {
                                     $filter['options'][$value]['options'][] = [
                                         'value' => $subValue,
                                         'label' => $subLabel,
-                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f))))),
+                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f), true)))),
                                     ];
                                 }
-                            }else{
+                            } else {
                                 $filter['options'][] = [
                                     'value' => $value,
                                     'label' => $label,
-                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f))))),
+                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f), true)))),
                                 ];
                             }
                         }
@@ -343,8 +343,8 @@ class ModuleOffersList extends ModuleOffers
 
                         if ($objOptions) {
                             $filter['type'] = 'select';
-                            if($filter['multiple']){
-                                $filter['name'].='[]'; 
+                            if ($filter['multiple']) {
+                                $filter['name'] .= '[]';
                             }
                             while ($objOptions->next()) {
                                 if (!$objOptions->{$f}) {
@@ -352,14 +352,13 @@ class ModuleOffersList extends ModuleOffers
                                 }
 
                                 $subOptions = deserialize($objOptions->{$f});
-                                foreach($subOptions as $subOption){
+                                foreach ($subOptions as $subOption) {
                                     $filter['options'][$subOption] = [
                                         'value' => $subOption,
                                         'label' => $subOption,
                                         'selected' => !$filter['multiple']
                                             ? (null !== \Input::get($f) && \Input::get($f) === $subOption)
-                                            : (null !== \Input::get($f) && in_array($subOption,\Input::get($f ?? [])))
-                                            ,
+                                            : (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true)),
                                     ];
                                 }
                             }
@@ -387,7 +386,7 @@ class ModuleOffersList extends ModuleOffers
                         break;
                 }
 
-                if ('select' === $filter['type'] && 1 >= count($filter['options'])) {
+                if ('select' === $filter['type'] && 1 >= \count($filter['options'])) {
                     continue;
                 }
 
