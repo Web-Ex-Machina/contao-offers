@@ -151,6 +151,10 @@
 				<source>Contact data</source>
 				<target>Contact</target>
 			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.application_legend">
+				<source>Aditionnal application data</source>
+				<target>Informations supplémentaires sur la candidature</target>
+			</trans-unit>
 			<trans-unit id="tl_wem_offer_application.files_legend">
 				<source>Files</source>
 				<target>Fichiers</target>
