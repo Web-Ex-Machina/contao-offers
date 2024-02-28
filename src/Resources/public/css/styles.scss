@@ -43,7 +43,7 @@ $breakpoints: (
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  p,ul,ol{line-height: inherit;}
+  p,ul,ol{line-height: inherit;margin-bottom: 1.45;}
 }
 
 $minwidth: 20ch !default;
