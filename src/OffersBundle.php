@@ -12,17 +12,15 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\OffersBundle\Model;
+namespace WEM\OffersBundle;
+
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Reads and writes items.
+ * Configures the Contao  offers bundle.
+ *
+ * @author Web ex Machina <https://www.webexmachina.fr>
  */
-class AlertCondition extends \WEM\UtilsBundle\Model\Model
+class OffersBundle extends Bundle
 {
-    /**
-     * Table name.
-     *
-     * @var string
-     */
-    protected static $strTable = 'tl_wem_offer_alert_condition';
 }

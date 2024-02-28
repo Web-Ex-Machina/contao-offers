@@ -1,7 +1,7 @@
 {
     "name": "webexmachina/contao-offers",
-    "description": "Job Offers for Contao Open Source CMS",
-     "keywords": ["frontend", "job", "application", "offer", "webexmachina", "module", "contao"],
+    "description": "Offers & Ads for Contao Open Source CMS",
+     "keywords": ["frontend", "jobs", "application", "offer", "ads", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
@@ -13,23 +13,19 @@
     ],
     "support":{
         "website":"https://www.webexmachina.fr/",
-        "issues":"https://github.com/web-ex-machina/contao-job-offers/issues",
-        "source":"https://github.com/web-ex-machina/contao-job-offers"
+        "issues":"https://github.com/web-ex-machina/contao-offers/issues",
+        "source":"https://github.com/web-ex-machina/contao-offers"
     },
     "require": {
-        "php": "^5.6|^7.0",
-        "contao/core-bundle": "^4.4",
-        "contao-community-alliance/composer-plugin": "*",
-        "codefog/contao-haste": "^4.24",
-        "terminal42/contao-countryselect": "^1.4",
-        "terminal42/notification_center": "^1.5",
-        "webexmachina/contao-utils": "^0.3",
-        "patchwork/utf8": "1.3.3",
-        "webexmachina/contao-personal-data-manager": "dev-main"
+        "contao/core-bundle": "^4.13",
+        "terminal42/contao-countryselect": "^1.5",
+        "terminal42/notification_center": "^1.6",
+        "webexmachina/contao-utils": "^1.0",
+        "webexmachina/contao-personal-data-manager": "^1.0"
     },
     "autoload":{
         "psr-4": {
-            "WEM\\JobOffersBundle\\": "src/"
+            "WEM\\OffersBundle\\": "src/"
         },
         "classmap": [
             "src/Resources/contao/"
@@ -42,6 +38,6 @@
         ]
     },
     "extra":{
-        "contao-manager-plugin": "WEM\\JobOffersBundle\\ContaoManager\\Plugin"
+        "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"
     }
 }

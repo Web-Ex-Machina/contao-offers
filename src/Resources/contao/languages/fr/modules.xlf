@@ -1,40 +1,40 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/wem-job-offers/languages/en/modules.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-offers/languages/en/modules.php" source-language="en" target-language="fr">
     <body>
-    	<trans-unit id="MOD.wemjoboffers">
-			<source>Job offers</source>
-			<target>Offres d'emploi</target>
+    	<trans-unit id="MOD.wemoffers">
+			<source>Offers</source>
+			<target>Annonces</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-job-offers.0">
-			<source>Job offers</source>
-			<target>Offres d'emploi</target>
+		<trans-unit id="MOD.wem-offers.0">
+			<source>Offers</source>
+			<target>Annonces</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-job-offers.1">
-			<source>Manage job offers</source>
-			<target>Gérer les offres d'emploi</target>
+		<trans-unit id="MOD.wem-offers.1">
+			<source>Manage offers</source>
+			<target>Gérer les annonces</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-job-alerts.0">
-			<source>Job alerts</source>
+		<trans-unit id="MOD.wem-offers-alerts.0">
+			<source>Alerts</source>
 			<target>Alertes</target>
 		</trans-unit>
-		<trans-unit id="MOD.wem-job-alerts.1">
-			<source>Manage job alerts</source>
-			<target>Gérer les alertes d'offres d'emploi</target>
+		<trans-unit id="MOD.wem-offers-alerts.1">
+			<source>Manage offers alerts</source>
+			<target>Gérer les alertes d'annonces</target>
 		</trans-unit>
 
-		<trans-unit id="FMD.jobslist.0">
-			<source>Jobs list</source>
+		<trans-unit id="FMD.offerslist.0">
+			<source>Offers list</source>
 			<target>Liste d'offres</target>
 		</trans-unit>
-		<trans-unit id="FMD.jobslist.1">
-			<source>Adds a list of jobs items to the page</source>
+		<trans-unit id="FMD.offerslist.1">
+			<source>Adds a list of offers items to the page</source>
 			<target>Ajoute une liste d'offres à la page</target>
 		</trans-unit>
-		<trans-unit id="FMD.jobsalert.0">
-			<source>Jobs alert</source>
+		<trans-unit id="FMD.offersalert.0">
+			<source>Offers alert</source>
 			<target>Alerte d'offres</target>
 		</trans-unit>
-		<trans-unit id="FMD.jobsalert.1">
+		<trans-unit id="FMD.offersalert.1">
 			<source>Adds an alert subscription form to the page</source>
 			<target>Ajoute un formulaire d'inscription aux alertes à la page</target>
 		</trans-unit>

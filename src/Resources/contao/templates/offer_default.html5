@@ -1,0 +1,46 @@
+<div class="offer offer__default<?= $this->class ?>" data-offer="<?= $this->id ?>" itemscope itemtype="http://schema.org/Article" data-preset="inline">
+	<div class="offer__wrapper">
+		<?php if ($this->addImage): ?>
+			<div class="offer__figure">
+				<img src="<?= $this->picture['img']['src'] ?>" alt="<?= $this->picture['img']['alt'] ?: $this->picture['img']['name'] ?>" />
+			</div>
+		<?php endif ?>
+		<div class="offer__content">
+			<div class="offer__title h2">
+				<?= $this->title ?>
+			</div>
+			<div class="offer__text">
+				<?php if ($this->blnDisplayText): ?>
+				<div class="offer__teaser">
+					<?= $this->teaser ?>
+				</div>
+				<?php endif ?>
+
+				<?php if ($this->blnDisplayAttributes && $this->attributes): ?>
+				<div class="offer__attributes">
+					<?php foreach ($this->attributes as $attribute): ?>
+						<?php if ($attribute['label'] && $attribute['human_readable_value']): ?>
+							<div class="offer__attribute">
+								<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
+								<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
+							</div>
+						<?php endif ?>
+					<?php endforeach ?>
+				</div>
+				<?php endif ?>
+			</div>
+			<div class="offer__actions">
+				<<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?> class="btn offer__action <?php if (!$this->blnDisplayApplyButton): ?>ft-primary<?php endif; ?>" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+					<?php if ($this->blnDisplayApplyButton): ?>
+					<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
+					<?php endif; ?>
+				</<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?>>
+				<?php if ($this->blnDisplayApplyButton): ?>
+				<button class="btn offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
+				</button>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,33 @@
+services:
+  offers.listener.personal_data_ui:
+    class: WEM\OffersBundle\EventListener\PersonalDataManager\UiListener
+    arguments:
+      $translator: '@contao.translation.translator'
+      $csrfTokenManager: '@contao.csrf.token_manager'
+      $csrfTokenName: '%contao.csrf_token_name%'
+      $personalDataManagerUi: '@wem.personal_data_manager.service.personal_data_manager_ui'
+    public: true
+
+  offers.listener.personal_data_manager:
+    class: WEM\OffersBundle\EventListener\PersonalDataManager\ManagerListener
+    arguments:
+      $csrfTokenManager: '@contao.csrf.token_manager'
+      $csrfTokenName: '%contao.csrf_token_name%'
+      $personalDataManager: '@wem.personal_data_manager.service.personal_data_manager'
+    public: true
+
+  offers.listener.load_datacontainer:
+    class: WEM\OffersBundle\EventListener\LoadDataContainerListener
+    public: true
+
+  WEM\OffersBundle\EventListener\LoadDataContainerListener:
+    tags:
+      - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
+
+  WEM\OffersBundle\EventListener\ProcessFormDataListener:
+    tags:
+      - { name: contao.hook, hook: processFormData, method: __invoke, priority: 100 }
+
+  WEM\OffersBundle\EventListener\StoreFormDataListener:
+    tags:
+      - { name: contao.hook, hook: storeFormData, method: storeFormData, priority: 100 }

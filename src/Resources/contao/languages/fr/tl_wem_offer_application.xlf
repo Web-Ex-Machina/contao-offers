@@ -1,0 +1,237 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="system/modules/wem-offers/languages/en/tl_wem_offer_application.php" source-language="en" target-language="fr">
+    <body>
+    	<trans-unit id="tl_wem_offer_application.createdAt.0">
+				<source>Application date</source>
+				<target>Date de candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.createdAt.1">
+				<source>Enter the application date</source>
+				<target>Saisissez la date de la candidature</target>
+			</trans-unit>
+	    	<trans-unit id="tl_wem_offer_application.status.0">
+				<source>Status</source>
+				<target>Statut</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.status.1">
+				<source>Enter the application status</source>
+				<target>Saisissez le statut de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.status.not-answered">
+				<source>Not answered</source>
+				<target>Non répondue</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.status.refused">
+				<source>Refused</source>
+				<target>Refusée</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.status.accepted">
+				<source>Accepted</source>
+				<target>Acceptée</target>
+			</trans-unit>
+
+	    	<trans-unit id="tl_wem_offer_application.pid.0">
+				<source>Offer</source>
+				<target>Offre</target>
+			</trans-unit>
+	    	<trans-unit id="tl_wem_offer_application.firstname.0">
+				<source>Firstname</source>
+				<target>Prénom</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.firstname.1">
+				<source>Enter the firstname</source>
+				<target>Saisissez le prénom</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.lastname.0">
+				<source>Lastname</source>
+				<target>Nom de famille</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.lastname.1">
+				<source>Enter the lastname</source>
+				<target>Saisissez le nom de famille</target>
+			</trans-unit>
+
+			<trans-unit id="tl_wem_offer_application.street.0">
+				<source>Address</source>
+				<target>Adresse</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.street.1">
+				<source>Enter the address</source>
+				<target>Saisissez l'adresse</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.postal.0">
+				<source>Postal code</source>
+				<target>Code postal</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.postal.1">
+				<source>Enter the postal code</source>
+				<target>Saisissez le code postal</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.city.0">
+				<source>City</source>
+				<target>Ville</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.city.1">
+				<source>Enter the city</source>
+				<target>Saisissez la ville</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.country.0">
+				<source>Country</source>
+				<target>Pays</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.country.1">
+				<source>Select the country</source>
+				<target>Sélectionnez le pays</target>
+			</trans-unit>
+			
+			<trans-unit id="tl_wem_offer_application.phone.0">
+				<source>Phone</source>
+				<target>Téléphone</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.phone.1">
+				<source>Enter the phone number</source>
+				<target>Saisissez le numéro de téléphone</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.email.0">
+				<source>Email</source>
+				<target>Email</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.email.1">
+				<source>Enter the email address</source>
+				<target>Saisissez l'adresse email</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.comments.0">
+				<source>Comments</source>
+				<target>Commentaires</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.comments.1">
+				<source>Enter optional comments</source>
+				<target>Saisissez un commentaire optionnel</target>
+			</trans-unit>
+
+			<trans-unit id="tl_wem_offer_application.disponibility.0">
+				<source>Disponibility</source>
+				<target>Disponibilité</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.disponibility.1">
+				<source>Enter optional disponibility</source>
+				<target>Saisissez la disponibilité (optionnel)</target>
+			</trans-unit>
+
+			<trans-unit id="tl_wem_offer_application.cv.0">
+				<source>CV</source>
+				<target>CV</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.cv.1">
+				<source>Select the CV</source>
+				<target>Sélectionnez le CV</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.documents.0">
+				<source>Documents</source>
+				<target>Documents</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.documents.1">
+				<source>Select other documents related to the application</source>
+				<target>Sélectionnez des documents en lien avec la candidature</target>
+			</trans-unit>
+
+			<trans-unit id="tl_wem_offer_application.statut_legend">
+				<source>Application data</source>
+				<target>Informations sur la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.name_legend">
+				<source>Identity</source>
+				<target>Identité</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.street_legend">
+				<source>Address data</source>
+				<target>Coordonnées</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.contact_legend">
+				<source>Contact data</source>
+				<target>Contact</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.application_legend">
+				<source>Aditionnal application data</source>
+				<target>Informations supplémentaires sur la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.files_legend">
+				<source>Files</source>
+				<target>Fichiers</target>
+			</trans-unit>
+
+	    	<trans-unit id="tl_wem_offer_application.new.0">
+				<source>New application</source>
+				<target>Nouvelle candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.new.1">
+				<source>Create a new application</source>
+				<target>Créer une nouvelle candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.edit.0">
+				<source>Edit application</source>
+				<target>Editer la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.edit.1">
+				<source>Edit application ID %s</source>
+				<target>Editer la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.copy.0">
+				<source>Copy application</source>
+				<target>Dupliquer la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.copy.1">
+				<source>Copy application ID %s</source>
+				<target>Dupliquer la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.delete.0">
+				<source>Delete application</source>
+				<target>Supprimer la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.delete.1">
+				<source>Delete application ID %s</source>
+				<target>Supprimer la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.show.0">
+				<source>Show application data</source>
+				<target>Voir les informations de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.show.1">
+				<source>Show application data ID %s</source>
+				<target>Voir les informations de la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showCv.0">
+				<source>Show application CV</source>
+				<target>Voir le CV de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showCv.1">
+				<source>Show application CV ID %s</source>
+				<target>Voir le CV de la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showApplicationLetter.0">
+				<source>Show application's application letter</source>
+				<target>Voir la lettre de motivation de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showApplicationLetter.1">
+				<source>Show application's application letter ID %s</source>
+				<target>Voir la lettre de motivation de la candidature ID %s</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showCvModalTitle">
+				<source>Show application CV</source>
+				<target>Voir le CV de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.showApplicationLetterModalTitle.0">
+				<source>Show application's application letter</source>
+				<target>Voir la lettre de motivation de la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.sendNotificationToApplication.0">
+				<source>Answer to application</source>
+				<target>Répondre à la candidature</target>
+			</trans-unit>
+			<trans-unit id="tl_wem_offer_application.sendNotificationToApplication.1">
+				<source>Answer to application ID %s</source>
+				<target>Répondre à la candidature ID %s</target>
+			</trans-unit>
+    </body>
+  </file>
+</xliff>

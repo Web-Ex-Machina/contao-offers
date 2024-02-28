@@ -15,69 +15,65 @@ declare(strict_types=1);
 $this->loadDataContainer('tl_content');
 
 // Add palettes to tl_module
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'job_addFilters';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['jobslist'] = '
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_addFilters';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_displayAttributes';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feeds,job_displayTeaser,job_addFilters;
+    {config_legend},offer_feeds,offer_displayTeaser,offer_displayAttributes,offer_addFilters;
     {list_legend},numberOfItems,skipFirst,perPage;
-    {form_legend},job_applicationForm;
-    {template_legend:hide},job_template,customTpl;
+    {form_legend},offer_applicationForm;
+    {template_legend:hide},offer_template,customTpl;
     {expert_legend:hide},guests,cssID
 ';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['jobsalert'] = '
+$GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
     {title_legend},name,headline,type;
-    {config_legend},job_feed,job_alertTeaser,job_conditions,job_pageGdpr,job_pageSubscribe,job_ncSubscribe,job_pageUnsubscribe,job_ncUnsubscribe;
+    {config_legend},offer_feed,offer_alertTeaser,offer_conditions,offer_pageGdpr,offer_pageSubscribe,offer_ncSubscribe,offer_pageUnsubscribe,offer_ncUnsubscribe;
     {template_legend:hide},customTpl;
     {expert_legend:hide},guests,cssID
 ';
 
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['job_addFilters'] = 'job_filters,job_addSearch';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_addFilters'] = 'offer_filters,offer_addSearch';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_displayAttributes'] = 'offer_attributes';
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_feed'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_feed'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_feed'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobFeeds'],
-    'foreignKey' => 'tl_wem_job_feed.title',
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFeeds'],
+    'foreignKey' => 'tl_wem_offer_feed.title',
     'eval' => ['mandatory' => true],
     'sql' => 'int(10) unsigned NOT NULL default 0',
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_feeds'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_feeds'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_feeds'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobFeeds'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFeeds'],
     'eval' => ['multiple' => true, 'mandatory' => true],
     'sql' => 'blob NULL',
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_displayTeaser'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_displayTeaser'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_displayTeaser'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_alertTeaser'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_alertTeaser'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_alertTeaser'] = [
     'exclude' => true,
     'search' => true,
     'inputType' => 'textarea',
-    'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
+    'eval' => ['rte' => 'tinyMCE', 'helpwizard' => true, 'tl_class' => 'clr'],
     'explanation' => 'insertTags',
     'sql' => 'mediumtext NULL',
 ];
 // @todo add several gateways for alerts
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_alertsGateways'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_alertsGateways'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_alertsGateways'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobAlertsOptions'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAlertsOptions'],
     'eval' => ['multiple' => true, 'mandatory' => true],
     'sql' => 'blob NULL',
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_addFilters'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_addFilters'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_addFilters'] = [
     'exclude' => true,
     'filter' => true,
     'flag' => 1,
@@ -85,24 +81,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_addFilters'] = [
     'eval' => ['submitOnChange' => true, 'doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_filters'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_filters'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_filters'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobFiltersOptions'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFiltersOptions'],
     'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_conditions'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_conditions'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_conditions'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobConditionsOptions'],
-    'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getConditionsOptions'],
+    'eval' => ['chosen' => true, 'multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_addSearch'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_wem_job_feed_alert']['job_addSearch'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_addSearch'] = [
     'exclude' => true,
     'filter' => true,
     'flag' => 1,
@@ -110,8 +103,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_addSearch'] = [
     'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_applicationForm'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_applicationForm'] = [
     'exclude' => true,
     'inputType' => 'select',
     'options_callback' => ['tl_content', 'getForms'],
@@ -121,17 +113,15 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_applicationForm'] = [
     ],
     'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_template'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_template'],
-    'default' => 'job_default',
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_template'] = [
+    'default' => 'offer_default',
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getJobsTemplates'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getTemplates'],
     'eval' => ['tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_pageGdpr'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_pageGdpr'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageGdpr'] = [
     'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
@@ -139,8 +129,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_pageGdpr'] = [
     'sql' => 'int(10) unsigned NOT NULL default 0',
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_pageSubscribe'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_pageSubscribe'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageSubscribe'] = [
     'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
@@ -148,16 +137,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_pageSubscribe'] = [
     'sql' => 'int(10) unsigned NOT NULL default 0',
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_ncSubscribe'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_ncSubscribe'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_ncSubscribe'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getSubscribeNotificationChoices'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getSubscribeNotificationChoices'],
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_pageUnsubscribe'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_pageUnsubscribe'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageUnsubscribe'] = [
     'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
@@ -165,11 +152,23 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['job_pageUnsubscribe'] = [
     'sql' => 'int(10) unsigned NOT NULL default 0',
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
-$GLOBALS['TL_DCA']['tl_module']['fields']['job_ncUnsubscribe'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['job_ncUnsubscribe'],
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_ncUnsubscribe'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\JobOffersBundle\DataContainer\ModuleContainer::class, 'getUnsubscribeNotificationChoices'],
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getUnsubscribeNotificationChoices'],
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_displayAttributes'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
+    'sql' => "char(1) NOT NULL default ''",
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_attributes'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAttributesOptions'],
+    'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
+    'sql' => 'blob NULL',
 ];

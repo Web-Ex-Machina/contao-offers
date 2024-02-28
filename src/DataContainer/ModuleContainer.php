@@ -13,29 +13,32 @@ declare(strict_types=1);
  * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
-namespace WEM\JobOffersBundle\DataContainer;
+namespace WEM\OffersBundle\DataContainer;
 
-class ModuleContainer extends \Backend
+use Contao\Backend;
+use WEM\OffersBundle\Model\OfferFeedAttribute;
+
+class ModuleContainer extends Backend
 {
     /**
-     * Return all job templates as array.
+     * Return all templates as array.
      *
      * @return array
      */
-    public function getJobsTemplates()
+    public function getTemplates()
     {
-        return $this->getTemplateGroup('job_');
+        return $this->getTemplateGroup('offer_');
     }
 
     /**
-     * Return all job feeds as array.
+     * Return all feeds as array.
      *
      * @return array
      */
-    public function getJobFeeds()
+    public function getFeeds()
     {
         $arrFeeds = [];
-        $objFeeds = $this->Database->execute('SELECT id, title FROM tl_wem_job_feed ORDER BY title');
+        $objFeeds = $this->Database->execute('SELECT id, title FROM tl_wem_offer_feed ORDER BY title');
 
         if (!$objFeeds || 0 === $objFeeds->count()) {
             return $arrFeeds;
@@ -49,29 +52,30 @@ class ModuleContainer extends \Backend
     }
 
     /**
-     * Return all job alerts available gateways.
+     * Return all alerts available gateways.
      *
      * @return array
      */
-    public function getJobAlertsOptions()
+    public function getAlertsOptions()
     {
         return [
-            'email' => $GLOBALS['TL_LANG']['WEM']['JOBOFFERS']['GATEWAY']['email'],
+            'email' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['GATEWAY']['email'],
         ];
     }
 
     /**
-     * Return all job alerts available gateways.
+     * Return all alerts available gateways.
      *
      * @return array
      */
-    public function getJobConditionsOptions()
+    public function getConditionsOptions()
     {
-        $this->loadDataContainer('tl_wem_job');
+        $this->loadDataContainer('tl_wem_offer');
         $fields = [];
 
-        foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_isAvailableForAlerts']) {
+        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
+            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForAlerts']) {
+            if (!empty($v['eval']) && true === $v['eval']['isAlertCondition']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
         }
@@ -84,13 +88,14 @@ class ModuleContainer extends \Backend
      *
      * @return array
      */
-    public function getJobFiltersOptions()
+    public function getFiltersOptions()
     {
-        $this->loadDataContainer('tl_wem_job');
+        $this->loadDataContainer('tl_wem_offer');
         $fields = [];
 
-        foreach ($GLOBALS['TL_DCA']['tl_wem_job']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['wemjoboffers_isAvailableForFilters']) {
+        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
+            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForFilters']) {
+            if (!empty($v['eval']) && true === $v['eval']['isFilter']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
         }
@@ -106,7 +111,7 @@ class ModuleContainer extends \Backend
     public function getSubscribeNotificationChoices()
     {
         $arrChoices = [];
-        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_joboffers_alerts_subscribe' ORDER BY title");
+        $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_subscribe' ORDER BY title");
 
         while ($objNotifications->next()) {
             $arrChoices[$objNotifications->id] = $objNotifications->title;
@@ -123,12 +128,40 @@ class ModuleContainer extends \Backend
     public function getUnsubscribeNotificationChoices()
     {
         $arrChoices = [];
-        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_joboffers_alerts_unsubscribe' ORDER BY title");
+        $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_unsubscribe' ORDER BY title");
 
         while ($objNotifications->next()) {
             $arrChoices[$objNotifications->id] = $objNotifications->title;
         }
 
         return $arrChoices;
+    }
+
+    /**
+     * Return all offer attributes available.
+     *
+     * @return array
+     */
+    public function getAttributesOptions()
+    {
+        $arrPids = deserialize($this->activeRecord->offer_feeds);
+        $c = [];
+
+        if (null !== $arrPids && !empty($arrPids)) {
+            $c = ['pid' => $arrPids];
+        }
+
+        $objAttributes = OfferFeedAttribute::findItems($c);
+
+        if (!$objAttributes) {
+            return [];
+        }
+
+        $fields = [];
+        while ($objAttributes->next()) {
+            $fields[$objAttributes->name] = $objAttributes->label ?: $objAttributes->name;
+        }
+
+        return $fields;
     }
 }

@@ -1,0 +1,53 @@
+<?php
+	$pictures = $this->model->getAttributeValue('pictures');
+?>
+
+<div class="offer__details">
+	<div class="offer__title h2">
+		<?= $this->title ?>
+	</div>
+
+	<?php if ($this->attributes): ?>
+		<div class="offer__attributes">
+			<?php foreach ($this->attributes as $attribute): ?>
+				<?php if ($attribute['label'] && $attribute['human_readable_value']): ?>
+					<div class="offer__attribute">
+						<div class="offer__attribute__title"><?= $attribute['label'] ?></div>
+						<div class="offer__attribute__value"><?= $attribute['human_readable_value'] ?></div>
+					</div>
+				<?php endif ?>
+			<?php endforeach ?>
+		</div>
+	<?php endif ?>
+	<div class="offer__text">
+		<?php if ($this->teaser): ?>
+			<?= $this->teaser ?>
+		<?php endif ?>
+		<div class="offer__figure offer__mainPicture">
+			<?php if ($this->picture): ?>
+				<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
+			<?php elseif($pictures && count($pictures)>0): ?>
+				<img src="<?php echo $pictures[0]['src'] ?>" alt="<?php echo $pictures[0]['picture']['alt']?:'' ?>" />
+			<?php endif; ?>
+		</div>
+		<?php if($pictures && count($pictures)>0): ?>
+		    <div class="offer__gallery">
+				<?php if ($this->picture): ?>
+			    	<div class="offer__figure active">
+						<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
+					</div>
+				<?php endif; ?>
+		    	<?php foreach ($pictures as $key => $picture): ?>
+			      <div class="offer__figure <?php echo !$this->picture && $key==0?'active':'' ?>">
+					<img src="<?= $picture['thumbnail']?:$picture['src'] ?>"  alt="<?= $picture['picture']['alt']?:'' ?>" />
+			      </div>
+		    	<?php endforeach ?>
+		    </div>
+		<?php endif; ?>
+	</div>
+	
+	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['applyTitle'] ?></div>
+	<?php if ($this->blnDisplayApplyButton): ?>
+		<button class="btn-sm offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byForm'] ?></button>
+	<?php endif; ?>
+</div>

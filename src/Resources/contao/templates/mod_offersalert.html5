@@ -1,0 +1,139 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+<?php if ($this->error): ?>
+	<p class="lead ft-1-5-em">Erreur :</p>
+	<p><?= $this->message ?></p>
+	<?= $this->trace ?>
+<?php elseif ($this->isRequest): ?>
+	<p><?= $this->message ?></p>
+<?php elseif ($this->unsubscribe): ?>
+	<div class="bg-primary <?php echo $this->class ?>__form">
+		<p><?= $this->unsubscribeLbl ?></p>
+		<input type="email" name="email" placeholder="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['email'] ?>" class="" />
+		<div class="<?php echo $this->class ?>__actions">
+			<a href="<?= $this->gdprPage ?>" target="_blank"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
+			<button type="button" class="btn-bd-white btn-sm " data-process="unsubscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['unsubscribe'] ?></button>
+		</div>
+	</div>
+	<script>
+		window.addEventListener("load", function(e) {
+		 	$('[data-process="unsubscribeFeed"]').on('click',unsubscribeFeed);
+		});
+		var rt = '{{request_token}}';
+		var unsubscribeFeed = function(btn){
+			return new Promise(function(resolve,reject){
+				var data = {
+					email: $('.mod_offersalert input[name="email"]').val()
+				}
+			    $.ajax({
+					timeout: 10000,
+					url: window.location.pathname,
+					type: 'post',
+					data:{
+						'TL_AJAX':true,
+						'module': <?= $this->moduleId ?>,
+						'REQUEST_TOKEN':rt ,
+						'action': 'unsubscribe',
+						'email': data.email
+					},
+				}).done(function(data){
+					try{var results = $.parseJSON(data); } 
+					catch(e){reject();}
+					notif_fade[results.status](results.msg);
+					if (results.status == "success") {
+						resolve();
+					} else {
+						reject();
+					}
+				}).fail(function(jqXHR, textStatus){
+					reject();
+				});
+			});
+		}
+	</script>
+<?php else: ?>
+	<div class="<?php echo $this->class ?>__wrapper d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
+		
+		<?php if ($this->offer_alertTeaser): ?>
+		<div class="<?php echo $this->class ?>__text bg-greylight text cols-span-2 cols-span-md-1">
+			<?= $this->offer_alertTeaser ?>
+		</div>
+		<?php endif; ?>
+
+		<div class="bg-primary <?php echo $this->class ?>__form">
+			<input type="email" name="email" placeholder="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['email'] ?>" class="" >
+			
+			<?php if ($this->conditions): ?>
+			<div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
+				<?php foreach ($this->conditions as $c): ?>
+					<?php if ('select' == $c['type']): ?>
+						<select name="<?= $c['name']; ?>"<?= $c['multiple'] ? ' multiple' : ''; ?><?= $c['multiple'] ? ' placeholder="'. $c['label'] .'"' : ''; ?> class="">
+							<?php if (!$c['multiple']): ?>
+							<option value="">- <?= $c['label']; ?> -</option>
+							<?php endif; ?>
+
+							<?php foreach ($c['options'] as $o): ?>
+							<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php else: ?>
+						<input type="text" class="" name="<?= $c['name']; ?>" value="<?= $c['value']; ?>" placeholder="<?= $c['placeholder']; ?>" />
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+			<?php endif; ?>
+
+			<div class="<?php echo $this->class ?>__actions">
+				<a href="<?= $this->gdprPage ?>" target="_blank"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['privacy'] ?></a>
+				<button type="button" class="btn-bd-white btn-sm" data-process="subscribeFeed"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['subscribe'] ?></button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		window.addEventListener("load", function(e) {
+		 	$('[data-process="subscribeFeed"]').on('click',subscribeFeed);
+		});
+		var rt = '{{request_token}}';
+		var subscribeFeed = function(btn){
+			return new Promise(function(resolve,reject){
+				var data = {
+					email: $('.mod_offersalert input[name="email"]').val(),
+					conditions: {}
+				}
+
+				$('.mod_offersalert .conditions').find('input,select').each(function(){
+					data.conditions[this.name] = this.value;
+				});
+
+			    $.ajax({
+					timeout: 10000,
+					url: window.location.pathname,
+					type: 'post',
+					data:{
+						'TL_AJAX':true ,
+						'module': <?= $this->moduleId ?>,
+						'REQUEST_TOKEN':rt ,
+						'action': 'subscribe',
+						'email': data.email,
+						'conditions': data.conditions,
+					},
+				}).done(function(data){
+					try{var results = $.parseJSON(data); } 
+					catch(e){reject();}
+					notif_fade[results.status](results.msg);
+					if (results.status == "success") {
+						resolve();
+					} else {
+						reject();
+					}
+				}).fail(function(jqXHR, textStatus){
+					reject();
+				});
+			});
+		}
+	</script>
+<?php endif ?>
+
+<?php $this->endblock(); ?>

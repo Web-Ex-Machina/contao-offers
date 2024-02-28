@@ -1,0 +1,18 @@
+<div class="offer__form">
+	<div class="offer__title h2">
+		Postuler pour l'annonce <?= $this->title ?>
+	</div>
+	<?= $this->form ?>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('[data-name="offerApplyModal"] input[name="pid"]').val(<?= $this->id ?>);
+		    $('[data-name="offerApplyModal"] input[name="code"]').val("<?= $this->code ?>");
+		    $('[data-name="offerApplyModal"] input[name="title"]').val("<?= $this->title ?>");
+		    $('[data-name="offerApplyModal"] input[name="recipient"]').val("<?= $this->recipient ?>");
+		    $('[data-name="offerApplyModal"] input[name="REQUEST_TOKEN"]').val("<?= $this->token ?>");
+		    $('[data-name="offerApplyModal"] input[name="tstamp"]').val(Math.floor(Date.now() / 1000));
+		    $('[data-name="offerApplyModal"] input[name="createdAt"]').val(Math.floor(Date.now() / 1000));
+		});
+	</script>
+</div>

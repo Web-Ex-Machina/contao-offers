@@ -138,6 +138,10 @@
 			<source>Contact data</source>
 			<target>Contactgegevens</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_offer_application.application_legend">
+			<source>Aditionnal application data</source>
+			<target>Aanvullende sollicitatiegegevens</target>
+		</trans-unit>
 		<trans-unit id="tl_wem_job_application.files_legend">
 			<source>Files</source>
 			<target>Bestanden</target>

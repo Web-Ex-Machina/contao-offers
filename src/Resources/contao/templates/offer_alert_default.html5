@@ -1,0 +1,14 @@
+<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerCodeLabel',[],'contao_default',$this->language); ?></strong> : [<?=$this->code; ?>] <?=$this->title; ?>
+<br />
+<strong><?=$this->trans('WEM.OFFERS.ALERTS.dateLabel',[],'contao_default',$this->language); ?></strong> : <?= $this->date; ?>
+<br />
+<strong><?=$this->trans('WEM.OFFERS.ALERTS.offerTextLabel',[],'contao_default',$this->language); ?></strong> :
+<br />
+<?= $this->teaser; ?>
+<br />
+
+<?php foreach($this->attributes as $attributeName => $attributeData): ?>
+	<strong><?= $attributeData['label']; ?></strong> :<?= $attributeData['human_readable_value']; ?>
+	<br />
+<?php endforeach; ?>
+

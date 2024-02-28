@@ -17,12 +17,14 @@ array_insert(
     $GLOBALS['BE_MOD'],
     2,
     [
-        'wemjoboffers' => [
-            'wem-job-offers' => [
-                'tables' => ['tl_wem_job_feed', 'tl_wem_job', 'tl_wem_job_application', 'tl_wem_job_feed_attribute'],
+        'wemoffers' => [
+            'wem-offers' => [
+                'tables' => ['tl_wem_offer_feed', 'tl_wem_offer', 'tl_wem_offer_application', 'tl_wem_offer_feed_attribute', 'tl_content'],
+                'sendNotificationToApplication' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'sendNotificationToApplication'],
             ],
-            'wem-job-alerts' => [
-                'tables' => ['tl_wem_job_alert', 'tl_wem_job_alert_condition'],
+            'wem-offers-alerts' => [
+                'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
+                'sendAlerts' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'sendAlerts'],
             ],
         ],
     ]
@@ -33,37 +35,34 @@ array_insert(
     $GLOBALS['FE_MOD'],
     2,
     [
-        'wem-job-offers' => [
-            'jobslist' => 'WEM\JobOffersBundle\Module\ModuleJobOffersList',
-            'jobsalert' => 'WEM\JobOffersBundle\Module\ModuleJobOffersAlert',
+        'wem-offers' => [
+            'offerslist' => 'WEM\OffersBundle\Module\ModuleOffersList',
+            'offersalert' => 'WEM\OffersBundle\Module\ModuleOffersAlert',
         ],
     ]
 );
 
-// Load icon in Contao 4.2 backend
-if ('BE' === TL_MODE) {
-    if (version_compare(VERSION, '4.4', '<')) {
-        $GLOBALS['TL_CSS'][] = 'bundles/joboffers/backend/backend.css';
-    } else {
-        $GLOBALS['TL_CSS'][] = 'bundles/joboffers/backend/backend_svg.css';
-    }
-}
-
-// Hooks
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [WEM\JobOffersBundle\Hooks\LoadDataContainerHook::class, 'addAttributesToJobDca'];
-$GLOBALS['TL_HOOKS']['storeFormData'][] = [WEM\JobOffersBundle\Hooks\StoreFormDataHook::class, 'storeFormData'];
-$GLOBALS['TL_HOOKS']['processFormData'][] = [WEM\JobOffersBundle\Hooks\ProcessFormDataHook::class, '__invoke'];
+// PDM UI
+$GLOBALS['WEM_HOOKS']['renderSingleItemTitle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemTitle'];
+$GLOBALS['WEM_HOOKS']['buildSingleItemButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemButtons'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingle'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyOriginalModelSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyOriginalModelSingleFieldValue'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingle'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingle'];
+$GLOBALS['WEM_HOOKS']['buildSingleItemBodyPersonalDataSingleButtons'][] = ['offers.listener.personal_data_ui', 'buildSingleItemBodyPersonalDataSingleButtons'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldLabel'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldLabel'];
+$GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldValue'][] = ['offers.listener.personal_data_ui', 'renderSingleItemBodyPersonalDataSingleFieldValue'];
+$GLOBALS['WEM_HOOKS']['getHrefByPidAndPtableAndEmail'][] = ['offers.listener.personal_data_manager', 'getHrefByPidAndPtableAndEmail'];
 
 // Models
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Alert::getTable()] = 'WEM\JobOffersBundle\Model\Alert';
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\AlertCondition::getTable()] = 'WEM\JobOffersBundle\Model\AlertCondition';
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Job::getTable()] = 'WEM\JobOffersBundle\Model\Job';
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\JobFeed::getTable()] = 'WEM\JobOffersBundle\Model\JobFeed';
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\JobFeedAttribute::getTable()] = 'WEM\JobOffersBundle\Model\JobFeedAttribute';
-$GLOBALS['TL_MODELS'][\WEM\JobOffersBundle\Model\Application::getTable()] = 'WEM\JobOffersBundle\Model\Application';
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Alert::getTable()] = WEM\OffersBundle\Model\Alert::class;
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\AlertCondition::getTable()] = WEM\OffersBundle\Model\AlertCondition::class;
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Application::getTable()] = WEM\OffersBundle\Model\Application::class;
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Offer::getTable()] = WEM\OffersBundle\Model\Offer::class;
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeed::getTable()] = WEM\OffersBundle\Model\OfferFeed::class;
+$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeedAttribute::getTable()] = WEM\OffersBundle\Model\OfferFeedAttribute::class;
 
 // Cronjobs
-$GLOBALS['TL_CRON']['hourly'][] = [WEM\JobOffersBundle\Cronjob\SendAlertsJob::class, 'do'];
+$GLOBALS['TL_CRON']['hourly'][] = [WEM\OffersBundle\Cronjob\SendAlerts::class, 'do'];
 
 /*
  * Notification Center Notification Types
@@ -71,28 +70,36 @@ $GLOBALS['TL_CRON']['hourly'][] = [WEM\JobOffersBundle\Cronjob\SendAlertsJob::cl
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
     (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
     [
-        'wem_joboffers' => [
-            'wem_joboffers_alerts_email' => [
+        'wem_offers' => [
+            'wem_offers_alerts_email' => [
                 'recipients' => ['recipient_email'],
-                'email_subject' => ['jobfeed_*', 'recipient_*'],
-                'email_text' => ['jobfeed_*', 'recipient_*', 'jobstext'],
-                'email_html' => ['jobfeed_*', 'recipient_*', 'jobshtml'],
+                'email_subject' => ['feed_*', 'recipient_*'],
+                'email_text' => ['feed_*', 'recipient_*', 'offerstext','link_*'],
+                'email_html' => ['feed_*', 'recipient_*', 'offershtml','link_*'],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],
-            'wem_joboffers_alerts_subscribe' => [
+            'wem_offers_alerts_subscribe' => [
                 'recipients' => ['recipient_email'],
-                'email_subject' => ['jobfeed_*', 'recipient_*'],
-                'email_text' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
-                'email_html' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_subject' => ['feed_*', 'recipient_*'],
+                'email_text' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_html' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],
-            'wem_joboffers_alerts_unsubscribe' => [
+            'wem_offers_alerts_unsubscribe' => [
                 'recipients' => ['recipient_email'],
-                'email_subject' => ['jobfeed_*', 'recipient_*'],
-                'email_text' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
-                'email_html' => ['jobfeed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_subject' => ['feed_*', 'recipient_*'],
+                'email_text' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_html' => ['feed_*', 'recipient_*', 'subscription_*', 'link_*'],
+                'email_replyTo' => ['admin_email'],
+                'email_sender_address' => ['admin_email'],
+            ],
+            'wem_offers_answer_to_application' => [
+                'recipients' => ['recipient_email'],
+                'email_subject' => ['feed_*', 'offer_*', 'recipient_*'],
+                'email_text' => ['feed_*', 'offer_*', 'recipient_*',],
+                'email_html' => ['feed_*', 'offer_*', 'recipient_*',],
                 'email_replyTo' => ['admin_email'],
                 'email_sender_address' => ['admin_email'],
             ],

@@ -1,132 +1,215 @@
 <?xml version="1.0" ?><xliff version="1.1">
-  <file datatype="php" original="system/modules/wem-job-offers/languages/en/default.php" source-language="en" target-language="fr">
+  <file datatype="php" original="system/modules/wem-offers/languages/en/default.php" source-language="en" target-language="fr">
     <body>
-		<trans-unit id="WEM.JOBOFFERS.datePublished">
-			<source>Published: %s</source>
-			<target>Publiée: %s</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.status">
-			<source>Position:</source>
-			<target>Statut :</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.remuneration">
-			<source>Remuneration:</source>
-			<target>Rémunération :</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.field">
-			<source>Field:</source>
-			<target>Discipline :</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.location">
-			<source>Location:</source>
-			<target>Lieu :</target>
-		</trans-unit>
+    	<trans-unit id="WEM.OFFERS.empty">
+				<source>There is no available offers.</source>
+				<target>Il n'y a pas d'annonces disponibles.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.datePublished">
+				<source>Published: %s</source>
+				<target>Publiée: %s</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.email">
+				<source>Email</source>
+				<target>Email</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.jobExecuted">
+				<source>Job has been executed</source>
+				<target>La tâche a été executée</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.applyTitle">
-			<source>Interested? Apply here!</source>
-			<target>Intéressé(e)? Postulez içi!</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byPhone">
-			<source>By phone</source>
-			<target>Par téléphone</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byEmail">
-			<source>By email</source>
-			<target>Par email</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.byForm">
-			<source>By form</source>
-			<target>Par formulaire</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.applyTitle">
+				<source>Interested? Contact us!</source>
+				<target>Intéressé(e)? Contactez-nous !</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byPhone">
+				<source>By phone</source>
+				<target>Par téléphone</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byEmail">
+				<source>By email</source>
+				<target>Par email</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.byForm">
+				<source>By form</source>
+				<target>Par formulaire</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.allLocations">
-			<source>All location</source>
-			<target>Tous les lieux</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.allPositions">
-			<source>All positions</source>
-			<target>Tous les postes</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.allFields">
-			<source>All fields</source>
-			<target>Toutes les postes</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.filter">
+				<source>Filter</source>
+				<target>Filtrer</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.seeOffer">
+				<source>See offer</source>
+				<target>Voir l'offre</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.apply">
+				<source>Contact</source>
+				<target>Contact</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.search">
+				<source>Search</source>
+				<target>Rechercher</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.searchPlaceholder">
+				<source>What do you seek?</source>
+				<target>Que recherchez-vous ?</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.privacy">
+				<source>Privacy policy</source>
+				<target>Politique de confidentialité</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.subscribe">
+				<source>Subscribe</source>
+				<target>S'abonner</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.unsubscribe">
+				<source>Unsubscribe</source>
+				<target>Se désabonner</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.filter">
-			<source>Filter</source>
-			<target>Filtrer</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.seeOffer">
-			<source>See offer</source>
-			<target>Voir l'offre</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.apply">
-			<source>Apply</source>
-			<target>Postuler</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.search">
-			<source>Search</source>
-			<target>Rechercher</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.searchPlaceholder">
-			<source>What do you seek?</source>
-			<target>Que recherchez-vous ?</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.answerNotification.0">
+				<source>Notification</source>
+				<target>Notification</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.answerNotification.1">
+				<source>Select the notification to send</source>
+				<target>Sélectionnez la notification à envoyer</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.GATEWAY.email">
-			<source>Email</source>
-			<target>Email</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.GATEWAY.sms">
-			<source>Text</source>
-			<target>SMS</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.GATEWAY.email">
+				<source>Email</source>
+				<target>Email</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.GATEWAY.sms">
+				<source>Text</source>
+				<target>SMS</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.MSG.alertCreated">
-			<source>Your alert has been created! You will receive soon an email to activate it.</source>
-			<target>Votre alerte a été créée ! Vous allez recevoir un email pour l'activer.</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.MSG.requestSent">
-			<source>Your request has been sent, you should receive an email to confirm it.</source>
-			<target>Votre requête a été envoyée ! Vous allez recevoir un email pour la confirmer.</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.MSG.alertActivated">
-			<source>Your alert has been activated!</source>
-			<target>Votre alerte a été activée!</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.MSG.alertDeleted">
-			<source>Your alert has been deleted.</source>
-			<target>Votre alerte a été supprimée.</target>
-		</trans-unit>
+			<trans-unit id="WEM.OFFERS.BTN.previewAnswer">
+				<source>Preview answer</source>
+				<target>Apercu de la réponse</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.BTN.sendAnswer">
+				<source>Send answer</source>
+				<target>Envoyer la réponse</target>
+			</trans-unit>
 
-		<trans-unit id="WEM.JOBOFFERS.ERROR.unknownRequest">
-			<source>Unknown request called: %s</source>
-			<target>Requête inconnue : %s</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.argumentMissing">
-			<source>Missing argument: %s</source>
-			<target>Argument manquant : %s</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.invalidEmail">
-			<source>Invalid email</source>
-			<target>Email invalide</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.alertAlreadyExists">
-			<source>You already have an existing alert.</source>
-			<target>Vous avez déjà une alerte existante.</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.alertDoesNotExists">
-			<source>The alert does not exists.</source>
-			<target>L'alerte n'existe pas.</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.invalidLink">
-			<source>This link is invalid.</source>
-			<target>Ce lien est invalide.</target>
-		</trans-unit>
-		<trans-unit id="WEM.JOBOFFERS.ERROR.expiredLink">
-			<source>This link is expired.</source>
-			<target>Ce lien est expiré.</target>
-		</trans-unit>
+
+			<trans-unit id="WEM.OFFERS.PDMUI.buttonShowFile">
+				<source>Show</source>
+				<target>Afficher</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.buttonDownloadFile">
+				<source>Download</source>
+				<target>Télécharger</target>
+			</trans-unit>
+
+			<trans-unit id="WEM.OFFERS.MSG.alertCreated">
+				<source>Your alert has been created! You will receive soon an email to activate it.</source>
+				<target>Votre alerte a été créée ! Vous allez recevoir un email pour l'activer.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.MSG.requestSent">
+				<source>Your request has been sent, you should receive an email to confirm it.</source>
+				<target>Votre requête a été envoyée ! Vous allez recevoir un email pour la confirmer.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.MSG.alertActivated">
+				<source>Your alert has been activated!</source>
+				<target>Votre alerte a été activée!</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.MSG.alertDeleted">
+				<source>Your alert has been deleted.</source>
+				<target>Votre alerte a été supprimée.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.MSG.answerSent">
+				<source>Your answer has been sent!</source>
+				<target>Votre réponse a été envoyée !</target>
+			</trans-unit>
+
+			<trans-unit id="WEM.OFFERS.ERROR.unknownRequest">
+				<source>Unknown request called: %s</source>
+				<target>Requête inconnue : %s</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.argumentMissing">
+				<source>Missing argument: %s</source>
+				<target>Argument manquant : %s</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.invalidEmail">
+				<source>Invalid email</source>
+				<target>Email invalide</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.alertAlreadyExists">
+				<source>You already have an existing alert.</source>
+				<target>Vous avez déjà une alerte existante.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.alertDoesNotExists">
+				<source>The alert does not exists.</source>
+				<target>L'alerte n'existe pas.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.invalidLink">
+				<source>This link is invalid.</source>
+				<target>Ce lien est invalide.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.expiredLink">
+				<source>This link is expired.</source>
+				<target>Ce lien est expiré.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noAnswerNotificationsAvailable">
+				<source>There is no answers notifications available, please create one in the Notification Center.</source>
+				<target>Il n'y a pas de notifications de réponses disponible, veuillez en créer une dans le Centre des Notifications.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noAnswerNotificationSelected">
+				<source>Please select an answer notification.</source>
+				<target>Sélectionnez une notification de réponse.</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ERROR.noMessagesFoundInNotification">
+				<source>Please add messages to the notification.</source>
+				<target>Veuillez ajouter des messages à la notification sélectionnée.</target>
+			</trans-unit>
+    	<trans-unit id="WEM.OFFERS.ERROR.generic">
+				<source>Exception thrown with message %s and trace %s</source>
+				<target>Exception lancée avec le message %s et la trace %s</target>
+			</trans-unit>
+
+			<!-- Alerts -->
+			<trans-unit id="WEM.OFFERS.ALERTS.offerCodeLabel">
+				<source>Offer</source>
+				<target>Offre</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.dateLabel">
+				<source>Posted on</source>
+				<target>Postée le</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.ALERTS.offerTextLabel">
+				<source>Description</source>
+				<target>Description</target>
+			</trans-unit>
+
+			<!-- Personal Data Manager UI -->
+			<trans-unit id="WEM.OFFERS.PDMUI.noFileUploaded">
+				<source>No file uploaded</source>
+				<target>Aucun fichier envoyé</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.fileNotFound">
+				<source>File not found</source>
+				<target>Fichier introuvable</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderTitle">
+				<source>Application</source>
+				<target>Réponse à une offre</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShowTitle">
+				<source>Show</source>
+				<target>Voir</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationHeaderButtonShow">
+				<source>Show offer application</source>
+				<target>Voir la candidature</target>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle">
+				<source>Show offer</source>
+				<target>Voir l'offre</target>
+			</trans-unit>
     </body>
   </file>
 </xliff>
