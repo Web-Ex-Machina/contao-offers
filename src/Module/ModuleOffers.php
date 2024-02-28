@@ -156,4 +156,25 @@ abstract class ModuleOffers extends Module
 
         return $objTemplate->parse();
     }
+
+    /**
+     * Get a package's version.
+     *
+     * @param string $package The package name
+     *
+     * @return string|null The package version if found, null otherwise
+     */
+    protected function getCustomPackageVersion(string $package): ?string
+    {
+        $packages = json_decode(file_get_contents(TL_ROOT.'/vendor/composer/installed.json'));
+
+        foreach ($packages->packages as $p) {
+            $p = (array) $p;
+            if ($package === $p['name']) {
+                return $p['version'];
+            }
+        }
+
+        return null;
+    }
 }

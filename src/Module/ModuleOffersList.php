@@ -240,7 +240,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // assets
-        $strVersion = 1;
+        $strVersion = $this->getCustomPackageVersion('webexmachina/contao-offers');
         $objCssCombiner = new Combiner();
         $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
 
