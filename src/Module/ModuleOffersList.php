@@ -175,6 +175,14 @@ class ModuleOffersList extends ModuleOffers
         $this->Template->articles = [];
         $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
 
+        // assets
+        $strVersion = $this->getCustomPackageVersion('webexmachina/contao-offers');
+        $objCssCombiner = new Combiner();
+        $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
+
+        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
+        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
+
         // Add pids
         $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
@@ -238,14 +246,6 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
         }
-
-        // assets
-        $strVersion = $this->getCustomPackageVersion('webexmachina/contao-offers');
-        $objCssCombiner = new Combiner();
-        $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
-
-        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
-        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
     }
 
     /**
