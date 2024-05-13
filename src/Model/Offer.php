@@ -33,8 +33,6 @@ class Offer extends Model
 
     /**
      * Search fields.
-     *
-     * @var array
      */
     public static array $arrSearchFields = ['code', 'title', 'teaser'];
 
@@ -44,7 +42,6 @@ class Offer extends Model
      * @param array $arrConfig
      * @param int $intLimit
      * @param int $intOffset
-     * @param array $arrOptions
      *
      * @return \Contao\Model|\Contao\Model[]|Collection
      */
@@ -65,7 +62,7 @@ class Offer extends Model
             $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 
@@ -76,15 +73,13 @@ class Offer extends Model
      * Count items, depends on the arguments.
      *
      * @param array $arrConfig
-     * @param array $arrOptions
      *
-     * @return int
      */
     public static function countItems($arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::countAll();
         }
 
@@ -103,6 +98,7 @@ class Offer extends Model
         foreach ($arrConfig as $c => $v) {
             $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
+
         return $arrColumns;
     }
 
@@ -112,8 +108,6 @@ class Offer extends Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
     public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
@@ -133,14 +127,14 @@ class Offer extends Model
 
             // Search by country
             case 'country':
-                $arrColumns[] = $t . '.countries LIKE \'%%'.$varValue."%'";
+                $arrColumns[] = $t . ".countries LIKE '%%".$varValue."%'";
             break;
 
             // Search for recipient not present in the subtable lead
             case 'published':
                 if (1 === $varValue) {
                     $time = \Date::floorToMinute();
-                    $arrColumns[] = sprintf('(%s.start=\'\' OR %s.start<=\'%s\') AND (%s.stop=\'\' OR %s.stop>\'', $t, $t, $time, $t, $t).($time + 60).sprintf('\') AND %s.published=\'1\'', $t);
+                    $arrColumns[] = sprintf("(%s.start='' OR %s.start<='%s') AND (%s.stop='' OR %s.stop>'", $t, $t, $time, $t, $t).($time + 60).sprintf("') AND %s.published='1'", $t);
                 }
 
             break;
@@ -150,7 +144,7 @@ class Offer extends Model
                 if (1 === $varValue) {
                     $arrColumns[] = sprintf('%s.published = 1 AND (%s.start = 0 OR %s.start <= ', $t, $t, $t).time().sprintf(') AND (%s.stop = 0 OR %s.stop >= ', $t, $t).time().')';
                 } elseif (-1 === $varValue) {
-                    $arrColumns[] = sprintf('%s.published = \'\' AND (%s.start = 0 OR %s.start >= ', $t, $t, $t).time().sprintf(') AND (%s.stop = 0 OR %s.stop <= ', $t, $t).time().')';
+                    $arrColumns[] = sprintf("%s.published = '' AND (%s.start = 0 OR %s.start >= ", $t, $t, $t).time().sprintf(') AND (%s.stop = 0 OR %s.stop <= ', $t, $t).time().')';
                 }
 
             break;
@@ -170,7 +164,7 @@ class Offer extends Model
 
                                 $arrColumns[] = '('.implode(' OR ', $arrSubColumns).')';
                             } else {
-                                $arrColumns[] = sprintf('%s.%s = \'%s\'', $t, $strField, $varValue);
+                                $arrColumns[] = sprintf("%s.%s = '%s'", $t, $strField, $varValue);
                             }
 
                         break;
@@ -192,6 +186,7 @@ class Offer extends Model
                     $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
                 }
         }
+
         return $arrColumns;
     }
 

@@ -72,11 +72,6 @@ class Application extends Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig
-     * @param int $intLimit
-     * @param int $intOffset
-     * @param array $arrOptions
-     *
      * @return Model|Model[]|Model\Collection
      */
     public static function findItems(array $arrConfig = [], int $intLimit = 0, int $intOffset = 0, array $arrOptions = [])
@@ -96,7 +91,7 @@ class Application extends Model
             $arrOptions['order'] = $t . '.tstamp DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 
@@ -105,17 +100,12 @@ class Application extends Model
 
     /**
      * Count items, depends on the arguments.
-     *
-     * @param array $arrConfig
-     * @param array $arrOptions
-     *
-     * @return int
      */
     public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::countAll();
         }
 
@@ -125,7 +115,6 @@ class Application extends Model
     /**
      * Format ItemModel columns.
      *
-     * @param array $arrConfig
      * @return array [Array] [The Model columns]
      */
     public static function formatColumns(array $arrConfig): array

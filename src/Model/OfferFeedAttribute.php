@@ -68,8 +68,6 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
     public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
@@ -80,19 +78,21 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
             // Search by pid
             case 'pid':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
+                    $arrColumns[] = $t . '.pid IN('.implode(',', array_map('\intval', $varValue)).')';
                 } else {
                     $arrColumns[] = $t.'.pid = '.$varValue;
                 }
+
             break;
 
             // Search by name
             case 'name':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = "$t.name IN('".implode("','", $varValue)."')";
+                    $arrColumns[] = $t . '.name IN(\''.implode("','", $varValue)."')";
                 } else {
                     $arrColumns[] = $t.'.name = "'.$varValue.'"';
                 }
+
             break;
         }
 

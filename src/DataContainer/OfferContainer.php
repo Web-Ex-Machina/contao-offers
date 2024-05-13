@@ -33,10 +33,6 @@ class OfferContainer extends \Backend
 
     /**
      * Format items list.
-     *
-     * @param array $r
-     *
-     * @return string
      */
     public function listItems(array $r): string
     {
@@ -49,15 +45,6 @@ class OfferContainer extends \Backend
 
     /**
      * Return the "toggle visibility" button.
-     *
-     * @param array $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
      */
     public function toggleIcon(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
     {
@@ -78,8 +65,6 @@ class OfferContainer extends \Backend
     /**
      * Disable/enable a job.
      *
-     * @param int $intId
-     * @param bool $blnVisible
      * @param DataContainer|null $dc
      */
     public function toggleVisibility(int $intId, bool $blnVisible, DataContainer $dc = null): void
@@ -134,7 +119,7 @@ class OfferContainer extends \Backend
         $time = time();
 
         // Update the database
-        $this->Database->prepare(sprintf('UPDATE tl_wem_offer SET tstamp=%d, published=\'', $time).($blnVisible ? '1' : '')."' WHERE id=?")
+        $this->Database->prepare(sprintf("UPDATE tl_wem_offer SET tstamp=%d, published='", $time).($blnVisible ? '1' : '')."' WHERE id=?")
                        ->execute($intId)
         ;
 
@@ -161,7 +146,6 @@ class OfferContainer extends \Backend
     /**
      * Update DCA palettes and add custom attributes
      *
-     * @param DataContainer $dc
      * @throws \Exception
      */
     public function updatePalettes(DataContainer $dc): void

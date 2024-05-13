@@ -65,10 +65,10 @@ class SendAlerts
             $arrWhere = [];
             $arrWhere[] = sprintf(
                 "(
-                    $t.frequency = 'hourly'
-                    OR ($t.frequency = 'daily' AND $t.lastJob < %s)
-                    OR ($t.frequency = 'weekly' AND $t.lastJob < %s)
-                    OR ($t.frequency = 'monthly' AND $t.lastJob < %s)
+                    {$t}.frequency = 'hourly'
+                    OR ({$t}.frequency = 'daily' AND {$t}.lastJob < %s)
+                    OR ({$t}.frequency = 'weekly' AND {$t}.lastJob < %s)
+                    OR ({$t}.frequency = 'monthly' AND {$t}.lastJob < %s)
                 )",
                 strtotime('-1 day'),
                 strtotime('-1 week'),

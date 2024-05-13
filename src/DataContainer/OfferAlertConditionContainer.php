@@ -27,9 +27,6 @@ class OfferAlertConditionContainer extends \Backend
 
     /**
      * Design each row of the DCA.
-     *
-     * @param array $row
-     * @return string
      */
     public function listItems(array $row): string
     {
@@ -43,8 +40,6 @@ class OfferAlertConditionContainer extends \Backend
     /**
      * Retrieve the available fields for alerts condition (limited to the alert feed)
      *
-     * @param DataContainer $dc
-     * @return array
      * @throws \Exception
      */
     public function getFieldChoices(DataContainer $dc): array
@@ -75,9 +70,6 @@ class OfferAlertConditionContainer extends \Backend
 
     /**
      * Retrieve the available values for alerts condition (limited to the alert condition field)
-     *
-     * @param DataContainer $dc
-     * @return void
      */
     public function getValueChoices(DataContainer $dc): void
     {

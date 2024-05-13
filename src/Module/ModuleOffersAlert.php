@@ -43,8 +43,6 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
     public function generate(): string
     {
@@ -274,7 +272,6 @@ class ModuleOffersAlert extends ModuleOffers
     /**
      * Retrieve alert available conditions.
      *
-     * @return void
      * @throws \Exception
      */
     protected function buildConditions(): void
@@ -340,10 +337,6 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Build Notification Tokens.
-     *
-     * @param Alert $objAlert
-     *
-     * @return array
      */
     protected function getNotificationTokens(Alert $objAlert): array
     {

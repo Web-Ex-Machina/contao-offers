@@ -36,7 +36,6 @@ class Alert extends \WEM\UtilsBundle\Model\Model
      * @param array $arrConfig
      * @param int $intLimit
      * @param int $intOffset
-     * @param array $arrOptions
      *
      * @return Model|Model[]|Collection
      */
@@ -57,7 +56,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
             $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 
@@ -68,15 +67,13 @@ class Alert extends \WEM\UtilsBundle\Model\Model
      * Count items, depends on the arguments.
      *
      * @param array $arrConfig
-     * @param array $arrOptions
      *
-     * @return int
      */
     public static function countItems($arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::countAll();
         }
 
@@ -95,6 +92,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
         foreach ($arrConfig as $c => $v) {
             $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
+
         return $arrColumns;
     }
 
@@ -104,8 +102,6 @@ class Alert extends \WEM\UtilsBundle\Model\Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
     public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
@@ -126,7 +122,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
             case 'conditions':
                 foreach ($varValue as $c => $v) {
                     $arrColumns[] = sprintf(
-                        sprintf('%s.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = \'%%s\' AND twoac.value = \'%%s\')', $t),
+                        sprintf("%s.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%%s' AND twoac.value = '%%s')", $t),
                         $c,
                         $v
                     );
@@ -148,6 +144,7 @@ class Alert extends \WEM\UtilsBundle\Model\Model
             default:
                 $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
         }
+
         return $arrColumns;
     }
 }

@@ -23,10 +23,6 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Format items list.
-     *
-     * @param array $r
-     *
-     * @return string
      */
     public function listItems(array $r): string
     {
@@ -39,8 +35,6 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Return a list of form fields
-     *
-     * @return array
      */
     public function getFieldOptions(): array
     {
@@ -49,8 +43,6 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Return a list of form fields
-     *
-     * @return array
      */
     public function getFieldsAndLegends(): array
     {
@@ -81,7 +73,7 @@ class OfferFeedAttributeContainer extends \Backend
 
                 $arrSubfields = $this->getFieldsFromSubpalette($w);
 
-                if(!empty($arrSubfields)) {
+                if($arrSubfields !== []) {
                     $arrOptions['fields'] = array_merge($arrOptions['fields'], $arrSubfields);
                 }
             }
@@ -92,10 +84,6 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Retrieve fields from subpalette
-     * 
-     * @param string $f
-     * 
-     * @return array
      */
     protected function getFieldsFromSubpalette(string $f): array
     {
@@ -113,7 +101,7 @@ class OfferFeedAttributeContainer extends \Backend
 
                 $arrSubfields = $this->getFieldsFromSubpalette($s);
 
-                if(!empty($arrSubfields)) {
+                if($arrSubfields !== []) {
                     $arrFields = array_merge($arrFields, $arrSubfields);
                 }
             }

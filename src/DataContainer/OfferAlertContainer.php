@@ -34,12 +34,6 @@ class OfferAlertContainer extends Backend
 
     /**
      * Design each row of the DCA.
-     *
-     * @param array $row
-     * @param string $label
-     * @param DataContainer $dc
-     * @param array $labels
-     * @return array
      */
     public function listItems(array $row, string $label, DataContainer $dc, array $labels): array
     {

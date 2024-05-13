@@ -42,9 +42,6 @@ class OfferApplicationContainer extends Backend
 
     /**
      * Design each row of the DCA.
-     *
-     * @param array $row
-     * @return string
      */
     public function listItems(array $row): string
     {
@@ -94,7 +91,7 @@ class OfferApplicationContainer extends Backend
         $strPreview = '';
 
         // Send an error if there is no available notifications
-        if (empty($arrNotifications)) {
+        if ($arrNotifications === []) {
             Message::addError($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['noAnswerNotificationsAvailable']);
         }
 
@@ -203,7 +200,7 @@ class OfferApplicationContainer extends Backend
             '/(\s)+/s',         // shorten multiple whitespace sequences
             '/<!--(.|\s)*?-->/' // Remove HTML comments
             ,'/"/'              // Escape double quotes
-            ,'/\'/'             // Escape single quotes
+            ,"/'/"             // Escape single quotes
             ,'/\n/'             // Remove new lines
             ,'/\r/'             // Remove new lines
             ,'/\r\n/'           // Remove new lines
