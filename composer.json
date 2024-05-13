@@ -17,11 +17,12 @@
         "source":"https://github.com/web-ex-machina/contao-offers"
     },
     "require": {
+        "php": "7.4||^8.2",
         "contao/core-bundle": "^4.13",
         "terminal42/contao-countryselect": "^1.5",
         "terminal42/notification_center": "^1.6",
-        "webexmachina/contao-utils": "^1.0",
-        "webexmachina/contao-personal-data-manager": "^1.0"
+        "webexmachina/contao-utils": "^1.0||dev-php-8-2-preparation",
+        "webexmachina/contao-personal-data-manager": "^1.0||dev-php-8-2-preparation"
     },
     "autoload":{
         "psr-4": {
@@ -39,5 +40,15 @@
     },
     "extra":{
         "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "php-http/discovery": true,
+            "contao-community-alliance/composer-plugin": true
+        }
+    },
+    "require-dev": {
+        "rector/rector": "^1.0"
     }
 }

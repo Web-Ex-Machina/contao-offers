@@ -13,7 +13,7 @@ declare(strict_types=1);
  */
 
 // Backend modules
-array_insert(
+Contao\ArrayUtil::arrayInsert(
     $GLOBALS['BE_MOD'],
     2,
     [
@@ -31,7 +31,7 @@ array_insert(
 );
 
 // Frontend modules
-array_insert(
+Contao\ArrayUtil::arrayInsert(
     $GLOBALS['FE_MOD'],
     2,
     [
