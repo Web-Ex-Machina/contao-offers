@@ -17,12 +17,16 @@ namespace WEM\OffersBundle\EventListener;
 use Contao\Form;
 use Contao\System;
 use Exception;
+use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Application;
 
 class ProcessFormDataListener
 {
-    public function __construct()
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
     }
 
     public function __invoke(
@@ -46,7 +50,7 @@ class ProcessFormDataListener
                 }
             }
         } catch (Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_JOBOFFERS');
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
         }
     }
 }

@@ -23,9 +23,16 @@ use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
-
+use Psr\Log\LoggerInterface;
 class SendAlerts
 {
+
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
     /**
      * Retrieve and send all the new job offers matching user alerts.
      *
@@ -34,7 +41,7 @@ class SendAlerts
     public function do($blnUpdateAlertLastJob = true): void
     {
         // Log the start of the job and setup some vars
-        System::log('Cronjob SendAlerts started', __METHOD__, 'WEMOFFERS');
+        $this->logger->log("WEMOFFERS",'Cronjob SendAlerts started');
 
         $t = Alert::getTable();
         $t2 = AlertCondition::getTable();
@@ -66,12 +73,12 @@ class SendAlerts
             );
             $c['where'] = $arrWhere;
         }
+
         $objAlerts = Alert::findItems($c, 0, 0, ['order'=>'language ASC, moduleOffersAlert ASC']);
 
         // Quit the job if there is no alerts to retrieve
         if (!$objAlerts || 0 === $objAlerts->count()) {
-            System::log('Nothing to send, abort !', __METHOD__, 'WEMOFFERS');
-
+            $this->logger->log("WEMOFFERS",'Nothing to send, abort !');
             return;
         }
 
@@ -170,6 +177,7 @@ class SendAlerts
             if (!$objModuleOffersAlert) {
                 $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
             }
+
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
                 $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
@@ -188,7 +196,10 @@ class SendAlerts
         }
 
         // Step 5 - Log the results (how many alerts sents & how job offers sent)
-        System::log(sprintf('Cronjob done, %s alerts and %s offers sent', $nbAlerts, $nbOffers), __METHOD__, 'WEMOFFERS');
+        $this->logger->log("WEMOFFERS",'Cronjob done, {nbAlerts} alerts and {nbOffers} offers sent',[
+            "nbAlerts"=>$nbAlerts,
+            "nbOffers"=>$nbOffers
+        ]);
     }
 
     /**

@@ -20,12 +20,16 @@ use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Exception;
+use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Offer;
 
 class StoreFormDataListener
 {
-    public function __construct()
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
     }
 
     public function storeFormData($arrSet, $objForm)
@@ -95,7 +99,7 @@ class StoreFormDataListener
 
             return $arrSet;
         } catch (Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
         }
     }
 }

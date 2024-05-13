@@ -17,11 +17,14 @@ namespace WEM\OffersBundle\EventListener;
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
-
+use Psr\Log\LoggerInterface;
 class LoadDataContainerListener
 {
-    public function __construct()
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
     }
 
     public function addAttributesToJobDca($strTable): void
@@ -40,7 +43,7 @@ class LoadDataContainerListener
                 }
             }
         } catch (\Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
         }
     }
 
