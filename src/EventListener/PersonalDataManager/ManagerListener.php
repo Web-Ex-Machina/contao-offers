@@ -41,7 +41,7 @@ class ManagerListener
         $this->personalDataManager = $personalDataManager;
     }
 
-    public function getHrefByPidAndPtableAndEmail(int $pid, string $ptable, string $email, string $href)
+    public function getHrefByPidAndPtableAndEmail(int $pid, string $ptable, string $email, string $href): string
     {
         switch ($ptable) {
             case Application::getTable():

@@ -14,11 +14,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Cronjob;
 
+use Contao\Config;
+use Contao\Date;
 use Contao\FrontendTemplate;
 use Contao\System;
 use Contao\ModuleModel;
 use Contao\PageModel;
-use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
@@ -32,8 +33,11 @@ class SendAlerts
 
     private LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    private NotificationCenter $notificationCenter;
+
+    public function __construct(LoggerInterface $logger, NotificationCenter $notificationCenter)
     {
+        $this->notificationCenter = $notificationCenter;
         $this->logger = $logger;
     }
 
@@ -186,14 +190,22 @@ class SendAlerts
                 $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
             }
 
-            if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
+            $receipts = $this->notificationCenter->sendNotification($objFeed->ncEmailAlert, $arrTokens, $objAlerts->language);
+            if ($receipts->wereAllDelivered()) {
                 ++$nbAlerts;
-                $objNotification->send($arrTokens, $objAlerts->language);
 
                 if ($blnUpdateAlertLastJob) {
                     $objAlert = $objAlerts->current();
                     $objAlert->lastJob = time();
                     $objAlert->save();
+                }
+            }else{
+                foreach ($receipts as $receipt) {
+                    if (!$receipt->wasDelivered()) {
+                        $this->logger->error($receipt->getException(),[
+                            "MessageConfig"=> $receipt->getParcel()->getMessageConfig(),
+                        ]);
+                    }
                 }
             }
         }
@@ -219,7 +231,7 @@ class SendAlerts
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
 
-        $objTemplate->date = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->date);
+        $objTemplate->date = Date::parse(Config::get('dateFormat'), (int) $objItem->date);
         $objTemplate->attributes = $objItem->getAttributesFull();
         $objTemplate->language = $language;
 
