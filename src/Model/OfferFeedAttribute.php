@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use Contao\Model;
+use Contao\Model\Collection;
+
 /**
  * Reads and writes items.
  */
@@ -35,7 +38,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @param int $intOffset
      * @param array $arrOptions
      *
-     * @return \Contao\Model|\Contao\Model[]|\Contao\Model\Collection
+     * @return Model|Model[]|Collection
      * @throws \Exception
      */
     public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
@@ -88,7 +91,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
             // Search by name
             case 'name':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = $t . '.name IN(\''.implode("','", $varValue)."')";
+                    $arrColumns[] = $t . ".name IN('".implode("','", $varValue)."')";
                 } else {
                     $arrColumns[] = $t.'.name = "'.$varValue.'"';
                 }

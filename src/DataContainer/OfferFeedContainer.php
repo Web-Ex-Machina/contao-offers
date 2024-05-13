@@ -30,8 +30,6 @@ class OfferFeedContainer extends Backend
      * Auto-generate an article alias if it has not been set yet.
      *
      * @param $varValue
-     * @param DataContainer $dc
-     * @return string
      * @throws Exception
      */
     public function generateAlias($varValue, DataContainer $dc): string
