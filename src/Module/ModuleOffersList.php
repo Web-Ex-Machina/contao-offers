@@ -290,7 +290,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Retrieve and format dropdowns filters
-        $filters = deserialize($this->offer_filters);
+        $filters = StringUtil::deserialize($this->offer_filters);
         if (\is_array($filters) && !empty($filters)) {
             foreach ($filters as $f) {
                 $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
@@ -351,7 +351,7 @@ class ModuleOffersList extends ModuleOffers
                                     continue;
                                 }
 
-                                $subOptions = deserialize($objOptions->{$f});
+                                $subOptions = StringUtil::deserialize($objOptions->{$f});
                                 foreach ($subOptions as $subOption) {
                                     $filter['options'][$subOption] = [
                                         'value' => $subOption,

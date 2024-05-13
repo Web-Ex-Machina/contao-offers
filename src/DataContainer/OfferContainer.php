@@ -17,7 +17,7 @@ namespace WEM\OffersBundle\DataContainer;
 
 use Contao\DataContainer;
 use Contao\Input;
-use Contao\StringUtil;
+use WEM\UtilsBundle\Classes\StringUtil;
 use Contao\Image;
 use Contao\Versions;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;

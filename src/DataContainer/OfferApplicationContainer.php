@@ -21,7 +21,7 @@ use Contao\Environment;
 use Contao\FilesModel;
 use Contao\Image;
 use Contao\Message;
-use Contao\StringUtil;
+use WEM\UtilsBundle\Classes\StringUtil;
 use NotificationCenter\Model\Notification;
 use NotificationCenter\Model\Language;
 use NotificationCenter\MessageDraft\EmailMessageDraft;

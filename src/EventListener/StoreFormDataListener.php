@@ -17,7 +17,7 @@ namespace WEM\OffersBundle\EventListener;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Session;
-use Contao\StringUtil;
+use WEM\UtilsBundle\Classes\StringUtil;
 use Contao\System;
 use Exception;
 use Psr\Log\LoggerInterface;

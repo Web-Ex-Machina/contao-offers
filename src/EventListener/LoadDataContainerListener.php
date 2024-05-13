@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\EventListener;
 
+use WEM\UtilsBundle\Classes\StringUtil;
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use Psr\Log\LoggerInterface;
+
 class LoadDataContainerListener
 {
     private LoggerInterface $logger;
@@ -127,7 +129,7 @@ class LoadDataContainerListener
                 }
 
                 // Options
-                $options = deserialize($row['options']);
+                $options = StringUtil::deserialize($row['options']);
                 if (null !== $options) {
                     $data['options'] = [];
                     $blnIsGroup = false;

@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class ModuleContainer extends Backend
@@ -144,7 +145,7 @@ class ModuleContainer extends Backend
      */
     public function getAttributesOptions()
     {
-        $arrPids = deserialize($this->activeRecord->offer_feeds);
+        $arrPids = StringUtil::deserialize($this->activeRecord->offer_feeds);
         $c = [];
 
         if (null !== $arrPids && !empty($arrPids)) {

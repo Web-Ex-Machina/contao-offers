@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use WEM\UtilsBundle\Classes\StringUtil;
+
 /**
  * Reads and writes items.
  */
@@ -260,10 +262,10 @@ class Offer extends \WEM\UtilsBundle\Model\Model
         switch($varAttribute->type) {
             case "select":
                 $arrArticleData = $this->row();
-                $options = deserialize($varAttribute->options ?? []);
+                $options = StringUtil::deserialize($varAttribute->options ?? []);
 
                 if ($varAttribute->multiple) {
-                    $arrArticleData[$varAttribute->name] = deserialize($arrArticleData[$varAttribute->name]);
+                    $arrArticleData[$varAttribute->name] = StringUtil::deserialize($arrArticleData[$varAttribute->name]);
                     $return = [];
                 }
 

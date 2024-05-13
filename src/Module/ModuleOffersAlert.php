@@ -281,7 +281,7 @@ class ModuleOffersAlert extends ModuleOffers
     protected function buildConditions()
     {
         // Retrieve and format dropdowns conditions
-        $conditions = deserialize($this->offer_conditions);
+        $conditions = StringUtil::deserialize($this->offer_conditions);
         if (\is_array($conditions) && !empty($conditions)) {
             foreach ($conditions as $c) {
                 $condition = [

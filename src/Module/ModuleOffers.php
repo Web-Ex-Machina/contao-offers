@@ -18,7 +18,7 @@ namespace WEM\OffersBundle\Module;
 use Contao\ContentModel;
 use Contao\FrontendTemplate;
 use Contao\Module;
-use Contao\StringUtil;
+use WEM\UtilsBundle\Classes\StringUtil;
 use Contao\System;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\OffersBundle\Model\Offer;
