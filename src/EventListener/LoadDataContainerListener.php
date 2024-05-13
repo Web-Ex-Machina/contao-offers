@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\EventListener;
 
 use WEM\UtilsBundle\Classes\StringUtil;
-use Contao\System;
-use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use Psr\Log\LoggerInterface;
 
@@ -44,12 +42,12 @@ class LoadDataContainerListener
                     $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name] = $this->parseDcaAttribute($objAttributes->row());
                 }
             }
-        } catch (\Exception $e) {
-            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
+        } catch (\Exception $exception) {
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]));
         }
     }
 
-    protected function parseDcaAttribute($row)
+    protected function parseDcaAttribute($row): array
     {
         // Generic data
         $data = [
@@ -110,6 +108,7 @@ class LoadDataContainerListener
                     $data['default'] = '';
                     $data['sql']['default'] = '';
                 }
+
                 break;
 
             case 'select':
@@ -136,7 +135,7 @@ class LoadDataContainerListener
                     $blnIsChild = true;
                     $key = null;
                     foreach ($options as $o) {
-                        if (\array_key_exists('group', $o) && true === (bool) $o['group']) {
+                        if (\array_key_exists('group', $o) && $o['group']) {
                             $blnIsGroup = true;
                             $blnIsChild = false;
                             $key = $o['label'];
@@ -159,6 +158,7 @@ class LoadDataContainerListener
                         }
                     }
                 }
+
                 break;
 
             case 'picker':
@@ -176,6 +176,7 @@ class LoadDataContainerListener
                     $data['sql'] = 'int(10) unsigned NOT NULL default 0';
                     $data['relation'] = ['type' => 'hasOne', 'load' => 'lazy'];
                 }
+
                 break;
 
             case 'fileTree':
@@ -203,6 +204,7 @@ class LoadDataContainerListener
                     $data['sql']['length'] = 16;
                     $data['sql']['default'] = 'NULL';
                 }
+
                 break;
 
             case 'listWizard':

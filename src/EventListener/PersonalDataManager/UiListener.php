@@ -29,21 +29,21 @@ use WEM\OffersBundle\Model\Application;
 use WEM\OffersBundle\Model\Offer;
 use WEM\PersonalDataManagerBundle\Model\PersonalData;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
-use WEM\SmartgearBundle\Model\FormStorage;
+use WEM\SmartgearBundle\Model\FormStorage; //TODO : problenme dep
 
 class UiListener
 {
     /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     /** @var personalDataManagerUi */
-    protected $personalDataManagerUi;
+    protected PersonalDataManagerUi $personalDataManagerUi;
 
     /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
     /** @var string */
-    private $csrfTokenName;
+    private string $csrfTokenName;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -205,6 +205,7 @@ class UiListener
                                             $this->translator->trans('WEM.OFFERS.PDMUI.buttonShowFile', [], 'contao_default')
                                         );
             }
+
             if (!\array_key_exists('download', $buttons)) {
                 $buttons['download'] = sprintf('<br /><a href="%s" class="pdm-button pdm-button_download_file pdm-item__personal_data_single__button_download_file" target="_blank" data-path="%s">%s</a>',
                                                 $this->personalDataManagerUi->getUrl(),

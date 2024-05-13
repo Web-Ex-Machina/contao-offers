@@ -46,11 +46,12 @@ class ProcessFormDataListener
                     foreach ($fieldsManagedByPdm as $field) {
                         $objApplication->markModified($field);
                     }
+
                     $objApplication->save();
                 }
             }
-        } catch (Exception $e) {
-            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
+        } catch (Exception $exception) {
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]));
         }
     }
 }

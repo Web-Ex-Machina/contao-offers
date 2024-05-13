@@ -18,12 +18,13 @@ use Contao\System;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use WEM\OffersBundle\Model\Application;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManager;
-use WEM\SmartgearBundle\Model\FormStorage;
+use WEM\SmartgearBundle\Model\FormStorage; //TODO : problenme dep
 
 class ManagerListener
 {
     /** @var personalDataManagerUi */
     protected $personalDataManager;
+
     /** @var CsrfTokenManagerInterface */
     private $csrfTokenManager;
 

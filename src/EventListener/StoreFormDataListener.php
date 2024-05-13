@@ -32,7 +32,7 @@ class StoreFormDataListener
         $this->logger = $logger;
     }
 
-    public function storeFormData($arrSet, $objForm)
+    public function storeFormData($arrSet, $objForm): ?array
     {
         try {
             if ('offer-application' === $objForm->formID) {
@@ -73,6 +73,7 @@ class StoreFormDataListener
                     $objFile = new File($objFile->path);
                     $objFile->renameTo($strFilename);
                 }
+
                 if ($arrSet['applicationLetter'] && $objFile = FilesModel::findOneByPath($arrSet['applicationLetter'])) {
                     $arrSet['applicationLetter'] = $objFile->uuid;
 
@@ -98,8 +99,9 @@ class StoreFormDataListener
             }
 
             return $arrSet;
-        } catch (Exception $e) {
-            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]));
+        } catch (Exception $exception) {
+            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]));
         }
+        return null;
     }
 }
