@@ -21,7 +21,6 @@ use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\System;
-use Contao\Validator;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use WEM\OffersBundle\Classes\FileUtil;
@@ -33,16 +32,12 @@ use WEM\SmartgearBundle\Model\FormStorage; //TODO : problenme dep
 
 class UiListener
 {
-    /** @var TranslatorInterface */
     protected TranslatorInterface $translator;
 
-    /** @var personalDataManagerUi */
     protected PersonalDataManagerUi $personalDataManagerUi;
 
-    /** @var CsrfTokenManagerInterface */
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /** @var string */
     private string $csrfTokenName;
 
     public function __construct(
@@ -59,11 +54,8 @@ class UiListener
 
     public function renderSingleItemTitle(int $pid, string $ptable, string $email, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationHeaderTitle', [], 'contao_default');
-
-            break;
+        if ($ptable === Application::getTable()) {
+            $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationHeaderTitle', [], 'contao_default');
         }
 
         return $buffer;
@@ -101,15 +93,13 @@ class UiListener
 
     public function renderSingleItemBodyOriginalModelSingle(int $pid, string $ptable, string $email, string $field, $value, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                switch ($field) {
-                    case 'id':
-                    case 'tstamp':
-                        $buffer = '';
-                    break;
-                }
-            break;
+        if ($ptable === Application::getTable()) {
+            switch ($field) {
+                case 'id':
+                case 'tstamp':
+                    $buffer = '';
+                break;
+            }
         }
 
         return $buffer;
@@ -117,41 +107,40 @@ class UiListener
 
     public function renderSingleItemBodyOriginalModelSingleFieldValue(int $pid, string $ptable, string $email, string $field, $value, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                switch ($field) {
-                    case 'pid':
-                        $objOffer = Offer::findOneBy('id', $value);
-                        $buffer = sprintf(
-                            '<a href="%s" title="%s">[%s] %s</a>',
-                            sprintf('%s?do=wem-offers&table=tl_wem_offer&id=%s&act=edit&rt=%s', System::getContainer()->getParameter('contao.backend.route_prefix'), $pid, $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue()),
-                            $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle', [], 'contao_default'),
-                            $objOffer->code,
-                            $objOffer->title
-                        );
-                    break;
-                    case 'status':
-                        $buffer = $this->translator->trans('tl_wem_offer_application.status.'.$value, [], 'contao_default');
-                    break;
-                    case 'createdAt':
-                        $buffer = Date::parse(Config::get('datimFormat'), (int) $value);
-                    break;
-                    case 'cv':
-                    case 'applicationLetter':
-                        // if (Validator::isStringUuid($buffer)) { // for an unknown reason, the $buffer isn't considered as a UUID
-                        if (!empty($buffer)) {
-                            $objFileModel = FilesModel::findByUuid($buffer);
-                            if (!$objFileModel) {
-                                $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.fileNotFound', [], 'contao_default');
-                            } else {
-                                $buffer = $objFileModel->name;
-                            }
+        if ($ptable === Application::getTable()) {
+            switch ($field) {
+                case 'pid':
+                    $objOffer = Offer::findOneBy('id', $value);
+                    $buffer = sprintf(
+                        '<a href="%s" title="%s">[%s] %s</a>',
+                        sprintf('%s?do=wem-offers&table=tl_wem_offer&id=%s&act=edit&rt=%s', System::getContainer()->getParameter('contao.backend.route_prefix'), $pid, $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue()),
+                        $this->translator->trans('WEM.OFFERS.PDMUI.offerApplicationOfferLinkShowTitle', [], 'contao_default'),
+                        $objOffer->code,
+                        $objOffer->title
+                    );
+                break;
+                case 'status':
+                    $buffer = $this->translator->trans('tl_wem_offer_application.status.'.$value, [], 'contao_default');
+                break;
+                case 'createdAt':
+                    $buffer = Date::parse(Config::get('datimFormat'), (int) $value);
+                break;
+                case 'cv':
+                case 'applicationLetter':
+                    // if (Validator::isStringUuid($buffer)) { // for an unknown reason, the $buffer isn't considered as a UUID
+                    if ($buffer !== '' && $buffer !== '0') {
+                        $objFileModel = FilesModel::findByUuid($buffer);
+                        if (!$objFileModel) {
+                            $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.fileNotFound', [], 'contao_default');
                         } else {
-                            $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.noFileUploaded', [], 'contao_default');
+                            $buffer = $objFileModel->name;
                         }
-                    break;
-                }
-            break;
+                    } else {
+                        $buffer = $this->translator->trans('WEM.OFFERS.PDMUI.noFileUploaded', [], 'contao_default');
+                    }
+
+                break;
+            }
         }
 
         return $buffer;
@@ -159,15 +148,13 @@ class UiListener
 
     public function renderSingleItemBodyPersonalDataSingleFieldValue(int $pid, string $ptable, string $email, PersonalData $personalData, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                switch ($personalData->field) {
-                    case 'cv':
-                    case 'applicationLetter':
-                        $buffer = 'A file'; // @todo : update when those file will be tagged as containing personal data
-                    break;
-                }
-            break;
+        if ($ptable === Application::getTable()) {
+            switch ($personalData->field) {
+                case 'cv':
+                case 'applicationLetter':
+                    $buffer = 'A file'; // @todo : update when those file will be tagged as containing personal data
+                break;
+            }
         }
 
         return $buffer;
@@ -175,10 +162,8 @@ class UiListener
 
     public function renderSingleItemBodyPersonalDataSingleFieldLabel(int $pid, string $ptable, string $email, PersonalData $personalData, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                $buffer = $personalData->field_label ?? $buffer;
-            break;
+        if ($ptable === Application::getTable()) {
+            $buffer = $personalData->field_label ?? $buffer;
         }
 
         return $buffer;
@@ -186,10 +171,8 @@ class UiListener
 
     public function renderSingleItemBodyPersonalDataSingle(int $pid, string $ptable, string $email, PersonalData $personalData, array $personalDatas, Model $originalModel, string $buffer): string
     {
-        switch ($ptable) {
-            case Application::getTable():
-                $buffer = $this->personalDataManagerUi->formatSingleItemBodyPersonalDataSingle((int) $personalData->pid, $personalData->ptable, $email, $personalData, $personalDatas, $originalModel);
-            break;
+        if ($ptable === Application::getTable()) {
+            $buffer = $this->personalDataManagerUi->formatSingleItemBodyPersonalDataSingle((int) $personalData->pid, $personalData->ptable, $email, $personalData, $personalDatas, $originalModel);
         }
 
         return $buffer;
