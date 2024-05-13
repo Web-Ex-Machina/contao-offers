@@ -16,7 +16,6 @@ namespace WEM\OffersBundle\Cronjob;
 
 use Contao\FrontendTemplate;
 use Contao\System;
-use Contao\Environment;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use NotificationCenter\Model\Notification;
@@ -24,6 +23,7 @@ use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
 use Psr\Log\LoggerInterface;
+
 class SendAlerts
 {
 
@@ -48,8 +48,6 @@ class SendAlerts
         $t3 = Offer::getTable();
         $nbAlerts = 0;
         $nbOffers = 0;
-        $arrFeedCache = [];
-        $arrCache = [];
 
         // We need to retrieve the alerts depending on their frequency
         // hourly
