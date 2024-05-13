@@ -17,10 +17,10 @@
         "source":"https://github.com/web-ex-machina/contao-offers"
     },
     "require": {
-        "php": "7.4||^8.2",
-        "contao/core-bundle": "^4.13",
+        "php": "^7.4||^8.2",
+        "contao/core-bundle": "^4.13||^5.0",
         "terminal42/contao-countryselect": "^1.5",
-        "terminal42/notification_center": "^1.6",
+        "terminal42/notification_center": "^2.0.0",
         "webexmachina/contao-utils": "^1.0||dev-php-8-2-preparation",
         "webexmachina/contao-personal-data-manager": "^1.0||dev-php-8-2-preparation"
     },
