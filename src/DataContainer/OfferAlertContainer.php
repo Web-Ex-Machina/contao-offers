@@ -15,6 +15,9 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use Contao\Config;
+use Contao\DataContainer;
+use Contao\Date;
 use Contao\Environment;
 use Contao\Message;
 use Contao\ModuleModel;
@@ -24,20 +27,25 @@ use WEM\OffersBundle\Model\OfferFeed;
 
 class OfferAlertContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Design each row of the DCA.
      *
      * @return string
      */
-    public function listItems(array $row, string $label, \Contao\DataContainer $dc, array $labels): array
+    public function listItems(array $row, string $label, DataContainer $dc, array $labels): array
     {
         $objFeed = OfferFeed::findByPk($row['feed']);
 
         $labels[0] = $row['email'];
         $labels[1] = $objFeed ? $objFeed->title : $row['feed'];
         $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']];
-        $labels[3] = !empty($row['lastJob']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['lastJob']) : '-';
-        $labels[4] = !empty($row['activatedAt']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['activatedAt']) : '-';
+        $labels[3] = !empty($row['lastJob']) ? Date::parse(Config::get('datimFormat'), (int) $row['lastJob']) : '-';
+        $labels[4] = !empty($row['activatedAt']) ? Date::parse(Config::get('datimFormat'), (int) $row['activatedAt']) : '-';
 
         return $labels;
     }

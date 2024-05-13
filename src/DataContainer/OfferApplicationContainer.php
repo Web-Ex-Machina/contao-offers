@@ -21,6 +21,8 @@ use Contao\Environment;
 use Contao\FilesModel;
 use Contao\Image;
 use Contao\Message;
+use Psr\Log\LoggerInterface;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 use WEM\UtilsBundle\Classes\StringUtil;
 use NotificationCenter\Model\Notification;
 use NotificationCenter\Model\Language;

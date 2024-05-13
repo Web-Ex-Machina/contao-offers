@@ -13,6 +13,10 @@ declare(strict_types=1);
  */
 
 // Backend modules
+use WEM\OffersBundle\DataContainer\OfferAlertContainer;
+use WEM\OffersBundle\Module\ModuleOffersAlert;
+use WEM\OffersBundle\Module\ModuleOffersList;
+
 Contao\ArrayUtil::arrayInsert(
     $GLOBALS['BE_MOD'],
     2,
@@ -24,7 +28,9 @@ Contao\ArrayUtil::arrayInsert(
             ],
             'wem-offers-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
-                'sendAlerts' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'sendAlerts'],
+                'sendAlerts' => static function () : void {
+                    (new OfferAlertContainer())->sendAlerts();
+                },
             ],
         ],
     ]
@@ -36,8 +42,8 @@ Contao\ArrayUtil::arrayInsert(
     2,
     [
         'wem-offers' => [
-            'offerslist' => 'WEM\OffersBundle\Module\ModuleOffersList',
-            'offersalert' => 'WEM\OffersBundle\Module\ModuleOffersAlert',
+            'offerslist' => ModuleOffersList::class,
+            'offersalert' => ModuleOffersAlert::class,
         ],
     ]
 );

@@ -23,6 +23,9 @@ use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
 use Psr\Log\LoggerInterface;
+use WEM\OffersBundle\Model\OfferFeed;
+use WEM\OffersBundle\Model\OfferFeedAttribute;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class SendAlerts
 {
@@ -33,10 +36,12 @@ class SendAlerts
     {
         $this->logger = $logger;
     }
+
     /**
      * Retrieve and send all the new job offers matching user alerts.
      *
      * Executed every hour
+     * @throws \Exception
      */
     public function do($blnUpdateAlertLastJob = true): void
     {
@@ -44,7 +49,7 @@ class SendAlerts
         $this->logger->log("WEMOFFERS",'Cronjob SendAlerts started');
 
         $t = Alert::getTable();
-        $t2 = AlertCondition::getTable();
+        $t2 = AlertCondition::getTable(); //TODO : Not used ?
         $t3 = Offer::getTable();
         $nbAlerts = 0;
         $nbOffers = 0;
@@ -203,16 +208,17 @@ class SendAlerts
     /**
      * Format a job block for the notification.
      *
-     * @param WEM\OffersBundle\Model\Offer $objItem
-     * @param string                       $strTemplate
+     * @param Offer $objItem
+     * @param string $language
+     * @param string $strTemplate
      *
      * @return string
      */
-    protected function parseItem($objItem, string $language, $strTemplate = 'offer_alert_default')
+    protected function parseItem(Offer $objItem, string $language, string $strTemplate = 'offer_alert_default'): string
     {
-        System::loadLanguageFile(\WEM\OffersBundle\Model\OfferFeed::getTable(),$language);
-        System::loadLanguageFile(\WEM\OffersBundle\Model\OfferFeedAttribute::getTable(),$language);
-        System::loadLanguageFile(\WEM\OffersBundle\Model\Offer::getTable(),$language);
+        System::loadLanguageFile(OfferFeed::getTable(),$language);
+        System::loadLanguageFile(OfferFeedAttribute::getTable(),$language);
+        System::loadLanguageFile(Offer::getTable(),$language);
 
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());

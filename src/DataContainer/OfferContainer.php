@@ -26,6 +26,11 @@ use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class OfferContainer extends \Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Format items list.
      *

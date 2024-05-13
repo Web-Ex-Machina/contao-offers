@@ -21,6 +21,11 @@ use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class ModuleContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Return all templates as array.
      *

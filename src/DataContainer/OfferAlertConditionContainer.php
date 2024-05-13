@@ -19,6 +19,10 @@ use WEM\OffersBundle\Model\AlertCondition;
 
 class OfferAlertConditionContainer extends \Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
     /**
      * Design each row of the DCA.
      *

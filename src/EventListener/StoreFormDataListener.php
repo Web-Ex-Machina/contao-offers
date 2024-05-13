@@ -102,6 +102,7 @@ class StoreFormDataListener
         } catch (Exception $exception) {
             $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]));
         }
+
         return null;
     }
 }

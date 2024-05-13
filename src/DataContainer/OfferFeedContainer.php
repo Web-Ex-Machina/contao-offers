@@ -21,6 +21,10 @@ use Contao\System;
 
 class OfferFeedContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
     /**
      * Auto-generate an article alias if it has not been set yet.
      *

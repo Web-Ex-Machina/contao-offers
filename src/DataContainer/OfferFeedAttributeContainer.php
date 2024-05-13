@@ -16,6 +16,11 @@ namespace WEM\OffersBundle\DataContainer;
 
 class OfferFeedAttributeContainer extends \Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Format items list.
      *
