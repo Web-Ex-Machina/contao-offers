@@ -61,8 +61,6 @@ class ModuleOffersList extends ModuleOffers
 
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
     public function generate(): string
     {
@@ -114,12 +112,12 @@ class ModuleOffersList extends ModuleOffers
                         if (!\Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
+
                         $objItem = OfferModel::findByPk(\Input::post('offer'));
 
                         $this->offer_template = 'offer_details';
                         echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
                         exit;
-                    break;
 
                     case 'apply':
                         if (!\Input::post('offer')) {
@@ -131,7 +129,6 @@ class ModuleOffersList extends ModuleOffers
 
                         echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
                         exit;
-                    break;
 
                     default:
                         throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
@@ -253,8 +250,6 @@ class ModuleOffersList extends ModuleOffers
      *
      * @param int $intId       [Job ID]
      * @param string $strTemplate [Template name]
-     *
-     * @return string
      */
     protected function getApplicationForm(int $intId, string $strTemplate = 'offer_apply'): string
     {
@@ -292,7 +287,7 @@ class ModuleOffersList extends ModuleOffers
 
         // Retrieve and format dropdowns filters
         $filters = StringUtil::deserialize($this->offer_filters);
-        if (\is_array($filters) && !empty($filters)) {
+        if (\is_array($filters) && $filters !== []) {
             foreach ($filters as $f) {
                 $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
 
@@ -347,6 +342,7 @@ class ModuleOffersList extends ModuleOffers
                             if ($filter['multiple']) {
                                 $filter['name'] .= '[]';
                             }
+
                             while ($objOptions->next()) {
                                 if (!$objOptions->{$f}) {
                                     continue;
@@ -357,13 +353,14 @@ class ModuleOffersList extends ModuleOffers
                                     $filter['options'][$subOption] = [
                                         'value' => $subOption,
                                         'label' => $subOption,
-                                        'selected' => !$filter['multiple']
-                                            ? (null !== \Input::get($f) && \Input::get($f) === $subOption)
-                                            : (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true)),
+                                        'selected' => $filter['multiple']
+                                            ? (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true))
+                                            : (null !== \Input::get($f) && \Input::get($f) === $subOption),
                                     ];
                                 }
                             }
                         }
+
                         break;
 
                     case 'text':
@@ -384,6 +381,7 @@ class ModuleOffersList extends ModuleOffers
                                 ];
                             }
                         }
+
                         break;
                 }
 

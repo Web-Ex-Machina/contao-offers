@@ -33,12 +33,20 @@ use WEM\OffersBundle\Model\OfferFeed;
 
 class OfferApplicationContainer extends Backend
 {
+
+
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Design each row of the DCA.
      *
+     * @param array $row
      * @return string
      */
-    public function listItems($row)
+    public function listItems(array $row): string
     {
         $objItem = Application::findByPk($row['id']);
 
@@ -56,10 +64,12 @@ class OfferApplicationContainer extends Backend
         if (!$row['cv']) {
             return '';
         }
+
         $objFile = FilesModel::findByUUID($row['cv']);
         if (!$objFile) {
             return '';
         }
+
         return '<a href="contao/popup.php?src=' . base64_encode($objFile->path) . '" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.StringUtil::specialchars($title).'\',\'url\':this.href});return false"; title="'.$label.'">'. Image::getHtml($icon, $label).'</a>';
     }
 
@@ -68,10 +78,12 @@ class OfferApplicationContainer extends Backend
         if (!$row['applicationLetter']) {
             return '';
         }
+
         $objFile = FilesModel::findByUUID($row['applicationLetter']);
         if (!$objFile) {
             return '';
         }
+
         return '<a href="contao/popup.php?src=' . base64_encode($objFile->path) . '" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.StringUtil::specialchars($title).'\',\'url\':this.href});return false"; title="'.$label.'">'. Image::getHtml($icon, $label).'</a>';
     }
 
@@ -101,6 +113,7 @@ class OfferApplicationContainer extends Backend
                 $this->reload();
             }
 
+            //$receipts = $this->notificationCenter->sendNotification($objFeed->ncEmailAlert, $arrTokens, $objAlerts->language);
             $objNotification = Notification::findByPk(\Input::post('notification'));
             $objApplication = Application::findByPk($dc->id);
             $objOffer = Offer::findByPk($objApplication->pid);
@@ -112,9 +125,11 @@ class OfferApplicationContainer extends Backend
             foreach ($objApplication->row() as $c => $v) {
                 $arrTokens['recipient_'.$c] = $v;
             }
+
             foreach ($objOffer->row() as $c => $v) {
                 $arrTokens['offer_'.$c] = $v;
             }
+
             foreach ($objFeed->row() as $c => $v) {
                 $arrTokens['feed_'.$c] = $v;
             }
@@ -182,41 +197,29 @@ class OfferApplicationContainer extends Backend
 
     public function sanitize_output($buffer)
     {
-        $search = array(
+        $search = [
             '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
             '/[^\S ]+\</s',     // strip whitespaces before tags, except space
             '/(\s)+/s',         // shorten multiple whitespace sequences
             '/<!--(.|\s)*?-->/' // Remove HTML comments
-            ,'/"/' // Escape double quotes
-            ,'/\'/' // Escape single quotes
-            ,'/\n/' // Remove new lines
-            ,'/\r/' // Remove new lines
-            ,'/\r\n/' // Remove new lines
-        );
+            ,'/"/'              // Escape double quotes
+            ,'/\'/'             // Escape single quotes
+            ,'/\n/'             // Remove new lines
+            ,'/\r/'             // Remove new lines
+            ,'/\r\n/'           // Remove new lines
+        ];
 
-        $replace = array(
-            '>',
-            '<',
-            '\\1',
-            '',
-            '\"',
-            '\\\'',
-            '',
-            '',
-            ''
-        );
+        $replace = ['>', '<', '\\1', '', '\"', '\\\'', '', '', ''];
 
-        $buffer = preg_replace($search, $replace, $buffer);
-
-        return $buffer;
+        return preg_replace($search, $replace, $buffer);
     }
 
     /**
      * Get Notification Choices for this kind of modules.
      *
-     * @return [Array]
+     * @return array [Array]
      */
-    public function getAnswersNotificationChoices()
+    public function getAnswersNotificationChoices(): array
     {
         $objNotifications = Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_answer_to_application' ORDER BY title");
 

@@ -25,18 +25,18 @@ class OfferFeedContainer extends Backend
     {
         Parent::__construct();
     }
+
     /**
      * Auto-generate an article alias if it has not been set yet.
      *
-     * @throws Exception
-     *
+     * @param $varValue
+     * @param DataContainer $dc
      * @return string
+     * @throws Exception
      */
-    public function generateAlias($varValue, DataContainer $dc)
+    public function generateAlias($varValue, DataContainer $dc): string
     {
-        $aliasExists = function (string $alias) use ($dc): bool {
-            return $this->Database->prepare('SELECT id FROM tl_wem_offer_feed WHERE alias=? AND id!=?')->execute($alias, $dc->id)->numRows > 0;
-        };
+        $aliasExists = fn(string $alias): bool => $this->Database->prepare('SELECT id FROM tl_wem_offer_feed WHERE alias=? AND id!=?')->execute($alias, $dc->id)->numRows > 0;
 
         // Generate an alias if there is none
         if (!$varValue) {
@@ -51,9 +51,9 @@ class OfferFeedContainer extends Backend
     /**
      * Get Notification Choices for this kind of modules.
      *
-     * @return [Array]
+     * @return array [Array]
      */
-    public function getAlertEmailNotificationChoices()
+    public function getAlertEmailNotificationChoices(): array
     {
         $arrChoices = [];
         $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_email' ORDER BY title");

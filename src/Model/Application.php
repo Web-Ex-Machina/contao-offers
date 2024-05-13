@@ -23,7 +23,7 @@ use WEM\PersonalDataManagerBundle\Model\Traits\PersonalDataTrait as PDMTrait;
 class Application extends Model
 {
     use PDMTrait;
-    protected static $personalDataFieldsNames = [
+    protected static array $personalDataFieldsNames = [
         'firstname',
         'lastname',
         'phone',
@@ -33,7 +33,8 @@ class Application extends Model
         'country',
         'comments',
     ];
-    protected static $personalDataFieldsDefaultValues = [
+
+    protected static array $personalDataFieldsDefaultValues = [
         'firstname' => 'managed_by_pdm',
         'lastname' => 'managed_by_pdm',
         'phone' => 'nc',
@@ -43,7 +44,8 @@ class Application extends Model
         'country' => '0',
         'comments' => 'managed_by_pdm',
     ];
-    protected static $personalDataFieldsAnonymizedValues = [
+
+    protected static array $personalDataFieldsAnonymizedValues = [
         'firstname' => 'anonymized',
         'lastname' => 'anonymized',
         'phone' => 'anonymized',
@@ -53,9 +55,13 @@ class Application extends Model
         'country' => '0',
         'comments' => 'anonymized',
     ];
-    protected static $personalDataPidField = 'id';
-    protected static $personalDataEmailField = 'email';
-    protected static $personalDataPtable = 'tl_wem_offer_application';
+
+    protected static string $personalDataPidField = 'id';
+
+    protected static string $personalDataEmailField = 'email';
+
+    protected static string $personalDataPtable = 'tl_wem_offer_application';
+
     /**
      * Table name.
      *
@@ -66,14 +72,14 @@ class Application extends Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array
-     * @param int
-     * @param int
-     * @param array
+     * @param array $arrConfig
+     * @param int $intLimit
+     * @param int $intOffset
+     * @param array $arrOptions
      *
-     * @return Collection
+     * @return Model|Model[]|Model\Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems(array $arrConfig = [], int $intLimit = 0, int $intOffset = 0, array $arrOptions = [])
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -87,7 +93,7 @@ class Application extends Model
         }
 
         if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = "$t.tstamp DESC";
+            $arrOptions['order'] = $t . '.tstamp DESC';
         }
 
         if (empty($arrColumns)) {
@@ -100,18 +106,17 @@ class Application extends Model
     /**
      * Count items, depends on the arguments.
      *
-     * @param array
-     * @param array
+     * @param array $arrConfig
+     * @param array $arrOptions
      *
      * @return int
      */
-    public static function countItems($arrConfig = [], $arrOptions = [])
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
-        $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
 
         if (empty($arrColumns)) {
-            return static::countAll($arrOptions);
+            return static::countAll();
         }
 
         return static::countBy($arrColumns, null, $arrOptions);
@@ -120,13 +125,11 @@ class Application extends Model
     /**
      * Format ItemModel columns.
      *
-     * @param [Array] $arrConfig [Configuration to format]
-     *
-     * @return [Array] [The Model columns]
+     * @param array $arrConfig
+     * @return array [Array] [The Model columns]
      */
-    public static function formatColumns($arrConfig)
+    public static function formatColumns(array $arrConfig): array
     {
-        $t = static::$strTable;
         $arrColumns = [];
 
         if ($arrConfig['not']) {

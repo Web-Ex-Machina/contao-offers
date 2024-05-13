@@ -129,10 +129,7 @@ abstract class ModuleOffers extends Module
             return $strText;
         };
 
-        $objTemplate->hasText = static function () use ($objArticle)
-        {
-            return ContentModel::countPublishedByPidAndTable($objArticle->id, 'tl_wem_offer') > 0;
-        };
+        $objTemplate->hasText = static fn() => ContentModel::countPublishedByPidAndTable($objArticle->id, 'tl_wem_offer') > 0;
 
         // Retrieve item attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;

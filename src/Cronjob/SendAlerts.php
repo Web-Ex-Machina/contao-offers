@@ -49,7 +49,7 @@ class SendAlerts
         $this->logger->log("WEMOFFERS",'Cronjob SendAlerts started');
 
         $t = Alert::getTable();
-        $t2 = AlertCondition::getTable(); //TODO : Not used ?
+        AlertCondition::getTable(); //TODO : Not used ?
         $t3 = Offer::getTable();
         $nbAlerts = 0;
         $nbOffers = 0;
@@ -208,11 +208,7 @@ class SendAlerts
     /**
      * Format a job block for the notification.
      *
-     * @param Offer $objItem
-     * @param string $language
-     * @param string $strTemplate
      *
-     * @return string
      */
     protected function parseItem(Offer $objItem, string $language, string $strTemplate = 'offer_alert_default'): string
     {
@@ -222,7 +218,7 @@ class SendAlerts
 
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
-        
+
         $objTemplate->date = \Contao\Date::parse(\Contao\Config::get('dateFormat'), (int) $objItem->date);
         $objTemplate->attributes = $objItem->getAttributesFull();
         $objTemplate->language = $language;

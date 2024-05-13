@@ -30,12 +30,13 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array
-     * @param int
-     * @param int
-     * @param array
+     * @param array $arrConfig
+     * @param int $intLimit
+     * @param int $intOffset
+     * @param array $arrOptions
      *
-     * @return Collection
+     * @return \Contao\Model|\Contao\Model[]|\Contao\Model\Collection
+     * @throws \Exception
      */
     public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
     {
@@ -51,7 +52,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
         }
 
         if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = "$t.createdAt DESC";
+            $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
         if (empty($arrColumns)) {
@@ -70,35 +71,31 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      *
      * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
-        try {
-            $arrColumns = [];
-            $t = static::$strTable;
+        $arrColumns = [];
+        $t = static::$strTable;
 
-            switch ($strField) {
-                // Search by pid
-                case 'pid':
-                    if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
-                    } else {
-                        $arrColumns[] = $t.'.pid = '.$varValue;
-                    }
-                break;
+        switch ($strField) {
+            // Search by pid
+            case 'pid':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
+                } else {
+                    $arrColumns[] = $t.'.pid = '.$varValue;
+                }
+            break;
 
-                // Search by name
-                case 'name':
-                    if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.name IN('".implode("','", $varValue)."')";
-                    } else {
-                        $arrColumns[] = $t.'.name = "'.$varValue.'"';
-                    }
-                break;
-            }
-
-            return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+            // Search by name
+            case 'name':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = "$t.name IN('".implode("','", $varValue)."')";
+                } else {
+                    $arrColumns[] = $t.'.name = "'.$varValue.'"';
+                }
+            break;
         }
+
+        return $arrColumns;
     }
 }

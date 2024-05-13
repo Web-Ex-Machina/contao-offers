@@ -46,7 +46,7 @@ class ModuleOffersAlert extends ModuleOffers
      *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
@@ -124,16 +124,14 @@ class ModuleOffersAlert extends ModuleOffers
                         $objAlert->language = $GLOBALS['TL_LANGUAGE'];
                         $objAlert->save();
 
-                        if (!empty($arrConditions)) {
-                            foreach ($arrConditions as $c => $v) {
-                                $objAlertCondition = new AlertCondition();
-                                $objAlertCondition->tstamp = time();
-                                $objAlertCondition->createdAt = time();
-                                $objAlertCondition->pid = $objAlert->id;
-                                $objAlertCondition->field = $c;
-                                $objAlertCondition->value = $v;
-                                $objAlertCondition->save();
-                            }
+                        foreach ($arrConditions as $c => $v) {
+                            $objAlertCondition = new AlertCondition();
+                            $objAlertCondition->tstamp = time();
+                            $objAlertCondition->createdAt = time();
+                            $objAlertCondition->pid = $objAlert->id;
+                            $objAlertCondition->field = $c;
+                            $objAlertCondition->value = $v;
+                            $objAlertCondition->save();
                         }
 
                         // Build and send a notification
@@ -276,13 +274,14 @@ class ModuleOffersAlert extends ModuleOffers
     /**
      * Retrieve alert available conditions.
      *
-     * @return array [Array of available conditions, parsed]
+     * @return void
+     * @throws \Exception
      */
-    protected function buildConditions()
+    protected function buildConditions(): void
     {
         // Retrieve and format dropdowns conditions
         $conditions = StringUtil::deserialize($this->offer_conditions);
-        if (\is_array($conditions) && !empty($conditions)) {
+        if (\is_array($conditions) && $conditions !== []) {
             foreach ($conditions as $c) {
                 $condition = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType'],
@@ -290,7 +289,7 @@ class ModuleOffersAlert extends ModuleOffers
                     'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
                     'value' => \Input::get($c) ?: '',
                     'options' => [],
-                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple'] ? true : false,
+                    'multiple' => (bool) $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple'],
                 ];
 
                 switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType']) {
@@ -313,6 +312,7 @@ class ModuleOffersAlert extends ModuleOffers
                                 'label' => $label,
                             ];
                         }
+
                         break;
 
                     // Keep it because it works but it should not be used...
@@ -329,6 +329,7 @@ class ModuleOffersAlert extends ModuleOffers
                                 ];
                             }
                         }
+
                         break;
                 }
 
@@ -344,7 +345,7 @@ class ModuleOffersAlert extends ModuleOffers
      *
      * @return array
      */
-    protected function getNotificationTokens($objAlert)
+    protected function getNotificationTokens(Alert $objAlert): array
     {
         $arrTokens = [];
 

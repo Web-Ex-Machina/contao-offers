@@ -35,7 +35,11 @@ class OfferAlertContainer extends Backend
     /**
      * Design each row of the DCA.
      *
-     * @return string
+     * @param array $row
+     * @param string $label
+     * @param DataContainer $dc
+     * @param array $labels
+     * @return array
      */
     public function listItems(array $row, string $label, DataContainer $dc, array $labels): array
     {
@@ -44,8 +48,8 @@ class OfferAlertContainer extends Backend
         $labels[0] = $row['email'];
         $labels[1] = $objFeed ? $objFeed->title : $row['feed'];
         $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']];
-        $labels[3] = !empty($row['lastJob']) ? Date::parse(Config::get('datimFormat'), (int) $row['lastJob']) : '-';
-        $labels[4] = !empty($row['activatedAt']) ? Date::parse(Config::get('datimFormat'), (int) $row['activatedAt']) : '-';
+        $labels[3] = empty($row['lastJob']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['lastJob']);
+        $labels[4] = empty($row['activatedAt']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['activatedAt']);
 
         return $labels;
     }
@@ -53,9 +57,9 @@ class OfferAlertContainer extends Backend
     /**
      * Get available feeds.
      *
-     * @return [Array]
+     * @return array [Array]
      */
-    public function getFeeds()
+    public function getFeeds(): array
     {
         $arrChoices = [];
         $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
@@ -67,6 +71,9 @@ class OfferAlertContainer extends Backend
         return $arrChoices;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getOffersAlertModules(): array
     {
         $arrChoices = [];
