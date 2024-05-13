@@ -30,27 +30,27 @@ class ModuleOffersList extends ModuleOffers
     /**
      * List config.
      */
-    protected $config = [];
+    protected ?array $config = [];
 
     /**
      * List limit.
      */
-    protected $limit = 0;
+    protected ?int $limit = 0;
 
     /**
      * List offset.
      */
-    protected $offset = 0;
+    protected ?int $offset = 0;
 
     /**
      * List options.
      */
-    protected $options = [];
+    protected ?array $options = [];
 
     /**
      * List filters.
      */
-    protected $filters = [];
+    protected ?array $filters = [];
 
     /**
      * Template.
@@ -64,7 +64,7 @@ class ModuleOffersList extends ModuleOffers
      *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         if (TL_MODE === 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
@@ -197,7 +197,7 @@ class ModuleOffersList extends ModuleOffers
             return;
         }
 
-        $total = $intTotal - $offset;
+        $total = $intTotal - $this->offset;
 
         // Split the results
         if ($this->perPage > 0 && (!isset($this->limit) || $this->numberOfItems > $this->perPage)) {
@@ -251,12 +251,12 @@ class ModuleOffersList extends ModuleOffers
     /**
      * Parse and return an application form for a job.
      *
-     * @param int    $intId       [Job ID]
+     * @param int $intId       [Job ID]
      * @param string $strTemplate [Template name]
      *
      * @return string
      */
-    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
+    protected function getApplicationForm(int $intId, string $strTemplate = 'offer_apply'): string
     {
         if (!$this->offer_applicationForm) {
             return '';
@@ -281,7 +281,8 @@ class ModuleOffersList extends ModuleOffers
     /**
      * Retrieve list filters.
      *
-     * @return array [Array of available filters, parsed]
+     * @return void|array [Array of available filters, parsed]
+     * @throws \Exception
      */
     protected function buildFilters()
     {
@@ -301,7 +302,7 @@ class ModuleOffersList extends ModuleOffers
                     'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
                     'value' => \Input::get($f) ?: '',
                     'options' => [],
-                    'multiple' => $field['eval']['multiple'] ? true : false,
+                    'multiple' => (bool)$field['eval']['multiple'],
                 ];
 
                 switch ($field['inputType']) {
