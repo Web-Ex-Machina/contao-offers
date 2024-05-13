@@ -23,6 +23,7 @@
         "terminal42/notification_center": "^2.0.0",
         "webexmachina/contao-utils": "^1.0||dev-php-8-2-preparation",
         "webexmachina/contao-personal-data-manager": "^1.0||dev-php-8-2-preparation",
+        "webexmachina/contao-smartgear": "^1.0||dev-php-8-2-preparation",
         "ext-json": "*"
     },
     "autoload":{
