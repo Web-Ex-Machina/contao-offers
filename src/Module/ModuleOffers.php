@@ -18,6 +18,7 @@ namespace WEM\OffersBundle\Module;
 use Contao\System;
 use Contao\Module;
 use Contao\ContentModel;
+use Contao\Model\Collection;
 use Contao\FrontendTemplate;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
@@ -32,13 +33,13 @@ abstract class ModuleOffers extends Module
     /**
      * Parse one or more items and return them as array.
      *
-     * @param Model\Collection $objArticles
+     * @param Collection $objArticles
      * @param bool $blnAddArchive
      *
      * @return array
      * @throws \Exception
      */
-    protected function parseOffers($objArticles, bool $blnAddArchive = false): array
+    protected function parseOffers(Collection $objArticles, bool $blnAddArchive = false): array
     {
         $limit = $objArticles->count();
 
