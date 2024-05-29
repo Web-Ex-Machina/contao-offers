@@ -15,13 +15,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\System;
+use Contao\Module;
 use Contao\ContentModel;
 use Contao\FrontendTemplate;
-use Contao\Module;
-use WEM\UtilsBundle\Classes\StringUtil;
-use Contao\System;
-use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\OffersBundle\Model\Offer;
+use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
  * Common functions for job offers modules.
@@ -34,11 +33,12 @@ abstract class ModuleOffers extends Module
      * Parse one or more items and return them as array.
      *
      * @param Model\Collection $objArticles
-     * @param bool             $blnAddArchive
+     * @param bool $blnAddArchive
      *
      * @return array
+     * @throws \Exception
      */
-    protected function parseOffers($objArticles, $blnAddArchive = false)
+    protected function parseOffers($objArticles, bool $blnAddArchive = false): array
     {
         $limit = $objArticles->count();
 
@@ -61,14 +61,15 @@ abstract class ModuleOffers extends Module
     /**
      * Parse an item and return it as string.
      *
-     * @param Offer     $objArticle
-     * @param bool      $blnAddArchive
-     * @param string    $strClass
-     * @param int       $intCount
+     * @param Offer $objArticle
+     * @param bool $blnAddArchive
+     * @param string $strClass
+     * @param int $intCount
      *
      * @return string
+     * @throws \Exception
      */
-    protected function parseOffer($objArticle, $blnAddArchive = false, $strClass = '', $intCount = 0)
+    protected function parseOffer(Offer $objArticle, bool $blnAddArchive = false, string $strClass = '', int $intCount = 0): string
     {
         $objTemplate = new FrontendTemplate($this->offer_template);
         $objTemplate->setData($objArticle->row());
@@ -135,7 +136,7 @@ abstract class ModuleOffers extends Module
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
 
         if ((bool) $this->offer_displayAttributes && null !== $this->offer_attributes) {
-            $objTemplate->attributes = $objArticle->getAttributesFull(deserialize($this->offer_attributes));
+            $objTemplate->attributes = $objArticle->getAttributesFull(StringUtil::deserialize($this->offer_attributes));
         }
 
         // Notice the template if we want/can display apply button
@@ -163,7 +164,7 @@ abstract class ModuleOffers extends Module
      */
     protected function getCustomPackageVersion(string $package): ?string
     {
-        $packages = json_decode(file_get_contents(TL_ROOT.'/vendor/composer/installed.json'));
+        $packages = json_decode(file_get_contents(TL_ROOT.'/vendor/composer/installed.json')); // TODO : constant
 
         foreach ($packages->packages as $p) {
             $p = (array) $p;

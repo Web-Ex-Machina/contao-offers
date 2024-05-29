@@ -16,6 +16,7 @@ namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
 use Contao\Config;
+use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
 use Contao\Environment;
@@ -56,7 +57,7 @@ class OfferAlertContainer extends Backend
     public function getFeeds(): array
     {
         $arrChoices = [];
-        $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
+        $objFeeds = Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
 
         while ($objFeeds->next()) {
             $arrChoices[$objFeeds->id] = $objFeeds->title;
@@ -82,9 +83,10 @@ class OfferAlertContainer extends Backend
         return $arrChoices;
     }
 
+
     public function sendAlerts(): void
     {
-        $objJob = new SendAlerts();
+        $objJob = new SendAlerts(); // TODO : ça fonctionne ça ? manque pas $logger, $notificationCenter ??
         $objJob->do(false);
 
         Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);

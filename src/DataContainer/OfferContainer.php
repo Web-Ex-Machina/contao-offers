@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\Backend;
 use Contao\DataContainer;
 use Contao\Input;
 use WEM\UtilsBundle\Classes\StringUtil;
@@ -24,7 +25,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
-class OfferContainer extends \Backend
+class OfferContainer extends Backend
 {
     public function __construct()
     {
@@ -49,7 +50,7 @@ class OfferContainer extends \Backend
     public function toggleIcon(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
     {
         if (!is_null(Input::get('tid')) && \strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
+            $this->toggleVisibility((int)Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 
@@ -164,7 +165,7 @@ class OfferContainer extends \Backend
                     $objPalette->addField(
                         $objAttributes->name, 
                         $objAttributes->insertInDca, 
-                        constant(\Contao\CoreBundle\DataContainer\PaletteManipulator::class . '::' . $objAttributes->insertType)
+                        constant(PaletteManipulator::class . '::' . $objAttributes->insertType)
                     );
                 }
             }

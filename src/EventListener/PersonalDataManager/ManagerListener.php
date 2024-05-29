@@ -18,7 +18,8 @@ use Contao\System;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use WEM\OffersBundle\Model\Application;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManager;
-use WEM\SmartgearBundle\Model\FormStorage; //TODO : problenme dep
+use WEM\ContaoFormDataManagerBundle\Model\FormStorage;
+use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
 
 class ManagerListener
 {
@@ -26,10 +27,10 @@ class ManagerListener
     protected $personalDataManager;
 
     /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
     /** @var string */
-    private $csrfTokenName;
+    private string $csrfTokenName;
 
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,

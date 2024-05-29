@@ -17,11 +17,12 @@ namespace WEM\OffersBundle\Model;
 
 use Contao\Model;
 use Contao\Model\Collection;
+use WEM\UtilsBundle\Model\Model as BaseModel;
 
 /**
  * Reads and writes items.
  */
-class Alert extends \WEM\UtilsBundle\Model\Model
+class Alert extends BaseModel
 {
     /**
      * Table name.
@@ -36,10 +37,11 @@ class Alert extends \WEM\UtilsBundle\Model\Model
      * @param array $arrConfig
      * @param int $intLimit
      * @param int $intOffset
+     * @param array $arrOptions
      *
      * @return Model|Model[]|Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = [])
+    public static function findItems(array $arrConfig = [], int $intLimit = 0, int $intOffset = 0, array $arrOptions = [])  // TODO : Return type declaration must be compatible with Model::findItems
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);

@@ -14,9 +14,8 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\EventListener;
 
-use Contao\Form;
-use Contao\System;
 use Exception;
+use Contao\Form;
 use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Application;
 

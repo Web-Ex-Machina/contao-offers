@@ -14,21 +14,22 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\EventListener;
 
+use Exception;
 use Contao\File;
 use Contao\FilesModel;
-use Contao\Session;
-use WEM\UtilsBundle\Classes\StringUtil;
-use Contao\System;
-use Exception;
 use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Offer;
+use WEM\UtilsBundle\Classes\StringUtil;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class StoreFormDataListener
 {
     private LoggerInterface $logger;
+    private SessionInterface $session;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(SessionInterface $session,LoggerInterface $logger)
     {
+        $this->session = $session;
         $this->logger = $logger;
     }
 
@@ -44,7 +45,7 @@ class StoreFormDataListener
 
                 if ($objOffer = Offer::findBy('code', $strCode)) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
-                } elseif ($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))) {
+                } elseif ($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))) { // TODO : deprecated encodeSpecialChars
                     $arrSet['pid'] = $objOffer->next()->current()->id;
                 } else {
                     throw new Exception('Unable to retrieve offer');
@@ -94,7 +95,7 @@ class StoreFormDataListener
                 }
 
                 // Clean the session
-                $objSession = Session::getInstance();
+                $objSession = $this->session;
                 $objSession->set('wem_offer', '');
             }
 

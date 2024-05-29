@@ -41,7 +41,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @return Model|Model[]|Collection
      * @throws \Exception
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = []) // TODO : Return type declaration must be compatible with
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -72,7 +72,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '='): array
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;

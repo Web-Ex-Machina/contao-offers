@@ -17,8 +17,9 @@ namespace WEM\OffersBundle\DataContainer;
 use Contao\DataContainer;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
+use Contao\Backend;
 
-class OfferAlertConditionContainer extends \Backend
+class OfferAlertConditionContainer extends Backend
 {
     public function __construct()
     {

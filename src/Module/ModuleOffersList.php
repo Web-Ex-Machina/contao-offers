@@ -14,9 +14,14 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\BackendTemplate;
 use Contao\Combiner;
+use Contao\Config;
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Pagination;
+use Contao\Environment;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -65,7 +70,7 @@ class ModuleOffersList extends ModuleOffers
     public function generate(): string
     {
         if (TL_MODE === 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offerslist'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -78,7 +83,7 @@ class ModuleOffersList extends ModuleOffers
         // Load datacontainer and job feeds
         $this->loadDatacontainer('tl_wem_offer');
         $this->loadLanguageFile('tl_wem_offer');
-        $this->offer_feeds = \StringUtil::deserialize($this->offer_feeds);
+        $this->offer_feeds = StringUtil::deserialize($this->offer_feeds);
 
         // Return if there are no archives
         if (empty($this->offer_feeds) || !\is_array($this->offer_feeds)) {
@@ -94,10 +99,10 @@ class ModuleOffersList extends ModuleOffers
     protected function compile(): void
     {
         // Init countries
-        \System::getCountries();
+        \System::getCountries(); // TODO : System
 
         // Init session
-        $objSession = \Session::getInstance();
+        $objSession = \Session::getInstance(); // TODO : session
 
         // If we have setup a form, allow module to use it later
         if ($this->offer_applicationForm) {
@@ -105,40 +110,40 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
+        if (Input::post('TL_AJAX') && (int) $this->id === (int) Input::post('module')) {
             try {
-                switch (\Input::post('action')) {
+                switch (Input::post('action')) {
                     case 'seeDetails':
-                        if (!\Input::post('offer')) {
+                        if (!Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
 
-                        $objItem = OfferModel::findByPk(\Input::post('offer'));
+                        $objItem = OfferModel::findByPk(Input::post('offer'));
 
-                        $this->offer_template = 'offer_details';
+                        $this->offer_template = 'offer_details';// TODO : InsertTag
                         echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
                         exit;
 
                     case 'apply':
-                        if (!\Input::post('offer')) {
+                        if (!Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
 
                         // Put the offer in session
-                        $objSession->set('wem_offer', \Input::post('offer'));
+                        $objSession->set('wem_offer', Input::post('offer'));// TODO : InsertTag
 
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
+                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm((int)Input::post('offer')));
                         exit;
 
                     default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
             }
 
             // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get();
+            $arrResponse['rt'] = \RequestToken::get();// TODO : token
             echo json_encode($arrResponse);
             exit;
         }
@@ -205,11 +210,11 @@ class ModuleOffersList extends ModuleOffers
 
             // Get the current page
             $id = 'page_n'.$this->id;
-            $page = \Input::get($id) ?? 1;
+            $page = Input::get($id) ?? 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
-                throw new PageNotFoundException('Page not found: '.\Environment::get('uri'));
+                throw new PageNotFoundException('Page not found: '. Environment::get('uri'));
             }
 
             // Set limit and offset
@@ -223,7 +228,7 @@ class ModuleOffersList extends ModuleOffers
             }
 
             // Add the pagination menu
-            $objPagination = new \Pagination($total, $this->perPage, \Config::get('maxPaginationLinks'), $id);
+            $objPagination = new Pagination($total, $this->perPage, Config::get('maxPaginationLinks'), $id);
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
@@ -261,13 +266,13 @@ class ModuleOffersList extends ModuleOffers
 
         $objItem = OfferModel::findByPk($intId);
 
-        $objTemplate = new \FrontendTemplate($strTemplate);
+        $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->id = $objItem->id;
         $objTemplate->code = $objItem->code;
         $objTemplate->title = $objItem->title;
         $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
         $objTemplate->time = time();
-        $objTemplate->token = \RequestToken::get();
+        $objTemplate->token = \RequestToken::get(); // TODO : token
         $objTemplate->form = $strForm;
 
         return $objTemplate->parse();
@@ -295,7 +300,7 @@ class ModuleOffersList extends ModuleOffers
                     'type' => $field['inputType'],
                     'name' => $field['eval']['multiple'] ? $f.'[]' : $f,
                     'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
-                    'value' => \Input::get($f) ?: '',
+                    'value' => Input::get($f) ?: '',
                     'options' => [],
                     'multiple' => (bool)$field['eval']['multiple'],
                 ];
@@ -320,14 +325,14 @@ class ModuleOffersList extends ModuleOffers
                                     $filter['options'][$value]['options'][] = [
                                         'value' => $subValue,
                                         'label' => $subLabel,
-                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f), true)))),
+                                        'selected' => (null !== Input::get($f) && (Input::get($f) === $subValue || (\is_array(Input::get($f)) && \in_array($subValue, Input::get($f), true)))),
                                     ];
                                 }
                             } else {
                                 $filter['options'][] = [
                                     'value' => $value,
                                     'label' => $label,
-                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f), true)))),
+                                    'selected' => (null !== Input::get($f) && (Input::get($f) === $value || (\is_array(Input::get($f)) && \in_array($value, Input::get($f), true)))),
                                 ];
                             }
                         }
@@ -354,8 +359,8 @@ class ModuleOffersList extends ModuleOffers
                                         'value' => $subOption,
                                         'label' => $subOption,
                                         'selected' => $filter['multiple']
-                                            ? (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true))
-                                            : (null !== \Input::get($f) && \Input::get($f) === $subOption),
+                                            ? (null !== Input::get($f) && \in_array($subOption, Input::get($f ?? []), true))
+                                            : (null !== Input::get($f) && Input::get($f) === $subOption),
                                     ];
                                 }
                             }
@@ -377,7 +382,7 @@ class ModuleOffersList extends ModuleOffers
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
                                     'label' => $objOptions->{$f},
-                                    'selected' => (null !== \Input::get($f) && \Input::get($f) === $objOptions->{$f}),
+                                    'selected' => (null !== Input::get($f) && Input::get($f) === $objOptions->{$f}),
                                 ];
                             }
                         }
@@ -389,8 +394,8 @@ class ModuleOffersList extends ModuleOffers
                     continue;
                 }
 
-                if (null !== \Input::get($f) && '' !== \Input::get($f)) {
-                    $this->config[$f] = \Input::get($f);
+                if (null !== Input::get($f) && '' !== Input::get($f)) {
+                    $this->config[$f] = Input::get($f);
                 }
 
                 $this->filters[] = $filter;
@@ -404,11 +409,11 @@ class ModuleOffersList extends ModuleOffers
                 'name' => 'search',
                 'label' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['search'],
                 'placeholder' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['searchPlaceholder'],
-                'value' => \Input::get('search') ?: '',
+                'value' => Input::get('search') ?: '',
             ];
 
-            if ('' !== \Input::get('search') && null !== \Input::get('search')) {
-                $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
+            if ('' !== Input::get('search') && null !== Input::get('search')) {
+                $this->config['search'] = StringUtil::formatKeywords(Input::get('search'));
             }
         }
     }

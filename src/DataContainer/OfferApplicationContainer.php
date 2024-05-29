@@ -15,17 +15,20 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use Contao\Config;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\Image;
+use Contao\Input;
 use Contao\Message;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use WEM\UtilsBundle\Classes\StringUtil;
 use NotificationCenter\Model\Notification;
-use NotificationCenter\Model\Language;
+use NotificationCenter\Model\Language; // TODO : notification center
 use NotificationCenter\MessageDraft\EmailMessageDraft;
 use WEM\OffersBundle\Model\Application;
 use WEM\OffersBundle\Model\Offer;
@@ -34,10 +37,21 @@ use WEM\OffersBundle\Model\OfferFeed;
 class OfferApplicationContainer extends Backend
 {
 
+    /**
+     * @var CsrfTokenManagerInterface
+     */
+    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    public function __construct()
+    /**
+     * @var string
+     */
+    private string $csrfTokenName;
+
+    public function __construct(CsrfTokenManagerInterface $csrfTokenManager, string $csrfTokenName)
     {
         Parent::__construct();
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
     }
 
     /**
@@ -84,7 +98,7 @@ class OfferApplicationContainer extends Backend
         return '<a href="contao/popup.php?src=' . base64_encode($objFile->path) . '" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.StringUtil::specialchars($title).'\',\'url\':this.href});return false"; title="'.$label.'">'. Image::getHtml($icon, $label).'</a>';
     }
 
-    public function sendNotificationToApplication(DataContainer $dc)
+    public function sendNotificationToApplication(DataContainer $dc): string
     {
         // Retrieve available notifications
         $arrNotifications = $this->getAnswersNotificationChoices();
@@ -99,26 +113,26 @@ class OfferApplicationContainer extends Backend
         $arrOptions = [];
         $arrOptions[] = '<option value="">-</option>';
         foreach ($arrNotifications as $id => $title) {
-            $arrOptions[] = sprintf('<option value="%s"%s>%s</option>', $id, $id === (int) \Input::post('notification') ? ' selected' : '', $title);
+            $arrOptions[] = sprintf('<option value="%s"%s>%s</option>', $id, $id === (int) Input::post('notification') ? ' selected' : '', $title);
         }
 
         // Catch preview
-        if ('tl_wem_offers_send_answer_to_application' === \Input::post('FORM_SUBMIT')) {
+        if ('tl_wem_offers_send_answer_to_application' === Input::post('FORM_SUBMIT')) {
             // Retrieve chosen notification
-            if (!\Input::post('notification')) {
+            if (!Input::post('notification')) {
                 Message::addError($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['noAnswerNotificationSelected']);
                 $this->reload();
             }
 
             //$receipts = $this->notificationCenter->sendNotification($objFeed->ncEmailAlert, $arrTokens, $objAlerts->language);
-            $objNotification = Notification::findByPk(\Input::post('notification'));
+            $objNotification = Notification::findByPk(Input::post('notification')); // TODO : notification center
             $objApplication = Application::findByPk($dc->id);
             $objOffer = Offer::findByPk($objApplication->pid);
             $objFeed = OfferFeed::findByPk($objOffer->pid);
 
             // Format notification tokens
             $arrTokens = [];
-            $arrTokens['admin_email'] = \Config::get('adminEmail');
+            $arrTokens['admin_email'] = Config::get('adminEmail');
             foreach ($objApplication->row() as $c => $v) {
                 $arrTokens['recipient_'.$c] = $v;
             }
@@ -131,7 +145,7 @@ class OfferApplicationContainer extends Backend
                 $arrTokens['feed_'.$c] = $v;
             }
 
-            if ("1" === \Input::post('preview')) {
+            if ("1" === Input::post('preview')) {
                 $objMessages = $objNotification->getMessages();
 
                 if (!$objMessages) {
@@ -140,9 +154,9 @@ class OfferApplicationContainer extends Backend
                 }
 
                 while ($objMessages->next()) {
-                    $objLanguage = Language::findByMessageAndLanguageOrFallback($objMessages->current(), $GLOBALS['TL_LANGUAGE']);
+                    $objLanguage = Language::findByMessageAndLanguageOrFallback($objMessages->current(), $GLOBALS['TL_LANGUAGE']); // TODO : Langue
 
-                    $objDraft = new EmailMessageDraft($objMessages->current(), $objLanguage, $arrTokens);
+                    $objDraft = new EmailMessageDraft($objMessages->current(), $objLanguage, $arrTokens); // TODO : notification center
                 }
 
                 $strPreview .= '<br /><strong>'.$objDraft->getSubject().'</strong><br /><br />';
@@ -150,7 +164,7 @@ class OfferApplicationContainer extends Backend
                 $strPreview .= "<script>document.getElementById('emailPreview').contentWindow.document.write('".$this->sanitize_output($objDraft->getHtmlBody())."')</script>";
             }
 
-            if ("1" === \Input::post('send')) {
+            if ("1" === Input::post('send')) {
                 $objNotification->send($arrTokens);
 
                 Message::addConfirmation($GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['answerSent']);
@@ -165,12 +179,12 @@ class OfferApplicationContainer extends Backend
             <form id="tl_wem_offers_send_answer_to_application" class="tl_form tl_edit_form" method="post">
             <div class="tl_formbody_edit">
                 <input type="hidden" name="FORM_SUBMIT" value="tl_wem_offers_send_answer_to_application">
-                <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
+                <input type="hidden" name="REQUEST_TOKEN" value="' . $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue() . '">
 
                 <div class="tl_tbox cf">
                     <div class="w50 widget">
                       <h3><label for="ctrl_notification">' . $GLOBALS['TL_LANG']['WEM']['OFFERS']['answerNotification'][0] . '</label></h3>
-                      <select name="notification" id="ctrl_notification" class="tl_select tl_chosen" onfocus="Backend.getScrollOffset()">' . implode('', $arrOptions) . '</select>' . (($GLOBALS['TL_LANG']['WEM']['OFFERS']['answerNotification'][1] && \Config::get('showHelp')) ? '
+                      <select name="notification" id="ctrl_notification" class="tl_select tl_chosen" onfocus="Backend.getScrollOffset()">' . implode('', $arrOptions) . '</select>' . (($GLOBALS['TL_LANG']['WEM']['OFFERS']['answerNotification'][1] && Config::get('showHelp')) ? '
                       <p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['WEM']['OFFERS']['answerNotification'][1] . '</p>' : '') . '
                     </div>
                 </div>

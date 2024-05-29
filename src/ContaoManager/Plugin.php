@@ -19,6 +19,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use WEM\OffersBundle\OffersBundle;
+use WEM\PersonalDataManagerBundle\WEMPersonalDataManagerBundle;
 
 /**
  * Plugin for the Contao Manager.
@@ -34,7 +35,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(OffersBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManager::class])
+                ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManagerBundle::class])
                 ->setReplace(['wem-offers']),
         ];
     }

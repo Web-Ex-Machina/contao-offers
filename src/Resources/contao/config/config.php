@@ -16,6 +16,7 @@ declare(strict_types=1);
 use WEM\OffersBundle\DataContainer\OfferAlertContainer;
 use WEM\OffersBundle\Module\ModuleOffersAlert;
 use WEM\OffersBundle\Module\ModuleOffersList;
+use WEM\OffersBundle\Model;
 
 Contao\ArrayUtil::arrayInsert(
     $GLOBALS['BE_MOD'],
@@ -60,12 +61,12 @@ $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldValue'][] = ['
 $GLOBALS['WEM_HOOKS']['getHrefByPidAndPtableAndEmail'][] = ['offers.listener.personal_data_manager', 'getHrefByPidAndPtableAndEmail'];
 
 // Models
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Alert::getTable()] = WEM\OffersBundle\Model\Alert::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\AlertCondition::getTable()] = WEM\OffersBundle\Model\AlertCondition::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Application::getTable()] = WEM\OffersBundle\Model\Application::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Offer::getTable()] = WEM\OffersBundle\Model\Offer::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeed::getTable()] = WEM\OffersBundle\Model\OfferFeed::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeedAttribute::getTable()] = WEM\OffersBundle\Model\OfferFeedAttribute::class;
+$GLOBALS['TL_MODELS'][Model\Alert::getTable()] = Model\Alert::class;
+$GLOBALS['TL_MODELS'][Model\AlertCondition::getTable()] = Model\AlertCondition::class;
+$GLOBALS['TL_MODELS'][Model\Application::getTable()] = Model\Application::class;
+$GLOBALS['TL_MODELS'][Model\Offer::getTable()] = Model\Offer::class;
+$GLOBALS['TL_MODELS'][Model\OfferFeed::getTable()] = Model\OfferFeed::class;
+$GLOBALS['TL_MODELS'][Model\OfferFeedAttribute::getTable()] = Model\OfferFeedAttribute::class;
 
 // Cronjobs
 $GLOBALS['TL_CRON']['hourly'][] = [WEM\OffersBundle\Cronjob\SendAlerts::class, 'do'];

@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
-class OfferFeedAttributeContainer extends \Backend
+use Contao\Backend;
+
+class OfferFeedAttributeContainer extends Backend
 {
     public function __construct()
     {

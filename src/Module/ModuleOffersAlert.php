@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\BackendTemplate;
 use Contao\Combiner;
-use NotificationCenter\Model\Notification;
+use Contao\Input;
+use Contao\PageModel;
+use Contao\Validator;
+use NotificationCenter\Model\Notification; // TODO
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer as OfferModel;
@@ -29,10 +33,15 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 class ModuleOffersAlert extends ModuleOffers
 {
+    public function __construct($objModule, $strColumn = 'main')
+    {
+        parent::__construct($objModule, $strColumn);
+    }
+
     /**
      * List conditions.
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     /**
      * Template.
@@ -47,7 +56,7 @@ class ModuleOffersAlert extends ModuleOffers
     public function generate(): string
     {
         if (TL_MODE === 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -75,26 +84,26 @@ class ModuleOffersAlert extends ModuleOffers
     protected function compile(): void
     {
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
+        if (Input::post('TL_AJAX') && (int) $this->id === (int) Input::post('module')) {
             try {
-                switch (\Input::post('action')) {
+                switch (Input::post('action')) {
                     case 'subscribe':
                         // Check if we have a valid email
-                        if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
+                        if (!Input::post('email') || !Validator::isEmail(Input::post('email'))) {
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidEmail']);
                         }
 
                         // Check if we have conditions
                         $arrConditions = [];
-                        if (\Input::post('conditions')) {
-                            foreach (\Input::post('conditions') as $c => $v) {
+                        if (Input::post('conditions')) {
+                            foreach (Input::post('conditions') as $c => $v) {
                                 $arrConditions[$c] = $v;
                             }
                         }
 
                         // Check if we already have an existing alert with this email and this conditions
                         if (0 < Alert::countItems(
-                            ['email' => \Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 1]
+                            ['email' => Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 1]
                         )) {
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['alertAlreadyExists']);
                         }
@@ -102,7 +111,7 @@ class ModuleOffersAlert extends ModuleOffers
                         // The alert might be inactive, so instead of delete it
                         // and create a new alert, try to retrieve an existing but disable one
                         $objAlert = Alert::findItems(
-                            ['email' => \Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 0],
+                            ['email' => Input::post('email'), 'feed' => $this->offer_feed, 'conditions' => $arrConditions, 'active' => 0],
                             1
                         );
 
@@ -114,8 +123,8 @@ class ModuleOffersAlert extends ModuleOffers
                         $objAlert->tstamp = time();
                         $objAlert->lastJob = time();
                         $objAlert->activatedAt = 0;
-                        $objAlert->email = \Input::post('email');
-                        $objAlert->frequency = \Input::post('frequency') ?: 'daily'; // @todo -> add default frequency as setting
+                        $objAlert->email = Input::post('email');
+                        $objAlert->frequency = Input::post('frequency') ?: 'daily'; // @todo -> add default frequency as setting
                         $objAlert->token = StringUtil::generateToken(); // @todo -> add code system to confirm requests as alternatives to links/token
                         $objAlert->feed = $this->offer_feed; // @todo -> build a multi feed alert
                         $objAlert->moduleOffersAlert = $this->id;
@@ -134,7 +143,7 @@ class ModuleOffersAlert extends ModuleOffers
 
                         // Build and send a notification
                         $arrTokens = $this->getNotificationTokens($objAlert);
-                        $objNotification = Notification::findByPk($this->offer_ncSubscribe);
+                        $objNotification = Notification::findByPk($this->offer_ncSubscribe); //TODO : notification
                         $objNotification->send($arrTokens);
 
                         // Write the response
@@ -146,11 +155,11 @@ class ModuleOffersAlert extends ModuleOffers
 
                     case 'unsubscribe':
                         // Check if we have a valid email
-                        if (!\Input::post('email') || !\Validator::isEmail(\Input::post('email'))) {
+                        if (!Input::post('email') || !Validator::isEmail(Input::post('email'))) {
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidEmail']);
                         }
 
-                        $objAlert = Alert::findItems(['email' => \Input::post('email'), 'feed' => $this->offer_feed], 1);
+                        $objAlert = Alert::findItems(['email' => Input::post('email'), 'feed' => $this->offer_feed], 1);
 
                         // Check if the alert exists or if the alert is already active
                         if (!$objAlert) {
@@ -163,7 +172,7 @@ class ModuleOffersAlert extends ModuleOffers
 
                         // Check if the alert was not activated
                         $arrTokens = $this->getNotificationTokens($objAlert);
-                        $objNotification = Notification::findByPk($this->offer_ncUnsubscribe);
+                        $objNotification = Notification::findByPk($this->offer_ncUnsubscribe); //TODO : notification
                         $objNotification->send($arrTokens);
 
                         // Write the response
@@ -181,15 +190,15 @@ class ModuleOffersAlert extends ModuleOffers
             }
 
             // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get();
+            $arrResponse['rt'] = \RequestToken::get(); //TODO : Token
             echo json_encode($arrResponse);
             die;
         }
 
         // Catch Subscribe GET request
-        if (\Input::get('token') && 'subscribe' === \Input::get('wem_action')) {
+        if (Input::get('token') && 'subscribe' === Input::get('wem_action')) {
             try {
-                $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => \Input::get('token'), 'active' => false], 1);
+                $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => Input::get('token'), 'active' => false], 1);
 
                 // Check if the alert exists or if the alert is already active
                 if (!$objAlert || 0 < $objAlert->activatedAt) {
@@ -222,10 +231,10 @@ class ModuleOffersAlert extends ModuleOffers
         }
 
         // Catch Unsubscribe GET request
-        if ('unsubscribe' === \Input::get('wem_action')) {
-            if (\Input::get('token')) {
+        if ('unsubscribe' === Input::get('wem_action')) {
+            if (Input::get('token')) {
                 try {
-                    $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => \Input::get('token')], 1);
+                    $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => Input::get('token')], 1);
 
                     // Check if the alert exists or if the alert is already active
                     if (!$objAlert) {
@@ -257,7 +266,8 @@ class ModuleOffersAlert extends ModuleOffers
         $this->Template->moduleId = $this->id;
 
         // Retrieve and send the page for GDPR compliance
-        if ($this->offer_pageGdpr && $objGdprPage = \PageModel::findByPk($this->offer_pageGdpr)) {
+        if ($this->offer_pageGdpr && $objGdprPage = PageModel::findByPk($this->offer_pageGdpr)) {
+            //TODO : getFrontendUrl deprecated
             $this->Template->gdprPage = $objGdprPage->getFrontendUrl();
         }
 
@@ -351,12 +361,15 @@ class ModuleOffersAlert extends ModuleOffers
             $arrTokens['subscription_'.$strKey] = $varValue;
         }
 
-        if ($this->offer_pageSubscribe && $objSubscribePage = \PageModel::findByPk($this->offer_pageSubscribe)) {
+        if ($this->offer_pageSubscribe && $objSubscribePage = PageModel::findByPk($this->offer_pageSubscribe)) {
+            //TODO : getAbsoluteUrl deprecated
             $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=subscribe&token='.$objAlert->token;
         }
 
-        if ($this->offer_pageUnsubscribe && $objSubscribePage = \PageModel::findByPk($this->offer_pageUnsubscribe)) {
+        if ($this->offer_pageUnsubscribe && $objSubscribePage = PageModel::findByPk($this->offer_pageUnsubscribe)) {
+            //TODO : getAbsoluteUrl deprecated
             $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe';
+            //TODO : getAbsoluteUrl deprecated
             $arrTokens['link_unsubscribeConfirm'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
         }
 

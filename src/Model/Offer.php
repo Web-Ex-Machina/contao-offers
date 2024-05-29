@@ -15,7 +15,11 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use Contao\Controller;
+use Contao\Date;
+use Contao\FilesModel;
 use Contao\Model\Collection;
+use Contao\System;
 use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\UtilsBundle\Model\Model;
 
@@ -45,7 +49,7 @@ class Offer extends Model
      *
      * @return \Contao\Model|\Contao\Model[]|Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = [])
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = []) // TODO : Return type declaration must be compatible with Model::findIte
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -113,7 +117,7 @@ class Offer extends Model
     {
         $arrColumns = [];
         $t = static::$strTable;
-        \Controller::loadDatacontainer($t);
+        Controller::loadDatacontainer($t);
         switch ($strField) {
             // Search by pid
             case 'pid':
@@ -133,7 +137,7 @@ class Offer extends Model
             // Search for recipient not present in the subtable lead
             case 'published':
                 if (1 === $varValue) {
-                    $time = \Date::floorToMinute();
+                    $time = Date::floorToMinute();
                     $arrColumns[] = sprintf("(%s.start='' OR %s.start<='%s') AND (%s.stop='' OR %s.stop>'", $t, $t, $time, $t, $t).($time + 60).sprintf("') AND %s.published='1'", $t);
                 }
 
@@ -282,7 +286,7 @@ class Offer extends Model
                 return $this->getRelated($varAttribute->name);
 
             case "fileTree":
-                $figureBuilder = \System::getContainer()
+                $figureBuilder = System::getContainer()
                     ->get('contao.image.studio')
                     ->createFigureBuilder()
                     ->setSize($this->size)
@@ -290,7 +294,7 @@ class Offer extends Model
                     ->enableLightbox((bool) $this->fullsize);
 
                 if ($varAttribute->multiple) {
-                    $objFiles = \FilesModel::findMultipleByUuids(\StringUtil::deserialize($this->{$varAttribute->name}));
+                    $objFiles = FilesModel::findMultipleByUuids(StringUtil::deserialize($this->{$varAttribute->name}));
 
                     if (!$objFiles) {
                         return null;
@@ -308,7 +312,7 @@ class Offer extends Model
                     return $arrFiles ?: null;
                 }
 
-                $objFile = \FilesModel::findByUuid($this->{$varAttribute->name});
+                $objFile = FilesModel::findByUuid($this->{$varAttribute->name});
 
                 $figure = $figureBuilder
                     ->fromPath($objFile->path)
