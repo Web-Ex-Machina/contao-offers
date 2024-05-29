@@ -300,13 +300,13 @@ class ModuleOffersList extends ModuleOffers
     /**
      * Retrieve list filters.
      *
-     * @return void|array [Array of available filters, parsed]
+     * @return void
      * @throws \Exception
      */
-    protected function buildFilters()
+    protected function buildFilters(): void
     {
         if (!$this->offer_addFilters) {
-            return;
+            exit();
         }
 
         // Retrieve and format dropdowns filters
