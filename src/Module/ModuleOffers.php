@@ -165,7 +165,7 @@ abstract class ModuleOffers extends Module
      */
     protected function getCustomPackageVersion(string $package): ?string
     {
-        $packages = json_decode(file_get_contents(TL_ROOT.'/vendor/composer/installed.json')); // TODO : constant
+        $packages = json_decode(file_get_contents('./../../vendor/composer/installed.json'));
 
         foreach ($packages->packages as $p) {
             $p = (array) $p;
