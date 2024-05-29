@@ -23,8 +23,9 @@
         "terminal42/notification_center": "^2.0.0",
         "webexmachina/contao-utils": "^1.0||dev-php-8-2-preparation",
         "webexmachina/contao-personal-data-manager": "^1.0||dev-php-8-2-preparation",
-        "webexmachina/contao-smartgear": "^1.0||dev-php-8-2-preparation",
-        "ext-json": "*"
+        "ext-json": "*",
+        "webexmachina/contao-form-data-manager": "dev-main",
+        "contao/manager-plugin": "^2.13"
     },
     "autoload":{
         "psr-4": {
@@ -47,7 +48,8 @@
         "allow-plugins": {
             "contao-components/installer": true,
             "php-http/discovery": true,
-            "contao-community-alliance/composer-plugin": true
+            "contao-community-alliance/composer-plugin": true,
+            "contao/manager-plugin": true
         }
     },
     "require-dev": {
