@@ -45,7 +45,7 @@ class StoreFormDataListener
 
                 if ($objOffer = Offer::findBy('code', $strCode)) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
-                } elseif ($objOffer = Offer::findBy('code', \Contao\Input::encodeSpecialChars($strCode))) { // TODO : deprecated encodeSpecialChars
+                } elseif ($objOffer = Offer::findBy('code', htmlspecialchars($strCode))) {
                     $arrSet['pid'] = $objOffer->next()->current()->id;
                 } else {
                     throw new Exception('Unable to retrieve offer');
