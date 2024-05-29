@@ -18,13 +18,16 @@ use Exception;
 use Contao\Form;
 use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Application;
+use WEM\UtilsBundle\Classes\Encryption;
 
 class ProcessFormDataListener
 {
     private LoggerInterface $logger;
+    protected Encryption $encryption;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger,Encryption $encryption)
     {
+        $this->encryption = $encryption;
         $this->logger = $logger;
     }
 
@@ -41,7 +44,7 @@ class ProcessFormDataListener
                 $objApplication = Application::findItems([], 1, 0, ['order' => 'tstamp DESC']);
                 if ($objApplication) {
                     $objApplication = $objApplication->next()->current();
-                    $fieldsManagedByPdm = (new Application())->getPersonalDataFieldsNames();
+                    $fieldsManagedByPdm = (new Application($this->encryption))->getPersonalDataFieldsNames();
                     foreach ($fieldsManagedByPdm as $field) {
                         $objApplication->markModified($field);
                     }
