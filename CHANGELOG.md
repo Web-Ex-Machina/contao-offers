@@ -1,5 +1,8 @@
 Extension "Offers" for Contao Open Source CMS
 ========
+2.0.2 - 2024-05-29
+- FIXED: `seeOffer` button not correctly displayed
+
 2.0.1 - 2024-02-29
 - FIXED: Assets load earlier for lists with no offers (see https://github.com/Web-Ex-Machina/contao-offers/commit/ce6cc382ff7204d6e6e522a73bac1643bd334486)
 
