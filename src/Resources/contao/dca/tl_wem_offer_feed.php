@@ -12,6 +12,7 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+use Contao\Controller;
 use WEM\OffersBundle\DataContainer\OfferFeedContainer;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
@@ -110,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
             'search' => true,
             'eval' => ['rgxp' => 'alias', 'doNotCopy' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'save_callback' => [
-                static fn($varValue, \Contao\DataContainer $dc): string => (new OfferFeedContainer())->generateAlias($varValue, $dc),
+                [OfferFeedContainer::class, 'generateAlias'],
             ],
             'sql' => "varchar(255) BINARY NOT NULL default ''",
         ],
@@ -134,14 +135,14 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
         'ncEmailAlert' => [
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => static fn() => (new OfferFeedContainer())->getAlertEmailNotificationChoices(),
+            'options_callback' => [OfferFeedContainer::class, 'getAlertEmailNotificationChoices'],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'tplOfferAlert' => [
             'exclude'                 => true,
             'inputType'               => 'select',
-            'options_callback' => static fn() => Controller::getTemplateGroup('offer_alert_'),
+            'options_callback'        => static fn() => Controller::getTemplateGroup('offer_alert_'),
             'eval'                    => ['includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'],
             'sql'                     => "varchar(64) NOT NULL default ''"
         ]

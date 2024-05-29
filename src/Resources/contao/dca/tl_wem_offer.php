@@ -12,6 +12,8 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+use Contao\BackendUser;
+use Contao\System;
 use WEM\OffersBundle\DataContainer\OfferContainer;
 
 System::loadLanguageFile('tl_content');
@@ -31,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             ],
         ],
         'onload_callback' => [
-            static fn($dc) => (new OfferContainer())->updatePalettes($dc),
+            [OfferContainer::class, 'updatePalettes'],
         ]
     ],
 
@@ -42,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'fields' => ['code ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => static fn(array $r): string => (new OfferContainer())->listItems($r),
+            'child_record_callback' => [OfferContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -77,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'toggle' => [
                 'icon' => 'visible.svg',
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => static fn(array $row, string $href, string $label, string $title, string $icon, string $attributes): string => (new OfferContainer())->toggleIcon($row, $href, $label, $title, $icon, $attributes),
+                'button_callback' => [OfferContainer::class, 'toggleIcon'],
                 'showInHeader' => true,
             ],
             'applications' => [

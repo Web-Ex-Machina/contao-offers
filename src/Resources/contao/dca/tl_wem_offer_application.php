@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @author   Web ex Machina <contact@webexmachina.fr>
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
-
+use WEM\OffersBundle\DataContainer\OfferApplicationContainer;
 $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
     // Config
     'config' => [
@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'fields' => ['country DESC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'listItems'],
+            'child_record_callback' => [OfferApplicationContainer::class, 'listItems'],
             'child_record_class' => 'no_padding',
         ],
         'label'=>[
@@ -70,12 +70,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'show_cv' => [
                 'href' => 'key=show_cv',
                 'icon' => 'pickfile.gif',
-                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showCv'],
+                'button_callback' => [OfferApplicationContainer::class, 'showCv'],
             ],
             'show_applicationLetter' => [
                 'href' => 'key=show_applicationLetter',
                 'icon' => 'tablewizard.gif',
-                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showApplicationLetter'],
+                'button_callback' => [OfferApplicationContainer::class, 'showApplicationLetter'],
             ],
             'sendNotificationToApplication' => [
                 'href' => 'key=sendNotificationToApplication',

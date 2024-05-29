@@ -22,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
         'switchToEdit' => true,
         'enableVersioning' => true,
         'onload_callback' => [
-            static fn($dc): array => (new OfferAlertConditionContainer())->getValueChoices($dc)
+            [OfferAlertConditionContainer::class, 'getValueChoices']
         ],
         'sql' => [
             'keys' => [
@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
             'fields' => ['field ASC'],
             'headerFields' => ['name', 'position', 'phone', 'email'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => static fn($row): string => (new OfferAlertConditionContainer())->listItems($row),
+            'child_record_callback' => [OfferAlertConditionContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
             'exclude' => true,
             'filter' => true,
             'inputType'                 => 'select',
-            'options_callback'          => static fn($dc): array => (new OfferAlertConditionContainer())->getFieldChoices($dc),
+            'options_callback'          => [OfferAlertConditionContainer::class, 'getFieldChoices'],
             'eval'                      => ['includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'],
             'sql'                       => "varchar(255) NOT NULL default ''"
         ],

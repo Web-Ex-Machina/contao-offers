@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'fields' => ['name ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => static fn(array $r): string => (new OfferFeedAttributeContainer())->listItems($r),
+            'child_record_callback' => [OfferFeedAttributeContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => static fn(): array => (new OfferFeedAttributeContainer())->getFieldOptions(),
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldOptions'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50 clr'],
             'reference' => &$GLOBALS['TL_LANG']['CTE'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
@@ -211,7 +211,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => static fn(): array => (new OfferFeedAttributeContainer())->getFieldsAndLegends(),
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 255, 'default' => ''],
         ],
