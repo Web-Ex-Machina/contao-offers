@@ -24,6 +24,8 @@ use Contao\Pagination;
 use Contao\Environment;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Front end module "offers list".
