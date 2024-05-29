@@ -27,6 +27,9 @@ use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 class SendAlerts
 {
@@ -34,9 +37,11 @@ class SendAlerts
     private LoggerInterface $logger;
 
     private NotificationCenter $notificationCenter;
+    private ContentUrlGenerator $urlGenerator;
 
-    public function __construct(LoggerInterface $logger, NotificationCenter $notificationCenter)
+    public function __construct(LoggerInterface $logger, ContentUrlGenerator $urlGenerator, NotificationCenter $notificationCenter)
     {
+        $this->urlGenerator = $urlGenerator;
         $this->notificationCenter = $notificationCenter;
         $this->logger = $logger;
     }
@@ -49,6 +54,7 @@ class SendAlerts
      *
      * @return void
      * @throws \Exception
+     * @throws ExceptionInterface
      */
     public function do(bool $blnUpdateAlertLastJob = true): void
     {
@@ -189,8 +195,7 @@ class SendAlerts
 
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
-                //TODO : getAbsoluteUrl deprecated
-                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
+                $arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objPageUnsubscribe, ['wem_action'=>'unsubscribe','token'=>$objAlerts->token], UrlGeneratorInterface::ABSOLUTE_URL);
             }
 
             $receipts = $this->notificationCenter->sendNotification($objFeed->ncEmailAlert, $arrTokens, $objAlerts->language);

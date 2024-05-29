@@ -20,6 +20,8 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\Validator;
 use NotificationCenter\Model\Notification; // TODO
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer as OfferModel;
@@ -38,12 +40,17 @@ class ModuleOffersAlert extends ModuleOffers
     private CsrfTokenManagerInterface $csrfTokenManager;
 
     private string $csrfTokenName;
-
-    public function __construct($objModule, $csrfTokenManager,$csrfTokenName, $strColumn = 'main')
+    private ContentUrlGenerator $urlGenerator;
+    public function __construct(
+        ContentUrlGenerator $urlGenerator, $objModule,
+        CsrfTokenManagerInterface $csrfTokenManager,$csrfTokenName,
+        $strColumn = 'main'
+    )
     {
         parent::__construct($objModule, $strColumn);
         $this->csrfTokenManager = $csrfTokenManager;
         $this->csrfTokenName = $csrfTokenName;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -88,6 +95,7 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Generate the module.
+     * @throws ExceptionInterface
      */
     protected function compile(): void
     {
@@ -275,8 +283,7 @@ class ModuleOffersAlert extends ModuleOffers
 
         // Retrieve and send the page for GDPR compliance
         if ($this->offer_pageGdpr && $objGdprPage = PageModel::findByPk($this->offer_pageGdpr)) {
-            //TODO : getFrontendUrl deprecated
-            $this->Template->gdprPage = $objGdprPage->getFrontendUrl();
+            $this->Template->gdprPage =$this->urlGenerator->generate($objGdprPage);
         }
 
         // assets
@@ -355,6 +362,7 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Build Notification Tokens.
+     * @throws ExceptionInterface
      */
     protected function getNotificationTokens(Alert $objAlert): array
     {
@@ -370,15 +378,12 @@ class ModuleOffersAlert extends ModuleOffers
         }
 
         if ($this->offer_pageSubscribe && $objSubscribePage = PageModel::findByPk($this->offer_pageSubscribe)) {
-            //TODO : getAbsoluteUrl deprecated
-            $arrTokens['link_subscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=subscribe&token='.$objAlert->token;
+            $arrTokens['link_subscribe'] = $this->urlGenerator->generate($objSubscribePage, ['wem_action'=>'subscribe','token'=>$objAlert->token]);
         }
 
         if ($this->offer_pageUnsubscribe && $objSubscribePage = PageModel::findByPk($this->offer_pageUnsubscribe)) {
-            //TODO : getAbsoluteUrl deprecated
-            $arrTokens['link_unsubscribe'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe';
-            //TODO : getAbsoluteUrl deprecated
-            $arrTokens['link_unsubscribeConfirm'] = $objSubscribePage->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlert->token;
+            $arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objSubscribePage, ['wem_action'=>'unsubscribe']);
+            $arrTokens['link_unsubscribeConfirm'] = $this->urlGenerator->generate($objSubscribePage, ['wem_action'=>'unsubscribe','token'=>$objAlert->token]);
         }
 
         $arrTokens['recipient_email'] = $objAlert->email;
