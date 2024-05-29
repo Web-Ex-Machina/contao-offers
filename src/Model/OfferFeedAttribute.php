@@ -38,7 +38,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @param int $intOffset
      * @param array $arrOptions
      *
-     * @return Model|Model[]|Collection
+     * @return Model|Collection|null
      * @throws \Exception
      */
     public static function findItems(

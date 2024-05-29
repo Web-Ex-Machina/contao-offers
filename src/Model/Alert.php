@@ -72,9 +72,10 @@ class Alert extends BaseModel
      * Count items, depends on the arguments.
      *
      * @param array $arrConfig
-     *
+     * @param array $arrOptions
+     * @return int
      */
-    public static function countItems($arrConfig = [], array $arrOptions = []): int
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
 
@@ -89,9 +90,9 @@ class Alert extends BaseModel
      * Format ItemModel columns.
      *
      * @param array $arrConfig
-     * @return array [Array] [The Model columns]
+     * @return array The Model columns
      */
-    public static function formatColumns($arrConfig): array
+    public static function formatColumns(array $arrConfig): array
     {
         $arrColumns = [];
         foreach ($arrConfig as $c => $v) {
@@ -104,11 +105,11 @@ class Alert extends BaseModel
     /**
      * Generic statements format.
      *
-     * @param string $strField    [Column to format]
-     * @param mixed  $varValue    [Value to use]
-     * @param string $strOperator [Operator to use, default "="]
+     * @param string $strField    Column to format
+     * @param mixed  $varValue    Value to use
+     * @param string $strOperator Operator to use, default "="
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '='): array
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;

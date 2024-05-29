@@ -302,7 +302,7 @@ class ModuleOffersAlert extends ModuleOffers
                     'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType'],
                     'name' => $c,
                     'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
-                    'value' => \Input::get($c) ?: '',
+                    'value' => Input::get($c) ?: '',
                     'options' => [],
                     'multiple' => (bool) $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple'],
                 ];

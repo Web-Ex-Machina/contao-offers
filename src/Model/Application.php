@@ -72,7 +72,7 @@ class Application extends Model
     /**
      * Find items, depends on the arguments.
      *
-     * @return Model|Model[]|Model\Collection
+     * @return Model|Model\Collection|null
      */
     public static function findItems(array $arrConfig = [], int $intLimit = 0, int $intOffset = 0, array $arrOptions = [])
     {
@@ -115,7 +115,7 @@ class Application extends Model
     /**
      * Format ItemModel columns.
      *
-     * @return array [Array] [The Model columns]
+     * @return array  The Model columns
      */
     public static function formatColumns(array $arrConfig): array
     {

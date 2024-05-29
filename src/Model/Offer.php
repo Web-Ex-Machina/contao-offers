@@ -48,7 +48,7 @@ class Offer extends Model
      * @param int $intOffset
      * @param array $arrOptions
      *
-     * @return \Contao\Model|\Contao\Model[]|Collection
+     * @return Model|Collection|null
      */
     public static function findItems(
         array $arrConfig = [], int $intLimit = 0,
