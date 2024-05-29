@@ -113,7 +113,7 @@ class Offer extends Model
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '='): array
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
         $arrColumns = [];
         $t = static::$strTable;
@@ -144,7 +144,7 @@ class Offer extends Model
             break;
 
             // Wizard for active items
-            case 'published': // TODO : wat the… duplicate case expression: 'published'
+            case 'active':
                 if (1 === $varValue) {
                     $arrColumns[] = sprintf('%s.published = 1 AND (%s.start = 0 OR %s.start <= ', $t, $t, $t).time().sprintf(') AND (%s.stop = 0 OR %s.stop >= ', $t, $t).time().')';
                 } elseif (-1 === $varValue) {

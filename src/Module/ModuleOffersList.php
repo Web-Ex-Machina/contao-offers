@@ -98,8 +98,6 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function compile(): void
     {
-        // Init countries
-        \System::getCountries(); // TODO : System
 
         // Init session
         $objSession = \Session::getInstance(); // TODO : session
