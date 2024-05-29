@@ -41,7 +41,10 @@ class Alert extends BaseModel
      *
      * @return Model|Model[]|Collection
      */
-    public static function findItems(array $arrConfig = [], int $intLimit = 0, int $intOffset = 0, array $arrOptions = [])  // TODO : Return type declaration must be compatible with Model::findItems
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);

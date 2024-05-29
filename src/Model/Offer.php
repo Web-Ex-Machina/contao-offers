@@ -46,10 +46,14 @@ class Offer extends Model
      * @param array $arrConfig
      * @param int $intLimit
      * @param int $intOffset
+     * @param array $arrOptions
      *
      * @return \Contao\Model|\Contao\Model[]|Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, array $arrOptions = []) // TODO : Return type declaration must be compatible with Model::findIte
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);

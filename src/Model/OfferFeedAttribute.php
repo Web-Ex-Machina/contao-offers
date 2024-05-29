@@ -41,7 +41,10 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @return Model|Model[]|Collection
      * @throws \Exception
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = []) // TODO : Return type declaration must be compatible with
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
