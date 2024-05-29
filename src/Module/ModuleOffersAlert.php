@@ -191,7 +191,7 @@ class ModuleOffersAlert extends ModuleOffers
                     break;
 
                     default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getMessage(), 'trace' => $e->getTrace()];

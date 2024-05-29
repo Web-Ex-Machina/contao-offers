@@ -81,9 +81,10 @@ class Offer extends Model
      * Count items, depends on the arguments.
      *
      * @param array $arrConfig
-     *
+     * @param array $arrOptions
+     * @return int
      */
-    public static function countItems($arrConfig = [], array $arrOptions = []): int
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
         $arrColumns = static::formatColumns($arrConfig);
 
@@ -100,7 +101,7 @@ class Offer extends Model
      * @param array $arrConfig
      * @return array [The Model columns]
      */
-    public static function formatColumns($arrConfig): array
+    public static function formatColumns(array $arrConfig): array
     {
         $arrColumns = [];
         foreach ($arrConfig as $c => $v) {
@@ -252,7 +253,7 @@ class Offer extends Model
 
     /**
      * TODO : this fonction return too many different value type
-     * @param $varAttribute
+     * @param mixed $varAttribute
      * @return array|Collection|mixed|string|Offer|null
      * @throws \Exception
      */
