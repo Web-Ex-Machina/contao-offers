@@ -28,7 +28,7 @@ use WEM\OffersBundle\Model\Application;
 use WEM\OffersBundle\Model\Offer;
 use WEM\PersonalDataManagerBundle\Model\PersonalData;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
-use WEM\SmartgearBundle\Model\FormStorage; //TODO : problenme dep
+use WEM\ContaoFormDataManagerBundle\Model\FormStorage;
 
 class UiListener
 {
