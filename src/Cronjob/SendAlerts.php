@@ -42,18 +42,20 @@ class SendAlerts
     }
 
     /**
-     * Retrieve and send all the new job offers matching user alerts.
-     *
+     * Runs the SendAlerts cron job.
      * Executed every hour
+     *
+     * @param bool $blnUpdateAlertLastJob Whether to update the lastJob field of the alerts. Defaults to true.
+     *
+     * @return void
      * @throws \Exception
      */
-    public function do($blnUpdateAlertLastJob = true): void
+    public function do(bool $blnUpdateAlertLastJob = true): void
     {
         // Log the start of the job and setup some vars
         $this->logger->log("WEMOFFERS",'Cronjob SendAlerts started');
 
         $t = Alert::getTable();
-        AlertCondition::getTable(); //TODO : Not used ?
         $t3 = Offer::getTable();
         $nbAlerts = 0;
         $nbOffers = 0;
@@ -187,6 +189,7 @@ class SendAlerts
 
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
+                //TODO : getAbsoluteUrl deprecated
                 $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
             }
 
@@ -218,9 +221,14 @@ class SendAlerts
     }
 
     /**
-     * Format a job block for the notification.
+     * Parses an Offer object into a string using a specified template.
      *
+     * @param Offer $objItem The Offer object to parse.
+     * @param string $language The language to use for language file loading.
+     * @param string $strTemplate The name of the template to use. Defaults to 'offer_alert_default'.
      *
+     * @return string The parsed template as a string.
+     * @throws \Exception
      */
     protected function parseItem(Offer $objItem, string $language, string $strTemplate = 'offer_alert_default'): string
     {
