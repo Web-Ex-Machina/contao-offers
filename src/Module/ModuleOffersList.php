@@ -22,6 +22,7 @@ use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\Pagination;
 use Contao\Environment;
+use Contao\System;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\UtilsBundle\Classes\StringUtil;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -74,6 +75,8 @@ class ModuleOffersList extends ModuleOffers
      * @var string
      */
     private string $csrfTokenName;
+
+    private SessionInterface $session;
 
     public function __construct($objModule, $csrfTokenManager,$csrfTokenName, SessionInterface $session, $strColumn = 'main')
     {
@@ -138,7 +141,7 @@ class ModuleOffersList extends ModuleOffers
                         $objItem = OfferModel::findByPk(Input::post('offer'));
 
                         $this->offer_template = 'offer_details';// TODO : InsertTag
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
+                        System::getContainer()->get('contao.insert_tag')->replace($this->parseOffer($objItem));
                         exit;
 
                     case 'apply':
@@ -147,9 +150,8 @@ class ModuleOffersList extends ModuleOffers
                         }
 
                         // Put the offer in session
-                        $objSession->set('wem_offer', Input::post('offer'));// TODO : something is wrong there
-                        // TODO : InsertTag
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm((int)Input::post('offer')));
+                        $objSession->set('wem_offer', Input::post('offer'));
+                        System::getContainer()->get('contao.insert_tag')->replace($this->getApplicationForm((int)Input::post('offer')));
                         exit;
 
                     default:
