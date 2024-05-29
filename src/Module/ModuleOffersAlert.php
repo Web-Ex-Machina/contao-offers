@@ -25,6 +25,7 @@ use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer as OfferModel;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Front end module "offers alert".
@@ -33,9 +34,16 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 class ModuleOffersAlert extends ModuleOffers
 {
-    public function __construct($objModule, $strColumn = 'main')
+
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private string $csrfTokenName;
+
+    public function __construct($objModule, $csrfTokenManager,$csrfTokenName, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
     }
 
     /**
@@ -190,7 +198,7 @@ class ModuleOffersAlert extends ModuleOffers
             }
 
             // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get(); //TODO : Token
+            $arrResponse['rt'] = $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue();
             echo json_encode($arrResponse);
             die;
         }

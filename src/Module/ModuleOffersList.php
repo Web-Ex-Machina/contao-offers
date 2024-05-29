@@ -63,6 +63,23 @@ class ModuleOffersList extends ModuleOffers
      * @var string
      */
     protected $strTemplate = 'mod_offerslist';
+    /**
+     * @var CsrfTokenManagerInterface
+     */
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    /**
+     * @var string
+     */
+    private string $csrfTokenName;
+
+    public function __construct($objModule, $csrfTokenManager,$csrfTokenName, SessionInterface $session, $strColumn = 'main')
+    {
+        parent::__construct($objModule, $strColumn);
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
+        $this->session = $session;
+    }
 
     /**
      * Display a wildcard in the back end.
@@ -100,7 +117,7 @@ class ModuleOffersList extends ModuleOffers
     {
 
         // Init session
-        $objSession = \Session::getInstance(); // TODO : session
+        $objSession = $this->session;
 
         // If we have setup a form, allow module to use it later
         if ($this->offer_applicationForm) {
@@ -128,8 +145,8 @@ class ModuleOffersList extends ModuleOffers
                         }
 
                         // Put the offer in session
-                        $objSession->set('wem_offer', Input::post('offer'));// TODO : InsertTag
-
+                        $objSession->set('wem_offer', Input::post('offer'));// TODO : something is wrong there
+                        // TODO : InsertTag
                         echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm((int)Input::post('offer')));
                         exit;
 
@@ -141,7 +158,7 @@ class ModuleOffersList extends ModuleOffers
             }
 
             // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get();// TODO : token
+            $arrResponse['rt'] = $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue();
             echo json_encode($arrResponse);
             exit;
         }
@@ -270,7 +287,7 @@ class ModuleOffersList extends ModuleOffers
         $objTemplate->title = $objItem->title;
         $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
         $objTemplate->time = time();
-        $objTemplate->token = \RequestToken::get(); // TODO : token
+        $objTemplate->token = $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue();
         $objTemplate->form = $strForm;
 
         return $objTemplate->parse();
