@@ -37,6 +37,7 @@ class SendAlerts
     private LoggerInterface $logger;
 
     private NotificationCenter $notificationCenter;
+
     private ContentUrlGenerator $urlGenerator;
 
     public function __construct(LoggerInterface $logger, ContentUrlGenerator $urlGenerator, NotificationCenter $notificationCenter)

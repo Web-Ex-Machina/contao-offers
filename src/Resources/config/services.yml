@@ -1,0 +1,7 @@
+services:
+  WEM\OffersBundle\Cronjob\SendAlerts:
+    arguments:
+      $urlGenerator: '@contao.routing.content_url_generator'
+      $notificationCenter: '@terminal42.notification_center'
+      $logger: '@logger'
+    public: true
