@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class StoreFormDataListener
 {
     private LoggerInterface $logger;
+
     private SessionInterface $session;
 
     public function __construct(SessionInterface $session,LoggerInterface $logger)

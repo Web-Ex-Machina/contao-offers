@@ -33,10 +33,7 @@ abstract class ModuleOffers extends Module
     /**
      * Parse one or more items and return them as array.
      *
-     * @param Collection $objArticles
-     * @param bool $blnAddArchive
      *
-     * @return array
      * @throws \Exception
      */
     protected function parseOffers(Collection $objArticles, bool $blnAddArchive = false): array
@@ -62,12 +59,6 @@ abstract class ModuleOffers extends Module
     /**
      * Parse an item and return it as string.
      *
-     * @param Offer $objArticle
-     * @param bool $blnAddArchive
-     * @param string $strClass
-     * @param int $intCount
-     *
-     * @return string
      * @throws \Exception
      */
     protected function parseOffer(Offer $objArticle, bool $blnAddArchive = false, string $strClass = '', int $intCount = 0): string

@@ -23,6 +23,7 @@ use WEM\UtilsBundle\Classes\Encryption;
 class ProcessFormDataListener
 {
     private LoggerInterface $logger;
+
     protected Encryption $encryption;
 
     public function __construct(LoggerInterface $logger,Encryption $encryption)

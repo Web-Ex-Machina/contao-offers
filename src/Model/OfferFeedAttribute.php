@@ -33,10 +33,6 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig
-     * @param int $intLimit
-     * @param int $intOffset
-     * @param array $arrOptions
      *
      * @return Model|Collection|null
      * @throws \Exception

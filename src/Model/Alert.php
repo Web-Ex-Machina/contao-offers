@@ -34,11 +34,6 @@ class Alert extends BaseModel
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig
-     * @param int $intLimit
-     * @param int $intOffset
-     * @param array $arrOptions
-     *
      * @return Model|Model[]|Collection
      */
     public static function findItems(
@@ -70,10 +65,6 @@ class Alert extends BaseModel
 
     /**
      * Count items, depends on the arguments.
-     *
-     * @param array $arrConfig
-     * @param array $arrOptions
-     * @return int
      */
     public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
@@ -89,7 +80,6 @@ class Alert extends BaseModel
     /**
      * Format ItemModel columns.
      *
-     * @param array $arrConfig
      * @return array The Model columns
      */
     public static function formatColumns(array $arrConfig): array

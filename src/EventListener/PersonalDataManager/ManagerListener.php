@@ -26,10 +26,8 @@ class ManagerListener
     /** @var personalDataManagerUi */
     protected $personalDataManager;
 
-    /** @var CsrfTokenManagerInterface */
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /** @var string */
     private string $csrfTokenName;
 
     public function __construct(

@@ -43,10 +43,6 @@ class Offer extends Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array $arrConfig
-     * @param int $intLimit
-     * @param int $intOffset
-     * @param array $arrOptions
      *
      * @return Model|Collection|null
      */
@@ -79,10 +75,6 @@ class Offer extends Model
 
     /**
      * Count items, depends on the arguments.
-     *
-     * @param array $arrConfig
-     * @param array $arrOptions
-     * @return int
      */
     public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
@@ -98,7 +90,6 @@ class Offer extends Model
     /**
      * Format ItemModel columns.
      *
-     * @param array $arrConfig
      * @return array [The Model columns]
      */
     public static function formatColumns(array $arrConfig): array

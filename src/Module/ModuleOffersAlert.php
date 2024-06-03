@@ -40,7 +40,9 @@ class ModuleOffersAlert extends ModuleOffers
     private CsrfTokenManagerInterface $csrfTokenManager;
 
     private string $csrfTokenName;
+
     private ContentUrlGenerator $urlGenerator;
+
     public function __construct(
         ContentUrlGenerator $urlGenerator, $objModule,
         CsrfTokenManagerInterface $csrfTokenManager,$csrfTokenName,

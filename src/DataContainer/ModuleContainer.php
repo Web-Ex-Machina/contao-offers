@@ -28,8 +28,6 @@ class ModuleContainer extends Backend
 
     /**
      * Return all templates as array.
-     *
-     * @return array
      */
     public function getTemplates(): array
     {
@@ -38,8 +36,6 @@ class ModuleContainer extends Backend
 
     /**
      * Return all feeds as array.
-     *
-     * @return array
      */
     public function getFeeds(): array
     {
@@ -59,8 +55,6 @@ class ModuleContainer extends Backend
 
     /**
      * Return all alerts available gateways.
-     *
-     * @return array
      */
     public function getAlertsOptions(): array
     {
@@ -71,8 +65,6 @@ class ModuleContainer extends Backend
 
     /**
      * Return all alerts available gateways.
-     *
-     * @return array
      */
     public function getConditionsOptions(): array
     {
@@ -91,8 +83,6 @@ class ModuleContainer extends Backend
 
     /**
      * Return all job alerts available gateways.
-     *
-     * @return array
      */
     public function getFiltersOptions(): array
     {
@@ -111,8 +101,6 @@ class ModuleContainer extends Backend
 
     /**
      * Get Notification Choices for this kind of modules.
-     *
-     * @return array
      */
     public function getSubscribeNotificationChoices(): array
     {
@@ -128,8 +116,6 @@ class ModuleContainer extends Backend
 
     /**
      * Get Notification Choices for this kind of modules.
-     *
-     * @return array
      */
     public function getUnsubscribeNotificationChoices(): array
     {
@@ -146,7 +132,6 @@ class ModuleContainer extends Backend
     /**
      * Return all offer attributes available.
      *
-     * @return array
      * @throws \Exception
      */
     public function getAttributesOptions(): array

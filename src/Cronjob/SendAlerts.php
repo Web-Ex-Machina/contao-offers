@@ -53,7 +53,6 @@ class SendAlerts
      *
      * @param bool $blnUpdateAlertLastJob Whether to update the lastJob field of the alerts. Defaults to true.
      *
-     * @return void
      * @throws \Exception
      * @throws ExceptionInterface
      */

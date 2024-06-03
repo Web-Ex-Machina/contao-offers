@@ -66,14 +66,9 @@ class ModuleOffersList extends ModuleOffers
      * @var string
      */
     protected $strTemplate = 'mod_offerslist';
-    /**
-     * @var CsrfTokenManagerInterface
-     */
+
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /**
-     * @var string
-     */
     private string $csrfTokenName;
 
     private SessionInterface $session;
@@ -254,7 +249,7 @@ class ModuleOffersList extends ModuleOffers
         $objArticles = OfferModel::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
-        if (null !== $objArticles) {
+        if ($objArticles instanceof \Contao\Model\Collection) {
             $this->Template->articles = $this->parseOffers($objArticles);
         }
 
@@ -300,7 +295,6 @@ class ModuleOffersList extends ModuleOffers
     /**
      * Retrieve list filters.
      *
-     * @return void
      * @throws \Exception
      */
     protected function buildFilters(): void

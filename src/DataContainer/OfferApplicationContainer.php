@@ -37,14 +37,8 @@ use WEM\OffersBundle\Model\OfferFeed;
 class OfferApplicationContainer extends Backend
 {
 
-    /**
-     * @var CsrfTokenManagerInterface
-     */
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    /**
-     * @var string
-     */
     private string $csrfTokenName;
 
     public function __construct(CsrfTokenManagerInterface $csrfTokenManager, string $csrfTokenName)
