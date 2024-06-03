@@ -22,13 +22,14 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\Message;
 use Contao\ModuleModel;
+use Contao\System;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
-use WEM\OffersBundle\Cronjob\SendAlerts;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\OfferFeed;
 
 class OfferAlertContainer extends Backend
 {
+
     public function __construct()
     {
         Parent::__construct();
@@ -88,9 +89,9 @@ class OfferAlertContainer extends Backend
     /**
      * @throws ExceptionInterface
      */
-    public function sendAlerts(SendAlerts $sendAlerts): void
+    public function sendAlerts(): void
     {
-        //$objJob = new SendAlerts(); // TODO : ça fonctionne ça ?
+        $sendAlerts = System::getContainer()->get('wem.offers.send_alert');
         $sendAlerts->do(false);
 
         Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);
