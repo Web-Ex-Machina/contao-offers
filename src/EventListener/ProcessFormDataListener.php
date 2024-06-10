@@ -54,7 +54,7 @@ class ProcessFormDataListener
                 }
             }
         } catch (Exception $exception) {
-            $this->logger->log('WEM_OFFERS',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]));
+            $this->logger->log('ERROR',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]),["WEM_OFFERS"]);
         }
     }
 }
