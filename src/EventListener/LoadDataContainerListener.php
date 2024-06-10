@@ -43,7 +43,7 @@ class LoadDataContainerListener
                 }
             }
         } catch (\Exception $exception) {
-            $this->logger->log('ERROR',vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]),["WEM_OFFERS"]);
+            $this->logger->log('ERROR',vsprintf(($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'])?:"coucou", [$exception->getMessage(), $exception->getTrace()]),["WEM_OFFERS"]);
         }
     }
 
