@@ -26,9 +26,7 @@ use WEM\OffersBundle\Model\Offer;
 use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
-//use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Contao\CoreBundle\Routing\ContentUrlGenerator;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use NotificationCenter\Model\Notification;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 class SendAlerts
@@ -36,16 +34,9 @@ class SendAlerts
 
     private LoggerInterface $logger;
 
-    //private NotificationCenter $notificationCenter;
-
-    private ContentUrlGenerator $urlGenerator;
-
-    public function __construct(LoggerInterface $logger, ContentUrlGenerator $urlGenerator
-                                //,NotificationCenter $notificationCenter
+    public function __construct(LoggerInterface $logger
     )
     {
-        $this->urlGenerator = $urlGenerator;
-        //$this->notificationCenter = $notificationCenter;
         $this->logger = $logger;
     }
 
@@ -197,27 +188,20 @@ class SendAlerts
 
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
-                $arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objPageUnsubscribe, ['wem_action'=>'unsubscribe','token'=>$objAlerts->token], UrlGeneratorInterface::ABSOLUTE_URL);
+                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
+                //$arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objPageUnsubscribe, ['wem_action'=>'unsubscribe','token'=>$objAlerts->token], UrlGeneratorInterface::ABSOLUTE_URL);
             }
 
-//            $receipts = $this->notificationCenter->sendNotification($objFeed->ncEmailAlert, $arrTokens, $objAlerts->language);
-//            if ($receipts->wereAllDelivered()) {
-//                ++$nbAlerts;
-//
-//                if ($blnUpdateAlertLastJob) {
-//                    $objAlert = $objAlerts->current();
-//                    $objAlert->lastJob = time();
-//                    $objAlert->save();
-//                }
-//            }else{
-//                foreach ($receipts as $receipt) {
-//                    if (!$receipt->wasDelivered()) {
-//                        $this->logger->error($receipt->getException(),[
-//                            "MessageConfig"=> $receipt->getParcel()->getMessageConfig(),
-//                        ]);
-//                    }
-//                }
-//            }
+            if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
+                ++$nbAlerts;
+                $objNotification->send($arrTokens, $objAlerts->language);
+
+                if ($blnUpdateAlertLastJob) {
+                    $objAlert = $objAlerts->current();
+                    $objAlert->lastJob = time();
+                    $objAlert->save();
+                }
+            }
         }
 
         // Step 5 - Log the results (how many alerts sents & how job offers sent)

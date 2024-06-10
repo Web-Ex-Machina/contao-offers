@@ -2,6 +2,5 @@ services:
   wem.offers.send_alert:
     class: 'WEM\OffersBundle\Cronjob\SendAlerts'
     arguments:
-      $urlGenerator: '@contao.routing.content_url_generator'
       $logger: '@logger'
     public: true
