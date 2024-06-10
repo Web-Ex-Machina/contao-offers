@@ -47,7 +47,7 @@ class OfferContainer extends Backend
     /**
      * Return the "toggle visibility" button.
      */
-    public function toggleIcon(array $row, string $href, string $label, string $title, string $icon, string $attributes): string
+    public function toggleIcon(array $row, ?string $href, string $label, string $title, string $icon, string $attributes): string
     {
         if (!is_null(Input::get('tid')) && \strlen(Input::get('tid'))) {
             $this->toggleVisibility((int)Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
