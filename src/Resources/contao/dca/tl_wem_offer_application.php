@@ -12,7 +12,6 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 use WEM\OffersBundle\DataContainer\OfferApplicationContainer;
-use Contao\CoreBundle\Intl\Countries;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
     // Config
@@ -175,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
-            'options' => (Countries::class)->getCountries(),
+            'options' => WEM\UtilsBundle\Classes\CountriesUtil::getCountries(),
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(2) NOT NULL default ''",
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],
