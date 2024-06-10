@@ -18,6 +18,8 @@ services:
 
   offers.listener.load_datacontainer:
     class: WEM\OffersBundle\EventListener\LoadDataContainerListener
+    arguments:
+      - '@?logger'
     public: true
 
   WEM\OffersBundle\EventListener\LoadDataContainerListener:
