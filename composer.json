@@ -23,7 +23,7 @@
         "contao/core-bundle": "^4.13||^5.0",
         "terminal42/contao-countryselect": "^1.5",
         "terminal42/notification_center": "^1.7.9",
-        "webexmachina/contao-utils": "^1.0||dev-php-8-2-preparation",
+        "webexmachina/contao-utils": "^1.0||2.*",
         "webexmachina/contao-personal-data-manager": "^1.0||dev-php-8-2-preparation",
         "ext-json": "*",
         "webexmachina/contao-form-data-manager": "dev-main",
