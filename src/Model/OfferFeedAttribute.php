@@ -37,7 +37,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      *
      * @return Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = []): ?\Contao\Model\Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -70,7 +70,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      *
      * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
         try {
             $arrColumns = [];

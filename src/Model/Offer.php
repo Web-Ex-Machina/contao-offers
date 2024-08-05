@@ -44,7 +44,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @return Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = []): ?\Contao\Model\Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -76,7 +76,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @return int
      */
-    public static function countItems($arrConfig = [], $arrOptions = [])
+    public static function countItems($arrConfig = [], $arrOptions = []): int
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -95,7 +95,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @return [Array] [The Model columns]
      */
-    public static function formatColumns($arrConfig)
+    public static function formatColumns($arrConfig): array
     {
         try {
             $t = static::$strTable;
@@ -120,7 +120,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
      *
      * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement($strField, $varValue, $strOperator = '='): array
     {
         try {
             $arrColumns = [];
