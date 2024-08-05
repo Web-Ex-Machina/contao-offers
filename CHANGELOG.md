@@ -1,5 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
+
+2.1.0 - 2024-08-05
+- UPDATED: add return types and update composer dependency versions fo support Utils 2.0
+
 2.0.2 - 2024-05-29
 - FIXED: `seeOffer` button not correctly displayed
 
