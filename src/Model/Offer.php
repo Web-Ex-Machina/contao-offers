@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use Contao\Model\Registry;
+
 /**
  * Reads and writes items.
  */
@@ -199,6 +201,46 @@ class Offer extends \WEM\UtilsBundle\Model\Model
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * Find a single record by its ID or code
+     *
+     * @param mixed $varId      The ID or code
+     * @param array $arrOptions An optional options array
+     *
+     * @return static The model or null if the result is empty
+     */
+    public static function findByIdOrCode($varId, array $arrOptions=array())
+    {
+        $isCode = !preg_match('/^[1-9]\d*$/', $varId);
+
+        // Try to load from the registry
+        if (!$isCode && empty($arrOptions))
+        {
+            $objModel = Registry::getInstance()->fetch(static::$strTable, $varId);
+
+            if ($objModel !== null)
+            {
+                return $objModel;
+            }
+        }
+
+        $t = static::$strTable;
+
+        $arrOptions = array_merge
+        (
+            array
+            (
+                'limit'  => 1,
+                'column' => $isCode ? array("$t.code=?") : array("$t.id=?"),
+                'value'  => $varId,
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
     }
 
     /**
