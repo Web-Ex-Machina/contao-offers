@@ -35,3 +35,7 @@ services:
   WEM\OffersBundle\EventListener\CountOffersInsertTagListener:
     tags:
       - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
+
+  WEM\OffersBundle\EventListener\OfferInsertTagListener:
+    tags:
+      - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
