@@ -1,6 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.2.0 - 2024-08-19
+- ADDED - Add a new tag "countoffers", returns the number of published offers in one or several PIDs 
+
 2.1.0 - 2024-08-05
 - UPDATED: add return types and update composer dependency versions fo support Utils 2.0
 

@@ -31,3 +31,7 @@ services:
   WEM\OffersBundle\EventListener\StoreFormDataListener:
     tags:
       - { name: contao.hook, hook: storeFormData, method: storeFormData, priority: 100 }
+
+  WEM\OffersBundle\EventListener\CountOffersInsertTagListener:
+    tags:
+      - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
