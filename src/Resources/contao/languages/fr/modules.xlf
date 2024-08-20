@@ -27,8 +27,16 @@
 			<target>Liste d'offres</target>
 		</trans-unit>
 		<trans-unit id="FMD.offerslist.1">
-			<source>Adds a list of offers items to the page</source>
+			<source>Add a list of offers items to the page</source>
 			<target>Ajoute une liste d'offres à la page</target>
+		</trans-unit>
+		<trans-unit id="FMD.offersreader.0">
+			<source>Offers reader</source>
+			<target>Lecteur d'offres</target>
+		</trans-unit>
+		<trans-unit id="FMD.offersreader.1">
+			<source>Add an offer reader to the page</source>
+			<target>Ajoute un lecteur d'offres à la page</target>
 		</trans-unit>
 		<trans-unit id="FMD.offersalert.0">
 			<source>Offers alert</source>

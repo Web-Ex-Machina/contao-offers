@@ -31,6 +31,15 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
     {template_legend:hide},customTpl;
     {expert_legend:hide},guests,cssID
 ';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['offersreader'] = '
+    {title_legend},name,headline,type;
+    {config_legend},offer_feeds,overviewPage,customLabel;
+    {form_legend},offer_applicationForm;
+    {template_legend:hide},offer_template,customTpl;
+    {image_legend:hide},imgSize;
+    {protected_legend:hide},protected;
+    {expert_legend:hide},guests,cssID
+';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_addFilters'] = 'offer_filters,offer_addSearch';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_displayAttributes'] = 'offer_attributes';

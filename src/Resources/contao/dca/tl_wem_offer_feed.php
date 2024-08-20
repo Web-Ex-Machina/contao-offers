@@ -76,6 +76,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
     'palettes' => [
         'default' => '
             {title_legend},title,alias;
+            {config_legend},jumpTo;
             {attributes_legend},attributes;
             {alert_legend},ncEmailAlert,tplOfferAlert
         ',
@@ -111,6 +112,15 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
                 [WEM\OffersBundle\DataContainer\OfferFeedContainer::class, 'generateAlias'],
             ],
             'sql' => "varchar(255) BINARY NOT NULL default ''",
+        ],
+
+        'jumpTo' => [
+            'exclude' => true,
+            'inputType' => 'pageTree',
+            'foreignKey' => 'tl_page.title',
+            'eval' => array('fieldType'=>'radio'),
+            'sql' => "int(10) unsigned NOT NULL default 0",
+            'relation' => array('type'=>'hasOne', 'load'=>'lazy')
         ],
 
         'attributes' => [
