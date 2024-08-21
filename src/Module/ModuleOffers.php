@@ -19,6 +19,7 @@ use Contao\Config;
 use Contao\ContentModel;
 use Contao\FrontendTemplate;
 use Contao\Module;
+use Contao\RequestToken;
 use Contao\StringUtil;
 use Contao\System;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
@@ -160,6 +161,40 @@ abstract class ModuleOffers extends Module
             $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($objItem->code ?: $objItem->id);
             $objTemplate->jumpTo = $objTarget->getFrontendUrl($params);
         }
+
+        return $objTemplate->parse();
+    }
+
+    /**
+     * Parse and return an application form for a job.
+     *
+     * @param int    $intId       [Job ID]
+     * @param string $strTemplate [Template name]
+     *
+     * @return string
+     */
+    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
+    {
+        if (!$this->offer_applicationForm) {
+            return '';
+        }
+
+        $strForm = $this->getForm($this->offer_applicationForm);
+
+        $objItem = Offer::findByPk($intId);
+
+        if (!$objItem) {
+            return '';
+        }
+
+        $objTemplate = new FrontendTemplate($strTemplate);
+        $objTemplate->id = $objItem->id;
+        $objTemplate->code = $objItem->code;
+        $objTemplate->title = $objItem->title;
+        $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
+        $objTemplate->time = time();
+        $objTemplate->token = RequestToken::get();
+        $objTemplate->form = $strForm;
 
         return $objTemplate->parse();
     }

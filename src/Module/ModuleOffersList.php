@@ -241,41 +241,11 @@ class ModuleOffersList extends ModuleOffers
 
         // Catch auto_item
         if (Input::get('auto_item')) {
-            $objOffer = OfferModel::findItems(['code' => Input::get('auto_item')], 1);
+            $objOffer = Offer::findItems(['code' => Input::get('auto_item')], 1);
 
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
         }
-    }
-
-    /**
-     * Parse and return an application form for a job.
-     *
-     * @param int    $intId       [Job ID]
-     * @param string $strTemplate [Template name]
-     *
-     * @return string
-     */
-    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
-    {
-        if (!$this->offer_applicationForm) {
-            return '';
-        }
-
-        $strForm = $this->getForm($this->offer_applicationForm);
-
-        $objItem = OfferModel::findByPk($intId);
-
-        $objTemplate = new \FrontendTemplate($strTemplate);
-        $objTemplate->id = $objItem->id;
-        $objTemplate->code = $objItem->code;
-        $objTemplate->title = $objItem->title;
-        $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
-        $objTemplate->time = time();
-        $objTemplate->token = \RequestToken::get();
-        $objTemplate->form = $strForm;
-
-        return $objTemplate->parse();
     }
 
     /**
