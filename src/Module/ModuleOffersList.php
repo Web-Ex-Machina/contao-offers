@@ -132,7 +132,7 @@ class ModuleOffersList extends ModuleOffers
             $this->limit = $this->numberOfItems;
         }
 
-        $this->Template->articles = [];
+        $this->Template->items = [];
         $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
 
         // assets
@@ -214,11 +214,11 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        $objArticles = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
+        $objItems = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
-        if (null !== $objArticles) {
-            $this->Template->articles = $this->parseOffers($objArticles);
+        if (null !== $objItems) {
+            $this->Template->items = $this->parseOffers($objItems);
         }
 
         $this->Template->moduleId = $this->id;

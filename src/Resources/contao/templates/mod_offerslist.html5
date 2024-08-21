@@ -6,12 +6,12 @@
 	<?= $this->filters ?>
   <?php endif; ?>
 
-  <?php if (empty($this->articles)): ?>
+  <?php if (empty($this->items)): ?>
     <p class="empty"><?= $this->empty; ?></p>
   <?php else: ?>
   	
 	  <div class="offers__list" id="offers-<?= $this->id ?>">
-	    <?= implode('', $this->articles); ?>
+	    <?= implode('', $this->items); ?>
 		</div>
 
     <?= $this->pagination; ?>
