@@ -17,7 +17,7 @@ namespace WEM\OffersBundle\Module;
 use Contao\Combiner;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
-use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -114,7 +114,7 @@ class ModuleOffersList extends ModuleOffers
                         if (!\Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
-                        $objItem = OfferModel::findByPk(\Input::post('offer'));
+                        $objItem = Offer::findByPk(\Input::post('offer'));
 
                         $this->offer_template = 'offer_details';
                         echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
@@ -191,13 +191,13 @@ class ModuleOffersList extends ModuleOffers
         $this->Template->filters = $this->filters;
 
         // Get the total number of items
-        $intTotal = OfferModel::countItems($this->config);
+        $intTotal = Offer::countItems($this->config);
 
         if ($intTotal < 1) {
             return;
         }
 
-        $total = $intTotal - $offset;
+        $total = $intTotal - $this->offset;
 
         // Split the results
         if ($this->perPage > 0 && (!isset($this->limit) || $this->numberOfItems > $this->perPage)) {
@@ -230,7 +230,7 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        $objArticles = OfferModel::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
+        $objArticles = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
         if (null !== $objArticles) {
@@ -309,7 +309,7 @@ class ModuleOffersList extends ModuleOffers
                         break;
 
                     case 'listWizard':
-                        $objOptions = OfferModel::findItemsGroupByOneField($f);
+                        $objOptions = Offer::findItemsGroupByOneField($f);
 
                         if ($objOptions) {
                             $filter['type'] = 'select';
@@ -337,7 +337,7 @@ class ModuleOffersList extends ModuleOffers
 
                     case 'text':
                     default:
-                        $objOptions = OfferModel::findItemsGroupByOneField($f);
+                        $objOptions = Offer::findItemsGroupByOneField($f);
 
                         if ($objOptions && 0 < $objOptions->count()) {
                             $filter['type'] = 'select';

@@ -290,18 +290,18 @@ class ModuleOffersAlert extends ModuleOffers
                     'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
                     'value' => \Input::get($c) ?: '',
                     'options' => [],
-                    'multiple' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple'] ? true : false,
+                    'multiple' => isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple']) ? true : false,
                 ];
 
                 switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType']) {
                     case 'select':
-                        if (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
+                        if (isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback']) && \is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
                             $strClass = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'][0];
                             $strMethod = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'][1];
 
                             $this->import($strClass);
                             $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
+                        } elseif (isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback']) && \is_callable($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback'])) {
                             $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options_callback']($this);
                         } elseif (\is_array($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options'])) {
                             $options = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['options'];
