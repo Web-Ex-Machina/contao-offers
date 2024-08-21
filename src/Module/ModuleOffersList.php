@@ -107,44 +107,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
-            try {
-                switch (\Input::post('action')) {
-                    case 'seeDetails':
-                        if (!\Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
-                        }
-                        $objItem = Offer::findByPk(\Input::post('offer'));
-
-                        $this->offer_template = 'offer_details';
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
-                        exit;
-                    break;
-
-                    case 'apply':
-                        if (!\Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
-                        }
-
-                        // Put the offer in session
-                        $objSession->set('wem_offer', \Input::post('offer'));
-
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
-                        exit;
-                    break;
-
-                    default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
-                }
-            } catch (\Exception $e) {
-                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
-            }
-
-            // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get();
-            echo json_encode($arrResponse);
-            exit;
-        }
+        $this->catchAjaxRequests();
 
         if ($this->offer_applicationForm
             && '' !== $objSession->get('wem_offer')
