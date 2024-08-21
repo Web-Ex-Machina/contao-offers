@@ -145,6 +145,9 @@ class ModuleOffersReader extends ModuleOffers
 
         global $objPage;
 
+        $objPage->pageTitle = $this->offer->title . ' | ' . $this->offer->code;
+        $objPage->description = StringUtil::substr($this->offer->teaser, 300);
+
         // assets
         $strVersion = $this->getCustomPackageVersion('webexmachina/contao-offers');
         $objCssCombiner = new Combiner();
