@@ -20,7 +20,7 @@ use Contao\PageModel;
 use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
-use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -209,7 +209,7 @@ class ModuleOffersAlert extends ModuleOffers
                     // Keep it because it works but it should not be used...
                     case 'text':
                     default:
-                        $objOptions = OfferModel::findItemsGroupByOneField($c);
+                        $objOptions = Offer::findItemsGroupByOneField($c);
 
                         if ($objOptions && 0 < $objOptions->count()) {
                             $condition['type'] = 'select';

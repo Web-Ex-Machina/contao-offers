@@ -24,7 +24,7 @@ use Contao\PageModel;
 use Contao\RequestToken;
 use Contao\Session;
 use Contao\System;
-use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -37,7 +37,7 @@ class ModuleOffersReader extends ModuleOffers
     /**
      * Offer
      * 
-     * @var OfferModel
+     * @var Offer
      */
     protected $objOffer = null;
 
@@ -66,7 +66,7 @@ class ModuleOffersReader extends ModuleOffers
             return $objTemplate->parse();
         }
 
-        $this->offer = OfferModel::findByIdOrCode(Input::get('auto_item'));
+        $this->offer = Offer::findByIdOrCode(Input::get('auto_item'));
 
         if (!$this->offer) {
             throw new PageNotFoundException('Page not found: ' . Environment::get('uri'));
