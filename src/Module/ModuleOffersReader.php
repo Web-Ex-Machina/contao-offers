@@ -179,6 +179,10 @@ class ModuleOffersReader extends ModuleOffers
 
         $objItem = OfferModel::findByPk($intId);
 
+        if (!$objItem) {
+            return '';
+        }
+
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->id = $objItem->id;
         $objTemplate->code = $objItem->code;

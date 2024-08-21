@@ -39,3 +39,7 @@ services:
   WEM\OffersBundle\EventListener\OfferInsertTagListener:
     tags:
       - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
+
+  WEM\OffersBundle\EventListener\GenerateBreadcrumbListener:
+    tags:
+      - { name: contao.hook, hook: generateBreadcrumb, method: onGenerateBreadcrumb, priority: 100 }
