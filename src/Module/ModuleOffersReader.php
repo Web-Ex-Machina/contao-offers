@@ -80,9 +80,6 @@ class ModuleOffersReader extends ModuleOffers
      */
     protected function compile(): void
     {
-        // Init countries
-        System::getCountries();
-
         // Init session
         $objSession = Session::getInstance();
 

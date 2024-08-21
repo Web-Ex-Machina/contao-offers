@@ -37,6 +37,7 @@ array_insert(
     [
         'wem-offers' => [
             'offersalert' => 'WEM\OffersBundle\Module\ModuleOffersAlert',
+            'offersfilters' => 'WEM\OffersBundle\Module\ModuleOffersFilters',
             'offerslist' => 'WEM\OffersBundle\Module\ModuleOffersList',
             'offersreader' => 'WEM\OffersBundle\Module\ModuleOffersReader',
         ],

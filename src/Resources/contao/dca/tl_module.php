@@ -17,18 +17,24 @@ $this->loadDataContainer('tl_content');
 // Add palettes to tl_module
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_addFilters';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'offer_displayAttributes';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
+    {title_legend},name,headline,type;
+    {config_legend},offer_feed,offer_alertTeaser,offer_conditions,offer_pageGdpr,offer_pageSubscribe,offer_ncSubscribe,offer_pageUnsubscribe,offer_ncUnsubscribe;
+    {template_legend:hide},customTpl;
+    {expert_legend:hide},guests,cssID
+';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['offersfilters'] = '
+    {title_legend},name,headline,type;
+    {config_legend},jumpTo,offer_filters,offer_addSearch;
+    {template_legend:hide},customTpl;
+    {expert_legend:hide},guests,cssID
+';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
     {title_legend},name,headline,type;
     {config_legend},offer_feeds,offer_displayTeaser,offer_displayAttributes,offer_addFilters;
     {list_legend},numberOfItems,skipFirst,perPage;
     {form_legend},offer_applicationForm;
     {template_legend:hide},offer_template,customTpl;
-    {expert_legend:hide},guests,cssID
-';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
-    {title_legend},name,headline,type;
-    {config_legend},offer_feed,offer_alertTeaser,offer_conditions,offer_pageGdpr,offer_pageSubscribe,offer_ncSubscribe,offer_pageUnsubscribe,offer_ncUnsubscribe;
-    {template_legend:hide},customTpl;
     {expert_legend:hide},guests,cssID
 ';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offersreader'] = '
@@ -41,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offersreader'] = '
     {expert_legend:hide},guests,cssID
 ';
 
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_addFilters'] = 'offer_filters,offer_addSearch';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_addFilters'] = 'offer_filters_module';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_displayAttributes'] = 'offer_attributes';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_feed'] = [
@@ -180,4 +186,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_attributes'] = [
     'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAttributesOptions'],
     'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_filters_module'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFiltersModules'],
+    'foreignKey' => 'tl_module.name',
+    'eval' => ['mandatory' => true],
+    'sql' => 'int(10) unsigned NOT NULL default 0',
+    'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];

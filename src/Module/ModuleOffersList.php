@@ -95,9 +95,6 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function compile(): void
     {
-        // Init countries
-        \System::getCountries();
-
         // Init session
         $objSession = \Session::getInstance();
 
@@ -150,8 +147,32 @@ class ModuleOffersList extends ModuleOffers
         $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
         // Retrieve filters
-        $this->buildFilters();
-        $this->Template->filters = $this->filters;
+        if (!empty($_GET) || !empty($_POST)) {
+            foreach ($_GET as $f => $v) {
+                if (false === strpos($f, 'offer_filter_')) {
+                    continue;
+                }
+
+                if (Input::get($f)) {
+                    $this->config[str_replace('offer_filter_', '', $f)] = Input::get($f);
+                }
+            }
+
+            foreach ($_POST as $f => $v) {
+                if (false === strpos($f, 'offer_filter_')) {
+                    continue;
+                }
+
+                if (Input::post($f)) {
+                    $this->config[str_replace('offer_filter_', '', $f)] = Input::post($f);
+                }
+            }
+        }
+
+        // Retrieve filters
+        if ($this->offer_addFilters) {
+            $this->Template->filters = $this->getFrontendModule($this->offer_filters_module);
+        }
 
         // Get the total number of items
         $intTotal = Offer::countItems($this->config);
@@ -208,142 +229,6 @@ class ModuleOffersList extends ModuleOffers
 
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
-        }
-    }
-
-    /**
-     * Retrieve list filters.
-     *
-     * @return array [Array of available filters, parsed]
-     */
-    protected function buildFilters()
-    {
-        if (!$this->offer_addFilters) {
-            return;
-        }
-
-        // Retrieve and format dropdowns filters
-        $filters = deserialize($this->offer_filters);
-        if (\is_array($filters) && !empty($filters)) {
-            foreach ($filters as $f) {
-                $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
-
-                $filter = [
-                    'type' => $field['inputType'],
-                    'name' => $field['eval']['multiple'] ? $f.'[]' : $f,
-                    'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
-                    'value' => \Input::get($f) ?: '',
-                    'options' => [],
-                    'multiple' => $field['eval']['multiple'] ? true : false,
-                ];
-
-                switch ($field['inputType']) {
-                    case 'select':
-                        if (\is_array($field['options_callback'])) {
-                            $strClass = $field['options_callback'][0];
-                            $strMethod = $field['options_callback'][1];
-
-                            $this->import($strClass);
-                            $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($field['options_callback'])) {
-                            $options = $field['options_callback']($this);
-                        } elseif (\is_array($field['options'])) {
-                            $options = $field['options'];
-                        }
-
-                        foreach ($options as $value => $label) {
-                            if (\is_array($label)) {
-                                foreach ($label as $subValue => $subLabel) {
-                                    $filter['options'][$value]['options'][] = [
-                                        'value' => $subValue,
-                                        'label' => $subLabel,
-                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f), true)))),
-                                    ];
-                                }
-                            } else {
-                                $filter['options'][] = [
-                                    'value' => $value,
-                                    'label' => $label,
-                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f), true)))),
-                                ];
-                            }
-                        }
-
-                        break;
-
-                    case 'listWizard':
-                        $objOptions = Offer::findItemsGroupByOneField($f);
-
-                        if ($objOptions) {
-                            $filter['type'] = 'select';
-                            if ($filter['multiple']) {
-                                $filter['name'] .= '[]';
-                            }
-                            while ($objOptions->next()) {
-                                if (!$objOptions->{$f}) {
-                                    continue;
-                                }
-
-                                $subOptions = deserialize($objOptions->{$f});
-                                foreach ($subOptions as $subOption) {
-                                    $filter['options'][$subOption] = [
-                                        'value' => $subOption,
-                                        'label' => $subOption,
-                                        'selected' => !$filter['multiple']
-                                            ? (null !== \Input::get($f) && \Input::get($f) === $subOption)
-                                            : (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true)),
-                                    ];
-                                }
-                            }
-                        }
-                        break;
-
-                    case 'text':
-                    default:
-                        $objOptions = Offer::findItemsGroupByOneField($f);
-
-                        if ($objOptions && 0 < $objOptions->count()) {
-                            $filter['type'] = 'select';
-                            while ($objOptions->next()) {
-                                if (!$objOptions->{$f}) {
-                                    continue;
-                                }
-
-                                $filter['options'][] = [
-                                    'value' => $objOptions->{$f},
-                                    'label' => $objOptions->{$f},
-                                    'selected' => (null !== \Input::get($f) && \Input::get($f) === $objOptions->{$f}),
-                                ];
-                            }
-                        }
-                        break;
-                }
-
-                if ('select' === $filter['type'] && 1 >= \count($filter['options'])) {
-                    continue;
-                }
-
-                if (null !== \Input::get($f) && '' !== \Input::get($f)) {
-                    $this->config[$f] = \Input::get($f);
-                }
-
-                $this->filters[] = $filter;
-            }
-        }
-
-        // Add fulltext search if asked
-        if ($this->offer_addSearch) {
-            $this->filters[] = [
-                'type' => 'text',
-                'name' => 'search',
-                'label' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['search'],
-                'placeholder' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['searchPlaceholder'],
-                'value' => \Input::get('search') ?: '',
-            ];
-
-            if ('' !== \Input::get('search') && null !== \Input::get('search')) {
-                $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
-            }
         }
     }
 }

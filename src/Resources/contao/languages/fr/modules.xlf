@@ -2,50 +2,58 @@
   <file datatype="php" original="system/modules/wem-offers/languages/en/modules.php" source-language="en" target-language="fr">
     <body>
     	<trans-unit id="MOD.wemoffers">
-			<source>Offers</source>
-			<target>Annonces</target>
-		</trans-unit>
-		<trans-unit id="MOD.wem-offers.0">
-			<source>Offers</source>
-			<target>Annonces</target>
-		</trans-unit>
-		<trans-unit id="MOD.wem-offers.1">
-			<source>Manage offers</source>
-			<target>Gérer les annonces</target>
-		</trans-unit>
-		<trans-unit id="MOD.wem-offers-alerts.0">
-			<source>Alerts</source>
-			<target>Alertes</target>
-		</trans-unit>
-		<trans-unit id="MOD.wem-offers-alerts.1">
-			<source>Manage offers alerts</source>
-			<target>Gérer les alertes d'annonces</target>
-		</trans-unit>
+				<source>Offers</source>
+				<target>Annonces</target>
+			</trans-unit>
+			<trans-unit id="MOD.wem-offers.0">
+				<source>Offers</source>
+				<target>Annonces</target>
+			</trans-unit>
+			<trans-unit id="MOD.wem-offers.1">
+				<source>Manage offers</source>
+				<target>Gérer les annonces</target>
+			</trans-unit>
+			<trans-unit id="MOD.wem-offers-alerts.0">
+				<source>Alerts</source>
+				<target>Alertes</target>
+			</trans-unit>
+			<trans-unit id="MOD.wem-offers-alerts.1">
+				<source>Manage offers alerts</source>
+				<target>Gérer les alertes d'annonces</target>
+			</trans-unit>
 
-		<trans-unit id="FMD.offerslist.0">
-			<source>Offers list</source>
-			<target>Liste d'offres</target>
-		</trans-unit>
-		<trans-unit id="FMD.offerslist.1">
-			<source>Add a list of offers items to the page</source>
-			<target>Ajoute une liste d'offres à la page</target>
-		</trans-unit>
-		<trans-unit id="FMD.offersreader.0">
-			<source>Offers reader</source>
-			<target>Lecteur d'offres</target>
-		</trans-unit>
-		<trans-unit id="FMD.offersreader.1">
-			<source>Add an offer reader to the page</source>
-			<target>Ajoute un lecteur d'offres à la page</target>
-		</trans-unit>
-		<trans-unit id="FMD.offersalert.0">
-			<source>Offers alert</source>
-			<target>Alerte d'offres</target>
-		</trans-unit>
-		<trans-unit id="FMD.offersalert.1">
-			<source>Adds an alert subscription form to the page</source>
-			<target>Ajoute un formulaire d'inscription aux alertes à la page</target>
-		</trans-unit>
+			<trans-unit id="FMD.offersalert.0">
+				<source>Offers alert</source>
+				<target>Alerte d'offres</target>
+			</trans-unit>
+			<trans-unit id="FMD.offersalert.1">
+				<source>Adds an alert subscription form to the page</source>
+				<target>Ajoute un formulaire d'inscription aux alertes à la page</target>
+			</trans-unit>
+			<trans-unit id="FMD.offersfilters.0">
+				<source>Offers filters</source>
+				<target>Filtres d'offres</target>
+			</trans-unit>
+			<trans-unit id="FMD.offersfilters.1">
+				<source>Adds an offer filters form to the page</source>
+				<target>Ajoute un système de filtres aux offres à la page</target>
+			</trans-unit>
+			<trans-unit id="FMD.offerslist.0">
+				<source>Offers list</source>
+				<target>Liste d'offres</target>
+			</trans-unit>
+			<trans-unit id="FMD.offerslist.1">
+				<source>Add a list of offers items to the page</source>
+				<target>Ajoute une liste d'offres à la page</target>
+			</trans-unit>
+			<trans-unit id="FMD.offersreader.0">
+				<source>Offers reader</source>
+				<target>Lecteur d'offres</target>
+			</trans-unit>
+			<trans-unit id="FMD.offersreader.1">
+				<source>Add an offer reader to the page</source>
+				<target>Ajoute un lecteur d'offres à la page</target>
+			</trans-unit>
     </body>
   </file>
 </xliff>
