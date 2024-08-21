@@ -74,7 +74,7 @@
 							<?php endif; ?>
 
 							<?php foreach ($c['options'] as $o): ?>
-							<option value="<?= $o['value']; ?>"<?= $o['selected'] ? ' selected' : ''; ?>><?= $o['label']; ?></option>
+							<option value="<?= $o['value']; ?>"<?= array_key_exists('selected', $o) ? ' selected' : ''; ?>><?= $o['label']; ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>

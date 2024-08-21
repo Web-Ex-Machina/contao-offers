@@ -299,6 +299,10 @@ class Offer extends \WEM\UtilsBundle\Model\Model
             $varAttribute = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttribute], 1);
         }
 
+        if (null === $varAttribute) {
+            return null;
+        }
+
         switch($varAttribute->type) {
             case "select":
                 $arrArticleData = $this->row();

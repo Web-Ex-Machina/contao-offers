@@ -18,6 +18,15 @@
 			<target>L'alias du flux sera automatiquement généré en accord avec son intitulé</target>
 		</trans-unit>
 
+		<trans-unit id="tl_wem_offer_feed.jumpTo.0">
+			<source>Redirect page</source>
+			<target>Page de redirection</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed.jumpTo.1">
+			<source>Choose the page where this category offers must be redirected</source>
+			<target>Indiquez la page où les offres de cette catégorie doivent être redirigés</target>
+		</trans-unit>
+
 		<trans-unit id="tl_wem_offer_feed.attributes.0">
 			<source>Attributes</source>
 			<target>Attributs</target>

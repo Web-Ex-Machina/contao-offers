@@ -17,7 +17,7 @@ namespace WEM\OffersBundle\Module;
 use Contao\Combiner;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
-use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -95,9 +95,6 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function compile(): void
     {
-        // Init countries
-        \System::getCountries();
-
         // Init session
         $objSession = \Session::getInstance();
 
@@ -107,44 +104,7 @@ class ModuleOffersList extends ModuleOffers
         }
 
         // Catch Ajax requets
-        if (\Input::post('TL_AJAX') && (int) $this->id === (int) \Input::post('module')) {
-            try {
-                switch (\Input::post('action')) {
-                    case 'seeDetails':
-                        if (!\Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
-                        }
-                        $objItem = OfferModel::findByPk(\Input::post('offer'));
-
-                        $this->offer_template = 'offer_details';
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
-                        exit;
-                    break;
-
-                    case 'apply':
-                        if (!\Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
-                        }
-
-                        // Put the offer in session
-                        $objSession->set('wem_offer', \Input::post('offer'));
-
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(\Input::post('offer')));
-                        exit;
-                    break;
-
-                    default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], \Input::post('action')));
-                }
-            } catch (\Exception $e) {
-                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
-            }
-
-            // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = \RequestToken::get();
-            echo json_encode($arrResponse);
-            exit;
-        }
+        $this->catchAjaxRequests();
 
         if ($this->offer_applicationForm
             && '' !== $objSession->get('wem_offer')
@@ -172,7 +132,7 @@ class ModuleOffersList extends ModuleOffers
             $this->limit = $this->numberOfItems;
         }
 
-        $this->Template->articles = [];
+        $this->Template->items = [];
         $this->Template->empty = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
 
         // assets
@@ -187,17 +147,41 @@ class ModuleOffersList extends ModuleOffers
         $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
         // Retrieve filters
-        $this->buildFilters();
-        $this->Template->filters = $this->filters;
+        if (!empty($_GET) || !empty($_POST)) {
+            foreach ($_GET as $f => $v) {
+                if (false === strpos($f, 'offer_filter_')) {
+                    continue;
+                }
+
+                if (Input::get($f)) {
+                    $this->config[str_replace('offer_filter_', '', $f)] = Input::get($f);
+                }
+            }
+
+            foreach ($_POST as $f => $v) {
+                if (false === strpos($f, 'offer_filter_')) {
+                    continue;
+                }
+
+                if (Input::post($f)) {
+                    $this->config[str_replace('offer_filter_', '', $f)] = Input::post($f);
+                }
+            }
+        }
+
+        // Retrieve filters
+        if ($this->offer_addFilters) {
+            $this->Template->filters = $this->getFrontendModule($this->offer_filters_module);
+        }
 
         // Get the total number of items
-        $intTotal = OfferModel::countItems($this->config);
+        $intTotal = Offer::countItems($this->config);
 
         if ($intTotal < 1) {
             return;
         }
 
-        $total = $intTotal - $offset;
+        $total = $intTotal - $this->offset;
 
         // Split the results
         if ($this->perPage > 0 && (!isset($this->limit) || $this->numberOfItems > $this->perPage)) {
@@ -230,187 +214,21 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        $objArticles = OfferModel::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
+        $objItems = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
-        if (null !== $objArticles) {
-            $this->Template->articles = $this->parseOffers($objArticles);
+        if (null !== $objItems) {
+            $this->Template->items = $this->parseOffers($objItems);
         }
 
         $this->Template->moduleId = $this->id;
 
         // Catch auto_item
         if (Input::get('auto_item')) {
-            $objOffer = OfferModel::findItems(['code' => Input::get('auto_item')], 1);
+            $objOffer = Offer::findItems(['code' => Input::get('auto_item')], 1);
 
             $this->Template->openModalOnLoad = true;
             $this->Template->offerId = $objOffer->first()->id;
-        }
-    }
-
-    /**
-     * Parse and return an application form for a job.
-     *
-     * @param int    $intId       [Job ID]
-     * @param string $strTemplate [Template name]
-     *
-     * @return string
-     */
-    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
-    {
-        if (!$this->offer_applicationForm) {
-            return '';
-        }
-
-        $strForm = $this->getForm($this->offer_applicationForm);
-
-        $objItem = OfferModel::findByPk($intId);
-
-        $objTemplate = new \FrontendTemplate($strTemplate);
-        $objTemplate->id = $objItem->id;
-        $objTemplate->code = $objItem->code;
-        $objTemplate->title = $objItem->title;
-        $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
-        $objTemplate->time = time();
-        $objTemplate->token = \RequestToken::get();
-        $objTemplate->form = $strForm;
-
-        return $objTemplate->parse();
-    }
-
-    /**
-     * Retrieve list filters.
-     *
-     * @return array [Array of available filters, parsed]
-     */
-    protected function buildFilters()
-    {
-        if (!$this->offer_addFilters) {
-            return;
-        }
-
-        // Retrieve and format dropdowns filters
-        $filters = deserialize($this->offer_filters);
-        if (\is_array($filters) && !empty($filters)) {
-            foreach ($filters as $f) {
-                $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
-
-                $filter = [
-                    'type' => $field['inputType'],
-                    'name' => $field['eval']['multiple'] ? $f.'[]' : $f,
-                    'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
-                    'value' => \Input::get($f) ?: '',
-                    'options' => [],
-                    'multiple' => $field['eval']['multiple'] ? true : false,
-                ];
-
-                switch ($field['inputType']) {
-                    case 'select':
-                        if (\is_array($field['options_callback'])) {
-                            $strClass = $field['options_callback'][0];
-                            $strMethod = $field['options_callback'][1];
-
-                            $this->import($strClass);
-                            $options = $this->$strClass->$strMethod($this);
-                        } elseif (\is_callable($field['options_callback'])) {
-                            $options = $field['options_callback']($this);
-                        } elseif (\is_array($field['options'])) {
-                            $options = $field['options'];
-                        }
-
-                        foreach ($options as $value => $label) {
-                            if (\is_array($label)) {
-                                foreach ($label as $subValue => $subLabel) {
-                                    $filter['options'][$value]['options'][] = [
-                                        'value' => $subValue,
-                                        'label' => $subLabel,
-                                        'selected' => (null !== \Input::get($f) && (\Input::get($f) === $subValue || (\is_array(\Input::get($f)) && \in_array($subValue, \Input::get($f), true)))),
-                                    ];
-                                }
-                            } else {
-                                $filter['options'][] = [
-                                    'value' => $value,
-                                    'label' => $label,
-                                    'selected' => (null !== \Input::get($f) && (\Input::get($f) === $value || (\is_array(\Input::get($f)) && \in_array($value, \Input::get($f), true)))),
-                                ];
-                            }
-                        }
-
-                        break;
-
-                    case 'listWizard':
-                        $objOptions = OfferModel::findItemsGroupByOneField($f);
-
-                        if ($objOptions) {
-                            $filter['type'] = 'select';
-                            if ($filter['multiple']) {
-                                $filter['name'] .= '[]';
-                            }
-                            while ($objOptions->next()) {
-                                if (!$objOptions->{$f}) {
-                                    continue;
-                                }
-
-                                $subOptions = deserialize($objOptions->{$f});
-                                foreach ($subOptions as $subOption) {
-                                    $filter['options'][$subOption] = [
-                                        'value' => $subOption,
-                                        'label' => $subOption,
-                                        'selected' => !$filter['multiple']
-                                            ? (null !== \Input::get($f) && \Input::get($f) === $subOption)
-                                            : (null !== \Input::get($f) && \in_array($subOption, \Input::get($f ?? []), true)),
-                                    ];
-                                }
-                            }
-                        }
-                        break;
-
-                    case 'text':
-                    default:
-                        $objOptions = OfferModel::findItemsGroupByOneField($f);
-
-                        if ($objOptions && 0 < $objOptions->count()) {
-                            $filter['type'] = 'select';
-                            while ($objOptions->next()) {
-                                if (!$objOptions->{$f}) {
-                                    continue;
-                                }
-
-                                $filter['options'][] = [
-                                    'value' => $objOptions->{$f},
-                                    'label' => $objOptions->{$f},
-                                    'selected' => (null !== \Input::get($f) && \Input::get($f) === $objOptions->{$f}),
-                                ];
-                            }
-                        }
-                        break;
-                }
-
-                if ('select' === $filter['type'] && 1 >= \count($filter['options'])) {
-                    continue;
-                }
-
-                if (null !== \Input::get($f) && '' !== \Input::get($f)) {
-                    $this->config[$f] = \Input::get($f);
-                }
-
-                $this->filters[] = $filter;
-            }
-        }
-
-        // Add fulltext search if asked
-        if ($this->offer_addSearch) {
-            $this->filters[] = [
-                'type' => 'text',
-                'name' => 'search',
-                'label' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['search'],
-                'placeholder' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['searchPlaceholder'],
-                'value' => \Input::get('search') ?: '',
-            ];
-
-            if ('' !== \Input::get('search') && null !== \Input::get('search')) {
-                $this->config['search'] = StringUtil::formatKeywords(\Input::get('search'));
-            }
         }
     }
 }
