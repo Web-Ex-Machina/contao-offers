@@ -17,12 +17,9 @@ namespace WEM\OffersBundle\Module;
 use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Environment;
-use Contao\FrontendTemplate;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Contao\PageModel;
-use Contao\RequestToken;
-use Contao\Session;
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
@@ -81,7 +78,7 @@ class ModuleOffersReader extends ModuleOffers
     protected function compile(): void
     {
         // Init session
-        $objSession = Session::getInstance();
+        $objSession = System::getContainer()->get('session');
 
         // If we have setup a form, allow module to use it later
         if ($this->offer_applicationForm) {

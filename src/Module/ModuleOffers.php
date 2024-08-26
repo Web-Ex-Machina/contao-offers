@@ -25,8 +25,9 @@ use Contao\RequestToken;
 use Contao\System;
 use Contao\Validator;
 use WEM\OffersBundle\Model\Alert;
+use WEM\OffersBundle\Model\AlertCondition;
+use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\OfferFeed;
-use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -40,6 +41,7 @@ abstract class ModuleOffers extends Module
     protected function catchAjaxRequests()
     {
         if (Input::post('TL_AJAX') && (int) $this->id === (int) Input::post('module')) {
+            $objSession = System::getContainer()->get('session');
             try {
                 switch (Input::post('action')) {
                     case 'seeDetails':
@@ -49,7 +51,7 @@ abstract class ModuleOffers extends Module
                         $objItem = Offer::findByPk(Input::post('offer'));
 
                         $this->offer_template = 'offer_details';
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->parseOffer($objItem));
+                        echo System::getContainer()->get('contao.insert_tag')->replace($this->parseOffer($objItem));
                         exit;
                     break;
 
@@ -60,8 +62,7 @@ abstract class ModuleOffers extends Module
 
                         // Put the offer in session
                         $objSession->set('wem_offer', Input::post('offer'));
-
-                        echo \Haste\Util\InsertTag::replaceRecursively($this->getApplicationForm(Input::post('offer')));
+                        echo System::getContainer()->get('contao.insert_tag')->replace($this->getApplicationForm(Input::post('offer')));
                         exit;
                     break;
 

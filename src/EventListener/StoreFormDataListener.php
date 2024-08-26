@@ -16,7 +16,6 @@ namespace WEM\OffersBundle\EventListener;
 
 use Contao\File;
 use Contao\FilesModel;
-use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Exception;
@@ -89,7 +88,7 @@ class StoreFormDataListener
                 }
 
                 // Clean the session
-                $objSession = Session::getInstance();
+                $objSession = System::getContainer()->get('session');
                 $objSession->set('wem_offer', '');
             }
 

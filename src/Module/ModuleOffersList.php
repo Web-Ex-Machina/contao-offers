@@ -17,8 +17,8 @@ namespace WEM\OffersBundle\Module;
 use Contao\Combiner;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
+use Contao\System;
 use WEM\OffersBundle\Model\Offer;
-use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
  * Front end module "offers list".
@@ -96,7 +96,7 @@ class ModuleOffersList extends ModuleOffers
     protected function compile(): void
     {
         // Init session
-        $objSession = \Session::getInstance();
+        $objSession = System::getContainer()->get('session');
 
         // If we have setup a form, allow module to use it later
         if ($this->offer_applicationForm) {
