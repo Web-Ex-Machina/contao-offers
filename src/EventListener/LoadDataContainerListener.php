@@ -44,7 +44,7 @@ class LoadDataContainerListener
         }
     }
 
-    protected function parseDcaAttribute($row)
+    protected function parseDcaAttribute(array $row): array
     {
         // Generic data
         $data = [
@@ -63,8 +63,8 @@ class LoadDataContainerListener
 
         // Maxlength settings
         if ($row['maxlength']) {
-            $data['eval']['maxlength'] = (int) $row['maxlength'];
-            $data['sql']['length'] = (int) $row['maxlength'];
+            $data['eval']['maxlength'] = (int)$row['maxlength'];
+            $data['sql']['length'] = (int)$row['maxlength'];
         }
 
         // Available for alerts settings
@@ -84,9 +84,24 @@ class LoadDataContainerListener
             $data['eval']['mandatory'] = true;
         }
 
+        // rte settings
+        if ($row['rte']) {
+            $data['eval']['rte'] = $row['rte'];
+        }
+
+        // Class settings
+        if ($row['explanation']) {
+            $data['explanation'] = $row['explanation'];
+        }
+
         // Class settings
         if ($row['class']) {
             $data['eval']['tl_class'] = $row['class'];
+        }
+
+        // Allow helpwizard
+        if ($row['helpwizard']) {
+            $data['eval']['helpwizard'] = true;
         }
 
         switch ($row['type']) {
@@ -105,6 +120,17 @@ class LoadDataContainerListener
                     $data['default'] = '';
                     $data['sql']['default'] = '';
                 }
+
+                break;
+
+            case 'textarea':
+                // Allow HTML settings
+                if ($row['allowHtml']) {
+                    $data['eval']['allowHtml'] = true;
+                }
+
+                $data['sql'] = 'mediumtext NULL';
+
                 break;
 
             case 'select':
@@ -124,14 +150,14 @@ class LoadDataContainerListener
                 }
 
                 // Options
-                $options = deserialize($row['options']);
+                $options = StringUtil::deserialize($row['options']);
                 if (null !== $options) {
                     $data['options'] = [];
                     $blnIsGroup = false;
                     $blnIsChild = true;
                     $key = null;
                     foreach ($options as $o) {
-                        if (\array_key_exists('group', $o) && true === (bool) $o['group']) {
+                        if (\array_key_exists('group', $o) && $o['group']) {
                             $blnIsGroup = true;
                             $blnIsChild = false;
                             $key = $o['label'];
@@ -154,6 +180,7 @@ class LoadDataContainerListener
                         }
                     }
                 }
+
                 break;
 
             case 'picker':
@@ -171,6 +198,7 @@ class LoadDataContainerListener
                     $data['sql'] = 'int(10) unsigned NOT NULL default 0';
                     $data['relation'] = ['type' => 'hasOne', 'load' => 'lazy'];
                 }
+
                 break;
 
             case 'fileTree':
@@ -198,6 +226,7 @@ class LoadDataContainerListener
                     $data['sql']['length'] = 16;
                     $data['sql']['default'] = 'NULL';
                 }
+
                 break;
 
             case 'listWizard':
