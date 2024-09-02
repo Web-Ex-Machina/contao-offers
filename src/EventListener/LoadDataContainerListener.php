@@ -84,6 +84,11 @@ class LoadDataContainerListener
             $data['eval']['mandatory'] = true;
         }
 
+        // rte settings
+        if ($row['rte']) {
+            $data['eval']['rte'] = $row['rte'];
+        }
+
         // Class settings
         if ($row['class']) {
             $data['eval']['tl_class'] = $row['class'];
@@ -105,6 +110,16 @@ class LoadDataContainerListener
                     $data['default'] = '';
                     $data['sql']['default'] = '';
                 }
+                break;
+
+            case 'html':
+                $data['inputType'] = 'textarea';
+                $data['default'] = '';
+                $data['sql'] = 'mediumtext NULL';
+
+                $data['eval']['allowHtml'] = true;
+                $data['eval']['helpwizard'] = true;
+                $data['explanation'] = 'insertTags';
                 break;
 
             case 'select':

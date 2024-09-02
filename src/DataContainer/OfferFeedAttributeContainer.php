@@ -39,7 +39,7 @@ class OfferFeedAttributeContainer extends \Backend
      */
     public function getFieldOptions()
     {
-        return ['text', 'select', 'picker', 'fileTree', 'listWizard'];
+        return ['text', 'html', 'select', 'picker', 'fileTree', 'listWizard'];
     }
 
     /**
