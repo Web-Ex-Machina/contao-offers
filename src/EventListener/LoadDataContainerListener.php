@@ -17,6 +17,7 @@ namespace WEM\OffersBundle\EventListener;
 use Contao\System;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
+use WEM\UtilsBundle\Classes\StringUtil;
 
 class LoadDataContainerListener
 {
