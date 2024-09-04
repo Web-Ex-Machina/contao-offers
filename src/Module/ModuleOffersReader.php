@@ -80,11 +80,6 @@ class ModuleOffersReader extends ModuleOffers
         // Init session
         $objSession = System::getContainer()->get('session');
 
-        // If we have setup a form, allow module to use it later
-        if ($this->offer_applicationForm) {
-            $this->blnDisplayApplyButton = true;
-        }
-
         if ($this->overviewPage)
         {
             $this->Template->referer = PageModel::findById($this->overviewPage)->getFrontendUrl();
