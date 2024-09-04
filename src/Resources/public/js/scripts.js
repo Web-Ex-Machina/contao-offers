@@ -116,3 +116,37 @@ window.addEventListener("load", function(e) {
 		$(this).addClass('active');
 	})
 });
+
+function countOfferItems(rt, module_id, filters) {
+	return new Promise(function(resolve,reject){
+	    $.ajax({
+	        timeout: 10000,
+	        url: window.location.pathname,
+	        method: 'post',
+	        data:{
+	            'TL_AJAX':true ,
+	            'REQUEST_TOKEN': rt,
+	            'module': module_id,
+	            'action': 'countOffers',
+	            'filters': filters,
+	        },
+	    }).done(function(data){
+	        if (typeof data !== 'object') {
+	            try { 
+	            	data = $.parseJSON(data); 
+	            } catch(e) {
+	            	throw e;
+	            }
+	        }
+
+	        if (data.status == "success"){
+	            resolve(data.count);
+	        }
+	        else {
+	            reject(data.msg);
+	        }
+	    }).fail(function(jqXHR, textStatus){
+	        reject(textStatus);
+	    });
+	});
+}
