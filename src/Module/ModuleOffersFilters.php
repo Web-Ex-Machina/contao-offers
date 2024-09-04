@@ -66,9 +66,6 @@ class ModuleOffersFilters extends ModuleOffers
         $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
 
-        // Add pids
-        $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
-
         // Retrieve filters
         $this->buildFilters();
 
@@ -186,10 +183,6 @@ class ModuleOffersFilters extends ModuleOffers
                     continue;
                 }
 
-                if (null !== Input::get($fName) && '' !== Input::get($fName)) {
-                    $this->config[$f] = Input::get($fName);
-                }
-
                 $this->filters[] = $filter;
             }
         }
@@ -203,10 +196,6 @@ class ModuleOffersFilters extends ModuleOffers
                 'placeholder' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['searchPlaceholder'],
                 'value' => Input::get('offer_filter_search') ?: '',
             ];
-
-            if ('' !== Input::get('offer_filter_search') && null !== Input::get('offer_filter_search')) {
-                $this->config['offer_filter_search'] = StringUtil::formatKeywords(Input::get('offer_filter_search'));
-            }
         }
     }
 }
