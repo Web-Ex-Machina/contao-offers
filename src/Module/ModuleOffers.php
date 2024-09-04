@@ -44,6 +44,46 @@ abstract class ModuleOffers extends Module
             $objSession = System::getContainer()->get('session');
             try {
                 switch (Input::post('action')) {
+                    case 'countOffers':
+
+                        $c['published'] = 1;
+
+                        if ($this->offer_feeds) {
+                            $c['pid'] = deserialize($this->offer_feeds);
+                        }
+
+                        // Retrieve filters
+                        if (!empty($_GET) || !empty($_POST)) {
+                            foreach ($_GET as $f => $v) {
+                                if (false === strpos($f, 'offer_filter_')) {
+                                    continue;
+                                }
+
+                                if (Input::get($f)) {
+                                    $c[str_replace('offer_filter_', '', $f)] = Input::get($f);
+                                }
+                            }
+
+                            foreach ($_POST as $f => $v) {
+                                if (false === strpos($f, 'offer_filter_')) {
+                                    continue;
+                                }
+
+                                if (Input::post($f)) {
+                                    $c[str_replace('offer_filter_', '', $f)] = Input::post($f);
+                                }
+                            }
+                        }
+
+                        $intCount = Offer::countItems($c);
+
+                        // Write the response
+                        $arrResponse = [
+                            'status' => 'success',
+                            'count' => $intCount,
+                        ];
+                    break;
+
                     case 'seeDetails':
                         if (!Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
