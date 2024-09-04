@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
 ';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offersreader'] = '
     {title_legend},name,headline,type;
-    {config_legend},offer_feeds,overviewPage,customLabel;
+    {config_legend},offer_feeds,offer_displayAttributes,overviewPage,customLabel;
     {form_legend},offer_applicationForm;
     {template_legend:hide},offer_template,customTpl;
     {image_legend:hide},imgSize;
