@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offersalert'] = '
 ';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offersfilters'] = '
     {title_legend},name,headline,type;
-    {config_legend},jumpTo,offer_filters,offer_addSearch;
+    {config_legend},jumpTo,offer_feeds,offer_filters,offer_addSearch;
     {template_legend:hide},customTpl;
     {expert_legend:hide},guests,cssID
 ';
