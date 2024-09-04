@@ -44,7 +44,7 @@ class ProcessFormDataListener
             // If we find the submitted form in the offers modules & it has a PID, we need to process it
             if(0 < ModuleModel::countBy('offer_applicationForm', $form->id) 
                 && array_key_exists('pid', $submittedData)
-                && "" !== $submittedData['pid']
+                && !empty($submittedData['pid'])
             ) {
                 $objOffer = Offer::findByPk($submittedData['pid']);
 
