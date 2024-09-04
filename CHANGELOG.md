@@ -3,6 +3,7 @@ Extension "Offers" for Contao Open Source CMS
 
 2.3.x - ???
 - ADDED - Add a new textarea attribute that allows you to use a tinyMCE or a HTML field as attribute
+- ADDED - Ajax request + JS Promise to retrieve the number of items depending on frontend module + optional filters
 
 2.2.0 - 2024-08-21
 - ADDED - Add a new tag "countoffers", returns the number of published offers in one or several PIDs 
