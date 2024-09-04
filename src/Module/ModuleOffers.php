@@ -316,9 +316,16 @@ abstract class ModuleOffers extends Module
         }
 
         // Notice the template if we want/can display apply button
-        if ($this->blnDisplayApplyButton) {
-            $objTemplate->blnDisplayApplyButton = true;
-            $objTemplate->applyUrl = $this->addToUrl('apply='.$objItem->id, true, ['offer']);
+        if ($this->offer_applicationForm) {
+            $objTemplate->canApply = true;
+            $this->Template->formDisplay = $this->offer_applicationFormDisplay;
+
+            if ('modal' === $this->offer_applicationFormDisplay) {
+                $objTemplate->applyUrl = $this->addToUrl('apply='.$objItem->id, true, ['offer']);
+            } else {
+                $strForm = $this->getApplicationForm($objItem->id);
+                $objTemplate->form = $strForm;
+            }
         }
 
         // Notice the template if we want to display the text

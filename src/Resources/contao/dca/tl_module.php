@@ -39,8 +39,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['offerslist'] = '
 ';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['offersreader'] = '
     {title_legend},name,headline,type;
-    {config_legend},offer_feeds,overviewPage,customLabel;
-    {form_legend},offer_applicationForm;
+    {config_legend},offer_feeds,offer_displayAttributes,overviewPage,customLabel;
+    {form_legend},offer_applicationForm,offer_applicationFormDisplay;
     {template_legend:hide},offer_template,customTpl;
     {image_legend:hide},imgSize;
     {protected_legend:hide},protected;
@@ -195,4 +195,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_filters_module'] = [
     'eval' => ['mandatory' => true],
     'sql' => 'int(10) unsigned NOT NULL default 0',
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['offer_applicationFormDisplay'] = [
+    'exclude' => true,
+    'default' => 'inPage',
+    'inputType' => 'select',
+    'options' => ['inPage', 'modal'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['offer_applicationFormDisplay'],
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => "varchar(16) NOT NULL default ''",
 ];
