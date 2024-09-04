@@ -21,7 +21,6 @@ use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;
-use Contao\RequestToken;
 use Contao\System;
 use Contao\Validator;
 use WEM\OffersBundle\Model\Alert;
@@ -44,6 +43,34 @@ abstract class ModuleOffers extends Module
             $objSession = System::getContainer()->get('session');
             try {
                 switch (Input::post('action')) {
+                    case 'countOffers':
+
+                        $c['published'] = 1;
+
+                        if ($this->offer_feeds) {
+                            $c['pid'] = deserialize($this->offer_feeds);
+                        }
+
+                        // Retrieve filters
+                        if (Input::post('filters')) {
+                            foreach (Input::post('filters') as $f => $v) {
+                                if (false === strpos($f, 'offer_filter_')) {
+                                    continue;
+                                }
+
+                                $c[str_replace('offer_filter_', '', $f)] = $v;
+                            }
+                        }
+
+                        $intCount = Offer::countItems($c);
+
+                        // Write the response
+                        $arrResponse = [
+                            'status' => 'success',
+                            'count' => $intCount,
+                        ];
+                    break;
+
                     case 'seeDetails':
                         if (!Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
@@ -171,7 +198,7 @@ abstract class ModuleOffers extends Module
             }
 
             // Add Request Token to JSON answer and return
-            $arrResponse['rt'] = RequestToken::get();
+            $arrResponse['rt'] = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
             echo json_encode($arrResponse);
             exit;
         }
@@ -338,7 +365,7 @@ abstract class ModuleOffers extends Module
         $objTemplate->title = $objItem->title;
         $objTemplate->recipient = $GLOBALS['TL_ADMIN_EMAIL'];
         $objTemplate->time = time();
-        $objTemplate->token = RequestToken::get();
+        $objTemplate->token = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
         $objTemplate->form = $strForm;
 
         return $objTemplate->parse();
