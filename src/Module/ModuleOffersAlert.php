@@ -17,6 +17,7 @@ namespace WEM\OffersBundle\Module;
 use Contao\Combiner;
 use Contao\Input;
 use Contao\PageModel;
+use Contao\System;
 use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
@@ -150,6 +151,7 @@ class ModuleOffersAlert extends ModuleOffers
         $this->buildConditions();
         $this->Template->conditions = $this->conditions;
         $this->Template->moduleId = $this->id;
+        $this->Template->rt = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         // Retrieve and send the page for GDPR compliance
         if ($this->offer_pageGdpr && $objGdprPage = PageModel::findByPk($this->offer_pageGdpr)) {
@@ -162,6 +164,7 @@ class ModuleOffersAlert extends ModuleOffers
         $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
 
         $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
+        $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
     }
 
     /**
