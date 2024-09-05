@@ -194,7 +194,7 @@ abstract class ModuleOffers extends Module
                         throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], Input::post('action')));
                 }
             } catch (\Exception $e) {
-                $arrResponse = ['status' => 'error', 'msg' => $e->getResponse(), 'trace' => $e->getTrace()];
+                $arrResponse = ['status' => 'error', 'msg' => $e->getMessage(), 'trace' => $e->getTrace()];
             }
 
             // Add Request Token to JSON answer and return
