@@ -16,26 +16,28 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class ModuleContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Return all templates as array.
-     *
-     * @return array
      */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         return $this->getTemplateGroup('offer_');
     }
 
     /**
      * Return all feeds as array.
-     *
-     * @return array
      */
-    public function getFeeds()
+    public function getFeeds(): array
     {
         $arrFeeds = [];
         $objFeeds = $this->Database->execute('SELECT id, title FROM tl_wem_offer_feed ORDER BY title');
@@ -53,10 +55,8 @@ class ModuleContainer extends Backend
 
     /**
      * Return all alerts available gateways.
-     *
-     * @return array
      */
-    public function getAlertsOptions()
+    public function getAlertsOptions(): array
     {
         return [
             'email' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['GATEWAY']['email'],
@@ -65,10 +65,8 @@ class ModuleContainer extends Backend
 
     /**
      * Return all alerts available gateways.
-     *
-     * @return array
      */
-    public function getConditionsOptions()
+    public function getConditionsOptions(): array
     {
         $this->loadDataContainer('tl_wem_offer');
         $fields = [];
@@ -85,10 +83,8 @@ class ModuleContainer extends Backend
 
     /**
      * Return all job alerts available gateways.
-     *
-     * @return array
      */
-    public function getFiltersOptions()
+    public function getFiltersOptions(): array
     {
         $this->loadDataContainer('tl_wem_offer');
         $fields = [];
@@ -105,10 +101,8 @@ class ModuleContainer extends Backend
 
     /**
      * Get Notification Choices for this kind of modules.
-     *
-     * @return [Array]
      */
-    public function getSubscribeNotificationChoices()
+    public function getSubscribeNotificationChoices(): array
     {
         $arrChoices = [];
         $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_subscribe' ORDER BY title");
@@ -122,10 +116,8 @@ class ModuleContainer extends Backend
 
     /**
      * Get Notification Choices for this kind of modules.
-     *
-     * @return [Array]
      */
-    public function getUnsubscribeNotificationChoices()
+    public function getUnsubscribeNotificationChoices(): array
     {
         $arrChoices = [];
         $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_unsubscribe' ORDER BY title");
@@ -140,11 +132,11 @@ class ModuleContainer extends Backend
     /**
      * Return all offer attributes available.
      *
-     * @return array
+     * @throws \Exception
      */
-    public function getAttributesOptions()
+    public function getAttributesOptions(): array
     {
-        $arrPids = deserialize($this->activeRecord->offer_feeds);
+        $arrPids = StringUtil::deserialize($this->activeRecord->offer_feeds);
         $c = [];
 
         if (null !== $arrPids && !empty($arrPids)) {

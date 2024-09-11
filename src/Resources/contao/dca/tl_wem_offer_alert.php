@@ -12,6 +12,10 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+use Contao\BackendUser;
+use WEM\OffersBundle\DataContainer\OfferAlertContainer;
+use Contao\CoreBundle\Intl\Locales;
+
 $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Config
     'config' => [
@@ -38,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'fields' => ['email','feed','frequency','lastJob','activatedAt'],
             'format' => '%s - %s',
             'showColumns' => true,
-            'label_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'listItems'],
+            'label_callback' => [OfferAlertContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'sendAlerts' => [
@@ -117,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'inputType' => 'select',
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
             'options_callback' => function () {
-                return \Contao\System::getLanguages(true);
+                return Locales::class->getLocales();
             },
             'sql' => "varchar(255) NOT NULL default ''",
         ],
@@ -125,8 +129,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'exclude' => true,
             'search' => true,
             'inputType' => 'select',
-            'eval' => ['chosen' => true],
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'getOffersAlertModules'],
+            'options_callback' => [OfferAlertContainer::class, 'getOffersAlertModules'],
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
             'foreignKey' => 'tl_module.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -136,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'exclude' => true,
             'search' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'getFeeds'],
+            'options_callback' => [OfferAlertContainer::class, 'getFeeds'],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'foreignKey' => 'tl_wem_offer_feed.title',
             'sql' => "int(10) unsigned NOT NULL default '0'",

@@ -14,17 +14,22 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\DataContainer;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
+use Contao\Backend;
 
-class OfferAlertConditionContainer extends \Backend
+class OfferAlertConditionContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Design each row of the DCA.
-     *
-     * @return string
      */
-    public function listItems($row)
+    public function listItems(array $row): string
     {
         return sprintf(
             '%s  = %s',
@@ -36,9 +41,9 @@ class OfferAlertConditionContainer extends \Backend
     /**
      * Retrieve the available fields for alerts condition (limited to the alert feed)
      *
-     * @return array
+     * @throws \Exception
      */
-    public function getFieldChoices($dc)
+    public function getFieldChoices(DataContainer $dc): array
     {
         if (!$dc->activeRecord->pid) {
             return [];
@@ -66,20 +71,18 @@ class OfferAlertConditionContainer extends \Backend
 
     /**
      * Retrieve the available values for alerts condition (limited to the alert condition field)
-     *
-     * @return array
      */
-    public function getValueChoices($dc)
+    public function getValueChoices(DataContainer $dc): void
     {
         // keep the default behaviour if there is no field selected
         if ("" === $dc->id) {
-            return;
+            exit();
         }
 
         $objCondition = AlertCondition::findByPk($dc->id);
 
         if (!$objCondition || "" === $objCondition->field) {
-            return;
+            exit();
         }
 
         $this->loadDataContainer('tl_wem_offer');

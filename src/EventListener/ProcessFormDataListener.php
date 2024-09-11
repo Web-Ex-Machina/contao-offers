@@ -24,13 +24,21 @@ use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\System;
 use Exception;
+use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Application;
+use WEM\UtilsBundle\Classes\Encryption;
 use WEM\OffersBundle\Model\Offer;
 
 class ProcessFormDataListener
 {
-    public function __construct()
+    private LoggerInterface $logger;
+
+    protected Encryption $encryption;
+
+    public function __construct(LoggerInterface $logger,Encryption $encryption)
     {
+        $this->encryption = $encryption;
+        $this->logger = $logger;
     }
 
     public function __invoke(
@@ -42,7 +50,7 @@ class ProcessFormDataListener
     ): void {
         try {
             // If we find the submitted form in the offers modules & it has a PID, we need to process it
-            if(0 < ModuleModel::countBy('offer_applicationForm', $form->id) 
+            if(0 < ModuleModel::countBy('offer_applicationForm', $form->id)
                 && array_key_exists('pid', $submittedData)
                 && !empty($submittedData['pid'])
             ) {

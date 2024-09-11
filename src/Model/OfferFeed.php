@@ -15,10 +15,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use WEM\UtilsBundle\Model\Model;
+
 /**
  * Reads and writes items.
  */
-class OfferFeed extends \WEM\UtilsBundle\Model\Model
+class OfferFeed extends Model
 {
     /**
      * Table name.

@@ -14,10 +14,19 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\BackendTemplate;
 use Contao\Combiner;
+use Contao\Config;
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Pagination;
+use Contao\Environment;
 use Contao\System;
+use WEM\OffersBundle\Model\Offer as OfferModel;
+use WEM\UtilsBundle\Classes\StringUtil;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use WEM\OffersBundle\Model\Offer;
 
 /**
@@ -30,27 +39,27 @@ class ModuleOffersList extends ModuleOffers
     /**
      * List config.
      */
-    protected $config = [];
+    protected ?array $config = [];
 
     /**
      * List limit.
      */
-    protected $limit = 0;
+    protected ?int $limit = 0;
 
     /**
      * List offset.
      */
-    protected $offset = 0;
+    protected ?int $offset = 0;
 
     /**
      * List options.
      */
-    protected $options = [];
+    protected ?array $options = [];
 
     /**
      * List filters.
      */
-    protected $filters = [];
+    protected ?array $filters = [];
 
     /**
      * Template.
@@ -59,15 +68,27 @@ class ModuleOffersList extends ModuleOffers
      */
     protected $strTemplate = 'mod_offerslist';
 
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private string $csrfTokenName;
+
+    private SessionInterface $session;
+
+    public function __construct($objModule, $csrfTokenManager,$csrfTokenName, SessionInterface $session, $strColumn = 'main')
+    {
+        parent::__construct($objModule, $strColumn);
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
+        $this->session = $session;
+    }
+
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         if (TL_MODE === 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offerslist'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -80,7 +101,7 @@ class ModuleOffersList extends ModuleOffers
         // Load datacontainer and job feeds
         $this->loadDatacontainer('tl_wem_offer');
         $this->loadLanguageFile('tl_wem_offer');
-        $this->offer_feeds = \StringUtil::deserialize($this->offer_feeds);
+        $this->offer_feeds = StringUtil::deserialize($this->offer_feeds);
 
         // Return if there are no archives
         if (empty($this->offer_feeds) || !\is_array($this->offer_feeds)) {
@@ -95,8 +116,9 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function compile(): void
     {
+
         // Init session
-        $objSession = System::getContainer()->get('session');
+        $objSession = $this->session;
 
         // If we have setup a form, allow module to use it later
         if ($this->offer_applicationForm) {
@@ -192,11 +214,11 @@ class ModuleOffersList extends ModuleOffers
 
             // Get the current page
             $id = 'page_n'.$this->id;
-            $page = \Input::get($id) ?? 1;
+            $page = Input::get($id) ?? 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
-                throw new PageNotFoundException('Page not found: '.\Environment::get('uri'));
+                throw new PageNotFoundException('Page not found: '. Environment::get('uri'));
             }
 
             // Set limit and offset
@@ -210,14 +232,14 @@ class ModuleOffersList extends ModuleOffers
             }
 
             // Add the pagination menu
-            $objPagination = new \Pagination($total, $this->perPage, \Config::get('maxPaginationLinks'), $id);
+            $objPagination = new Pagination($total, $this->perPage, Config::get('maxPaginationLinks'), $id);
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
         $objItems = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
-        if (null !== $objItems) {
+        if ($objItems instanceof \Contao\Model\Collection) {
             $this->Template->items = $this->parseOffers($objItems);
         }
 

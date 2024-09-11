@@ -16,12 +16,13 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\Module;
 
 use Contao\Config;
+use Contao\System;
+use Contao\Module;
 use Contao\ContentModel;
+use Contao\Model\Collection;
 use Contao\FrontendTemplate;
 use Contao\Input;
-use Contao\Module;
 use Contao\PageModel;
-use Contao\System;
 use Contao\Validator;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
@@ -207,12 +208,10 @@ abstract class ModuleOffers extends Module
     /**
      * Parse one or more items and return them as array.
      *
-     * @param Model\Collection $objItems
-     * @param bool             $blnAddArchive
      *
-     * @return array
+     * @throws \Exception
      */
-    protected function parseOffers($objItems, $blnAddArchive = false)
+    protected function parseOffers(Collection $objItems, bool $blnAddArchive = false): array
     {
         $limit = $objItems->count();
 
@@ -235,14 +234,9 @@ abstract class ModuleOffers extends Module
     /**
      * Parse an item and return it as string.
      *
-     * @param Offer     $objItem
-     * @param bool      $blnAddArchive
-     * @param string    $strClass
-     * @param int       $intCount
-     *
-     * @return string
+     * @throws \Exception
      */
-    protected function parseOffer($objItem, $blnAddArchive = false, $strClass = '', $intCount = 0)
+    protected function parseOffer(Offer $objItem, bool $blnAddArchive = false, string $strClass = '', int $intCount = 0): string
     {
         $objTemplate = new FrontendTemplate($this->offer_template);
         $objTemplate->setData($objItem->row());
@@ -303,16 +297,13 @@ abstract class ModuleOffers extends Module
             return $strText;
         };
 
-        $objTemplate->hasText = static function () use ($objItem)
-        {
-            return ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
-        };
+        $objTemplate->hasText = static fn() => ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
 
         // Retrieve item attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
 
         if ((bool) $this->offer_displayAttributes && null !== $this->offer_attributes) {
-            $objTemplate->attributes = $objItem->getAttributesFull(deserialize($this->offer_attributes));
+            $objTemplate->attributes = $objItem->getAttributesFull(StringUtil::deserialize($this->offer_attributes));
         }
 
         // Notice the template if we want/can display apply button
@@ -423,7 +414,7 @@ abstract class ModuleOffers extends Module
      */
     protected function getCustomPackageVersion(string $package): ?string
     {
-        $packages = json_decode(file_get_contents(TL_ROOT.'/vendor/composer/installed.json'));
+        $packages = json_decode(file_get_contents('./../../vendor/composer/installed.json'));
 
         foreach ($packages->packages as $p) {
             $p = (array) $p;

@@ -13,7 +13,14 @@ declare(strict_types=1);
  */
 
 // Backend modules
-array_insert(
+use WEM\OffersBundle\DataContainer\OfferAlertContainer;
+use WEM\OffersBundle\Module\ModuleOffersAlert;
+use WEM\OffersBundle\Module\ModuleOffersList;
+use WEM\OffersBundle\Module\ModuleOffersFilters;
+use WEM\OffersBundle\Module\ModuleOffersReader;
+use WEM\OffersBundle\Model;
+
+Contao\ArrayUtil::arrayInsert(
     $GLOBALS['BE_MOD'],
     2,
     [
@@ -24,22 +31,24 @@ array_insert(
             ],
             'wem-offers-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
-                'sendAlerts' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'sendAlerts'],
+                'sendAlerts' => static function () : void {
+                    (new OfferAlertContainer())->sendAlerts();
+                },
             ],
         ],
     ]
 );
 
 // Frontend modules
-array_insert(
+Contao\ArrayUtil::arrayInsert(
     $GLOBALS['FE_MOD'],
     2,
     [
         'wem-offers' => [
-            'offersalert' => 'WEM\OffersBundle\Module\ModuleOffersAlert',
-            'offersfilters' => 'WEM\OffersBundle\Module\ModuleOffersFilters',
-            'offerslist' => 'WEM\OffersBundle\Module\ModuleOffersList',
-            'offersreader' => 'WEM\OffersBundle\Module\ModuleOffersReader',
+            'offerslist' => ModuleOffersList::class,
+            'offersfilters' => ModuleOffersFilters::class,
+            'offersalert' => ModuleOffersAlert::class,
+            'offersreader' => ModuleOffersReader::class,
         ],
     ]
 );
@@ -56,12 +65,12 @@ $GLOBALS['WEM_HOOKS']['renderSingleItemBodyPersonalDataSingleFieldValue'][] = ['
 $GLOBALS['WEM_HOOKS']['getHrefByPidAndPtableAndEmail'][] = ['offers.listener.personal_data_manager', 'getHrefByPidAndPtableAndEmail'];
 
 // Models
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Alert::getTable()] = WEM\OffersBundle\Model\Alert::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\AlertCondition::getTable()] = WEM\OffersBundle\Model\AlertCondition::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Application::getTable()] = WEM\OffersBundle\Model\Application::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\Offer::getTable()] = WEM\OffersBundle\Model\Offer::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeed::getTable()] = WEM\OffersBundle\Model\OfferFeed::class;
-$GLOBALS['TL_MODELS'][WEM\OffersBundle\Model\OfferFeedAttribute::getTable()] = WEM\OffersBundle\Model\OfferFeedAttribute::class;
+$GLOBALS['TL_MODELS'][Model\Alert::getTable()] = Model\Alert::class;
+$GLOBALS['TL_MODELS'][Model\AlertCondition::getTable()] = Model\AlertCondition::class;
+$GLOBALS['TL_MODELS'][Model\Application::getTable()] = Model\Application::class;
+$GLOBALS['TL_MODELS'][Model\Offer::getTable()] = Model\Offer::class;
+$GLOBALS['TL_MODELS'][Model\OfferFeed::getTable()] = Model\OfferFeed::class;
+$GLOBALS['TL_MODELS'][Model\OfferFeedAttribute::getTable()] = Model\OfferFeedAttribute::class;
 
 // Cronjobs
 $GLOBALS['TL_CRON']['hourly'][] = [WEM\OffersBundle\Cronjob\SendAlerts::class, 'do'];

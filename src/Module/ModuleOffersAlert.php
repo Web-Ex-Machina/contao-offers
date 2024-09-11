@@ -14,16 +14,21 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Module;
 
+use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
-use NotificationCenter\Model\Notification;
+use Contao\Validator;
+use NotificationCenter\Model\Notification; // TODO
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Front end module "offers alert".
@@ -32,10 +37,29 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 class ModuleOffersAlert extends ModuleOffers
 {
+
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private string $csrfTokenName;
+
+    private ContentUrlGenerator $urlGenerator;
+
+    public function __construct(
+        ContentUrlGenerator $urlGenerator, $objModule,
+        CsrfTokenManagerInterface $csrfTokenManager,$csrfTokenName,
+        $strColumn = 'main'
+    )
+    {
+        parent::__construct($objModule, $strColumn);
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenName = $csrfTokenName;
+        $this->urlGenerator = $urlGenerator;
+    }
+
     /**
      * List conditions.
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     /**
      * Template.
@@ -46,13 +70,11 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
-    public function generate()
+    public function generate(): string
     {
         if (TL_MODE === 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -76,6 +98,7 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Generate the module.
+     * @throws ExceptionInterface
      */
     protected function compile(): void
     {
@@ -155,7 +178,7 @@ class ModuleOffersAlert extends ModuleOffers
 
         // Retrieve and send the page for GDPR compliance
         if ($this->offer_pageGdpr && $objGdprPage = PageModel::findByPk($this->offer_pageGdpr)) {
-            $this->Template->gdprPage = $objGdprPage->getFrontendUrl();
+            $this->Template->gdprPage =$this->urlGenerator->generate($objGdprPage);
         }
 
         // assets
@@ -170,13 +193,13 @@ class ModuleOffersAlert extends ModuleOffers
     /**
      * Retrieve alert available conditions.
      *
-     * @return array [Array of available conditions, parsed]
+     * @throws \Exception
      */
-    protected function buildConditions()
+    protected function buildConditions(): void
     {
         // Retrieve and format dropdowns conditions
-        $conditions = deserialize($this->offer_conditions);
-        if (\is_array($conditions) && !empty($conditions)) {
+        $conditions = StringUtil::deserialize($this->offer_conditions);
+        if (\is_array($conditions) && $conditions !== []) {
             foreach ($conditions as $c) {
                 $condition = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType'],
@@ -207,6 +230,7 @@ class ModuleOffersAlert extends ModuleOffers
                                 'label' => $label,
                             ];
                         }
+
                         break;
 
                     // Keep it because it works but it should not be used...
@@ -223,6 +247,7 @@ class ModuleOffersAlert extends ModuleOffers
                                 ];
                             }
                         }
+
                         break;
                 }
 

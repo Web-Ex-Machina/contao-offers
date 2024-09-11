@@ -14,15 +14,18 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\EventListener;
 
-use Contao\System;
-use WEM\OffersBundle\Model\Offer;
+use Psr\Log\LoggerInterface;
+use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 class LoadDataContainerListener
 {
-    public function __construct()
+    private LoggerInterface $logger;
+
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
     }
 
     public function addAttributesToJobDca($strTable): void
@@ -40,8 +43,8 @@ class LoadDataContainerListener
                     $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objAttributes->name] = $this->parseDcaAttribute($objAttributes->row());
                 }
             }
-        } catch (\Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+        } catch (\Exception $exception) {
+            $this->logger->log('ERROR',vsprintf(($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'])?:"coucou", [$exception->getMessage(), $exception->getTrace()]),["WEM_OFFERS"]);
         }
     }
 
