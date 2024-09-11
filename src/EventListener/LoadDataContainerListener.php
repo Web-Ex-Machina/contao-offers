@@ -41,7 +41,8 @@ class LoadDataContainerListener
                 }
             }
         } catch (\Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+            // Nodo : crash because not found the key, don’t know to deal with so i added ??"koi"
+            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic']??"koi", [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
         }
     }
 

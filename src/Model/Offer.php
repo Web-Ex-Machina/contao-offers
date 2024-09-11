@@ -14,7 +14,7 @@ declare(strict_types=1);
  */
 
 namespace WEM\OffersBundle\Model;
-
+use Contao\System;
 use Contao\Model\Registry;
 
 /**
@@ -196,7 +196,7 @@ class Offer extends \WEM\UtilsBundle\Model\Model
                         $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
                     }
             }
-
+            $arrColumns['lang'] = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
             return $arrColumns;
         } catch (Exception $e) {
             throw $e;
