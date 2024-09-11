@@ -17,7 +17,6 @@ namespace WEM\OffersBundle\EventListener;
 use Psr\Log\LoggerInterface;
 use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
-use WEM\UtilsBundle\Classes\StringUtil;
 
 class LoadDataContainerListener
 {
