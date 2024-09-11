@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-
+use WEM\OffersBundle\DataContainer\ModuleContainer;
 /*
  * Contao Job Offers for Contao Open Source CMS
  * Copyright (c) 2018-2020 Web ex Machina
@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['offer_displayAttributes'] = 'off
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_feed'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFeeds'],
+    'options_callback' => [ModuleContainer::class, 'getFeeds'],
     'foreignKey' => 'tl_wem_offer_feed.title',
     'eval' => ['mandatory' => true],
     'sql' => 'int(10) unsigned NOT NULL default 0',
@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_feed'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_feeds'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFeeds'],
+    'options_callback' => [ModuleContainer::class, 'getFeeds'],
     'eval' => ['multiple' => true, 'mandatory' => true],
     'sql' => 'blob NULL',
 ];
@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_alertTeaser'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_alertsGateways'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAlertsOptions'],
+    'options_callback' => [ModuleContainer::class, 'getAlertsOptions'],
     'eval' => ['multiple' => true, 'mandatory' => true],
     'sql' => 'blob NULL',
 ];
@@ -99,14 +99,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_addFilters'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_filters'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFiltersOptions'],
+    'options_callback' => [ModuleContainer::class, 'getFiltersOptions'],
     'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_conditions'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getConditionsOptions'],
+    'options_callback' => [ModuleContainer::class, 'getConditionsOptions'],
     'eval' => ['chosen' => true, 'multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_template'] = [
     'default' => 'offer_default',
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getTemplates'],
+    'options_callback' => [ModuleContainer::class, 'getTemplates'],
     'eval' => ['tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
 ];
@@ -155,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageSubscribe'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_ncSubscribe'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getSubscribeNotificationChoices'],
+    'options_callback' => [ModuleContainer::class, 'getSubscribeNotificationChoices'],
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageUnsubscribe'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_ncUnsubscribe'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getUnsubscribeNotificationChoices'],
+    'options_callback' => [ModuleContainer::class, 'getUnsubscribeNotificationChoices'],
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
 ];
@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_displayAttributes'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_attributes'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getAttributesOptions'],
+    'options_callback' => [ModuleContainer::class, 'getAttributesOptions'],
     'eval' => ['chosen' => true, 'multiple' => true, 'mandatory' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];

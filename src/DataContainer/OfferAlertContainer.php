@@ -15,29 +15,38 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use Contao\Config;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Date;
 use Contao\Environment;
 use Contao\Message;
 use Contao\ModuleModel;
-use WEM\OffersBundle\Cronjob\SendAlerts;
+use Contao\System;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\OfferFeed;
 
 class OfferAlertContainer extends Backend
 {
+
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Design each row of the DCA.
-     *
-     * @return string
      */
-    public function listItems(array $row, string $label, \Contao\DataContainer $dc, array $labels): array
+    public function listItems(array $row, string $label, DataContainer $dc, array $labels): array
     {
         $objFeed = OfferFeed::findByPk($row['feed']);
 
         $labels[0] = $row['email'];
         $labels[1] = $objFeed ? $objFeed->title : $row['feed'];
         $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']];
-        $labels[3] = !empty($row['lastJob']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['lastJob']) : '-';
-        $labels[4] = !empty($row['activatedAt']) ? \Contao\Date::parse(\Contao\Config::get('datimFormat'), (int) $row['activatedAt']) : '-';
+        $labels[3] = empty($row['lastJob']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['lastJob']);
+        $labels[4] = empty($row['activatedAt']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['activatedAt']);
 
         return $labels;
     }
@@ -45,12 +54,12 @@ class OfferAlertContainer extends Backend
     /**
      * Get available feeds.
      *
-     * @return [Array]
+     * @return array [Array]
      */
-    public function getFeeds()
+    public function getFeeds(): array
     {
         $arrChoices = [];
-        $objFeeds = \Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
+        $objFeeds = Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
 
         while ($objFeeds->next()) {
             $arrChoices[$objFeeds->id] = $objFeeds->title;
@@ -59,6 +68,9 @@ class OfferAlertContainer extends Backend
         return $arrChoices;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function getOffersAlertModules(): array
     {
         $arrChoices = [];
@@ -73,10 +85,14 @@ class OfferAlertContainer extends Backend
         return $arrChoices;
     }
 
+
+    /**
+     * @throws ExceptionInterface
+     */
     public function sendAlerts(): void
     {
-        $objJob = new SendAlerts();
-        $objJob->do(false);
+        $sendAlerts = System::getContainer()->get('wem.offers.send_alert');
+        $sendAlerts->do(false);
 
         Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);
 

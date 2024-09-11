@@ -12,6 +12,8 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+use WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer;
+
 $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     // Config
     'config' => [
@@ -34,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'fields' => ['name ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'listItems'],
+            'child_record_callback' => [OfferFeedAttributeContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -122,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldOptions'],
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldOptions'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50 clr'],
             'reference' => &$GLOBALS['TL_LANG']['CTE'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
@@ -225,7 +227,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 255, 'default' => ''],
         ],
