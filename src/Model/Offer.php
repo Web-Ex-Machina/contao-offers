@@ -22,6 +22,7 @@ use Contao\Model\Collection;
 use Contao\System;
 use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\UtilsBundle\Model\Model;
+use Contao\Model\Registry;
 
 /**
  * Reads and writes items.
@@ -191,6 +192,46 @@ class Offer extends Model
     }
 
     /**
+     * Find a single record by its ID or code
+     *
+     * @param mixed $varId      The ID or code
+     * @param array $arrOptions An optional options array
+     *
+     * @return static The model or null if the result is empty
+     */
+    public static function findByIdOrCode($varId, array $arrOptions=array())
+    {
+        $isCode = !preg_match('/^[1-9]\d*$/', $varId);
+
+        // Try to load from the registry
+        if (!$isCode && empty($arrOptions))
+        {
+            $objModel = Registry::getInstance()->fetch(static::$strTable, $varId);
+
+            if ($objModel !== null)
+            {
+                return $objModel;
+            }
+        }
+
+        $t = static::$strTable;
+
+        $arrOptions = array_merge
+        (
+            array
+            (
+                'limit'  => 1,
+                'column' => $isCode ? array("$t.code=?") : array("$t.id=?"),
+                'value'  => $varId,
+                'return' => 'Model'
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
+    }
+
+    /**
      * Get offer attributes as array
      * @return array ['attribute_name'=>['label'=>$label, 'raw_value'=>$value,'human_readable_value'=>$human_readable_value]]
      * @throws \Exception
@@ -252,6 +293,10 @@ class Offer extends Model
     {
         if ("string" === gettype($varAttribute)) {
             $varAttribute = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttribute], 1);
+        }
+
+        if (null === $varAttribute) {
+            return null;
         }
 
         switch($varAttribute->type) {

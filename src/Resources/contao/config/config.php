@@ -16,6 +16,8 @@ declare(strict_types=1);
 use WEM\OffersBundle\DataContainer\OfferAlertContainer;
 use WEM\OffersBundle\Module\ModuleOffersAlert;
 use WEM\OffersBundle\Module\ModuleOffersList;
+use WEM\OffersBundle\Module\ModuleOffersFilters;
+use WEM\OffersBundle\Module\ModuleOffersReader;
 use WEM\OffersBundle\Model;
 
 Contao\ArrayUtil::arrayInsert(
@@ -44,7 +46,9 @@ Contao\ArrayUtil::arrayInsert(
     [
         'wem-offers' => [
             'offerslist' => ModuleOffersList::class,
+            'offersfilters' => ModuleOffersFilters::class,
             'offersalert' => ModuleOffersAlert::class,
+            'offersreader' => ModuleOffersReader::class,
         ],
     ]
 );

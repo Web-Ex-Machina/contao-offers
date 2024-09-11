@@ -1,5 +1,25 @@
 Extension "Offers" for Contao Open Source CMS
 ========
+
+2.3.x - ???
+- ADDED - Add a new textarea attribute that allows you to use a tinyMCE or a HTML field as attribute
+- ADDED - Ajax request + JS Promise to retrieve the number of items depending on frontend module + optional filters
+- ADDED - Display mode for form inside the reader module
+- UPDATED - Better application management
+- UPDATED - Better alerts management
+
+2.2.0 - 2024-08-21
+- ADDED - Add a new tag "countoffers", returns the number of published offers in one or several PIDs 
+- ADDED - Add a new tag "offer", return a value for the current offer or for a specific ID
+- ADDED - Add a frontend module to display an offer directly
+- UPDATED - Move the filters into a dedicated frontend module
+
+2.1.0 - 2024-08-05
+- UPDATED: add return types and update composer dependency versions fo support Utils 2.0
+
+2.0.2 - 2024-05-29
+- FIXED: `seeOffer` button not correctly displayed
+
 2.0.1 - 2024-02-29
 - FIXED: Assets load earlier for lists with no offers (see https://github.com/Web-Ex-Machina/contao-offers/commit/ce6cc382ff7204d6e6e522a73bac1643bd334486)
 

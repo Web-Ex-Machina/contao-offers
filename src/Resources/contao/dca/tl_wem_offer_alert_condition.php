@@ -83,6 +83,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'pid' => [
+            'foreignKey' => 'tl_wem_offer_alert.id',
+            'relation' => ['type' => 'belongsTo', 'load' => 'eager'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
