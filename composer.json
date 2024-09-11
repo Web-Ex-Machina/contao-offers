@@ -1,5 +1,7 @@
 {
     "name": "webexmachina/contao-offers",
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "description": "Offers & Ads for Contao Open Source CMS",
      "keywords": ["frontend", "jobs", "application", "offer", "ads", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
@@ -40,5 +42,10 @@
     },
     "extra":{
         "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"
+    },
+    "require-dev": {
+        "rector/rector": "^1.2",
+        "phpstan/phpstan": "^1.12",
+        "contao/contao-rector": "dev-main"
     }
 }
