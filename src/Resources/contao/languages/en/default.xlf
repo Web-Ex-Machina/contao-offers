@@ -21,7 +21,10 @@
 				<source>Field</source>
 				<target>Field</target>
 			</trans-unit>
-
+			<trans-unit id="WEM.OFFERS.empty">
+				<source>Empty</source>
+				<target>Empty</target>
+			</trans-unit>
 			<trans-unit id="WEM.OFFERS.applyTitle">
 				<source>Interested? Apply here!</source>
 				<target>Interested? Apply here!</target>

@@ -79,7 +79,7 @@ abstract class ModuleOffers extends Module
                         $objItem = Offer::findByPk(Input::post('offer'));
 
                         $this->offer_template = 'offer_details';
-                        echo System::getContainer()->get('contao.insert_tag')->replace($this->parseOffer($objItem));
+                        echo System::getContainer()->get('contao.insert_tag.parser')->replace($this->parseOffer($objItem));
                         exit;
                     break;
 
@@ -90,7 +90,7 @@ abstract class ModuleOffers extends Module
 
                         // Put the offer in session
                         $objSession->set('wem_offer', Input::post('offer'));
-                        echo System::getContainer()->get('contao.insert_tag')->replace($this->getApplicationForm(Input::post('offer')));
+                        echo System::getContainer()->get('contao.insert_tag.parser')->replace($this->getApplicationForm(Input::post('offer')));
                         exit;
                     break;
 

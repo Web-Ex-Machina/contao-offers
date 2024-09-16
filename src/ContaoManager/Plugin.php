@@ -35,7 +35,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(OffersBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManagerBundle::class])
+                ->setLoadAfter([ContaoCoreBundle::class,WEMPersonalDataManagerBundle::class, "notification_center"])
                 ->setReplace(['wem-offers']),
         ];
     }

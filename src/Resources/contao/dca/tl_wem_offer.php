@@ -30,6 +30,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
+                'code,lang' => 'index',
             ],
         ],
         'onload_callback' => [
@@ -93,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
     'palettes' => [
         '__selector__' => ['addImage', 'overwriteMeta'],
         'default' => '
-            {title_legend},code,title,date;
+            {title_legend},code,title,date,lang;
             {content_legend},teaser;
             {media_legend},addImage;
             {publish_legend},published,start,stop
@@ -124,7 +125,15 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-
+        'lang' => [
+            'exclude' => true,
+            'search' => true,
+            'sorting' => true,
+            'inputType' => 'select',
+            'options' => System::getContainer()->get('contao.intl.locales')->getEnabledLocales(),
+            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'maxlength' => 5],
+            'sql' => "char(5) NOT NULL default ''",
+        ],
         'code' => [
             'exclude' => true,
             'search' => true,

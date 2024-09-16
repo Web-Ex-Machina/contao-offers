@@ -17,7 +17,10 @@
 				<source>Job has been executed</source>
 				<target>La tâche a été executée</target>
 			</trans-unit>
-
+			<trans-unit id="WEM.OFFERS.empty">
+				<source>Empty</source>
+				<target>Vide</target>
+			</trans-unit>
 			<trans-unit id="WEM.OFFERS.applyTitle">
 				<source>Interested? Contact us!</source>
 				<target>Intéressé(e)? Contactez-nous !</target>

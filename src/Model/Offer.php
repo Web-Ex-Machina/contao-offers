@@ -96,7 +96,7 @@ class Offer extends Model
     public static function formatColumns(array $arrConfig): array
     {
         $arrColumns = [];
-        foreach ($arrConfig as $c => $v) {
+        $arrConfig['lang'] = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();foreach ($arrConfig as $c => $v) {
             $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
 
