@@ -18,14 +18,13 @@ use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Config;
 use Contao\CoreBundle\Exception\PageNotFoundException;
-use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Model\Collection;
 use Contao\Pagination;
 use Contao\Environment;
 use Contao\System;
-use WEM\OffersBundle\Model\Offer as OfferModel;
+use Symfony\Component\HttpFoundation\Request;
 use WEM\UtilsBundle\Classes\StringUtil;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use WEM\OffersBundle\Model\Offer;
 
@@ -36,29 +35,15 @@ use WEM\OffersBundle\Model\Offer;
  */
 class ModuleOffersList extends ModuleOffers
 {
-    /**
-     * List config.
-     */
+
     protected ?array $config = [];
 
-    /**
-     * List limit.
-     */
     protected ?int $limit = 0;
 
-    /**
-     * List offset.
-     */
     protected ?int $offset = 0;
 
-    /**
-     * List options.
-     */
     protected ?array $options = [];
 
-    /**
-     * List filters.
-     */
     protected ?array $filters = [];
 
     /**
@@ -68,17 +53,11 @@ class ModuleOffersList extends ModuleOffers
      */
     protected $strTemplate = 'mod_offerslist';
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
-
-    private string $csrfTokenName;
-
     private SessionInterface $session;
 
-    public function __construct($objModule, $csrfTokenManager,$csrfTokenName, SessionInterface $session, $strColumn = 'main')
+    public function __construct($objModule, SessionInterface $session, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->csrfTokenName = $csrfTokenName;
         $this->session = $session;
     }
 
@@ -87,7 +66,7 @@ class ModuleOffersList extends ModuleOffers
      */
     public function generate(): string
     {
-        if (TL_MODE === 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offerslist'][0]).' ###';
             $objTemplate->title = $this->headline;
@@ -169,7 +148,7 @@ class ModuleOffersList extends ModuleOffers
         $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
         // Retrieve filters
-        if (!empty($_GET) || !empty($_POST)) {
+        if ($_GET !== [] || $_POST !== []) {
             foreach ($_GET as $f => $v) {
                 if (false === strpos($f, 'offer_filter_')) {
                     continue;
@@ -180,7 +159,7 @@ class ModuleOffersList extends ModuleOffers
                 }
             }
 
-            foreach ($_POST as $f => $v) {
+            foreach (array_keys($_POST) as $f) {
                 if (false === strpos($f, 'offer_filter_')) {
                     continue;
                 }
@@ -239,7 +218,7 @@ class ModuleOffersList extends ModuleOffers
         $objItems = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
 
         // Add the articles
-        if ($objItems instanceof \Contao\Model\Collection) {
+        if ($objItems instanceof Collection) {
             $this->Template->items = $this->parseOffers($objItems);
         }
 

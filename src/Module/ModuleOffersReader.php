@@ -21,6 +21,7 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -31,12 +32,6 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 class ModuleOffersReader extends ModuleOffers
 {
-    /**
-     * Offer
-     * 
-     * @var Offer
-     */
-    protected $objOffer = null;
 
     /**
      * Template.
@@ -47,12 +42,10 @@ class ModuleOffersReader extends ModuleOffers
 
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
-    public function generate()
+    public function generate(): string
     {
-        if (TL_MODE === 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersreader'][0]).' ###';
             $objTemplate->title = $this->headline;
@@ -78,7 +71,7 @@ class ModuleOffersReader extends ModuleOffers
     protected function compile(): void
     {
         // Init session
-        $objSession = System::getContainer()->get('session');
+        $objSession = System::getContainer()->get('request_stack')->getSession();
 
         if ($this->overviewPage)
         {

@@ -135,13 +135,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'rte' => [
-            'exclude' => true,
-            'search' => true,
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
         'options' => [
             'exclude' => true,
             'inputType' => 'optionWizard',

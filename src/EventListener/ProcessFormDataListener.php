@@ -16,7 +16,6 @@ namespace WEM\OffersBundle\EventListener;
 
 use Contao\Database;
 use Contao\Dbafs;
-use Contao\File;
 use Contao\Files;
 use Contao\Form;
 use Contao\FilesModel;
@@ -24,21 +23,19 @@ use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\System;
 use Exception;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use WEM\OffersBundle\Model\Application;
 use WEM\UtilsBundle\Classes\Encryption;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use WEM\OffersBundle\Model\Offer;
 
 class ProcessFormDataListener
 {
-    private LoggerInterface $logger;
-
     protected Encryption $encryption;
 
-    public function __construct(LoggerInterface $logger,Encryption $encryption)
+    public function __construct(Encryption $encryption)
     {
         $this->encryption = $encryption;
-        $this->logger = $logger;
     }
 
     public function __invoke(
@@ -82,7 +79,7 @@ class ProcessFormDataListener
                 $objApplication->save();
 
                 // Loop on files
-                if (is_array($files) && !empty($files)) {
+                if (is_array($files) && $files !== []) {
                     foreach ($files as $name => $file) {
                         // Do not process files we cannot link to the application
                         if (!$objDb->fieldExists($name, 'tl_wem_offer_application')) {
@@ -107,17 +104,18 @@ class ProcessFormDataListener
                 $objApplication->save();
 
                 // Clean session
-                $objSession = System::getContainer()->get('session');
+                $objSession = System::getContainer()->get('request_stack')->getSession();
                 $objSession->set('wem_offer', '');
             }
-        } catch (Exception $e) {
-            System::log(vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$e->getMessage(), $e->getTrace()]), __METHOD__, 'WEM_OFFERS');
+        } catch (Exception $exception) {
+            System::getContainer()->get('monolog.logger.contao')->log(LogLevel::INFO, vsprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'], [$exception->getMessage(), $exception->getTrace()]), ['contao' => new ContaoContext(__METHOD__, 'WEM_OFFERS')]);
         }
     }
 
     // Move file into a subfolder with a clearer name
     // Rule: files/applications/{offer_code}/{lastname_firstname}/{lastname_firstname_name}.{extension}
-    protected function moveFile($name, $file, $objOffer, $objApplication) {
+    protected function moveFile($name, array $file, $objOffer, $objApplication): ?FilesModel
+    {
         $chunks = explode('.', $file['full_path']);
         $ext = end($chunks);
 

@@ -24,7 +24,7 @@ use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
 class ManagerListener
 {
     /** @var personalDataManagerUi */
-    protected $personalDataManager;
+    protected PersonalDataManager $personalDataManager;
 
     private CsrfTokenManagerInterface $csrfTokenManager;
 

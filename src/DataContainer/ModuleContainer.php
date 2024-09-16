@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use Contao\Model\Collection;
 use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
@@ -145,7 +146,7 @@ class ModuleContainer extends Backend
 
         $objAttributes = OfferFeedAttribute::findItems($c);
 
-        if (!$objAttributes) {
+        if (!$objAttributes instanceof Collection) {
             return [];
         }
 
@@ -159,10 +160,8 @@ class ModuleContainer extends Backend
 
     /**
      * Return all feeds as array.
-     *
-     * @return array
      */
-    public function getFiltersModules()
+    public function getFiltersModules(): array
     {
         $arrModules = [];
         $objModule = $this->Database->execute('SELECT id, name FROM tl_module WHERE type = "offersfilters" ORDER BY name');

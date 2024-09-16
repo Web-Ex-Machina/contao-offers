@@ -7,6 +7,8 @@ namespace WEM\OffersBundle\Module;
 use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Input;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
@@ -20,7 +22,7 @@ class ModuleOffersFilters extends ModuleOffers
     /**
      * List filters.
      */
-    protected $filters = [];
+    protected array $filters = [];
 
     /**
      * Template.
@@ -31,12 +33,10 @@ class ModuleOffersFilters extends ModuleOffers
 
     /**
      * Display a wildcard in the back end.
-     *
-     * @return string
      */
-    public function generate()
+    public function generate(): string
     {
-        if (TL_MODE === 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersfilters'][0]).' ###';
             $objTemplate->title = $this->headline;
@@ -76,14 +76,14 @@ class ModuleOffersFilters extends ModuleOffers
     /**
      * Retrieve list filters.
      *
-     * @return array [Array of available filters, parsed]
+     * @return void Manipule array of available filters, parsed
      */
-    protected function buildFilters()
+    protected function buildFilters(): void
     {
         // Retrieve and format dropdowns filters
-        $filters = deserialize($this->offer_filters);
+        $filters = StringUtil::deserialize($this->offer_filters);
 
-        if (\is_array($filters) && !empty($filters)) {
+        if (\is_array($filters) && $filters !== []) {
             foreach ($filters as $f) {
                 $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$f];
                 $fName = sprintf('offer_filter_%s%s', $f, $field['eval']['multiple'] ? '[]' : '');
@@ -94,7 +94,7 @@ class ModuleOffersFilters extends ModuleOffers
                     'label' => $field['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$f][0],
                     'value' => Input::get($fName) ?: '',
                     'options' => [],
-                    'multiple' => isset($field['eval']['multiple']) ? $field['eval']['multiple'] : false,
+                    'multiple' => $field['eval']['multiple'] ?? false,
                 ];
 
                 switch ($field['inputType']) {
@@ -139,12 +139,13 @@ class ModuleOffersFilters extends ModuleOffers
                             if ($filter['multiple']) {
                                 $filter['name'] .= '[]';
                             }
+
                             while ($objOptions->next()) {
                                 if (!$objOptions->{$f}) {
                                     continue;
                                 }
 
-                                $subOptions = deserialize($objOptions->{$f});
+                                $subOptions = StringUtil::deserialize($objOptions->{$f});
                                 foreach ($subOptions as $subOption) {
                                     $filter['options'][$subOption] = [
                                         'value' => $subOption,
@@ -156,6 +157,7 @@ class ModuleOffersFilters extends ModuleOffers
                                 }
                             }
                         }
+
                         break;
 
                     case 'text':
@@ -176,6 +178,7 @@ class ModuleOffersFilters extends ModuleOffers
                                 ];
                             }
                         }
+
                         break;
                 }
 

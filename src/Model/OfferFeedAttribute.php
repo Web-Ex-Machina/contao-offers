@@ -57,7 +57,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
             $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 

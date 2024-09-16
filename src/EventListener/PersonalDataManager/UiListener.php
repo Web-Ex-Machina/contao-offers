@@ -105,7 +105,7 @@ class UiListener
         return $buffer;
     }
 
-    public function renderSingleItemBodyOriginalModelSingleFieldValue(int $pid, string $ptable, string $email, string $field, $value, array $personalDatas, Model $originalModel, string $buffer): string
+    public function renderSingleItemBodyOriginalModelSingleFieldValue(int $pid, string $ptable, string $email, string $field, string $value, array $personalDatas, Model $originalModel, string $buffer): string
     {
         if ($ptable === Application::getTable()) {
             switch ($field) {
@@ -180,7 +180,7 @@ class UiListener
 
     public function buildSingleItemBodyPersonalDataSingleButtons(int $pid, string $ptable, string $email, PersonalData $personalData, array $personalDatas, Model $originalModel, ?File $file, array $buttons): array
     {
-        if ($file) {
+        if ($file instanceof File) {
             if (FileUtil::isDisplayableInBrowser($file) && !\array_key_exists('show', $buttons)) {
                 $buttons['show'] = sprintf('<br /><a href="%s" class="pdm-button pdm-button_show_file pdm-item__personal_data_single__button_show_file" target="_blank" data-path="%s">%s</a>',
                                             $this->personalDataManagerUi->getUrl(),

@@ -41,7 +41,7 @@ abstract class ModuleOffers extends Module
     protected function catchAjaxRequests()
     {
         if (Input::post('TL_AJAX') && (int) $this->id === (int) Input::post('module')) {
-            $objSession = System::getContainer()->get('session');
+            $objSession = System::getContainer()->get('request_stack')->getSession();
             try {
                 switch (Input::post('action')) {
                     case 'countOffers':
@@ -49,7 +49,7 @@ abstract class ModuleOffers extends Module
                         $c['published'] = 1;
 
                         if ($this->offer_feeds) {
-                            $c['pid'] = deserialize($this->offer_feeds);
+                            $c['pid'] = StringUtil::deserialize($this->offer_feeds);
                         }
 
                         // Retrieve filters
@@ -76,12 +76,12 @@ abstract class ModuleOffers extends Module
                         if (!Input::post('offer')) {
                             throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
+
                         $objItem = Offer::findByPk(Input::post('offer'));
 
                         $this->offer_template = 'offer_details';
                         echo System::getContainer()->get('contao.insert_tag.parser')->replace($this->parseOffer($objItem));
                         exit;
-                    break;
 
                     case 'apply':
                         if (!Input::post('offer')) {
@@ -92,7 +92,6 @@ abstract class ModuleOffers extends Module
                         $objSession->set('wem_offer', Input::post('offer'));
                         echo System::getContainer()->get('contao.insert_tag.parser')->replace($this->getApplicationForm(Input::post('offer')));
                         exit;
-                    break;
 
                     case 'subscribe':
                         // Check if we have a valid email
@@ -122,7 +121,7 @@ abstract class ModuleOffers extends Module
                             1
                         );
 
-                        if (!$objAlert) {
+                        if (!$objAlert instanceof Collection) {
                             $objAlert = new Alert();
                             $objAlert->createdAt = time();
                         }
@@ -138,16 +137,14 @@ abstract class ModuleOffers extends Module
                         $objAlert->language = $GLOBALS['TL_LANGUAGE'];
                         $objAlert->save();
 
-                        if (!empty($arrConditions)) {
-                            foreach ($arrConditions as $c => $v) {
-                                $objAlertCondition = new AlertCondition();
-                                $objAlertCondition->tstamp = time();
-                                $objAlertCondition->createdAt = time();
-                                $objAlertCondition->pid = $objAlert->id;
-                                $objAlertCondition->field = $c;
-                                $objAlertCondition->value = $v;
-                                $objAlertCondition->save();
-                            }
+                        foreach ($arrConditions as $c => $v) {
+                            $objAlertCondition = new AlertCondition();
+                            $objAlertCondition->tstamp = time();
+                            $objAlertCondition->createdAt = time();
+                            $objAlertCondition->pid = $objAlert->id;
+                            $objAlertCondition->field = $c;
+                            $objAlertCondition->value = $v;
+                            $objAlertCondition->save();
                         }
 
                         // Build and send a notification
@@ -171,7 +168,7 @@ abstract class ModuleOffers extends Module
                         $objAlert = Alert::findItems(['email' => Input::post('email'), 'feed' => $this->offer_feed], 1);
 
                         // Check if the alert exists or if the alert is already active
-                        if (!$objAlert) {
+                        if (!$objAlert instanceof Collection) {
                             throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['alertDoesNotExists']);
                         }
 
@@ -281,7 +278,7 @@ abstract class ModuleOffers extends Module
         // Retrieve item content
         $id = $objItem->id;
 
-        $objTemplate->text = function () use ($id)
+        $objTemplate->text = function () use ($id): string
         {
             $strText = '';
             $objElement = ContentModel::findPublishedByPidAndTable($id, 'tl_wem_offer');
@@ -297,7 +294,7 @@ abstract class ModuleOffers extends Module
             return $strText;
         };
 
-        $objTemplate->hasText = static fn() => ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
+        $objTemplate->hasText = static fn(): bool => ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
 
         // Retrieve item attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
@@ -337,13 +334,8 @@ abstract class ModuleOffers extends Module
 
     /**
      * Parse and return an application form for a job.
-     *
-     * @param int    $intId       [Job ID]
-     * @param string $strTemplate [Template name]
-     *
-     * @return string
      */
-    protected function getApplicationForm($intId, $strTemplate = 'offer_apply')
+    protected function getApplicationForm(int $intId, string $strTemplate = 'offer_apply'): string
     {
         if (!$this->offer_applicationForm) {
             return '';
@@ -371,12 +363,8 @@ abstract class ModuleOffers extends Module
 
     /**
      * Build Notification Tokens.
-     *
-     * @param Alert $objAlert
-     *
-     * @return array
      */
-    protected function getNotificationTokens($objAlert)
+    protected function getNotificationTokens(Alert $objAlert): array
     {
         $arrTokens = [];
 

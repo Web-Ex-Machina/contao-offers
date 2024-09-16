@@ -17,18 +17,15 @@ namespace WEM\OffersBundle\Module;
 use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Input;
+use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\System;
-use Contao\Validator;
 use NotificationCenter\Model\Notification; // TODO
-use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
-use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
-use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Front end module "offers alert".
@@ -38,22 +35,10 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 class ModuleOffersAlert extends ModuleOffers
 {
 
-    private CsrfTokenManagerInterface $csrfTokenManager;
 
-    private string $csrfTokenName;
-
-    private ContentUrlGenerator $urlGenerator;
-
-    public function __construct(
-        ContentUrlGenerator $urlGenerator, $objModule,
-        CsrfTokenManagerInterface $csrfTokenManager,$csrfTokenName,
-        $strColumn = 'main'
-    )
+    public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->csrfTokenName = $csrfTokenName;
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -73,7 +58,7 @@ class ModuleOffersAlert extends ModuleOffers
      */
     public function generate(): string
     {
-        if (TL_MODE === 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### '.strtoupper($GLOBALS['TL_LANG']['FMD']['offersalert'][0]).' ###';
             $objTemplate->title = $this->headline;
@@ -147,7 +132,7 @@ class ModuleOffersAlert extends ModuleOffers
                     $objAlert = Alert::findItems(['feed' => $this->offer_feed, 'token' => Input::get('token')], 1);
 
                     // Check if the alert exists or if the alert is already active
-                    if (!$objAlert) {
+                    if (!$objAlert instanceof Collection) {
                         throw new \Exception($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['invalidLink']);
                     }
 
@@ -207,7 +192,7 @@ class ModuleOffersAlert extends ModuleOffers
                     'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
                     'value' => Input::get($c) ?: '',
                     'options' => [],
-                    'multiple' => isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple']) ? true : false,
+                    'multiple' => isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple']),
                 ];
 
                 switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType']) {

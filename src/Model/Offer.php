@@ -199,12 +199,12 @@ class Offer extends Model
      *
      * @return static The model or null if the result is empty
      */
-    public static function findByIdOrCode($varId, array $arrOptions=array())
+    public static function findByIdOrCode($varId, array $arrOptions=[])
     {
         $isCode = !preg_match('/^[1-9]\d*$/', $varId);
 
         // Try to load from the registry
-        if (!$isCode && empty($arrOptions))
+        if (!$isCode && $arrOptions === [])
         {
             $objModel = Registry::getInstance()->fetch(static::$strTable, $varId);
 
@@ -218,13 +218,12 @@ class Offer extends Model
 
         $arrOptions = array_merge
         (
-            array
-            (
+            [
                 'limit'  => 1,
-                'column' => $isCode ? array("$t.code=?") : array("$t.id=?"),
+                'column' => $isCode ? [$t . '.code=?'] : [$t . '.id=?'],
                 'value'  => $varId,
                 'return' => 'Model'
-            ),
+            ],
             $arrOptions
         );
 

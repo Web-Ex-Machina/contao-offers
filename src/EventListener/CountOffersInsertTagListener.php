@@ -27,7 +27,7 @@ class CountOffersInsertTagListener
         $c['published'] = 1;
 
         // Retrieve filters
-        if (!empty($_GET) || !empty($_POST)) {
+        if ($_GET !== [] || $_POST !== []) {
             foreach ($_GET as $f => $v) {
                 if (false === strpos($f, 'offer_filter_')) {
                     continue;
@@ -38,7 +38,7 @@ class CountOffersInsertTagListener
                 }
             }
 
-            foreach ($_POST as $f => $v) {
+            foreach (array_keys($_POST) as $f) {
                 if (false === strpos($f, 'offer_filter_')) {
                     continue;
                 }
@@ -50,8 +50,6 @@ class CountOffersInsertTagListener
         }
 
         // Call the Model
-        $intCount = Offer::countItems($c);
-        
-        return $intCount;
+        return Offer::countItems($c);
     }
 }

@@ -120,9 +120,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
-            'options_callback' => function () {
-                return Locales::class->getLocales();
-            },
+            'options_callback' => fn() => Locales::class->getLocales(),
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'moduleOffersAlert'=>[
