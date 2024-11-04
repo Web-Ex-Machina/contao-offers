@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\Module;
@@ -20,7 +20,7 @@ use Contao\Input;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\System;
-use NotificationCenter\Model\Notification; // TODO
+// TODO
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
@@ -34,13 +34,6 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 class ModuleOffersAlert extends ModuleOffers
 {
-
-
-    public function __construct($objModule, $strColumn = 'main')
-    {
-        parent::__construct($objModule, $strColumn);
-    }
-
     /**
      * List conditions.
      */
@@ -52,6 +45,11 @@ class ModuleOffersAlert extends ModuleOffers
      * @var string
      */
     protected $strTemplate = 'mod_offersalert';
+
+    public function __construct($objModule, $strColumn = 'main')
+    {
+        parent::__construct($objModule, $strColumn);
+    }
 
     /**
      * Display a wildcard in the back end.
@@ -83,6 +81,7 @@ class ModuleOffersAlert extends ModuleOffers
 
     /**
      * Generate the module.
+     *
      * @throws ExceptionInterface
      */
     protected function compile(): void
@@ -163,7 +162,8 @@ class ModuleOffersAlert extends ModuleOffers
 
         // Retrieve and send the page for GDPR compliance
         if ($this->offer_pageGdpr && $objGdprPage = PageModel::findByPk($this->offer_pageGdpr)) {
-            $this->Template->gdprPage =$this->urlGenerator->generate($objGdprPage);
+            // $this->Template->gdprPage =$this->urlGenerator->generate($objGdprPage);
+            $this->Template->gdprPage = $objGdprPage->getAbsoluteUrl();
         }
 
         // assets
@@ -171,7 +171,7 @@ class ModuleOffersAlert extends ModuleOffers
         $objCssCombiner = new Combiner();
         $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
 
-        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
+        $GLOBALS['TL_HEAD'][] = \sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
     }
 
@@ -184,7 +184,7 @@ class ModuleOffersAlert extends ModuleOffers
     {
         // Retrieve and format dropdowns conditions
         $conditions = StringUtil::deserialize($this->offer_conditions);
-        if (\is_array($conditions) && $conditions !== []) {
+        if (\is_array($conditions) && [] !== $conditions) {
             foreach ($conditions as $c) {
                 $condition = [
                     'type' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType'],
@@ -218,7 +218,7 @@ class ModuleOffersAlert extends ModuleOffers
 
                         break;
 
-                    // Keep it because it works but it should not be used...
+                        // Keep it because it works but it should not be used...
                     case 'text':
                     default:
                         $objOptions = Offer::findItemsGroupByOneField($c);
