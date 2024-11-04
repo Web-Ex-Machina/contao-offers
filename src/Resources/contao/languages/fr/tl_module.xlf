@@ -113,6 +113,22 @@
 			<source>Here you can select the application form</source>
 			<target>Choisir le formulaire de candidature</target>
 		</trans-unit>
+		<trans-unit id="tl_module.offer_applicationFormDisplay.0">
+			<source>Display mode</source>
+			<target>Mode d'affichage</target>
+		</trans-unit>
+		<trans-unit id="tl_module.offer_applicationFormDisplay.1">
+			<source>Select the application form display mode</source>
+			<target>Choisir le mode d'affichage du formulaire de candidature</target>
+		</trans-unit>
+		<trans-unit id="tl_module.offer_applicationFormDisplay.inPage">
+			<source>In page</source>
+			<target>Dans la page</target>
+		</trans-unit>
+		<trans-unit id="tl_module.offer_applicationFormDisplay.modal">
+			<source>In a modal</source>
+			<target>Dans une pop-up</target>
+		</trans-unit>
 
 		<trans-unit id="tl_module.offer_pageGdpr.0">
 			<source>GDPR compliance</source>

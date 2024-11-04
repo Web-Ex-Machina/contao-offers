@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use WEM\UtilsBundle\Model\Model;
+
 /**
  * Reads and writes items.
  */
-class AlertCondition extends \WEM\UtilsBundle\Model\Model
+class AlertCondition extends Model
 {
     /**
      * Table name.

@@ -15,10 +15,14 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use Contao\Model;
+use Contao\Model\Collection;
+use WEM\UtilsBundle\Model\Model as BaseModel;
+
 /**
  * Reads and writes items.
  */
-class Alert extends \WEM\UtilsBundle\Model\Model
+class Alert extends BaseModel
 {
     /**
      * Table name.
@@ -30,14 +34,12 @@ class Alert extends \WEM\UtilsBundle\Model\Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array
-     * @param int
-     * @param int
-     * @param array
-     *
-     * @return Collection
+     * @return Model|Model[]|Collection
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -51,10 +53,10 @@ class Alert extends \WEM\UtilsBundle\Model\Model
         }
 
         if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = "$t.createdAt DESC";
+            $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 
@@ -63,19 +65,13 @@ class Alert extends \WEM\UtilsBundle\Model\Model
 
     /**
      * Count items, depends on the arguments.
-     *
-     * @param array
-     * @param array
-     *
-     * @return int
      */
-    public static function countItems($arrConfig = [], $arrOptions = [])
+    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
     {
-        $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
 
-        if (empty($arrColumns)) {
-            return static::countAll($arrOptions);
+        if ($arrColumns === []) {
+            return static::countAll();
         }
 
         return static::countBy($arrColumns, null, $arrOptions);
@@ -84,79 +80,67 @@ class Alert extends \WEM\UtilsBundle\Model\Model
     /**
      * Format ItemModel columns.
      *
-     * @param [Array] $arrConfig [Configuration to format]
-     *
-     * @return [Array] [The Model columns]
+     * @return array The Model columns
      */
-    public static function formatColumns($arrConfig)
+    public static function formatColumns(array $arrConfig): array
     {
-        try {
-            $t = static::$strTable;
-            $arrColumns = [];
-
-            foreach ($arrConfig as $c => $v) {
-                $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
-            }
-
-            return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+        $arrColumns = [];
+        foreach ($arrConfig as $c => $v) {
+            $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
+
+        return $arrColumns;
     }
 
     /**
      * Generic statements format.
      *
-     * @param string $strField    [Column to format]
-     * @param mixed  $varValue    [Value to use]
-     * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
+     * @param string $strField    Column to format
+     * @param mixed  $varValue    Value to use
+     * @param string $strOperator Operator to use, default "="
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
-        try {
-            $arrColumns = [];
-            $t = static::$strTable;
+        $arrColumns = [];
+        $t = static::$strTable;
+        switch ($strField) {
+            // Search by feed
+            case 'feed':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = $t . '.feed IN('.implode(',', array_map('\intval', $varValue)).')';
+                } else {
+                    $arrColumns[] = $t.'.feed = '.$varValue;
+                }
 
-            switch ($strField) {
-                // Search by feed
-                case 'feed':
-                    if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.feed IN(".implode(',', array_map('\intval', $varValue)).')';
-                    } else {
-                        $arrColumns[] = $t.'.feed = '.$varValue;
-                    }
-                break;
+            break;
 
-                // Search by conditions (value needs to be an array)
-                case 'conditions':
-                    foreach ($varValue as $c => $v) {
-                        $arrColumns[] = sprintf(
-                            "$t.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%s' AND twoac.value = '%s')",
-                            $c,
-                            $v
-                        );
-                    }
-                break;
+            // Search by conditions (value needs to be an array)
+            case 'conditions':
+                foreach ($varValue as $c => $v) {
+                    $arrColumns[] = sprintf(
+                        sprintf("%s.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%%s' AND twoac.value = '%%s')", $t),
+                        $c,
+                        $v
+                    );
+                }
 
-                // Active alert means activatedAt > 0
-                case 'active':
-                    if (1 === $varValue) {
-                        $arrColumns[] = "$t.activatedAt > 0";
-                    } elseif (0 === $varValue) {
-                        $arrColumns[] = "$t.activatedAt = 0";
-                    }
-                break;
+            break;
 
-                // Load parent
-                default:
-                    $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
-            }
+            // Active alert means activatedAt > 0
+            case 'active':
+                if (1 === $varValue) {
+                    $arrColumns[] = $t . '.activatedAt > 0';
+                } elseif (0 === $varValue) {
+                    $arrColumns[] = $t . '.activatedAt = 0';
+                }
 
-            return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+            break;
+
+            // Load parent
+            default:
+                $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
         }
+
+        return $arrColumns;
     }
 }

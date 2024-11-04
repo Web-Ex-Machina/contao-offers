@@ -30,14 +30,17 @@
 				<?php endif ?>
 			</div>
 			<div class="offer__actions">
-				<<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?> class="btn offer__action <?php if (!$this->blnDisplayApplyButton): ?>ft-primary<?php endif; ?>" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
-					<?php if ($this->blnDisplayApplyButton): ?>
-					<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
-					<?php endif; ?>
-				</<?php if ($this->blnDisplayApplyButton): ?>button<?php else: ?>div<?php endif; ?>>
 				<?php if ($this->blnDisplayApplyButton): ?>
-				<button class="btn offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
-				</button>
+					<button class="btn offer__action" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+						<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
+					</button>
+					<button class="btn offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>">
+						<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['apply'] ?>
+					</button>
+				<?php else: ?>
+					<div class="btn offer__action" title="<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>" data-process="openDetailsModal" data-offer="<?= $this->id ?>" data-icon="false" data-result="false">
+						<?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['seeOffer'] ?>
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>

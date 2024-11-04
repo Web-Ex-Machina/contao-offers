@@ -11,6 +11,7 @@ declare(strict_types=1);
  * @author   Web ex Machina <contact@webexmachina.fr>
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
+use WEM\OffersBundle\DataContainer\OfferApplicationContainer;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
     // Config
@@ -38,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'fields' => ['country DESC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'listItems'],
+            'child_record_callback' => [OfferApplicationContainer::class, 'listItems'],
             'child_record_class' => 'no_padding',
         ],
         'label'=>[
@@ -70,12 +71,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'show_cv' => [
                 'href' => 'key=show_cv',
                 'icon' => 'pickfile.gif',
-                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showCv'],
+                'button_callback' => [OfferApplicationContainer::class, 'showCv'],
             ],
             'show_applicationLetter' => [
                 'href' => 'key=show_applicationLetter',
                 'icon' => 'tablewizard.gif',
-                'button_callback' => [WEM\OffersBundle\DataContainer\OfferApplicationContainer::class, 'showApplicationLetter'],
+                'button_callback' => [OfferApplicationContainer::class, 'showApplicationLetter'],
             ],
             'sendNotificationToApplication' => [
                 'href' => 'key=sendNotificationToApplication',
@@ -105,6 +106,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'pid' => [
+            'foreignKey' => 'tl_wem_offer.title',
+            'relation' => ['type' => 'belongsTo', 'load' => 'eager'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
 
@@ -173,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_application'] = [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
-            'options' => System::getCountries(),
+            'options' => WEM\UtilsBundle\Classes\CountriesUtil::getCountries(),
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(2) NOT NULL default ''",
             'load_callback' => [['wem.personal_data_manager.dca.field.callback.load', '__invoke']],

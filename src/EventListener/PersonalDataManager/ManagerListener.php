@@ -18,17 +18,17 @@ use Contao\System;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use WEM\OffersBundle\Model\Application;
 use WEM\PersonalDataManagerBundle\Service\PersonalDataManager;
-use WEM\SmartgearBundle\Model\FormStorage;
+use WEM\ContaoFormDataManagerBundle\Model\FormStorage;
+use WEM\PersonalDataManagerBundle\Service\PersonalDataManagerUi;
 
 class ManagerListener
 {
     /** @var personalDataManagerUi */
-    protected $personalDataManager;
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
+    protected PersonalDataManager $personalDataManager;
 
-    /** @var string */
-    private $csrfTokenName;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+
+    private string $csrfTokenName;
 
     public function __construct(
         CsrfTokenManagerInterface $csrfTokenManager,
@@ -40,7 +40,7 @@ class ManagerListener
         $this->personalDataManager = $personalDataManager;
     }
 
-    public function getHrefByPidAndPtableAndEmail(int $pid, string $ptable, string $email, string $href)
+    public function getHrefByPidAndPtableAndEmail(int $pid, string $ptable, string $email, string $href): string
     {
         switch ($ptable) {
             case Application::getTable():

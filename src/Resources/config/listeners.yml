@@ -18,9 +18,9 @@ services:
 
   offers.listener.load_datacontainer:
     class: WEM\OffersBundle\EventListener\LoadDataContainerListener
+    arguments:
+      $logger: '@logger'
     public: true
-
-  WEM\OffersBundle\EventListener\LoadDataContainerListener:
     tags:
       - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
 
@@ -28,6 +28,14 @@ services:
     tags:
       - { name: contao.hook, hook: processFormData, method: __invoke, priority: 100 }
 
-  WEM\OffersBundle\EventListener\StoreFormDataListener:
+  WEM\OffersBundle\EventListener\CountOffersInsertTagListener:
     tags:
-      - { name: contao.hook, hook: storeFormData, method: storeFormData, priority: 100 }
+      - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
+
+  WEM\OffersBundle\EventListener\OfferInsertTagListener:
+    tags:
+      - { name: contao.hook, hook: replaceInsertTags, method: replaceInsertTags, priority: 100 }
+
+  WEM\OffersBundle\EventListener\GenerateBreadcrumbListener:
+    tags:
+      - { name: contao.hook, hook: generateBreadcrumb, method: onGenerateBreadcrumb, priority: 100 }

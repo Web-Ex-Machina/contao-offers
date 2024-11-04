@@ -14,16 +14,19 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
-class OfferFeedAttributeContainer extends \Backend
+use Contao\Backend;
+
+class OfferFeedAttributeContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Format items list.
-     *
-     * @param array $r
-     *
-     * @return string
      */
-    public function listItems($r)
+    public function listItems(array $r): string
     {
         return sprintf(
             '%s <span style="color:#888">[%s]</span>',
@@ -34,35 +37,31 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Return a list of form fields
-     *
-     * @return array
      */
-    public function getFieldOptions()
+    public function getFieldOptions(): array
     {
-        return ['text', 'select', 'picker', 'fileTree', 'listWizard'];
+        return ['text', 'textarea', 'select', 'picker', 'fileTree', 'listWizard'];
     }
 
     /**
      * Return a list of form fields
-     *
-     * @return array
      */
-    public function getFieldsAndLegends()
+    public function getFieldsAndLegends(): array
     {
         $this->loadDataContainer('tl_wem_offer');
-        $arrOptions = array();
+        $arrOptions = [];
 
         $strPalette = $GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'];
         $arrChunks = explode(';', $strPalette);
 
-        if (empty($arrChunks)) {
+        if ($arrChunks === []) {
             return $arrOptions;
         }
 
         foreach ($arrChunks as $c) {
             $arrWidgets = explode(',', $c);
 
-            if (empty($arrWidgets)) {
+            if ($arrWidgets === []) {
                 continue;
             }
 
@@ -76,7 +75,7 @@ class OfferFeedAttributeContainer extends \Backend
 
                 $arrSubfields = $this->getFieldsFromSubpalette($w);
 
-                if(!empty($arrSubfields)) {
+                if($arrSubfields !== []) {
                     $arrOptions['fields'] = array_merge($arrOptions['fields'], $arrSubfields);
                 }
             }
@@ -87,19 +86,15 @@ class OfferFeedAttributeContainer extends \Backend
 
     /**
      * Retrieve fields from subpalette
-     * 
-     * @param  string $f
-     * 
-     * @return array
      */
-    protected function getFieldsFromSubpalette($f)
+    protected function getFieldsFromSubpalette(string $f): array
     {
         $arrFields = [];
 
         if (array_key_exists('subpalettes', $GLOBALS['TL_DCA']['tl_wem_offer']) && array_key_exists($f, $GLOBALS['TL_DCA']['tl_wem_offer']['subpalettes'])) {
             $arrSubfields = explode(',', $GLOBALS['TL_DCA']['tl_wem_offer']['subpalettes'][$f]);
 
-            if (empty($arrSubfields)) {
+            if ($arrSubfields === []) {
                 return $arrFields;
             }
 
@@ -108,7 +103,7 @@ class OfferFeedAttributeContainer extends \Backend
 
                 $arrSubfields = $this->getFieldsFromSubpalette($s);
 
-                if(!empty($arrSubfields)) {
+                if($arrSubfields !== []) {
                     $arrFields = array_merge($arrFields, $arrSubfields);
                 }
             }

@@ -12,6 +12,8 @@ declare(strict_types=1);
  * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
  */
 
+use WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer;
+
 $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     // Config
     'config' => [
@@ -34,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'fields' => ['name ASC'],
             'headerFields' => ['title'],
             'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'listItems'],
+            'child_record_callback' => [OfferFeedAttributeContainer::class, 'listItems'],
         ],
         'global_operations' => [
             'all' => [
@@ -78,6 +80,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
     // Subpalettes
     'subpalettes' => [
         'type_text' => 'value,isFilter,isAlertCondition',
+        'type_textarea' => 'allowHtml,helpwizard,rte,explanation',
         'type_select' => 'options,multiple,chosen,isFilter,isAlertCondition',
         'type_picker' => 'fkey',
         'type_fileTree' => 'multiple,filesOnly,fieldType,extensions',
@@ -93,6 +96,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'pid' => [
+            'foreignKey' => 'tl_wem_offer_feed.title',
+            'relation' => ['type' => 'belongsTo', 'load' => 'eager'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'createdAt' => [
@@ -119,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldOptions'],
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldOptions'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50 clr'],
             'reference' => &$GLOBALS['TL_LANG']['CTE'],
             'sql' => ['name' => 'type', 'type' => 'string', 'length' => 64, 'default' => 'text'],
@@ -185,6 +190,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50 cbx'],
             'sql' => "char(1) NOT NULL default ''",
         ],
+        'helpwizard' => [
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50 cbx'],
+            'sql' => "char(1) NOT NULL default ''",
+        ],
         'mandatory' => [
             'exclude' => true,
             'filter' => true,
@@ -209,7 +220,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [WEM\OffersBundle\DataContainer\OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
+            'options_callback' => [OfferFeedAttributeContainer::class, 'getFieldsAndLegends'],
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['name' => 'insertInDca', 'type' => 'string', 'length' => 255, 'default' => ''],
         ],
@@ -221,6 +232,18 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'sql' => ['name' => 'insertType', 'type' => 'string', 'length' => 128, 'default' => 'POSITION_APPEND'],
         ],
         'class' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'rte' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'explanation' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],

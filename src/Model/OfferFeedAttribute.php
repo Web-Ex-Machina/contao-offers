@@ -15,6 +15,9 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\Model;
 
+use Contao\Model;
+use Contao\Model\Collection;
+
 /**
  * Reads and writes items.
  */
@@ -30,14 +33,14 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
     /**
      * Find items, depends on the arguments.
      *
-     * @param array
-     * @param int
-     * @param int
-     * @param array
      *
-     * @return Collection
+     * @return Model|Collection|null
+     * @throws \Exception
      */
-    public static function findItems($arrConfig = [], $intLimit = 0, $intOffset = 0, $arrOptions = [])
+    public static function findItems(
+        array $arrConfig = [], int $intLimit = 0,
+        int $intOffset = 0, array $arrOptions = []
+    ): ?Collection
     {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
@@ -51,10 +54,10 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
         }
 
         if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = "$t.createdAt DESC";
+            $arrOptions['order'] = $t . '.createdAt DESC';
         }
 
-        if (empty($arrColumns)) {
+        if ($arrColumns === []) {
             return static::findAll($arrOptions);
         }
 
@@ -67,38 +70,34 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
      * @param string $strField    [Column to format]
      * @param mixed  $varValue    [Value to use]
      * @param string $strOperator [Operator to use, default "="]
-     *
-     * @return array
      */
-    public static function formatStatement($strField, $varValue, $strOperator = '=')
+    public static function formatStatement(string $strField, $varValue, string $strOperator = '='): array
     {
-        try {
-            $arrColumns = [];
-            $t = static::$strTable;
+        $arrColumns = [];
+        $t = static::$strTable;
 
-            switch ($strField) {
-                // Search by pid
-                case 'pid':
-                    if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.pid IN(".implode(',', array_map('\intval', $varValue)).')';
-                    } else {
-                        $arrColumns[] = $t.'.pid = '.$varValue;
-                    }
-                break;
+        switch ($strField) {
+            // Search by pid
+            case 'pid':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = $t . '.pid IN('.implode(',', array_map('\intval', $varValue)).')';
+                } else {
+                    $arrColumns[] = $t.'.pid = '.$varValue;
+                }
 
-                // Search by name
-                case 'name':
-                    if (\is_array($varValue)) {
-                        $arrColumns[] = "$t.name IN('".implode("','", $varValue)."')";
-                    } else {
-                        $arrColumns[] = $t.'.name = "'.$varValue.'"';
-                    }
-                break;
-            }
+            break;
 
-            return $arrColumns;
-        } catch (Exception $e) {
-            throw $e;
+            // Search by name
+            case 'name':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = $t . ".name IN('".implode("','", $varValue)."')";
+                } else {
+                    $arrColumns[] = $t.'.name = "'.$varValue.'"';
+                }
+
+            break;
         }
+
+        return $arrColumns;
     }
 }

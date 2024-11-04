@@ -15,25 +15,27 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\Backend;
 use Contao\DataContainer;
 use Contao\Input;
-use Contao\StringUtil;
+use WEM\UtilsBundle\Classes\StringUtil;
 use Contao\Image;
 use Contao\Versions;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 
-class OfferContainer extends \Backend
+class OfferContainer extends Backend
 {
+    public function __construct()
+    {
+        Parent::__construct();
+    }
+
     /**
      * Format items list.
-     *
-     * @param array $r
-     *
-     * @return string
      */
-    public function listItems($r)
+    public function listItems(array $r): string
     {
         return sprintf(
             '%s <span style="color:#888">[%s]</span>',
@@ -44,20 +46,11 @@ class OfferContainer extends \Backend
 
     /**
      * Return the "toggle visibility" button.
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
      */
-    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    public function toggleIcon(array $row, ?string $href, string $label, string $title, string $icon, string $attributes): string
     {
         if (!is_null(Input::get('tid')) && \strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
+            $this->toggleVisibility((int)Input::get('tid'), ('1' === Input::get('state')), (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
 
@@ -73,17 +66,15 @@ class OfferContainer extends \Backend
     /**
      * Disable/enable a job.
      *
-     * @param int           $intId
-     * @param bool          $blnVisible
-     * @param DataContainer $dc
+     * @param DataContainer|null $dc
      */
-    public function toggleVisibility($intId, $blnVisible, DataContainer $dc = null): void
+    public function toggleVisibility(int $intId, bool $blnVisible, DataContainer $dc = null): void
     {
         // Set the ID and action
         Input::setGet('id', $intId);
         Input::setGet('act', 'toggle');
 
-        if ($dc) {
+        if ($dc instanceof DataContainer) {
             $dc->id = $intId; // see #8043
         }
 
@@ -100,7 +91,7 @@ class OfferContainer extends \Backend
         }
 
         // Set the current record
-        if ($dc) {
+        if ($dc instanceof DataContainer) {
             $objRow = $this->Database->prepare('SELECT * FROM tl_wem_offer WHERE id=?')
                                      ->limit(1)
                                      ->execute($intId)
@@ -129,11 +120,11 @@ class OfferContainer extends \Backend
         $time = time();
 
         // Update the database
-        $this->Database->prepare("UPDATE tl_wem_offer SET tstamp=$time, published='".($blnVisible ? '1' : '')."' WHERE id=?")
+        $this->Database->prepare(sprintf("UPDATE tl_wem_offer SET tstamp=%d, published='", $time).($blnVisible ? '1' : '')."' WHERE id=?")
                        ->execute($intId)
         ;
 
-        if ($dc) {
+        if ($dc instanceof DataContainer) {
             $dc->activeRecord->tstamp = $time;
             $dc->activeRecord->published = ($blnVisible ? '1' : '');
         }
@@ -156,28 +147,29 @@ class OfferContainer extends \Backend
     /**
      * Update DCA palettes and add custom attributes
      *
-     * @param  [DataContainer] $dc
+     * @throws \Exception
      */
-    public function updatePalettes($dc)
+    public function updatePalettes(DataContainer $dc): void
     {
         if ($dc->id && 'edit' == Input::get('act')) {
             $objJob = Offer::findByPk($dc->id);
             $objAttributes = OfferFeedAttribute::findItems(['pid' => $objJob->pid]);
 
             if (!$objAttributes || 0 == $objAttributes->count()) {
-                return;
+                exit();
             }
 
             $objPalette = PaletteManipulator::create();
             while ($objAttributes->next()) {
-                if (false === strrpos($GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'], $objAttributes->name)) {
+                if (false === strrpos($GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'], (string) $objAttributes->name)) {
                     $objPalette->addField(
                         $objAttributes->name, 
                         $objAttributes->insertInDca, 
-                        constant('Contao\CoreBundle\DataContainer\PaletteManipulator::' . $objAttributes->insertType)
+                        constant(PaletteManipulator::class . '::' . $objAttributes->insertType)
                     );
                 }
             }
+
             $objPalette->applyToPalette('default', 'tl_wem_offer');
         }
     }

@@ -1,0 +1,6 @@
+services:
+  wem.offers.send_alert:
+    class: 'WEM\OffersBundle\Cronjob\SendAlerts'
+    arguments:
+      $logger: '@?logger'
+    public: true

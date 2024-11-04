@@ -16,13 +16,6 @@ class FileUtil
     public static function isDisplayableInBrowser(File $objFile): bool
     {
         $mime = strtolower($objFile->mime);
-
-        if ('image/' === substr($mime, 0, 6)
-        || 'application/pdf' === $mime
-        ) {
-            return true;
-        }
-
-        return false;
+        return 'image/' === substr($mime, 0, 6) || 'application/pdf' === $mime;
     }
 }
