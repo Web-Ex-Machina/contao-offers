@@ -41,11 +41,11 @@ class OfferApplicationContainer extends Backend
 
     private string $csrfTokenName;
 
-    public function __construct(CsrfTokenManagerInterface $csrfTokenManager, string $csrfTokenName)
+    public function __construct(/*CsrfTokenManagerInterface $csrfTokenManager, string $csrfTokenName*/)
     {
         Parent::__construct();
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->csrfTokenName = $csrfTokenName;
+        $this->csrfTokenManager = \Contao\System::getContainer()->get('contao.csrf.token_manager');
+        $this->csrfTokenName = \Contao\System::getContainer()->getParameter('contao.csrf_token_name');
     }
 
     /**

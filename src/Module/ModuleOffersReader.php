@@ -85,7 +85,7 @@ class ModuleOffersReader extends ModuleOffers
         if ($this->offer_applicationForm
             && '' !== $objSession->get('wem_offer')
         ) {
-            $strForm = $this->getApplicationForm($objSession->get('wem_offer'));
+            $strForm = $this->getApplicationForm((int) $objSession->get('wem_offer'));
 
             // Fetch the application form if defined
             if (Input::post('FORM_SUBMIT')) {
