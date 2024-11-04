@@ -120,8 +120,8 @@ class Offer extends Model
                 } else {
                     $arrColumns[] = $t.'.pid = '.$varValue;
                 }
+            
                 break;
-
                 // Search by country
             case 'country':
                 $arrColumns[] = $t.".countries LIKE '%%".$varValue."%'";
@@ -175,6 +175,7 @@ class Offer extends Model
 
                             $arrColumns[] = '('.implode(' AND ', $arrSubColumns).')';
                             break;
+
                         default:
                             $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
                     }
@@ -228,7 +229,6 @@ class Offer extends Model
      * @throws \Exception
      *
      * @return array ['attribute_name'=>['label'=>$label, 'raw_value'=>$value,'human_readable_value'=>$human_readable_value]]
-     * @throws \Exception
      */
     public function getAttributesFull($varAttributes = []): array
     {
@@ -260,7 +260,6 @@ class Offer extends Model
      * @throws \Exception
      *
      * @return array ['attribute_label'=>$human_readable_value,...]
-     * @throws \Exception
      */
     public function getAttributesSimple($varAttributes = []): array
     {
