@@ -120,9 +120,8 @@ class Offer extends Model
                 } else {
                     $arrColumns[] = $t.'.pid = '.$varValue;
                 }
-
+            
                 break;
-
                 // Search by country
             case 'country':
                 $arrColumns[] = $t.".countries LIKE '%%".$varValue."%'";
