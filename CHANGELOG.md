@@ -1,6 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.3.1 - 2024-11-04
+- UPDATED : back to `webexmachina/contao-personal-data-manager` v1.0 required
+
 2.3.0 - 2024-10-16
 - ADDED : Add a new textarea attribute that allows you to use a tinyMCE or a HTML field as attribute
 - ADDED : Ajax request + JS Promise to retrieve the number of items depending on frontend module + optional filters
