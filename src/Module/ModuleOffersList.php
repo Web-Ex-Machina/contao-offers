@@ -18,15 +18,15 @@ use Contao\BackendTemplate;
 use Contao\Combiner;
 use Contao\Config;
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\Environment;
 use Contao\Input;
 use Contao\Model\Collection;
 use Contao\Pagination;
-use Contao\Environment;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
-use WEM\UtilsBundle\Classes\StringUtil;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use WEM\OffersBundle\Model\Offer;
+use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
  * Front end module "offers list".
@@ -35,7 +35,6 @@ use WEM\OffersBundle\Model\Offer;
  */
 class ModuleOffersList extends ModuleOffers
 {
-
     protected ?array $config = [];
 
     protected ?int $limit = 0;
@@ -55,10 +54,12 @@ class ModuleOffersList extends ModuleOffers
 
     private SessionInterface $session;
 
-    public function __construct($objModule, SessionInterface $session, $strColumn = 'main')
+    // public function __construct($objModule, SessionInterface $session, $strColumn = 'main')
+    public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
-        $this->session = $session;
+        // $this->session = $session;
+        $this->session = System::getContainer()->get('session');
     }
 
     /**
@@ -95,7 +96,6 @@ class ModuleOffersList extends ModuleOffers
      */
     protected function compile(): void
     {
-
         // Init session
         $objSession = $this->session;
 
@@ -110,7 +110,7 @@ class ModuleOffersList extends ModuleOffers
         if ($this->offer_applicationForm
             && '' !== $objSession->get('wem_offer')
         ) {
-            $strForm = $this->getApplicationForm($objSession->get('wem_offer'));
+            $strForm = $this->getApplicationForm((int) $objSession->get('wem_offer'));
 
             // Fetch the application form if defined
             if (Input::post('FORM_SUBMIT')) {
@@ -141,16 +141,16 @@ class ModuleOffersList extends ModuleOffers
         $objCssCombiner = new Combiner();
         $objCssCombiner->add('bundles/offers/css/styles.scss', $strVersion);
 
-        $GLOBALS['TL_HEAD'][] = sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
+        $GLOBALS['TL_HEAD'][] = \sprintf('<link rel="stylesheet" href="%s">', $objCssCombiner->getCombinedFile());
         $GLOBALS['TL_JAVASCRIPT'][] = 'bundles/offers/js/scripts.js';
 
         // Add pids
         $this->config = ['pid' => $this->offer_feeds, 'published' => 1];
 
         // Retrieve filters
-        if ($_GET !== [] || $_POST !== []) {
+        if ([] !== $_GET || [] !== $_POST) {
             foreach ($_GET as $f => $v) {
-                if (false === strpos($f, 'offer_filter_')) {
+                if (!str_contains($f, 'offer_filter_')) {
                     continue;
                 }
 
@@ -160,7 +160,7 @@ class ModuleOffersList extends ModuleOffers
             }
 
             foreach (array_keys($_POST) as $f) {
-                if (false === strpos($f, 'offer_filter_')) {
+                if (!str_contains($f, 'offer_filter_')) {
                     continue;
                 }
 
@@ -197,7 +197,7 @@ class ModuleOffersList extends ModuleOffers
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
-                throw new PageNotFoundException('Page not found: '. Environment::get('uri'));
+                throw new PageNotFoundException('Page not found: '.Environment::get('uri'));
             }
 
             // Set limit and offset
@@ -215,7 +215,7 @@ class ModuleOffersList extends ModuleOffers
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        $objItems = Offer::findItems($this->config, ($this->limit ?: 0), ($this->offset ?: 0));
+        $objItems = Offer::findItems($this->config, $this->limit ?: 0, $this->offset ?: 0);
 
         // Add the articles
         if ($objItems instanceof Collection) {

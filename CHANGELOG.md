@@ -1,6 +1,12 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.3.3 - 2024-11-04
+- FIXED : various bugs
+
+2.3.2 - 2024-11-04
+- FIXED : Offer Model declaration
+
 2.3.1 - 2024-11-04
 - UPDATED : back to `webexmachina/contao-personal-data-manager` v1.0 required
 

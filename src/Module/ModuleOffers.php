@@ -3,32 +3,31 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- *
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\Module;
 
 use Contao\Config;
-use Contao\System;
-use Contao\Module;
 use Contao\ContentModel;
-use Contao\Model\Collection;
 use Contao\FrontendTemplate;
 use Contao\Input;
+use Contao\Model\Collection;
+use Contao\Module;
 use Contao\PageModel;
+use Contao\System;
 use Contao\Validator;
+use NotificationCenter\Model\Notification;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
-use NotificationCenter\Model\Notification;
-use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\Offer;
+use WEM\OffersBundle\Model\OfferFeed;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -38,14 +37,13 @@ use WEM\UtilsBundle\Classes\StringUtil;
  */
 abstract class ModuleOffers extends Module
 {
-    protected function catchAjaxRequests()
+    protected function catchAjaxRequests(): void
     {
         if (Input::post('TL_AJAX') && (int) $this->id === (int) Input::post('module')) {
             $objSession = System::getContainer()->get('request_stack')->getSession();
             try {
                 switch (Input::post('action')) {
                     case 'countOffers':
-
                         $c['published'] = 1;
 
                         if ($this->offer_feeds) {
@@ -55,7 +53,7 @@ abstract class ModuleOffers extends Module
                         // Retrieve filters
                         if (Input::post('filters')) {
                             foreach (Input::post('filters') as $f => $v) {
-                                if (false === strpos($f, 'offer_filter_')) {
+                                if (!str_contains($f, 'offer_filter_')) {
                                     continue;
                                 }
 
@@ -70,11 +68,11 @@ abstract class ModuleOffers extends Module
                             'status' => 'success',
                             'count' => $intCount,
                         ];
-                    break;
+                        break;
 
                     case 'seeDetails':
                         if (!Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
+                            throw new \Exception(\sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
 
                         $objItem = Offer::findByPk(Input::post('offer'));
@@ -85,7 +83,7 @@ abstract class ModuleOffers extends Module
 
                     case 'apply':
                         if (!Input::post('offer')) {
-                            throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
+                            throw new \Exception(\sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
                         }
 
                         // Put the offer in session
@@ -157,7 +155,7 @@ abstract class ModuleOffers extends Module
                             'status' => 'success',
                             'msg' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['alertCreated'],
                         ];
-                    break;
+                        break;
 
                     case 'unsubscribe':
                         // Check if we have a valid email
@@ -186,10 +184,10 @@ abstract class ModuleOffers extends Module
                             'status' => 'success',
                             'msg' => $GLOBALS['TL_LANG']['WEM']['OFFERS']['MSG']['requestSent'],
                         ];
-                    break;
+                        break;
 
                     default:
-                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], Input::post('action')));
+                        throw new \Exception(\sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['unknownRequest'], Input::post('action')));
                 }
             } catch (\Exception $e) {
                 $arrResponse = ['status' => 'error', 'msg' => $e->getMessage(), 'trace' => $e->getTrace()];
@@ -204,7 +202,6 @@ abstract class ModuleOffers extends Module
 
     /**
      * Parse one or more items and return them as array.
-     *
      *
      * @throws \Exception
      */
@@ -239,7 +236,7 @@ abstract class ModuleOffers extends Module
         $objTemplate->setData($objItem->row());
 
         if ('' !== $objItem->cssClass) {
-            $strClass = ' '.$objItem->cssClass . $strClass;
+            $strClass = ' '.$objItem->cssClass.$strClass;
         }
 
         $objTemplate->model = $objItem;
@@ -252,25 +249,23 @@ abstract class ModuleOffers extends Module
         $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objItem->date);
 
         // Add an image
-        if ($objItem->addImage)
-        {
+        if ($objItem->addImage) {
             $figure = System::getContainer()
                 ->get('contao.image.studio')
                 ->createFigureBuilder()
                 ->from($objItem->singleSRC)
                 ->setSize($objItem->size)
                 ->enableLightbox((bool) $objItem->fullsize)
-                ->buildIfResourceExists();
+                ->buildIfResourceExists()
+            ;
 
-            if (null !== $figure)
-            {
+            if (null !== $figure) {
                 $figure->applyLegacyTemplateData($objTemplate, $objItem->imagemargin, $objItem->floating);
             }
         }
 
         // Retrieve item teaser
-        if ($objItem->teaser)
-        {
+        if ($objItem->teaser) {
             $objTemplate->hasTeaser = true;
             $objTemplate->teaser = StringUtil::encodeEmail($objItem->teaser);
         }
@@ -278,15 +273,12 @@ abstract class ModuleOffers extends Module
         // Retrieve item content
         $id = $objItem->id;
 
-        $objTemplate->text = function () use ($id): string
-        {
+        $objTemplate->text = function () use ($id): string {
             $strText = '';
             $objElement = ContentModel::findPublishedByPidAndTable($id, 'tl_wem_offer');
 
-            if ($objElement !== null)
-            {
-                while ($objElement->next())
-                {
+            if (null !== $objElement) {
+                while ($objElement->next()) {
                     $strText .= $this->getContentElement($objElement->current());
                 }
             }
@@ -294,7 +286,7 @@ abstract class ModuleOffers extends Module
             return $strText;
         };
 
-        $objTemplate->hasText = static fn(): bool => ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
+        $objTemplate->hasText = static fn (): bool => ContentModel::countPublishedByPidAndTable($objItem->id, 'tl_wem_offer') > 0;
 
         // Retrieve item attributes
         $objTemplate->blnDisplayAttributes = (bool) $this->offer_displayAttributes;
@@ -325,7 +317,7 @@ abstract class ModuleOffers extends Module
 
         // Parse the URL if we have a jumpTo configured
         if ($objTarget = $objItem->getRelated('pid')->getRelated('jumpTo')) {
-            $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($objItem->code ?: $objItem->id);
+            $params = (Config::get('useAutoItem') ? '/' : '/items/').($objItem->code ?: $objItem->id);
             $objTemplate->jumpTo = $objTarget->getFrontendUrl($params);
         }
 
@@ -402,7 +394,7 @@ abstract class ModuleOffers extends Module
      */
     protected function getCustomPackageVersion(string $package): ?string
     {
-        $packages = json_decode(file_get_contents('./../../vendor/composer/installed.json'));
+        $packages = json_decode(file_get_contents('./../vendor/composer/installed.json'));
 
         foreach ($packages->packages as $p) {
             $p = (array) $p;
