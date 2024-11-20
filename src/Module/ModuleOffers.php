@@ -122,6 +122,8 @@ abstract class ModuleOffers extends Module
                         if (!$objAlert instanceof Collection) {
                             $objAlert = new Alert();
                             $objAlert->createdAt = time();
+                        } else {
+                            $objAlert = $objAlert->current();
                         }
 
                         $objAlert->tstamp = time();
