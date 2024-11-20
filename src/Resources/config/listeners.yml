@@ -25,6 +25,8 @@ services:
       - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
 
   WEM\OffersBundle\EventListener\ProcessFormDataListener:
+    arguments:
+      $encryption: '@wem.encryption_util'
     tags:
       - { name: contao.hook, hook: processFormData, method: __invoke, priority: 100 }
 
