@@ -13,8 +13,8 @@ declare(strict_types=1);
  */
 
 use Contao\BackendUser;
+use Contao\System;
 use WEM\OffersBundle\DataContainer\OfferAlertContainer;
-use Contao\CoreBundle\Intl\Locales;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Config
@@ -120,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
-            'options_callback' => fn() => Locales::class->getLocales(),
+            'options_callback' => fn() => System::getContainer()->get('contao.intl.locales')->getLocales(),
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'moduleOffersAlert'=>[
