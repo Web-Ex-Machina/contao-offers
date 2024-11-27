@@ -21,9 +21,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
         'ptable' => 'tl_wem_offer_alert',
         'switchToEdit' => true,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [OfferAlertConditionContainer::class, 'getValueChoices']
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -96,16 +93,15 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
         'field' => [
             'exclude' => true,
             'filter' => true,
-            'inputType'                 => 'select',
-            'options_callback'          => [OfferAlertConditionContainer::class, 'getFieldChoices'],
-            'eval'                      => ['includeBlankOption'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'],
-            'sql'                       => "varchar(255) NOT NULL default ''"
+            'inputType' => 'text',
+            'eval' => ['tl_class'=>'w50'],
+            'sql' => "varchar(255) NOT NULL default ''"
         ],
         'value' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
+            'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],
