@@ -123,8 +123,6 @@ class SendAlerts
             $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
 
             // Format alert conditions for request
-            // @todo > Take in consideration that we can have multiple values per field.
-            // Ex : 2 cities for locations, 2 cities for country etc...
             if ($objConditions && 0 < $objConditions->count()) {
                 while ($objConditions->next()) {
                     $arrConditions[$objConditions->field] = $objConditions->value;
