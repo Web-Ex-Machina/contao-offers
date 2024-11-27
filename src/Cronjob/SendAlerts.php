@@ -187,7 +187,6 @@ class SendAlerts
             if ($objModuleOffersAlert) {
                 $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
                 $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
-                //$arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objPageUnsubscribe, ['wem_action'=>'unsubscribe','token'=>$objAlerts->token], UrlGeneratorInterface::ABSOLUTE_URL);
             }
 
             if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
