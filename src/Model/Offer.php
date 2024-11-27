@@ -40,51 +40,6 @@ class Offer extends Model
     protected static $strTable = 'tl_wem_offer';
 
     /**
-     * Find items, depends on the arguments.
-     *
-     * @return Model|Collection|null
-     */
-    public static function findItems(
-        array $arrConfig = [], int $intLimit = 0,
-        int $intOffset = 0, array $arrOptions = []
-    ): ?Collection {
-        $t = static::$strTable;
-        $arrColumns = static::formatColumns($arrConfig);
-
-        if ($intLimit > 0) {
-            $arrOptions['limit'] = $intLimit;
-        }
-
-        if ($intOffset > 0) {
-            $arrOptions['offset'] = $intOffset;
-        }
-
-        if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = $t.'.createdAt DESC';
-        }
-
-        if ([] === $arrColumns) {
-            return static::findAll($arrOptions);
-        }
-
-        return static::findBy($arrColumns, null, $arrOptions);
-    }
-
-    /**
-     * Count items, depends on the arguments.
-     */
-    public static function countItems(array $arrConfig = [], array $arrOptions = []): int
-    {
-        $arrColumns = static::formatColumns($arrConfig);
-
-        if ([] === $arrColumns) {
-            return static::countAll();
-        }
-
-        return static::countBy($arrColumns, null, $arrOptions);
-    }
-
-    /**
      * Format ItemModel columns.
      *
      * @return array [The Model columns]
