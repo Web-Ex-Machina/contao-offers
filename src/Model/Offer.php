@@ -68,6 +68,16 @@ class Offer extends Model
         $t = static::$strTable;
         Controller::loadDatacontainer($t);
         switch ($strField) {
+            // Search by id
+            case 'id':
+                if (\is_array($varValue)) {
+                    $arrColumns[] = $t.'.id IN('.implode(',', array_map('\intval', $varValue)).')';
+                } else {
+                    $arrColumns[] = $t.'.id = '.$varValue;
+                }
+            
+                break;
+
             // Search by pid
             case 'pid':
                 if (\is_array($varValue)) {
