@@ -64,7 +64,7 @@ class SendAlerts
             // or daily and lastJob < time - 1 day
             // or weekly and lastJob < time - 1 week
             // or monthly and lastJob < time - 1 month
-            $c = ['active'=>1];
+            $c = ['active' => 1];
 
             if ($blnUpdateAlertLastJob) {
                 $arrWhere = [];

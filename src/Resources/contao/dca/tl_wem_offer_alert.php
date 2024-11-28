@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {recipient_legend},email;
+            {recipient_legend},email,activatedAt;
             {alert_legend},feed,frequency,language,moduleOffersAlert;
             {filters_legend},conditions
         ',
@@ -97,11 +97,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'activatedAt' => [
-            'default' => 0,
-            'flag' => 8,
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
         'token' => [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
@@ -113,6 +108,14 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'activatedAt' => [
+            'default' => 0,
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
+            'flag' => 8,
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'language'=>[
             'exclude' => true,
