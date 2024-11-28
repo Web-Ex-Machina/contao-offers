@@ -125,7 +125,9 @@ class SendAlerts
                 // Format alert conditions for request
                 if ($objConditions && 0 < $objConditions->count()) {
                     while ($objConditions->next()) {
-                        $arrConditions[$objConditions->field] = $objConditions->value;
+                        if ($objConditions->value) {
+                            $arrConditions[$objConditions->field] = $objConditions->value;
+                        }
                     }
                 }
 
@@ -202,10 +204,7 @@ class SendAlerts
             }
 
             // Step 5 - Log the results (how many alerts sents & how job offers sent)
-            $this->logger->info('Cronjob done, {nbAlerts} alerts and {nbOffers} offers sent', [
-                "nbAlerts" => $nbAlerts,
-                "nbOffers" => $nbOffers
-            ]);
+            $this->logger->info(sprintf('Cronjob done, %s alerts and %s offers sent', $nbAlerts, $nbOffers));
         } catch(\Exception $e) {
             throw $e;
         }
