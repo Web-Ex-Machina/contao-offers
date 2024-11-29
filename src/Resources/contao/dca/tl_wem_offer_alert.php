@@ -13,8 +13,8 @@ declare(strict_types=1);
  */
 
 use Contao\BackendUser;
+use Contao\System;
 use WEM\OffersBundle\DataContainer\OfferAlertContainer;
-use Contao\CoreBundle\Intl\Locales;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Config
@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {recipient_legend},email;
+            {recipient_legend},email,activatedAt;
             {alert_legend},feed,frequency,language,moduleOffersAlert;
             {filters_legend},conditions
         ',
@@ -97,11 +97,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'activatedAt' => [
-            'default' => 0,
-            'flag' => 8,
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
         'token' => [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
@@ -114,13 +109,21 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
+        'activatedAt' => [
+            'default' => 0,
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
+            'flag' => 8,
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
         'language'=>[
             'exclude' => true,
             'search' => true,
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
-            'options_callback' => fn() => Locales::class->getLocales(),
+            'options_callback' => fn() => System::getContainer()->get('contao.intl.locales')->getLocales(),
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'moduleOffersAlert'=>[

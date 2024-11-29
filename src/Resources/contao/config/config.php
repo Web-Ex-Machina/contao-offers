@@ -31,9 +31,7 @@ Contao\ArrayUtil::arrayInsert(
             ],
             'wem-offers-alerts' => [
                 'tables' => ['tl_wem_offer_alert', 'tl_wem_offer_alert_condition'],
-                'sendAlerts' => static function () : void {
-                    (new OfferAlertContainer())->sendAlerts();
-                },
+                'sendAlerts' => [WEM\OffersBundle\DataContainer\OfferAlertContainer::class, 'sendAlerts']
             ],
         ],
     ]

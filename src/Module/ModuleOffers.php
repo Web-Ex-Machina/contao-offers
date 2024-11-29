@@ -122,6 +122,8 @@ abstract class ModuleOffers extends Module
                         if (!$objAlert instanceof Collection) {
                             $objAlert = new Alert();
                             $objAlert->createdAt = time();
+                        } else {
+                            $objAlert = $objAlert->current();
                         }
 
                         $objAlert->tstamp = time();
@@ -136,6 +138,12 @@ abstract class ModuleOffers extends Module
                         $objAlert->save();
 
                         foreach ($arrConditions as $c => $v) {
+                            $objAlertConditions = AlertCondition::findItems(['pid' => $objAlert->id, 'field' => $c, 'value' => $v]);
+
+                            if (null !== $objAlertConditions && 0 < $objAlertConditions->count()) {
+                                continue;
+                            }
+
                             $objAlertCondition = new AlertCondition();
                             $objAlertCondition->tstamp = time();
                             $objAlertCondition->createdAt = time();
