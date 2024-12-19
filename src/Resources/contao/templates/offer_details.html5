@@ -33,15 +33,11 @@
 		<?php endif; ?>
 	</div>
 	
-	<?php if($this->canApply): ?>
-	
-	<div class="h4"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['applyTitle'] ?></div>
-	
+	<?php if($this->canApply): ?>	
 	<?php if ('modal' === $this->formDisplay): ?>
 		<button class="btn-sm offer__action" data-process="openApplicationModal" data-offer="<?= $this->id ?>"><?= $GLOBALS['TL_LANG']['WEM']['OFFERS']['byForm'] ?></button>
 	<?php else: ?>
 		<?= $this->form ?>
 	<?php endif; ?>
-
 	<?php endif; ?>
 </div>
