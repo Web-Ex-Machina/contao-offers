@@ -23,26 +23,13 @@
 		<?php if ($this->teaser): ?>
 			<?= $this->teaser ?>
 		<?php endif ?>
+		
+		<?php if ($this->picture): ?>
 		<div class="offer__figure offer__mainPicture">
-			<?php if ($this->picture): ?>
 				<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
 			<?php elseif($pictures && count($pictures)>0): ?>
 				<img src="<?php echo $pictures[0]['src'] ?>" alt="<?php echo $pictures[0]['picture']['alt']?:'' ?>" />
-			<?php endif; ?>
 		</div>
-		<?php if($pictures && count($pictures)>0): ?>
-		    <div class="offer__gallery">
-				<?php if ($this->picture): ?>
-			    	<div class="offer__figure active">
-						<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
-					</div>
-				<?php endif; ?>
-		    	<?php foreach ($pictures as $key => $picture): ?>
-			      <div class="offer__figure <?php echo !$this->picture && $key==0?'active':'' ?>">
-					<img src="<?= $picture['thumbnail']?:$picture['src'] ?>"  alt="<?= $picture['picture']['alt']?:'' ?>" />
-			      </div>
-		    	<?php endforeach ?>
-		    </div>
 		<?php endif; ?>
 	</div>
 	
