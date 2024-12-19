@@ -27,6 +27,11 @@ class OfferInsertTagListener
 
         // Check if we want a specific offer or the current one
         $varOffer = (3 === count($chunks)) ? $chunks[2] : Input::get('auto_item');
+
+        if (!$varOffer) {
+            return false;
+        }
+
         $objOffer = Offer::findByIdOrCode($varOffer);
 
         // If objOffer does not exist, return empty string
