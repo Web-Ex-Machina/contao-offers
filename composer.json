@@ -22,7 +22,7 @@
         "php": "^7.4||^8.2",
         "contao/core-bundle": "^4.13||^5.0",
         "terminal42/contao-countryselect": "^1.5",
-        "terminal42/notification_center": "^1.7.9",
+        "terminal42/notification_center": "^1.6",
         "webexmachina/contao-utils": "^1.0||2.*",
         "webexmachina/contao-personal-data-manager": "^1.0",
         "ext-json": "*",
