@@ -306,7 +306,7 @@ abstract class ModuleOffers extends Module
         // Notice the template if we want/can display apply button
         if ($this->offer_applicationForm) {
             $objTemplate->canApply = true;
-            $this->Template->formDisplay = $this->offer_applicationFormDisplay;
+            $objTemplate->formDisplay = $this->offer_applicationFormDisplay;
 
             if ('modal' === $this->offer_applicationFormDisplay) {
                 $objTemplate->applyUrl = $this->addToUrl('apply='.$objItem->id, true, ['offer']);
