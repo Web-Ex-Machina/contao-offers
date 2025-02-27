@@ -316,6 +316,12 @@ abstract class ModuleOffers extends Module
             }
         }
 
+        if ($this->overviewPage)
+        {
+            $objTemplate->referer = PageModel::findById($this->overviewPage)->getFrontendUrl();
+            $objTemplate->back = $this->customLabel ?: $GLOBALS['TL_LANG']['MSC']['newsOverview'];
+        }
+
         // Notice the template if we want to display the text
         if ($this->offer_displayTeaser) {
             $objTemplate->blnDisplayText = true;
