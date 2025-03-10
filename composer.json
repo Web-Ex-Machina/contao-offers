@@ -26,7 +26,7 @@
         "webexmachina/contao-utils": "^1.0||2.*",
         "webexmachina/contao-personal-data-manager": "^1.0",
         "ext-json": "*",
-        "webexmachina/contao-form-data-manager": "dev-main",
+        "webexmachina/contao-form-data-manager": "^1.0",
         "contao/manager-plugin": "^2.13"
     },
     "autoload":{
