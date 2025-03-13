@@ -34,7 +34,7 @@ class SendAlerts
 
     private LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(?LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
