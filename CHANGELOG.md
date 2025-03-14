@@ -1,6 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.3.5 to 2.3.10 - 2025-03-14
+- Lot of fixes
+
 2.3.4 - 2024-11-04
 - FIXED : some more various bugs
 
