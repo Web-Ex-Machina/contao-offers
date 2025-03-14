@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
+ * Personal Data Manager for Contao Open Source CMS
+ * Copyright (c) 2015-2024 Web ex Machina
  *
  * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
+ * @package  Web-Ex-Machina/contao-smartgear
  * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
  */
 
 namespace WEM\OffersBundle\Cronjob;
@@ -17,22 +17,21 @@ namespace WEM\OffersBundle\Cronjob;
 use Contao\Config;
 use Contao\Date;
 use Contao\FrontendTemplate;
-use Contao\System;
 use Contao\ModuleModel;
 use Contao\PageModel;
+use Contao\System;
+use NotificationCenter\Model\Notification;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
-use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
-use NotificationCenter\Model\Notification;
-use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 class SendAlerts
 {
-
-    private LoggerInterface $logger;
+    private ?LoggerInterface $logger;
 
     public function __construct(?LoggerInterface $logger)
     {
@@ -41,7 +40,7 @@ class SendAlerts
 
     /**
      * Runs the SendAlerts cron job.
-     * Executed every hour
+     * Executed every hour.
      *
      * @param bool $blnUpdateAlertLastJob Whether to update the lastJob field of the alerts. Defaults to true.
      *
@@ -52,7 +51,9 @@ class SendAlerts
     {
         try {
             // Log the start of the job and setup some vars
-            $this->logger->info('Cronjob SendAlerts started');
+            if (null !== $this->logger) {
+                $this->logger->info('Cronjob SendAlerts started');
+            }
 
             $t = Alert::getTable();
             $t3 = Offer::getTable();
@@ -68,7 +69,7 @@ class SendAlerts
 
             if ($blnUpdateAlertLastJob) {
                 $arrWhere = [];
-                $arrWhere[] = sprintf(
+                $arrWhere[] = \sprintf(
                     "(
                         {$t}.frequency = 'hourly'
                         OR ({$t}.frequency = 'daily' AND {$t}.lastJob < %s)
@@ -82,11 +83,14 @@ class SendAlerts
                 $c['where'] = $arrWhere;
             }
 
-            $objAlerts = Alert::findItems($c, 0, 0, ['order'=>'language ASC, moduleOffersAlert ASC']);
+            $objAlerts = Alert::findItems($c, 0, 0, ['order' => 'language ASC, moduleOffersAlert ASC']);
 
             // Quit the job if there is no alerts to retrieve
             if (!$objAlerts || 0 === $objAlerts->count()) {
-                $this->logger->info('Nothing to send, abort !');
+                if (null !== $this->logger) {
+                    $this->logger->info('Nothing to send, abort !');
+                }
+
                 return;
             }
 
@@ -95,7 +99,7 @@ class SendAlerts
 
             // Now, loop on the alerts and check if there is jobs matching its conditions
             while ($objAlerts->next()) {
-                if (!array_key_exists($objAlerts->language, $arrCache)){
+                if (!\array_key_exists($objAlerts->language, $arrCache)) {
                     $arrCache[$objAlerts->language] = [];
                 }
 
@@ -134,17 +138,17 @@ class SendAlerts
                 // Depending on frequency, adjust job time condition
                 switch ($objAlerts->frequency) {
                     case 'daily':
-                        $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 day'));
+                        $arrConditions['where'][] = \sprintf('%s.date > %s', $t3, strtotime('-1 day'));
                         break;
                     case 'weekly':
-                        $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 week'));
+                        $arrConditions['where'][] = \sprintf('%s.date > %s', $t3, strtotime('-1 week'));
                         break;
                     case 'monthly':
-                        $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 month'));
+                        $arrConditions['where'][] = \sprintf('%s.date > %s', $t3, strtotime('-1 month'));
                         break;
                     case 'hourly':
                     default:
-                        $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 hour'));
+                        $arrConditions['where'][] = \sprintf('%s.date > %s', $t3, strtotime('-1 hour'));
                 }
 
                 // Retrieve items matching the conditions
@@ -166,7 +170,7 @@ class SendAlerts
 
                 // Loop on the items, format everything and send the notification \o/
                 while ($objItems->next()) {
-                    if (is_array($arrCache[$objAlerts->language]) && \array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
+                    if (\is_array($arrCache[$objAlerts->language]) && \array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
                         $arrBuffer[] = $arrCache[$objAlerts->language][$objItems->id];
                     } else {
                         $bufferTmp = $this->parseItem($objItems->current(), $objAlerts->language, $objFeed->tplOfferAlert);
@@ -204,8 +208,10 @@ class SendAlerts
             }
 
             // Step 5 - Log the results (how many alerts sents & how job offers sent)
-            $this->logger->info(sprintf('Cronjob done, %s alerts and %s offers sent', $nbAlerts, $nbOffers));
-        } catch(\Exception $e) {
+            if (null !== $this->logger) {
+                $this->logger->info(\sprintf('Cronjob done, %s alerts and %s offers sent', $nbAlerts, $nbOffers));
+            }
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -213,18 +219,19 @@ class SendAlerts
     /**
      * Parses an Offer object into a string using a specified template.
      *
-     * @param Offer $objItem The Offer object to parse.
-     * @param string $language The language to use for language file loading.
+     * @param Offer  $objItem     the Offer object to parse
+     * @param string $language    the language to use for language file loading
      * @param string $strTemplate The name of the template to use. Defaults to 'offer_alert_default'.
      *
-     * @return string The parsed template as a string.
      * @throws \Exception
+     *
+     * @return string the parsed template as a string
      */
     protected function parseItem(Offer $objItem, string $language, string $strTemplate = 'offer_alert_default'): string
     {
-        System::loadLanguageFile(OfferFeed::getTable(),$language);
-        System::loadLanguageFile(OfferFeedAttribute::getTable(),$language);
-        System::loadLanguageFile(Offer::getTable(),$language);
+        System::loadLanguageFile(OfferFeed::getTable(), $language);
+        System::loadLanguageFile(OfferFeedAttribute::getTable(), $language);
+        System::loadLanguageFile(Offer::getTable(), $language);
 
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
