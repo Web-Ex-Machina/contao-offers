@@ -26,7 +26,13 @@ class OfferInsertTagListener
         }
 
         // Check if we want a specific offer or the current one
-        $varOffer = (3 === count($chunks)) ? $chunks[2] : Input::get('auto_item');
+        if (3 === count($chunks)) {
+            $varOffer = $chunks[2];
+        } else if (Input::get('auto_item')) {
+            $varOffer = Input::get('auto_item');
+        } else if (Input::post('offer')) {
+            $varOffer = Input::post('offer');
+        }
 
         if (!$varOffer) {
             return false;
