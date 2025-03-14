@@ -156,7 +156,7 @@ class OfferContainer extends Backend
             $objAttributes = OfferFeedAttribute::findItems(['pid' => $objJob->pid]);
 
             if (!$objAttributes || 0 == $objAttributes->count()) {
-                exit();
+                return;
             }
 
             $objPalette = PaletteManipulator::create();
