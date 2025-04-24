@@ -170,11 +170,11 @@ class ModuleOffersFilters extends ModuleOffers
                                 if (!$objOptions->{$f}) {
                                     continue;
                                 }
-
+                                
                                 $filter['options'][] = [
                                     'value' => $objOptions->{$f},
                                     'label' => $objOptions->{$f},
-                                    'selected' => (null !== Input::get($fName) && Input::get($fName) === $objOptions->{$f}),
+                                    'selected' => (null !== Input::get($fName) && html_entity_decode(Input::get($fName)) === $objOptions->{$f}),
                                 ];
                             }
                         }

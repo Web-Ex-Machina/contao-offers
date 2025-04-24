@@ -155,7 +155,7 @@ class ModuleOffersList extends ModuleOffers
                 }
 
                 if (Input::get($f)) {
-                    $this->config[str_replace('offer_filter_', '', $f)] = Input::get($f);
+                    $this->config[str_replace('offer_filter_', '', $f)] = html_entity_decode(Input::get($f));
                 }
             }
 
@@ -165,7 +165,7 @@ class ModuleOffersList extends ModuleOffers
                 }
 
                 if (Input::post($f)) {
-                    $this->config[str_replace('offer_filter_', '', $f)] = Input::post($f);
+                    $this->config[str_replace('offer_filter_', '', $f)] = html_entity_decode(Input::post($f));
                 }
             }
         }

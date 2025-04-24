@@ -57,7 +57,7 @@ abstract class ModuleOffers extends Module
                                     continue;
                                 }
 
-                                $c[str_replace('offer_filter_', '', $f)] = $v;
+                                $c[str_replace('offer_filter_', '', $f)] = html_entity_decode($v);
                             }
                         }
 
