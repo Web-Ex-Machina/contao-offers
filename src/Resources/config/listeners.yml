@@ -19,9 +19,10 @@ services:
   offers.listener.load_datacontainer:
     class: WEM\OffersBundle\EventListener\LoadDataContainerListener
     arguments:
-      $logger: '@logger'
+      $logger: '@?logger'
     public: true
     tags:
+      - { name: monolog.logger, channel: contao }
       - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
 
   WEM\OffersBundle\EventListener\ProcessFormDataListener:

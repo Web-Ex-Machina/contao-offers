@@ -20,9 +20,9 @@ use WEM\OffersBundle\Model\OfferFeedAttribute;
 
 class LoadDataContainerListener
 {
-    private LoggerInterface $logger;
+    private ?LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
@@ -43,7 +43,14 @@ class LoadDataContainerListener
                 }
             }
         } catch (\Exception $exception) {
-            $this->logger->log('ERROR',vsprintf(($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'])?:"coucou", [$exception->getMessage(), $exception->getTrace()]),["WEM_OFFERS"]);
+            $this->logger ? $this->logger->log(
+                'ERROR',
+                sprintf(
+                    $GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['generic'] ?: "Error %s - %s",
+                    $exception->getMessage(), $exception->getTrace(),
+                ),
+                ["WEM_OFFERS"]
+            ) : dump($exception->getMessage());
         }
     }
 
