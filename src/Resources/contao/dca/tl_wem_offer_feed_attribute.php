@@ -79,12 +79,12 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
 
     // Subpalettes
     'subpalettes' => [
-        'type_text' => 'value,isFilter,isAlertCondition',
+        'type_text' => 'value,isFilter,isAlertCondition,isMultipleAlertCondition',
         'type_textarea' => 'allowHtml,helpwizard,rte,explanation',
-        'type_select' => 'options,multiple,chosen,isFilter,isAlertCondition',
+        'type_select' => 'options,multiple,chosen,isFilter,isAlertCondition,isMultipleAlertCondition',
         'type_picker' => 'fkey',
         'type_fileTree' => 'multiple,filesOnly,fieldType,extensions',
-        'type_listWizard' => 'multiple,allowHtml,maxlength,isFilter,isAlertCondition',
+        'type_listWizard' => 'multiple,allowHtml,maxlength,isFilter,isAlertCondition,isMultipleAlertCondition',
     ],
 
     // Fields
@@ -210,6 +210,13 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'sql' => "char(1) NOT NULL default ''",
         ],
         'isAlertCondition' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w50 cbx'],
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'isMultipleAlertCondition' => [
             'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
