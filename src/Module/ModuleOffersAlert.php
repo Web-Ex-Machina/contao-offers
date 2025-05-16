@@ -192,7 +192,7 @@ class ModuleOffersAlert extends ModuleOffers
                     'label' => $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['label'][0] ?: $GLOBALS['TL_LANG']['tl_wem_offer'][$c][0],
                     'value' => Input::get($c) ?: '',
                     'options' => [],
-                    'multiple' => isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['multiple']),
+                    'multiple' => isset($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['eval']['isMultipleAlertCondition']),
                 ];
 
                 switch ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$c]['inputType']) {
