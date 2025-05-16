@@ -130,7 +130,22 @@ class SendAlerts
                 if ($objConditions && 0 < $objConditions->count()) {
                     while ($objConditions->next()) {
                         if ($objConditions->value) {
-                            $arrConditions[$objConditions->field] = $objConditions->value;
+                            $arrValue = unserialize($objConditions->value);
+
+                            if (null !== $arrValue) {
+                                $arrChunks = [];
+                                $t = Offer::getTable();
+                                if (!empty($arrValue)) {
+                                    foreach($arrValue as $v) {
+                                        $arrChunks[] = sprintf("%s.%s = '%s'", $t, $objConditions->field, $v);
+                                    }
+
+                                    $arrConditions['where'][] = implode(' OR ', $arrChunks);
+                                }
+
+                            } else {
+                                $arrConditions[$objConditions->field] = $objConditions->value;
+                            }
                         }
                     }
                 }
