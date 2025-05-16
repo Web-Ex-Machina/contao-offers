@@ -101,7 +101,11 @@ abstract class ModuleOffers extends Module
                         $arrConditions = [];
                         if (Input::post('conditions')) {
                             foreach (Input::post('conditions') as $c => $v) {
-                                $arrConditions[$c] = $v;
+                                if (is_array($v)) {
+                                    $arrConditions[$c] = serialize($v);
+                                } else {
+                                    $arrConditions[$c] = $v;
+                                }
                             }
                         }
 
