@@ -130,9 +130,8 @@ class SendAlerts
                 if ($objConditions && 0 < $objConditions->count()) {
                     while ($objConditions->next()) {
                         if ($objConditions->value) {
-                            $arrValue = unserialize($objConditions->value);
-
-                            if (null !== $arrValue) {
+                            if ($this->isSerialized($objConditions->value)) {
+                                $arrValue = unserialize($objConditions->value);
                                 $arrChunks = [];
                                 $t = Offer::getTable();
                                 if (!empty($arrValue)) {
@@ -142,7 +141,6 @@ class SendAlerts
 
                                     $arrConditions['where'][] = implode(' OR ', $arrChunks);
                                 }
-
                             } else {
                                 $arrConditions[$objConditions->field] = $objConditions->value;
                             }
@@ -256,5 +254,14 @@ class SendAlerts
         $objTemplate->language = $language;
 
         return $objTemplate->parse();
+    }
+
+    /**
+     * Check if a string is serialized
+     * @todo: use contao-utils function for next major
+     */
+    protected function isSerialized(string $value): bool
+    {
+       return 0 < preg_match('^([adObis]:|N;)^', $value);
     }
 }
