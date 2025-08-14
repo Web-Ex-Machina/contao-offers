@@ -3,6 +3,7 @@ Extension "Offers" for Contao Open Source CMS
 
 2.4.0 - 2025-08-14
 - ADDED - Attributes can now be multiple criteria for Alerts
+- UPDATED - Filters forms now properly redirect to the target page if a jumpTo page is configured
 
 2.3.11 - 2025-04-29
 - Fixes again
