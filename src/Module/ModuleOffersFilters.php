@@ -6,7 +6,9 @@ namespace WEM\OffersBundle\Module;
 
 use Contao\BackendTemplate;
 use Contao\Combiner;
+use Contao\Environment;
 use Contao\Input;
+use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 use WEM\OffersBundle\Model\Offer;
@@ -71,6 +73,13 @@ class ModuleOffersFilters extends ModuleOffers
 
         $this->Template->filters = $this->filters;
         $this->Template->moduleId = $this->id;
+
+        if ($this->jumpTo) {
+            $objTarget = PageModel::findByPk($this->jumpTo);
+            $this->Template->action = $objTarget->getFrontendUrl();
+        } else {
+            $this->Template->action = Environment::get('request');
+        }
     }
 
     /**

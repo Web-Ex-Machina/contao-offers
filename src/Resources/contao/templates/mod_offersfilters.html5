@@ -3,7 +3,7 @@
 
 <?php $this->block('content'); ?>
   <?php if ($this->filters): ?>
-	<form action="{{env::request}}" method="GET">
+	<form action="<?= $this->action ?>" method="GET">
   	<div class="offers__filters">
 	  	<?php foreach ($this->filters as $f): ?>
 	  		<?php if ($f['name'] != 'search'): ?>
