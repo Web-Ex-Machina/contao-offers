@@ -1,6 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.4.0 - 2025-08-14
+- ADDED - Attributes can now be multiple criteria for Alerts
+
 2.3.11 - 2025-04-29
 - Fixes again
 
