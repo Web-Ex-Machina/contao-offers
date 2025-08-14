@@ -90,7 +90,14 @@
 		 		var conditions = {};
 		 		$('.mod_offersalert .conditions').find('input,select').each(function(){
 		 			if ("" !== this.value) {
-						conditions[this.name] = this.value;
+						if ('SELECT' === this.tagName) {
+							conditions[this.name] = [];
+							Array.from(this.selectedOptions).map(
+								v => conditions[this.name].push(v.value)
+							);
+						} else {
+							conditions[this.name] = this.value;
+						}
 		 			}
 				});
 

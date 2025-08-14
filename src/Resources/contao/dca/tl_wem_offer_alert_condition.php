@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
             'filter' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => "mediumtext NULL",
         ],
     ],
 ];
