@@ -1,6 +1,9 @@
 Extension "Offers" for Contao Open Source CMS
 ========
 
+2.4.1 - 2025-08-15
+- ADDED - Add a hook to update alert condition based on your own custom logic
+
 2.4.0 - 2025-08-14
 - ADDED - Attributes can now be multiple criteria for Alerts
 - UPDATED - Filters forms now properly redirect to the target page if a jumpTo page is configured

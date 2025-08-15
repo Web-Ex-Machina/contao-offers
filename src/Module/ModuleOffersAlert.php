@@ -236,6 +236,12 @@ class ModuleOffersAlert extends ModuleOffers
                         break;
                 }
 
+                if (isset($GLOBALS['TL_HOOKS']['WEMOFFERSUPDATEALERTCONDITION']) && \is_array($GLOBALS['TL_HOOKS']['WEMOFFERSUPDATEALERTCONDITION'])) {
+                    foreach ($GLOBALS['TL_HOOKS']['WEMOFFERSUPDATEALERTCONDITION'] as $callback) {
+                        $condition = static::importStatic($callback[0])->{$callback[1]}($condition, $this);
+                    }
+                }
+
                 $this->conditions[] = $condition;
             }
         }
