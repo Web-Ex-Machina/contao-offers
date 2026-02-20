@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Backend;
+use Contao\DataContainer;
 use Contao\Model\Collection;
 use WEM\UtilsBundle\Classes\StringUtil;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
@@ -73,7 +74,6 @@ class ModuleContainer extends Backend
         $fields = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForAlerts']) {
             if (!empty($v['eval']) && true === $v['eval']['isAlertCondition']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
@@ -91,7 +91,6 @@ class ModuleContainer extends Backend
         $fields = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            // if (!empty($v['eval']) && true === $v['eval']['wemoffers_isAvailableForFilters']) {
             if (!empty($v['eval']) && true === $v['eval']['isFilter']) {
                 $fields[$k] = $v['label'][0] ?: $k;
             }
@@ -135,9 +134,9 @@ class ModuleContainer extends Backend
      *
      * @throws \Exception
      */
-    public function getAttributesOptions(): array
+    public function getAttributesOptions(DataContainer $dc): array
     {
-        $arrPids = StringUtil::deserialize($this->activeRecord->offer_feeds);
+        $arrPids = StringUtil::deserialize($dc->activeRecord->offer_feeds);
         $c = [];
 
         if (null !== $arrPids && !empty($arrPids)) {

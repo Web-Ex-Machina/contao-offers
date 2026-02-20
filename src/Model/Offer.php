@@ -87,12 +87,13 @@ class Offer extends Model
                 }
             
                 break;
-                // Search by country
+            
+            // Search by country
             case 'country':
                 $arrColumns[] = $t.".countries LIKE '%%".$varValue."%'";
                 break;
 
-                // Search for recipient not present in the subtable lead
+            // Search for recipient not present in the subtable lead
             case 'published':
                 if (1 === $varValue) {
                     $time = Date::floorToMinute();
@@ -101,7 +102,7 @@ class Offer extends Model
 
                 break;
 
-                // Wizard for active items
+            // Wizard for active items
             case 'active':
                 if (1 === $varValue) {
                     $arrColumns[] = \sprintf('%s.published = 1 AND (%s.start = 0 OR %s.start <= ', $t, $t, $t).time().\sprintf(') AND (%s.stop = 0 OR %s.stop >= ', $t, $t).time().')';
@@ -111,12 +112,12 @@ class Offer extends Model
 
                 break;
 
-                // Load parent
+            // Load parent
             default:
                 if (\array_key_exists($strField, $GLOBALS['TL_DCA'][$t]['fields'])) {
                     switch ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['inputType']) {
                         case 'select':
-                            if ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['eval']['multiple']) {
+                            if (array_key_exists('multiple', $GLOBALS['TL_DCA'][$t]['fields'][$strField]['eval'])) {
                                 $varValue = \is_array($varValue) ? $varValue : [$varValue];
                                 $arrSubColumns = [];
 
