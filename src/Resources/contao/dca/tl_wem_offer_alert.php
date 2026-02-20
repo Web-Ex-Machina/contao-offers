@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'delete' => [
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null.'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
                 'href' => 'act=show',
@@ -151,11 +151,10 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
             'search' => true,
             'inputType' => 'select',
             'options' => ['hourly', 'daily', 'weekly', 'monthly'],
-            'reference' => $GLOBALS['TL_LANG']['tl_wem_offer_alert']['frequency'],
+            'reference' => $GLOBALS['TL_LANG']['tl_wem_offer_alert']['frequency'] ?? [],
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
         ],
-
         'conditions' => [
             'inputType' => 'dcaWizard',
             'foreignTable' => 'tl_wem_offer_alert_condition',

@@ -40,7 +40,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
         ],
         'global_operations' => [
             'all' => [
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
@@ -58,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'delete' => [
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null.'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
                 'href' => 'act=show',
@@ -105,7 +104,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed_attribute'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-
         'name' => [
             'exclude' => true,
             'search' => true,

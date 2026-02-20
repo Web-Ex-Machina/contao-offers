@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_attributes'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_filters_module'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [WEM\OffersBundle\DataContainer\ModuleContainer::class, 'getFiltersModules'],
+    'options_callback' => [ModuleContainer::class, 'getFiltersModules'],
     'foreignKey' => 'tl_module.name',
     'eval' => ['mandatory' => true],
     'sql' => 'int(10) unsigned NOT NULL default 0',

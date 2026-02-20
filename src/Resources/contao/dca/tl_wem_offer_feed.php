@@ -44,7 +44,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
         ],
         'global_operations' => [
             'all' => [
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
@@ -58,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
             'delete' => [
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\'))return false;Backend.getScrollOffset()"',
+                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null.'\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
                 'href' => 'act=show',
@@ -98,7 +97,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
             'flag' => 8,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-
         'title' => [
             'exclude' => true,
             'search' => true,
@@ -116,7 +114,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
             ],
             'sql' => "varchar(255) BINARY NOT NULL default ''",
         ],
-
         'jumpTo' => [
             'exclude' => true,
             'inputType' => 'pageTree',
@@ -125,7 +122,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
             'sql' => "int(10) unsigned NOT NULL default 0",
             'relation' => ['type'=>'hasOne', 'load'=>'lazy']
         ],
-
         'attributes' => [
             'inputType' => 'dcaWizard',
             'foreignTable' => 'tl_wem_offer_feed_attribute',
@@ -141,7 +137,6 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
                 'tl_class' => 'clr',
             ],
         ],
-
         'ncEmailAlert' => [
             'exclude' => true,
             'inputType' => 'select',

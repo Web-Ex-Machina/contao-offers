@@ -20,14 +20,14 @@
     },
     "require": {
         "php": "^7.4||^8.2",
+        "ext-json": "*",
         "contao/core-bundle": "^4.13||^5.0",
+        "contao/manager-plugin": "^2.13",
         "terminal42/contao-countryselect": "^1.5",
         "terminal42/notification_center": "^1.6",
-        "webexmachina/contao-utils": "^1.0||2.*",
+        "webexmachina/contao-utils": "2.*",
         "webexmachina/contao-personal-data-manager": "^1.0",
-        "ext-json": "*",
-        "webexmachina/contao-form-data-manager": "^1.0",
-        "contao/manager-plugin": "^2.13"
+        "webexmachina/contao-form-data-manager": "^1.0"
     },
     "autoload":{
         "psr-4": {
@@ -47,8 +47,10 @@
         "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"
     },
     "require-dev": {
-        "rector/rector": "^1.2",
-        "phpstan/phpstan": "^1.12",
+        "contao/manager-plugin": "@stable",
+        "contao/easy-coding-standard": "@stable",
+        "rector/rector": "@stable",
+        "phpstan/phpstan": "@stable",
         "contao/contao-rector": "dev-main"
-    }
+    },
 }

@@ -1,9 +1,9 @@
-Extension "Job Offers" for Contao Open Source CMS
+Extension "Offers" for Contao Open Source CMS
 ======================
 
 Functionnalities
 -------------------
- * Display job offers as list on frontend and allow users to apply for them
+ * Display offers as list on frontend and allow users to answer to them
 
 System requirements
 -------------------
