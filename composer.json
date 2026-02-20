@@ -52,5 +52,5 @@
         "rector/rector": "@stable",
         "phpstan/phpstan": "@stable",
         "contao/contao-rector": "dev-main"
-    },
+    }
 }
