@@ -79,10 +79,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
                 'icon' => 'show.gif',
             ],
             'toggle' => [
-                'icon' => 'visible.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => [OfferContainer::class, 'toggleIcon'],
-                'showInHeader' => true,
+                'href' => 'act=toggle&amp;field=published',
+                'icon' => 'visible.gif',
             ],
             'applications' => [
                 'href' => 'table=tl_wem_offer_application',
@@ -172,58 +170,68 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true],
-            'sql' => "char(1) NOT NULL default ''"],
+            'sql' => "char(1) NOT NULL default ''"
+        ],
         'overwriteMeta' => [
             'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 clr'],
-            'sql' => "char(1) NOT NULL default ''"],
+            'sql' => "char(1) NOT NULL default ''"
+        ],
         'singleSRC' => [
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['fieldType' => 'radio', 'filesOnly' => true, 'extensions' => '%contao.image.valid_extensions%', 'mandatory' => true],
-            'sql' => "binary(16) NULL"],
+            'sql' => "binary(16) NULL"
+        ],
         'alt' => [
             'exclude' => true, 'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''"],
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
         'imageTitle' => [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''"],
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
         'size' => [
             'exclude' => true,
             'inputType' => 'imageSize',
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'eval' => ['rgxp' => 'natural', 'includeBlankOption' => true, 'nospace' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
             'options_callback' => static fn() => System::getContainer()->get('contao.image.sizes')->getOptionsForUser(BackendUser::getInstance()),
-            'sql' => "varchar(64) NOT NULL default ''"],
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
         'imagemargin' => [
             'exclude' => true,
             'inputType' => 'trbl',
             'options' => ['px', '%', 'em', 'rem'],
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(128) NOT NULL default ''"],
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
         'imageUrl' => [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 2048, 'dcaPicker' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(2048) NOT NULL default ''"],
+            'sql' => "varchar(2048) NOT NULL default ''"
+        ],
         'fullsize' => [
             'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50 m12'],
-            'sql' => "char(1) NOT NULL default ''"],
+            'sql' => "char(1) NOT NULL default ''"
+        ],
         'caption' => [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'allowHtml' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''"],
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
         'floating' => [
             'exclude' => true,
             'inputType' => 'radioTable',
@@ -235,9 +243,10 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
         'published' => [
             'exclude' => true,
             'filter' => true,
-            'flag' => 1,
+            'toggle' => true,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'checkbox',
-            'eval' => ['doNotCopy' => true],
+            'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12 clr'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'start' => [
