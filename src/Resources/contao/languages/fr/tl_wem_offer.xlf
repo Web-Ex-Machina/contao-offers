@@ -25,6 +25,14 @@
 			<source>Enter the offer date of filing</source>
 			<target>Saisissez la date de dépot de l'annonce</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_offer.lang.0">
+			<source>Language</source>
+			<target>Langue</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer.lang.1">
+			<source>Select the offer language</source>
+			<target>Sélectionnez la langue de l'offre</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_offer.teaser.0">
 			<source>Teaser</source>
