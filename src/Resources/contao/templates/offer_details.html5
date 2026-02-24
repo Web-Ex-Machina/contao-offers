@@ -26,7 +26,7 @@
 		
 		<?php if ($this->picture): ?>
 		<div class="offer__figure offer__mainPicture">
-				<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt']?:'' ?>" />
+				<img src="<?php echo $this->picture['img']['src'] ?>" alt="<?php echo $this->picture['alt'] ?: $this->alt ?>" />
 			<?php elseif($pictures && count($pictures)>0): ?>
 				<img src="<?php echo $pictures[0]['src'] ?>" alt="<?php echo $pictures[0]['picture']['alt']?:'' ?>" />
 		</div>

@@ -2,7 +2,7 @@
 	<div class="offer__wrapper">
 		<?php if ($this->addImage): ?>
 			<div class="offer__figure">
-				<img src="<?= $this->picture['img']['src'] ?>" alt="<?= $this->picture['img']['alt'] ?: $this->picture['img']['name'] ?>" />
+				<img src="<?= $this->picture['img']['src'] ?>" alt="<?= $this->alt ?>" />
 			</div>
 		<?php endif ?>
 		<div class="offer__content">

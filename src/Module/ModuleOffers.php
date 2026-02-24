@@ -274,6 +274,8 @@ abstract class ModuleOffers extends Module
             if (null !== $figure) {
                 $figure->applyLegacyTemplateData($objTemplate, $objItem->imagemargin, $objItem->floating);
             }
+
+            $objTemplate->alt = $objItem->overwriteMeta ? $objItem->alt : $objItem->title;
         }
 
         // Retrieve item teaser
