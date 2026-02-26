@@ -67,24 +67,24 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             ],
             'copy' => [
                 'href' => 'act=copy',
-                'icon' => 'copy.gif',
+                'icon' => 'copy.svg',
             ],
             'delete' => [
                 'href' => 'act=delete',
-                'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null.'\'))return false;Backend.getScrollOffset()"',
+                'icon' => 'delete.svg',
+                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null) . '\'))return false;Backend.getScrollOffset()"',
             ],
             'show' => [
                 'href' => 'act=show',
-                'icon' => 'show.gif',
+                'icon' => 'show.svg',
             ],
             'toggle' => [
                 'href' => 'act=toggle&amp;field=published',
-                'icon' => 'visible.gif',
+                'icon' => 'visible.svg',
             ],
             'applications' => [
                 'href' => 'table=tl_wem_offer_application',
-                'icon' => 'folderOP.gif',
+                'icon' => 'folderOP.svg',
             ],
         ],
     ],
