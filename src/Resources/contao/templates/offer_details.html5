@@ -20,7 +20,9 @@
 		</div>
 	<?php endif ?>
 	<div class="offer__text">
-		<?php if ($this->teaser): ?>
+		<?php if ($this->hasText): ?>
+			<?= $this->text ?>
+		<?php elseif ($this->hasTeaser): ?>
 			<?= $this->teaser ?>
 		<?php endif ?>
 		
