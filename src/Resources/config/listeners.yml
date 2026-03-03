@@ -25,6 +25,10 @@ services:
       - { name: monolog.logger, channel: contao }
       - { name: contao.hook, hook: loadDataContainer, method: addAttributesToJobDca, priority: 100 }
 
+  WEM\OffersBundle\EventListener\LoadFormFieldListener:
+    tags:
+      - { name: contao.hook, hook: loadFormField, method: __invoke, priority: 100 }
+
   WEM\OffersBundle\EventListener\ProcessFormDataListener:
     arguments:
       $encryption: '@wem.encryption_util'
