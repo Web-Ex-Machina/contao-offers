@@ -3,13 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Personal Data Manager for Contao Open Source CMS
- * Copyright (c) 2015-2024 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-smartgear
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/personal-data-manager/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\Model;
@@ -32,6 +29,7 @@ class Offer extends Model
      * Search fields.
      */
     public static $arrSearchFields = ['code', 'title', 'teaser'];
+
     /**
      * Table name.
      *
@@ -47,7 +45,12 @@ class Offer extends Model
     public static function formatColumns(array $arrConfig): array
     {
         $arrColumns = [];
-        $arrConfig['lang'] = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
+
+        // Filter on the current locale unless a language has been given (null means every language)
+        if (! \array_key_exists('lang', $arrConfig)) {
+            $arrConfig['lang'] = System::getContainer()->get('request_stack')->getCurrentRequest()?->getLocale();
+        }
+
         foreach ($arrConfig as $c => $v) {
             $arrColumns = array_merge($arrColumns, static::formatStatement($c, $v));
         }
@@ -71,53 +74,60 @@ class Offer extends Model
             // Search by id
             case 'id':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = $t.'.id IN('.implode(',', array_map('\intval', $varValue)).')';
+                    $arrColumns[] = $t . '.id IN(' . implode(',', array_map(intval(...), $varValue)) . ')';
                 } else {
-                    $arrColumns[] = $t.'.id = '.$varValue;
+                    $arrColumns[] = $t . '.id = ' . (int) $varValue;
                 }
-            
+
                 break;
 
-            // Search by pid
+                // Search by pid
             case 'pid':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = $t.'.pid IN('.implode(',', array_map('\intval', $varValue)).')';
+                    $arrColumns[] = $t . '.pid IN(' . implode(',', array_map(intval(...), $varValue)) . ')';
                 } else {
-                    $arrColumns[] = $t.'.pid = '.$varValue;
+                    $arrColumns[] = $t . '.pid = ' . (int) $varValue;
                 }
-            
+
                 break;
-            
-            // Search by country
+
+                // Search by language, skipped when no language is given
+            case 'lang':
+                if ($varValue !== null && $varValue !== '') {
+                    $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
+                }
+
+                break;
+                // Search by country
             case 'country':
-                $arrColumns[] = $t.".countries LIKE '%%".$varValue."%'";
+                $arrColumns[] = $t . ".countries LIKE '%%" . $varValue . "%'";
                 break;
 
-            // Search for recipient not present in the subtable lead
+                // Search for recipient not present in the subtable lead
             case 'published':
-                if (1 === $varValue) {
+                if ($varValue === 1) {
                     $time = Date::floorToMinute();
-                    $arrColumns[] = \sprintf("(%s.start='' OR %s.start<='%s') AND (%s.stop='' OR %s.stop>'", $t, $t, $time, $t, $t).($time + 60).\sprintf("') AND %s.published='1'", $t);
+                    $arrColumns[] = \sprintf("(%s.start='' OR %s.start<='%s') AND (%s.stop='' OR %s.stop>'", $t, $t, $time, $t, $t) . ($time + 60) . \sprintf("') AND %s.published='1'", $t);
                 }
 
                 break;
 
-            // Wizard for active items
+                // Wizard for active items
             case 'active':
-                if (1 === $varValue) {
-                    $arrColumns[] = \sprintf('%s.published = 1 AND (%s.start = 0 OR %s.start <= ', $t, $t, $t).time().\sprintf(') AND (%s.stop = 0 OR %s.stop >= ', $t, $t).time().')';
-                } elseif (-1 === $varValue) {
-                    $arrColumns[] = \sprintf("%s.published = '' AND (%s.start = 0 OR %s.start >= ", $t, $t, $t).time().\sprintf(') AND (%s.stop = 0 OR %s.stop <= ', $t, $t).time().')';
+                if ($varValue === 1) {
+                    $arrColumns[] = \sprintf('%s.published = 1 AND (%s.start = 0 OR %s.start <= ', $t, $t, $t) . time() . \sprintf(') AND (%s.stop = 0 OR %s.stop >= ', $t, $t) . time() . ')';
+                } elseif ($varValue === -1) {
+                    $arrColumns[] = \sprintf("%s.published = '' AND (%s.start = 0 OR %s.start >= ", $t, $t, $t) . time() . \sprintf(') AND (%s.stop = 0 OR %s.stop <= ', $t, $t) . time() . ')';
                 }
 
                 break;
 
-            // Load parent
+                // Load parent
             default:
                 if (\array_key_exists($strField, $GLOBALS['TL_DCA'][$t]['fields'])) {
                     switch ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['inputType']) {
                         case 'select':
-                            if (array_key_exists('multiple', $GLOBALS['TL_DCA'][$t]['fields'][$strField]['eval'])) {
+                            if ($GLOBALS['TL_DCA'][$t]['fields'][$strField]['eval']['multiple'] ?? false) {
                                 $varValue = \is_array($varValue) ? $varValue : [$varValue];
                                 $arrSubColumns = [];
 
@@ -125,7 +135,7 @@ class Offer extends Model
                                     $arrSubColumns[] = \sprintf(\sprintf('%s.%s LIKE \'%%%%;s:%%s:"%%s";%%%%\'', $t, $strField), \strlen($subValue), $subValue);
                                 }
 
-                                $arrColumns[] = '('.implode(' OR ', $arrSubColumns).')';
+                                $arrColumns[] = '(' . implode(' OR ', $arrSubColumns) . ')';
                             } else {
                                 $arrColumns[] = \sprintf("%s.%s = '%s'", $t, $strField, $varValue);
                             }
@@ -139,7 +149,7 @@ class Offer extends Model
                                 $arrSubColumns[] = \sprintf(\sprintf('%s.%s LIKE \'%%%%;s:%%s:"%%s";%%%%\'', $t, $strField), \strlen($subValue), $subValue);
                             }
 
-                            $arrColumns[] = '('.implode(' AND ', $arrSubColumns).')';
+                            $arrColumns[] = '(' . implode(' AND ', $arrSubColumns) . ')';
                             break;
 
                         default:
@@ -156,20 +166,20 @@ class Offer extends Model
     /**
      * Find a single record by its ID or code.
      *
-     * @param mixed $varId      The ID or code
+     * @param int|string $varId      The ID or code
      * @param array $arrOptions An optional options array
      *
-     * @return static The model or null if the result is empty
+     * @return static|null The model or null if the result is empty
      */
-    public static function findByIdOrCode($varId, array $arrOptions = [])
+    public static function findByIdOrCode(int|string $varId, array $arrOptions = []): static|null
     {
-        $isCode = !preg_match('/^[1-9]\d*$/', $varId);
+        $isCode = ! preg_match('/^[1-9]\d*$/', (string) $varId);
 
         // Try to load from the registry
-        if (!$isCode && [] === $arrOptions) {
-            $objModel = Registry::getInstance()->fetch(static::$strTable, $varId);
+        if (! $isCode && $arrOptions === []) {
+            $objModel = Registry::getInstance()->fetch(static::$strTable, (int) $varId);
 
-            if (null !== $objModel) {
+            if ($objModel instanceof static) {
                 return $objModel;
             }
         }
@@ -179,14 +189,16 @@ class Offer extends Model
         $arrOptions = array_merge(
             [
                 'limit' => 1,
-                'column' => $isCode ? [$t.'.code=?'] : [$t.'.id=?'],
+                'column' => $isCode ? [$t . '.code=?'] : [$t . '.id=?'],
                 'value' => $varId,
                 'return' => 'Model',
             ],
             $arrOptions
         );
 
-        return static::find($arrOptions);
+        $objModel = static::find($arrOptions);
+
+        return $objModel instanceof static ? $objModel : null;
     }
 
     /**
@@ -200,9 +212,12 @@ class Offer extends Model
     {
         $attributes = [];
 
-        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttributes]);
+        $objAttributes = OfferFeedAttribute::findItems(array_filter([
+            'pid' => $this->pid,
+            'name' => $varAttributes,
+        ]));
 
-        if ($objAttributes && 0 < $objAttributes->count()) {
+        if ($objAttributes instanceof \Contao\Model\Collection && $objAttributes->count() > 0) {
             $arrArticleData = $this->row();
             while ($objAttributes->next()) {
                 if (\array_key_exists($objAttributes->name, $arrArticleData)) {
@@ -231,9 +246,12 @@ class Offer extends Model
     {
         $attributes = [];
 
-        $objAttributes = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttributes]);
+        $objAttributes = OfferFeedAttribute::findItems(array_filter([
+            'pid' => $this->pid,
+            'name' => $varAttributes,
+        ]));
 
-        if ($objAttributes && 0 < $objAttributes->count()) {
+        if ($objAttributes instanceof \Contao\Model\Collection && $objAttributes->count() > 0) {
             $arrArticleData = $this->row();
             while ($objAttributes->next()) {
                 if (\array_key_exists($objAttributes->name, $arrArticleData)) {
@@ -254,28 +272,32 @@ class Offer extends Model
      */
     public function getAttributeValue($varAttribute)
     {
-        if ('string' === \gettype($varAttribute)) {
-            $varAttribute = OfferFeedAttribute::findItems(['pid' => $this->pid, 'name' => $varAttribute], 1);
+        if (\is_string($varAttribute)) {
+            $varAttribute = OfferFeedAttribute::findItems([
+                'pid' => $this->pid,
+                'name' => $varAttribute,
+            ], 1)?->first();
         }
 
-        if (null === $varAttribute) {
+        if ($varAttribute === null) {
             return null;
         }
 
         switch ($varAttribute->type) {
             case 'select':
                 $arrArticleData = $this->row();
-                $options = StringUtil::deserialize($varAttribute->options ?? []);
+                $options = StringUtil::deserialize($varAttribute->options, true);
+
+                $return = $varAttribute->multiple ? [] : '';
 
                 if ($varAttribute->multiple) {
                     $arrArticleData[$varAttribute->name] = StringUtil::deserialize($arrArticleData[$varAttribute->name]);
-                    $return = [];
                 }
 
                 foreach ($options as $option) {
                     if ($varAttribute->multiple && \is_array($arrArticleData[$varAttribute->name]) && \in_array($option['value'], $arrArticleData[$varAttribute->name], true)) {
                         $return[] = $option['label'];
-                    } elseif (!$varAttribute->multiple && $option['value'] === $arrArticleData[$varAttribute->name]) {
+                    } elseif (! $varAttribute->multiple && $option['value'] === $arrArticleData[$varAttribute->name]) {
                         $return = $option['label'];
                     }
                 }
@@ -294,14 +316,14 @@ class Offer extends Model
                     ->get('contao.image.studio')
                     ->createFigureBuilder()
                     ->setSize($this->size)
-                    ->setLightboxGroupIdentifier('lb'.$this->id)
+                    ->setLightboxGroupIdentifier('lb' . $this->id)
                     ->enableLightbox((bool) $this->fullsize)
                 ;
 
                 if ($varAttribute->multiple) {
                     $objFiles = FilesModel::findMultipleByUuids(StringUtil::deserialize($this->{$varAttribute->name}));
 
-                    if (!$objFiles) {
+                    if (! $objFiles) {
                         return null;
                     }
 
@@ -320,12 +342,11 @@ class Offer extends Model
 
                 $objFile = FilesModel::findByUuid($this->{$varAttribute->name});
 
-                $figure = $figureBuilder
-                    ->fromPath($objFile->path)
-                    ->build()
-                ;
+                if (! $objFile instanceof FilesModel) {
+                    return null;
+                }
 
-                return $figure->getLegacyTemplateData() ?: null;
+                return $figureBuilder->fromPath($objFile->path)->build()->getLegacyTemplateData() ?: null;
 
             case 'listWizard':
                 return $this->{$varAttribute->name} ? implode(',', StringUtil::deserialize($this->{$varAttribute->name})) : '';

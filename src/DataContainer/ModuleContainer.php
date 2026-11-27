@@ -3,61 +3,81 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
- *
- * @category ContaoBundle
- *
- * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\DataContainer;
 
-use Contao\Backend;
+use Contao\Controller;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Twig\Finder\FinderFactory;
 use Contao\DataContainer;
-use Contao\Model\Collection;
-use WEM\UtilsBundle\Classes\StringUtil;
+use Doctrine\DBAL\Connection;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
+use WEM\OffersBundle\Controller\Frontend\FiltersModuleController;
+use WEM\OffersBundle\Controller\Frontend\ModuleController;
+use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
+use WEM\OffersBundle\NotificationType\AlertSubscribeNotificationType;
+use WEM\OffersBundle\NotificationType\AlertUnsubscribeNotificationType;
+use WEM\UtilsBundle\Classes\StringUtil;
 
-class ModuleContainer extends Backend
+class ModuleContainer
 {
-    public function __construct()
-    {
-        Parent::__construct();
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly NotificationCenter $notificationCenter,
+        private readonly FinderFactory $finderFactory,
+    ) {
     }
 
     /**
-     * Return all templates as array.
+     * Return all offer templates as array.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_template.options')]
     public function getTemplates(): array
     {
-        return $this->getTemplateGroup('offer_');
+        $options = [
+            ...$this->finderFactory->create()->identifier(ModuleController::DEFAULT_OFFER_TEMPLATE)->withVariants()->asTemplateOptions(),
+            ...$this->finderFactory->create()->identifier(ModuleController::DETAILS_OFFER_TEMPLATE)->withVariants()->asTemplateOptions(false),
+        ];
+
+        // Legacy PHP templates still present in the website
+        foreach (Controller::getTemplateGroup('offer_') as $name => $label) {
+            if (! str_starts_with($name, 'offer_alert_') && ! str_starts_with($name, 'offer_apply')) {
+                $options[$name] = $label;
+            }
+        }
+
+        return $options;
     }
 
     /**
      * Return all feeds as array.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_feed.options')]
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_feeds.options')]
     public function getFeeds(): array
     {
-        $arrFeeds = [];
-        $objFeeds = $this->Database->execute('SELECT id, title FROM tl_wem_offer_feed ORDER BY title');
+        return $this->connection->fetchAllKeyValue('SELECT id, title FROM tl_wem_offer_feed ORDER BY title');
+    }
 
-        if (!$objFeeds || 0 === $objFeeds->count()) {
-            return $arrFeeds;
-        }
-
-        while ($objFeeds->next()) {
-            $arrFeeds[$objFeeds->id] = $objFeeds->title;
-        }
-
-        return $arrFeeds;
+    /**
+     * Return all forms as array.
+     */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_applicationForm.options')]
+    public function getForms(): array
+    {
+        return $this->connection->fetchAllKeyValue('SELECT id, title FROM tl_form ORDER BY title');
     }
 
     /**
      * Return all alerts available gateways.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_alertsGateways.options')]
     public function getAlertsOptions(): array
     {
         return [
@@ -66,113 +86,73 @@ class ModuleContainer extends Backend
     }
 
     /**
-     * Return all alerts available gateways.
+     * Return the offer fields usable as alert conditions.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_conditions.options')]
     public function getConditionsOptions(): array
     {
-        $this->loadDataContainer('tl_wem_offer');
-        $fields = [];
-
-        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['isAlertCondition']) {
-                $fields[$k] = $v['label'][0] ?: $k;
-            }
-        }
-
-        return $fields;
+        return $this->getOfferFieldsWithFlag('isAlertCondition');
     }
 
     /**
-     * Return all job alerts available gateways.
+     * Return the offer fields usable as filters.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_filters.options')]
     public function getFiltersOptions(): array
     {
-        $this->loadDataContainer('tl_wem_offer');
-        $fields = [];
-
-        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $k => $v) {
-            if (!empty($v['eval']) && true === $v['eval']['isFilter']) {
-                $fields[$k] = $v['label'][0] ?: $k;
-            }
-        }
-
-        return $fields;
+        return $this->getOfferFieldsWithFlag('isFilter');
     }
 
-    /**
-     * Get Notification Choices for this kind of modules.
-     */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_ncSubscribe.options')]
     public function getSubscribeNotificationChoices(): array
     {
-        $arrChoices = [];
-        $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_subscribe' ORDER BY title");
-
-        while ($objNotifications->next()) {
-            $arrChoices[$objNotifications->id] = $objNotifications->title;
-        }
-
-        return $arrChoices;
+        return $this->notificationCenter->getNotificationsForNotificationType(AlertSubscribeNotificationType::NAME);
     }
 
-    /**
-     * Get Notification Choices for this kind of modules.
-     */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_ncUnsubscribe.options')]
     public function getUnsubscribeNotificationChoices(): array
     {
-        $arrChoices = [];
-        $objNotifications = $this->Database->execute("SELECT id,title FROM tl_nc_notification WHERE type='wem_offers_alerts_unsubscribe' ORDER BY title");
-
-        while ($objNotifications->next()) {
-            $arrChoices[$objNotifications->id] = $objNotifications->title;
-        }
-
-        return $arrChoices;
+        return $this->notificationCenter->getNotificationsForNotificationType(AlertUnsubscribeNotificationType::NAME);
     }
 
     /**
      * Return all offer attributes available.
-     *
-     * @throws \Exception
      */
-    public function getAttributesOptions(DataContainer $dc): array
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_attributes.options')]
+    public function getAttributesOptions(DataContainer|null $dc = null): array
     {
-        $arrPids = StringUtil::deserialize($dc->activeRecord->offer_feeds);
-        $c = [];
-
-        if (null !== $arrPids && !empty($arrPids)) {
-            $c = ['pid' => $arrPids];
-        }
-
-        $objAttributes = OfferFeedAttribute::findItems($c);
-
-        if (!$objAttributes instanceof Collection) {
-            return [];
-        }
-
+        $arrPids = StringUtil::deserialize($dc?->getCurrentRecord()['offer_feeds'] ?? null, true);
         $fields = [];
-        while ($objAttributes->next()) {
-            $fields[$objAttributes->name] = $objAttributes->label ?: $objAttributes->name;
+
+        foreach (OfferFeedAttribute::findItems($arrPids !== [] ? [
+            'pid' => $arrPids,
+        ] : []) ?? [] as $objAttribute) {
+            $fields[$objAttribute->name] = $objAttribute->label ?: $objAttribute->name;
         }
 
         return $fields;
     }
 
     /**
-     * Return all feeds as array.
+     * Return all the filters modules.
      */
+    #[AsCallback(table: 'tl_module', target: 'fields.offer_filters_module.options')]
     public function getFiltersModules(): array
     {
-        $arrModules = [];
-        $objModule = $this->Database->execute('SELECT id, name FROM tl_module WHERE type = "offersfilters" ORDER BY name');
+        return $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_module WHERE type = ? ORDER BY name', [FiltersModuleController::TYPE]);
+    }
 
-        if (!$objModule || 0 === $objModule->count()) {
-            return $arrModules;
+    private function getOfferFieldsWithFlag(string $flag): array
+    {
+        Controller::loadDataContainer(Offer::getTable());
+        $fields = [];
+
+        foreach ($GLOBALS['TL_DCA'][Offer::getTable()]['fields'] as $k => $v) {
+            if (true === ($v['eval'][$flag] ?? false)) {
+                $fields[$k] = ($v['label'][0] ?? null) ?: $k;
+            }
         }
 
-        while ($objModule->next()) {
-            $arrModules[$objModule->id] = $objModule->name;
-        }
-
-        return $arrModules;
+        return $fields;
     }
 }

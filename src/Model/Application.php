@@ -3,13 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\Model;
@@ -23,6 +20,7 @@ use WEM\PersonalDataManagerBundle\Model\Traits\PersonalDataTrait as PDMTrait;
 class Application extends Model
 {
     use PDMTrait;
+
     protected static array $personalDataFieldsNames = [
         'firstname',
         'lastname',
@@ -87,9 +85,7 @@ class Application extends Model
             $arrOptions['offset'] = $intOffset;
         }
 
-        if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = $t . '.tstamp DESC';
-        }
+        $arrOptions['order'] ??= $t . '.tstamp DESC';
 
         if ($arrColumns === []) {
             return static::findAll($arrOptions);
@@ -121,7 +117,7 @@ class Application extends Model
     {
         $arrColumns = [];
 
-        if ($arrConfig['not']) {
+        if (! empty($arrConfig['not'])) {
             $arrColumns[] = $arrConfig['not'];
         }
 

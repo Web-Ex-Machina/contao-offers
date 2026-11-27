@@ -1,0 +1,103 @@
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+{% trans_default_domain 'contao_default' %}
+
+{% set searchable = false %}
+{% set attributes = attrs()
+    .addClass('mod_offersalert')
+    .set('data-offers-alert', moduleId)
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% if error|default %}
+        <p class="lead ft-1-5-em">{{ 'WEM.OFFERS.errorLabel'|trans }}</p>
+        <p>{{ message }}</p>
+    {% elseif isRequest|default %}
+        <p>{{ message }}</p>
+    {% elseif unsubscribe|default %}
+        <div class="bg-primary mod_offersalert__form">
+            <p>{{ unsubscribeLbl }}</p>
+            <input type="email" name="email" placeholder="{{ 'WEM.OFFERS.email'|trans }}">
+            <div class="mod_offersalert__actions">
+                {% if gdprPage|default %}
+                    <a href="{{ gdprPage }}" target="_blank">{{ 'WEM.OFFERS.privacy'|trans }}</a>
+                {% endif %}
+                <button type="button" class="btn-bd-white btn-sm" data-process="unsubscribeFeed">{{ 'WEM.OFFERS.unsubscribe'|trans }}</button>
+            </div>
+        </div>
+    {% else %}
+        <div class="mod_offersalert__wrapper d-grid cols-3 cols-md-2 cols-sm-1 m-bottom gap-0-rem">
+            {% if alertTeaser|default %}
+                <div class="mod_offersalert__text bg-greylight text cols-span-2 cols-span-md-1">
+                    {{ alertTeaser|raw }}
+                </div>
+            {% endif %}
+
+            <div class="bg-primary mod_offersalert__form">
+                <input type="email" name="email" placeholder="{{ 'WEM.OFFERS.email'|trans }}">
+
+                {% if conditions is not empty %}
+                    <div class="conditions" data-autocomplete="false" data-count="false" data-reset="false" data-submit="false">
+                        {% for condition in conditions %}
+                            {% if condition.type == 'select' %}
+                                <select name="{{ condition.name }}"{% if condition.multiple %} multiple placeholder="{{ condition.label }}"{% endif %}>
+                                    {% if not condition.multiple %}
+                                        <option value="">- {{ condition.label }} -</option>
+                                    {% endif %}
+                                    {% for option in condition.options %}
+                                        <option value="{{ option.value }}"{% if option.selected|default %} selected{% endif %}>{{ option.label }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <input type="text" name="{{ condition.name }}" value="{{ condition.value }}" placeholder="{{ condition.placeholder|default(condition.label) }}">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="mod_offersalert__actions">
+                    {% if gdprPage|default %}
+                        <a href="{{ gdprPage }}" target="_blank">{{ 'WEM.OFFERS.privacy'|trans }}</a>
+                    {% endif %}
+                    <button type="button" class="btn-bd-white btn-sm" data-process="subscribeFeed">{{ 'WEM.OFFERS.subscribe'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if not error|default and not isRequest|default %}
+        {% block script %}
+            <script>
+                window.addEventListener('load', function () {
+                    var $module = $('[data-offers-alert="{{ moduleId }}"]');
+                    var rt = '{{ rt }}';
+
+                    $module.on('click', '[data-process="subscribeFeed"]', function () {
+                        var conditions = {};
+
+                        $module.find('.conditions').find('input,select').each(function () {
+                            if ('' === this.value) {
+                                return;
+                            }
+
+                            // Select fields may allow several values
+                            conditions[this.name] = 'SELECT' === this.tagName
+                                ? Array.from(this.selectedOptions).map((option) => option.value)
+                                : this.value;
+                        });
+
+                        createOfferAlert(rt, {{ moduleId }}, $module.find('input[name="email"]').val(), conditions)
+                            .then((r) => notif_fade[r.status](r.msg))
+                            .catch((err) => console.log(err));
+                    });
+
+                    $module.on('click', '[data-process="unsubscribeFeed"]', function () {
+                        deleteOfferAlert(rt, {{ moduleId }}, $module.find('input[name="email"]').val())
+                            .then((r) => notif_fade[r.status](r.msg))
+                            .catch((err) => console.log(err));
+                    });
+                });
+            </script>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="contao/languages/en/nc_tokens.php" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="nc_tokens.wem_offers.recipient_email">
+        <source>E-mail address of the recipient</source>
+        <target>Adresse e-mail du destinataire</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.feed_*">
+        <source>Offer feed data</source>
+        <target>Données du flux d'annonces</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.recipient_*">
+        <source>Recipient data (alert or application)</source>
+        <target>Données du destinataire (alerte ou candidature)</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.subscription_*">
+        <source>Alert subscription data</source>
+        <target>Données de l'abonnement à l'alerte</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offer_*">
+        <source>Offer data</source>
+        <target>Données de l'annonce</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offerstext">
+        <source>Matching offers (text)</source>
+        <target>Annonces correspondantes (texte)</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offershtml">
+        <source>Matching offers (HTML)</source>
+        <target>Annonces correspondantes (HTML)</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.link_*">
+        <source>Subscribe / unsubscribe links</source>
+        <target>Liens d'abonnement / désabonnement</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

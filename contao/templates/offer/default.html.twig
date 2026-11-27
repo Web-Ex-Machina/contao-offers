@@ -1,0 +1,49 @@
+{% trans_default_domain 'contao_default' %}
+{% use '@Contao/component/_figure.html.twig' %}
+{% use '@Contao/offer/_attributes.html.twig' %}
+
+{% block offer %}
+    <div class="offer offer__default{{ class }}" data-offer="{{ id }}" itemscope itemtype="https://schema.org/Article" data-preset="inline">
+        <div class="offer__wrapper">
+            {% if figure %}
+                <div class="offer__figure">
+                    {{ block('figure_component') }}
+                </div>
+            {% endif %}
+
+            <div class="offer__content">
+                <div class="offer__title h2">{{ title }}</div>
+
+                <div class="offer__text">
+                    {% if blnDisplayText and hasTeaser %}
+                        <div class="offer__teaser">{{ teaser|raw }}</div>
+                    {% endif %}
+
+                    {% if blnDisplayAttributes %}
+                        {{ block('attributes_component') }}
+                    {% endif %}
+                </div>
+
+                <div class="offer__actions">
+                    {% block actions %}
+                        {% if jumpTo %}
+                            <div class="btn offer__action">
+                                <a href="{{ jumpTo }}" title="{{ 'WEM.OFFERS.seeOffer'|trans }}">{{ 'WEM.OFFERS.seeOffer'|trans }}</a>
+                            </div>
+                        {% else %}
+                            <button type="button" class="btn offer__action" title="{{ 'WEM.OFFERS.seeOffer'|trans }}" data-process="openDetailsModal" data-offer="{{ id }}" data-icon="false" data-result="false">
+                                {{ 'WEM.OFFERS.seeOffer'|trans }}
+                            </button>
+                        {% endif %}
+
+                        {% if canApply %}
+                            <button type="button" class="btn offer__action" data-process="openApplicationModal" data-offer="{{ id }}">
+                                {{ 'WEM.OFFERS.apply'|trans }}
+                            </button>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="php" original="contao/languages/en/nc_tokens.php" source-language="en">
+    <body>
+      <trans-unit id="nc_tokens.wem_offers.recipient_email">
+        <source>E-mail address of the recipient</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.feed_*">
+        <source>Offer feed data</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.recipient_*">
+        <source>Recipient data (alert or application)</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.subscription_*">
+        <source>Alert subscription data</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offer_*">
+        <source>Offer data</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offerstext">
+        <source>Matching offers (text)</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.offershtml">
+        <source>Matching offers (HTML)</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.wem_offers.link_*">
+        <source>Subscribe / unsubscribe links</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

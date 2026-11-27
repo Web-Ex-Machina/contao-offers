@@ -1,8 +1,0 @@
-services:
-  wem.offers.send_alert:
-    class: 'WEM\OffersBundle\Cronjob\SendAlerts'
-    arguments:
-      $logger: '@?logger'
-    tags:
-      - { name: monolog.logger, channel: contao.cron }
-    public: true

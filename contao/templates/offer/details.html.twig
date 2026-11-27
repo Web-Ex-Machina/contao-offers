@@ -1,0 +1,34 @@
+{% trans_default_domain 'contao_default' %}
+{% use '@Contao/component/_figure.html.twig' %}
+{% use '@Contao/offer/_attributes.html.twig' %}
+
+{% block offer %}
+    <div class="offer__details">
+        <div class="offer__title h2">{{ title }}</div>
+
+        {{ block('attributes_component') }}
+
+        <div class="offer__text">
+            {# Use the full text if available #}
+            {% if hasText.invoke() %}
+                {{ text|raw }}
+            {% elseif hasTeaser %}
+                {{ teaser|raw }}
+            {% endif %}
+
+            {% if figure %}
+                <div class="offer__figure offer__mainPicture">
+                    {{ block('figure_component') }}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if canApply %}
+            {% if formDisplay == 'modal' %}
+                <button type="button" class="btn-sm offer__action" data-process="openApplicationModal" data-offer="{{ id }}">{{ 'WEM.OFFERS.byForm'|trans }}</button>
+            {% else %}
+                {{ form|raw }}
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

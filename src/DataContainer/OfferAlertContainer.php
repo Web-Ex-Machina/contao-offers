@@ -3,48 +3,49 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\DataContainer;
 
-use Contao\Backend;
 use Contao\Config;
-use Contao\Database;
-use Contao\DataContainer;
+use Contao\Controller;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Intl\Locales;
 use Contao\Date;
-use Contao\Environment;
 use Contao\Message;
 use Contao\ModuleModel;
-use Contao\System;
-use Symfony\Component\Routing\Exception\ExceptionInterface;
+use Contao\ThemeModel;
+use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\RequestStack;
+use WEM\OffersBundle\Controller\Frontend\AlertModuleController;
+use WEM\OffersBundle\Cronjob\SendAlerts;
 use WEM\OffersBundle\Model\Alert;
-use WEM\OffersBundle\Model\OfferFeed;
 
-class OfferAlertContainer extends Backend
+class OfferAlertContainer
 {
-
-    public function __construct()
-    {
-        Parent::__construct();
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly Locales $locales,
+        private readonly SendAlerts $sendAlerts,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     /**
      * Design each row of the DCA.
      */
-    public function listItems(array $row, string $label, DataContainer $dc, array $labels): array
+    #[AsCallback(table: 'tl_wem_offer_alert', target: 'list.label.label')]
+    public function listItems(array $row, string $label, mixed $dc, array $labels): array
     {
-        $objFeed = OfferFeed::findByPk($row['feed']);
+        $feeds = $this->getFeeds();
 
         $labels[0] = $row['email'];
-        $labels[1] = $objFeed ? $objFeed->title : $row['feed'];
-        $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']];
+        $labels[1] = $feeds[$row['feed']] ?? $row['feed'];
+        $labels[2] = $GLOBALS['TL_LANG'][Alert::getTable()]['frequency'][$row['frequency']] ?? $row['frequency'];
         $labels[3] = empty($row['lastJob']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['lastJob']);
         $labels[4] = empty($row['activatedAt']) ? '-' : Date::parse(Config::get('datimFormat'), (int) $row['activatedAt']);
 
@@ -53,50 +54,44 @@ class OfferAlertContainer extends Backend
 
     /**
      * Get available feeds.
-     *
-     * @return array [Array]
      */
+    #[AsCallback(table: 'tl_wem_offer_alert', target: 'fields.feed.options')]
     public function getFeeds(): array
     {
-        $arrChoices = [];
-        $objFeeds = Database::getInstance()->execute("SELECT id,title FROM tl_wem_offer_feed ORDER BY title");
-
-        while ($objFeeds->next()) {
-            $arrChoices[$objFeeds->id] = $objFeeds->title;
-        }
-
-        return $arrChoices;
+        return $this->connection->fetchAllKeyValue('SELECT id, title FROM tl_wem_offer_feed ORDER BY title');
     }
 
-    /**
-     * @throws \Exception
-     */
+    #[AsCallback(table: 'tl_wem_offer_alert', target: 'fields.language.options')]
+    public function getLanguages(): array
+    {
+        return $this->locales->getLocales();
+    }
+
+    #[AsCallback(table: 'tl_wem_offer_alert', target: 'fields.moduleOffersAlert.options')]
     public function getOffersAlertModules(): array
     {
         $arrChoices = [];
 
-        $objModules = ModuleModel::findBy('type','offersalert');
-
-        while ($objModules->next()) {
-            $objTheme = $objModules->current()->getRelated('pid');
-            $arrChoices[$objModules->id] = $objModules->name . ' ('.($objTheme ? $objTheme->name : '-').')';
+        foreach (ModuleModel::findByType(AlertModuleController::TYPE) ?? [] as $objModule) {
+            $objTheme = ThemeModel::findById($objModule->pid);
+            $arrChoices[$objModule->id] = \sprintf('%s (%s)', $objModule->name, $objTheme instanceof ThemeModel ? $objTheme->name : '-');
         }
 
         return $arrChoices;
     }
 
-
     /**
-     * @throws ExceptionInterface
+     * Back end key callback: send the alerts right now.
+     *
+     * @throws \Exception
      */
     public function sendAlerts(): void
     {
-        $sendAlerts = System::getContainer()->get('wem.offers.send_alert');
-        $sendAlerts->do(false);
+        $this->sendAlerts->do(false);
 
         Message::addInfo($GLOBALS['TL_LANG']['WEM']['OFFERS']['jobExecuted']);
 
-        $referer = preg_replace('/&(amp;)?(key)=[^&]*/', '', Environment::get('request'));
-        $this->redirect($referer);
+        $request = (string) $this->requestStack->getCurrentRequest()?->getRequestUri();
+        Controller::redirect(preg_replace('/&(amp;)?key=[^&]*/', '', $request));
     }
 }

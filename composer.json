@@ -1,9 +1,7 @@
 {
     "name": "webexmachina/contao-offers",
-    "prefer-stable": true,
-    "minimum-stability": "dev",
     "description": "Offers & Ads for Contao Open Source CMS",
-     "keywords": ["frontend", "jobs", "application", "offer", "ads", "webexmachina", "module", "contao"],
+    "keywords": ["frontend", "jobs", "application", "offer", "ads", "webexmachina", "module", "contao"],
     "type": "contao-bundle",
     "license": "LGPL-3.0+",
     "authors": [
@@ -14,34 +12,37 @@
         }
     ],
     "support":{
-        "website":"https://www.webexmachina.fr/",
-        "issues":"https://github.com/web-ex-machina/contao-offers/issues",
-        "source":"https://github.com/web-ex-machina/contao-offers"
+        "website": "https://www.webexmachina.fr/",
+        "issues": "https://github.com/web-ex-machina/contao-offers/issues",
+        "source": "https://github.com/web-ex-machina/contao-offers"
     },
     "require": {
-        "php": "^7.4||^8.2",
+        "php": "^8.4",
         "ext-json": "*",
-        "contao/core-bundle": "^4.13||^5.0",
-        "contao/manager-plugin": "^2.13",
+        "contao/core-bundle": "^5.7",
+        "contao/manager-plugin": "^2.0",
         "terminal42/contao-countryselect": "^1.5",
-        "terminal42/notification_center": "^1.6",
-        "webexmachina/contao-utils": "2.*",
-        "webexmachina/contao-personal-data-manager": "^1.0",
-        "webexmachina/contao-form-data-manager": "^1.0"
+        "terminal42/dcawizard": "^5.0",
+        "terminal42/notification_center": "^2.7",
+        "webexmachina/contao-utils": "^2.0",
+        "webexmachina/contao-personal-data-manager": "^1.3"
+    },
+    "suggest": {
+        "webexmachina/contao-form-data-manager": "Adds personal data manager links to form storages"
     },
     "autoload":{
         "psr-4": {
             "WEM\\OffersBundle\\": "src/"
-        },
-        "classmap": [
-            "src/Resources/contao/"
-        ],
-        "exclude-from-classmap": [
-            "src/Resources/contao/config/",
-            "src/Resources/contao/dca/",
-            "src/Resources/contao/languages/",
-            "src/Resources/contao/templates/"
-        ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "contao-community-alliance/composer-plugin": true,
+            "php-http/discovery": false,
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
     },
     "extra":{
         "contao-manager-plugin": "WEM\\OffersBundle\\ContaoManager\\Plugin"

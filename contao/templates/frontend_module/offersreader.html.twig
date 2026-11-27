@@ -1,0 +1,12 @@
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% set searchable = false %}
+{% set attributes = attrs().addClass('mod_offersreader').mergeWith(attributes|default) %}
+
+{% block content %}
+    {{ offer|raw }}
+
+    {% if referer|default %}
+        <p class="back"><a href="{{ referer }}">{{ back }}</a></p>
+    {% endif %}
+{% endblock %}

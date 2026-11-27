@@ -1,0 +1,10 @@
+{% trans_default_domain 'contao_default' %}
+
+<strong>{{ 'WEM.OFFERS.ALERTS.offerCodeLabel'|trans(locale = language) }}</strong> : [{{ code }}] {{ title }}<br>
+<strong>{{ 'WEM.OFFERS.ALERTS.dateLabel'|trans(locale = language) }}</strong> : {{ date }}<br>
+<strong>{{ 'WEM.OFFERS.ALERTS.offerTextLabel'|trans(locale = language) }}</strong> :<br>
+{{ teaser|raw }}<br>
+
+{% for attribute in attributes|filter(a => a.human_readable_value) %}
+    <strong>{{ attribute.label }}</strong> : {{ attribute.human_readable_value is iterable ? attribute.human_readable_value|join(', ') : attribute.human_readable_value|raw }}<br>
+{% endfor %}

@@ -3,81 +3,61 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\DataContainer;
 
-use Contao\Backend;
+use Contao\Controller;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 
-class OfferFeedAttributeContainer extends Backend
+class OfferFeedAttributeContainer
 {
-    public function __construct()
-    {
-        Parent::__construct();
-    }
-
     /**
      * Format items list.
      */
+    #[AsCallback(table: 'tl_wem_offer_feed_attribute', target: 'list.sorting.child_record')]
     public function listItems(array $r): string
     {
-        return sprintf(
-            '%s <span style="color:#888">[%s]</span>',
-            $r['name'],
-            $r['label']
-        );
+        return \sprintf('%s <span class="label-info">[%s]</span>', $r['name'], $r['label']);
     }
 
     /**
-     * Return a list of form fields
+     * Return a list of form fields.
      */
+    #[AsCallback(table: 'tl_wem_offer_feed_attribute', target: 'fields.type.options')]
     public function getFieldOptions(): array
     {
         return ['text', 'textarea', 'select', 'picker', 'fileTree', 'listWizard'];
     }
 
     /**
-     * Return a list of form fields
+     * Return the fields and legends of the offer palette.
      */
+    #[AsCallback(table: 'tl_wem_offer_feed_attribute', target: 'fields.insertInDca.options')]
     public function getFieldsAndLegends(): array
     {
-        $this->loadDataContainer('tl_wem_offer');
+        Controller::loadDataContainer('tl_wem_offer');
         $arrOptions = [];
 
-        $strPalette = $GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default'];
-        $arrChunks = explode(';', $strPalette);
+        foreach (explode(';', (string) $GLOBALS['TL_DCA']['tl_wem_offer']['palettes']['default']) as $chunk) {
+            foreach (explode(',', $chunk) as $w) {
+                $w = trim($w);
 
-        if ($arrChunks === []) {
-            return $arrOptions;
-        }
-
-        foreach ($arrChunks as $c) {
-            $arrWidgets = explode(',', $c);
-
-            if ($arrWidgets === []) {
-                continue;
-            }
-
-            foreach ($arrWidgets as $w) {
-                if (false !== strpos($w, "_legend")) {
-                    $arrOptions['legends'][] = trim(str_replace(["{", "}", "_hidden"], ["", "", ""], $w));
+                if ($w === '') {
                     continue;
                 }
 
-                $arrOptions['fields'][] = trim($w);
-
-                $arrSubfields = $this->getFieldsFromSubpalette($w);
-
-                if($arrSubfields !== []) {
-                    $arrOptions['fields'] = array_merge($arrOptions['fields'], $arrSubfields);
+                if (str_contains($w, '_legend')) {
+                    $arrOptions['legends'][] = trim(str_replace(['{', '}', ':hide', ':collapsed', '_hidden'], '', $w));
+                    continue;
                 }
+
+                $arrOptions['fields'][] = $w;
+                $arrOptions['fields'] = [...$arrOptions['fields'], ...$this->getFieldsFromSubpalette($w)];
             }
         }
 
@@ -85,28 +65,20 @@ class OfferFeedAttributeContainer extends Backend
     }
 
     /**
-     * Retrieve fields from subpalette
+     * Retrieve fields from subpalette.
      */
     protected function getFieldsFromSubpalette(string $f): array
     {
+        $subpalette = $GLOBALS['TL_DCA']['tl_wem_offer']['subpalettes'][$f] ?? null;
+
+        if ($subpalette === null) {
+            return [];
+        }
+
         $arrFields = [];
 
-        if (array_key_exists('subpalettes', $GLOBALS['TL_DCA']['tl_wem_offer']) && array_key_exists($f, $GLOBALS['TL_DCA']['tl_wem_offer']['subpalettes'])) {
-            $arrSubfields = explode(',', $GLOBALS['TL_DCA']['tl_wem_offer']['subpalettes'][$f]);
-
-            if ($arrSubfields === []) {
-                return $arrFields;
-            }
-
-            foreach($arrSubfields as $s) {
-                $arrFields[] = trim($s);
-
-                $arrSubfields = $this->getFieldsFromSubpalette($s);
-
-                if($arrSubfields !== []) {
-                    $arrFields = array_merge($arrFields, $arrSubfields);
-                }
-            }
+        foreach (explode(',', $subpalette) as $s) {
+            $arrFields = [...$arrFields, trim($s), ...$this->getFieldsFromSubpalette(trim($s))];
         }
 
         return $arrFields;

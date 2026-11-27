@@ -1,0 +1,67 @@
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% set searchable = false %}
+{% set attributes = attrs().addClass('mod_offerslist').mergeWith(attributes|default) %}
+
+{% block content %}
+    {{ filters|default|raw }}
+
+    {% if items is empty %}
+        <p class="empty">{{ empty_message }}</p>
+    {% else %}
+        <div class="offers__list" id="offers-{{ moduleId }}">
+            {% for item in items %}
+                {{ item|raw }}
+            {% endfor %}
+        </div>
+
+        {{ pagination|default|raw }}
+
+        {% block script %}
+            <script>
+                window.addEventListener('load', function () {
+                    {% if openModalOnLoad|default %}
+                        $('.offer__action[data-process="openDetailsModal"][data-offer="{{ offerId }}"]').trigger('click');
+                    {% endif %}
+                });
+
+                var openOfferModal = function (btn, action, name, width) {
+                    return new Promise(function (resolve, reject) {
+                        $.ajax({
+                            timeout: 10000,
+                            url: window.location.pathname,
+                            type: 'post',
+                            data: {
+                                'TL_AJAX': 1,
+                                'module': {{ moduleId }},
+                                'action': action,
+                                'offer': btn.$el.attr('data-offer')
+                            },
+                        }).done(function (html) {
+                            var modal = new Modal({
+                                name: name,
+                                content: html,
+                                width: width,
+                                onClose: function () {
+                                    modal.destroy();
+                                }
+                            }).open();
+                            resolve();
+                        }).fail(function (jqXHR, textStatus) {
+                            console.log(jqXHR, textStatus);
+                            reject();
+                        });
+                    });
+                };
+
+                var openDetailsModal = function (btn) {
+                    return openOfferModal(btn, 'seeDetails', 'offerDetailsModal', '972px');
+                };
+
+                var openApplicationModal = function (btn) {
+                    return openOfferModal(btn, 'apply', 'offerApplyModal');
+                };
+            </script>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

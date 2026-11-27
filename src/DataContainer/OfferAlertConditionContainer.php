@@ -3,38 +3,26 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\DataContainer;
 
-use Contao\DataContainer;
-use WEM\OffersBundle\Model\Alert;
-use WEM\OffersBundle\Model\AlertCondition;
-use Contao\Backend;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\StringUtil;
 
-class OfferAlertConditionContainer extends Backend
+class OfferAlertConditionContainer
 {
-    public function __construct()
-    {
-        Parent::__construct();
-    }
-
     /**
      * Design each row of the DCA.
      */
+    #[AsCallback(table: 'tl_wem_offer_alert_condition', target: 'list.sorting.child_record')]
     public function listItems(array $row): string
     {
-        return sprintf(
-            '%s  = %s',
-            $row['field'],
-            $row['value']
-        );
+        // Multiple values are stored serialized
+        return \sprintf('%s = %s', $row['field'], implode(', ', StringUtil::deserialize($row['value'], true)));
     }
 }

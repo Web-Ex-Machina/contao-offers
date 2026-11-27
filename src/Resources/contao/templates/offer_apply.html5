@@ -1,3 +1,0 @@
-<div class="offer__form" data-form="apply_form_<?= $this->id ?>">
-	<?= $this->form ?>
-</div>

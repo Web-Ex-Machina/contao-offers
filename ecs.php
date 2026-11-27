@@ -4,32 +4,28 @@ declare(strict_types=1);
 
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\ArrayOpenerAndCloserNewlineFixer;
-
-use Contao\EasyCodingStandard\Set\SetList;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return ECSConfig::configure()
     ->withConfiguredRule(HeaderCommentFixer::class, [
         'header' =>
-"Contao Offers for Contao Open Source CMS
+"Contao Offers Bundle for Contao Open Source CMS
 @author     Web Ex Machina
 
 @see        https://github.com/Web-Ex-Machina/contao-offers
-@license    https://www.apache.org/licenses/LICENSE-2.0"])
+@license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt"])
     ->withPaths([
         __DIR__ . '/src',
+        __DIR__ . '/contao',
     ])
     ->withSkip([
         ArrayOpenerAndCloserNewlineFixer::class,
-        __DIR__ . '/migrations',
+        __DIR__ . '/contao/languages',
+        __DIR__ . '/contao/templates',
         __DIR__ . '/vendor',
-        __DIR__ . '/var',
-        __DIR__ . '/config/jwt',
-        __DIR__ . '/config/secrets',
-        __DIR__ . '/config/bundles.php',
     ])
+    // The "symplify" prepared set has been removed from ECS 13
     ->withPreparedSets(
-        symplify: true, 
-        psr12: true, 
+        psr12: true,
         common: true,
     );
