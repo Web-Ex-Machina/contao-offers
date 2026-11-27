@@ -30,8 +30,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use WEM\OffersBundle\Model\Offer;
+use WEM\OffersBundle\Twig\TemplateRenderer;
 
-#[AsFrontendModule(self::TYPE, category: self::CATEGORY, template: 'mod_offersreader')]
+#[AsFrontendModule(self::TYPE, category: self::CATEGORY)]
 class ReaderModuleController extends ModuleController
 {
     public const TYPE = 'offersreader';
@@ -42,10 +43,11 @@ class ReaderModuleController extends ModuleController
         InsertTagParser $insertTagParser,
         Studio $studio,
         ContentUrlGenerator $contentUrlGenerator,
+        TemplateRenderer $templateRenderer,
         private readonly ResponseContextAccessor $responseContextAccessor,
         private readonly HtmlDecoder $htmlDecoder,
     ) {
-        parent::__construct($notificationCenter, $csrfTokenManager, $insertTagParser, $studio, $contentUrlGenerator);
+        parent::__construct($notificationCenter, $csrfTokenManager, $insertTagParser, $studio, $contentUrlGenerator, $templateRenderer);
     }
 
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response

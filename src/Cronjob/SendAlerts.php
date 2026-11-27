@@ -16,7 +16,6 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Date;
-use Contao\FrontendTemplate;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
@@ -29,15 +28,19 @@ use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
+use WEM\OffersBundle\Twig\TemplateRenderer;
 
 #[AsCronJob('hourly')]
 class SendAlerts
 {
+    public const DEFAULT_TEMPLATE = 'offer_alert/default';
+
     public function __construct(
         private readonly ContaoFramework $framework,
         private readonly NotificationCenter $notificationCenter,
         private readonly ContentUrlGenerator $contentUrlGenerator,
         private readonly LoggerInterface $logger,
+        private readonly TemplateRenderer $templateRenderer,
     ) {
     }
 
@@ -144,7 +147,7 @@ class SendAlerts
 
             /** @var Offer $objItem */
             foreach ($objItems as $objItem) {
-                $arrBuffer[] = $arrCache[$objAlert->language][$objItem->id] ??= $this->parseItem($objItem, (string) $objAlert->language, $objFeed->tplOfferAlert ?: 'offer_alert_default');
+                $arrBuffer[] = $arrCache[$objAlert->language][$objItem->id] ??= $this->parseItem($objItem, (string) $objAlert->language, $objFeed->tplOfferAlert ?: self::DEFAULT_TEMPLATE);
                 ++$nbOffers;
             }
 
@@ -187,12 +190,12 @@ class SendAlerts
         System::loadLanguageFile(OfferFeedAttribute::getTable(), $language);
         System::loadLanguageFile(Offer::getTable(), $language);
 
-        $objTemplate = new FrontendTemplate($strTemplate);
-        $objTemplate->setData($objItem->row());
-        $objTemplate->date = Date::parse(Config::get('dateFormat'), (int) $objItem->date);
-        $objTemplate->attributes = $objItem->getAttributesFull();
-        $objTemplate->language = $language;
-
-        return $objTemplate->parse();
+        return $this->templateRenderer->render($strTemplate, [
+            ...$objItem->row(),
+            'model' => $objItem,
+            'date' => Date::parse(Config::get('dateFormat'), (int) $objItem->date),
+            'attributes' => $objItem->getAttributesFull(),
+            'language' => $language,
+        ]);
     }
 }

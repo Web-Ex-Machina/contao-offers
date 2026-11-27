@@ -5,6 +5,18 @@
 				<source>There is no available offers.</source>
 				<target>Il n'y a pas d'annonces disponibles.</target>
 			</trans-unit>
+    	<trans-unit id="WEM.OFFERS.errorLabel">
+				<source>Error:</source>
+				<target>Erreur :</target>
+			</trans-unit>
+    	<trans-unit id="WEM.OFFERS.applyFor">
+				<source>Apply for the offer %s</source>
+				<target>Postuler pour l'annonce %s</target>
+			</trans-unit>
+    	<trans-unit id="WEM.OFFERS.unsubscribeLbl">
+				<source>Delete my alert</source>
+				<target>Supprimer mon alerte emploi</target>
+			</trans-unit>
 			<trans-unit id="WEM.OFFERS.datePublished">
 				<source>Published: %s</source>
 				<target>Publiée: %s</target>

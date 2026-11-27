@@ -22,7 +22,6 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\Frontend;
-use Contao\FrontendTemplate;
 use Contao\Model\Collection;
 use Contao\ModuleModel;
 use Contao\PageModel;
@@ -36,6 +35,7 @@ use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeed;
+use WEM\OffersBundle\Twig\TemplateRenderer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
 /**
@@ -44,6 +44,10 @@ use WEM\UtilsBundle\Classes\StringUtil;
 abstract class ModuleController extends AbstractFrontendModuleController
 {
     public const CATEGORY = 'wem-offers';
+
+    public const DEFAULT_OFFER_TEMPLATE = 'offer/default';
+
+    public const DETAILS_OFFER_TEMPLATE = 'offer/details';
 
     protected ModuleModel $model;
 
@@ -58,6 +62,7 @@ abstract class ModuleController extends AbstractFrontendModuleController
         protected readonly InsertTagParser $insertTagParser,
         protected readonly Studio $studio,
         protected readonly ContentUrlGenerator $contentUrlGenerator,
+        protected readonly TemplateRenderer $templateRenderer,
     ) {
     }
 
@@ -150,7 +155,7 @@ abstract class ModuleController extends AbstractFrontendModuleController
             throw new \Exception(\sprintf($GLOBALS['TL_LANG']['WEM']['OFFERS']['ERROR']['argumentMissing'], 'offer'));
         }
 
-        $this->model->offer_template = 'offer_details';
+        $this->model->offer_template = self::DETAILS_OFFER_TEMPLATE;
 
         return new Response($this->insertTagParser->replace($this->parseOffer($objItem)));
     }
@@ -297,95 +302,86 @@ abstract class ModuleController extends AbstractFrontendModuleController
      */
     protected function parseOffer(Offer $objItem, string $strClass = '', int $intCount = 0): string
     {
-        $objTemplate = new FrontendTemplate($this->model->offer_template ?: 'offer_default');
-        $objTemplate->setData($objItem->row());
+        $id = (int) $objItem->id;
+        $data = $objItem->row();
 
         if ($objItem->cssClass) {
             $strClass = ' ' . $objItem->cssClass . $strClass;
         }
 
-        $objTemplate->model = $objItem;
-        $objTemplate->class = $strClass;
-        $objTemplate->count = $intCount;
+        $data['model'] = $objItem;
+        $data['class'] = $strClass;
+        $data['count'] = $intCount;
 
         // Add the meta information
-        $objTemplate->date = (int) $objItem->date;
-        $objTemplate->timestamp = $objItem->date;
-        $objTemplate->datetime = date('Y-m-d\TH:i:sP', (int) $objItem->date);
+        $data['date'] = (int) $objItem->date;
+        $data['timestamp'] = $objItem->date;
+        $data['datetime'] = date('Y-m-d\TH:i:sP', (int) $objItem->date);
 
         // Add an image
-        if ($objItem->addImage && $objItem->singleSRC) {
-            $figure = $this->studio
+        $data['figure'] = $objItem->addImage && $objItem->singleSRC
+            ? $this->studio
                 ->createFigureBuilder()
                 ->from($objItem->singleSRC)
                 ->setSize($objItem->size)
                 ->enableLightbox((bool) $objItem->fullsize)
                 ->buildIfResourceExists()
-            ;
-
-            $figure?->applyLegacyTemplateData($objTemplate, $objItem->imagemargin, $objItem->floating);
-        }
+            : null;
 
         // Retrieve item teaser
-        if ($objItem->teaser) {
-            $objTemplate->hasTeaser = true;
-            $objTemplate->teaser = StringUtil::encodeEmail($objItem->teaser);
-        }
+        $data['hasTeaser'] = (bool) $objItem->teaser;
+        $data['teaser'] = $objItem->teaser ? StringUtil::encodeEmail($objItem->teaser) : '';
 
         // Retrieve item content
-        $id = (int) $objItem->id;
-
-        $objTemplate->text = static function () use ($id): string {
+        $data['text'] = static function () use ($id): string {
             $strText = '';
-            $objElements = ContentModel::findPublishedByPidAndTable($id, Offer::getTable());
 
-            foreach ($objElements ?? [] as $objElement) {
+            foreach (ContentModel::findPublishedByPidAndTable($id, Offer::getTable()) ?? [] as $objElement) {
                 $strText .= Controller::getContentElement($objElement);
             }
 
             return $strText;
         };
 
-        $objTemplate->hasText = static fn (): bool => ContentModel::countPublishedByPidAndTable($id, Offer::getTable()) > 0;
+        $data['hasText'] = static fn (): bool => ContentModel::countPublishedByPidAndTable($id, Offer::getTable()) > 0;
 
         // Retrieve item attributes
-        $objTemplate->blnDisplayAttributes = (bool) $this->model->offer_displayAttributes;
-
-        if ($this->model->offer_displayAttributes && $this->model->offer_attributes !== null) {
-            $objTemplate->attributes = $objItem->getAttributesFull(StringUtil::deserialize($this->model->offer_attributes, true));
-        }
+        $data['blnDisplayAttributes'] = (bool) $this->model->offer_displayAttributes;
+        $data['attributes'] = $this->model->offer_displayAttributes && $this->model->offer_attributes !== null
+            ? $objItem->getAttributesFull(StringUtil::deserialize($this->model->offer_attributes, true))
+            : [];
 
         // Notice the template if we want/can display apply button
-        if ($this->model->offer_applicationForm) {
-            $objTemplate->canApply = true;
+        $data['canApply'] = (bool) $this->model->offer_applicationForm;
+        $data['blnDisplayApplyButton'] = $data['canApply'];
+        $data['formDisplay'] = $this->model->offer_applicationFormDisplay;
+        $data['applyUrl'] = null;
+        $data['form'] = null;
+
+        if ($data['canApply']) {
             $this->formDisplay = $this->model->offer_applicationFormDisplay;
 
             if ($this->model->offer_applicationFormDisplay === 'modal') {
-                $objTemplate->applyUrl = Frontend::addToUrl('apply=' . $objItem->id, true, ['offer']);
+                $data['applyUrl'] = Frontend::addToUrl('apply=' . $objItem->id, true, ['offer']);
             } else {
-                $objTemplate->form = $this->getApplicationForm($id);
+                $data['form'] = $this->getApplicationForm($id);
             }
         }
 
         // Notice the template if we want to display the text
-        if ($this->model->offer_displayTeaser) {
-            $objTemplate->blnDisplayText = true;
-        } else {
-            $objTemplate->detailsUrl = Frontend::addToUrl('seeDetails=' . $objItem->id, true, ['offer']);
-        }
+        $data['blnDisplayText'] = (bool) $this->model->offer_displayTeaser;
+        $data['detailsUrl'] = $this->model->offer_displayTeaser ? null : Frontend::addToUrl('seeDetails=' . $objItem->id, true, ['offer']);
 
         // Parse the URL if we have a jumpTo configured
-        if (OfferFeed::findById($objItem->pid)?->jumpTo) {
-            $objTemplate->jumpTo = $this->contentUrlGenerator->generate($objItem);
-        }
+        $data['jumpTo'] = OfferFeed::findById($objItem->pid)?->jumpTo ? $this->contentUrlGenerator->generate($objItem) : null;
 
-        return $objTemplate->parse();
+        return $this->templateRenderer->render($this->model->offer_template ?: self::DEFAULT_OFFER_TEMPLATE, $data);
     }
 
     /**
      * Parse and return an application form for an offer.
      */
-    protected function getApplicationForm(int $intId, string $strTemplate = 'offer_apply'): string
+    protected function getApplicationForm(int $intId, string $strTemplate = 'offer/apply'): string
     {
         if (! $this->model->offer_applicationForm) {
             return '';
@@ -397,16 +393,15 @@ abstract class ModuleController extends AbstractFrontendModuleController
             return '';
         }
 
-        $objTemplate = new FrontendTemplate($strTemplate);
-        $objTemplate->id = $objItem->id;
-        $objTemplate->code = $objItem->code;
-        $objTemplate->title = $objItem->title;
-        $objTemplate->recipient = $this->getAdminEmail();
-        $objTemplate->time = time();
-        $objTemplate->token = $this->csrfTokenManager->getDefaultTokenValue();
-        $objTemplate->form = Controller::getForm($this->model->offer_applicationForm);
-
-        return $objTemplate->parse();
+        return $this->templateRenderer->render($strTemplate, [
+            'id' => $objItem->id,
+            'code' => $objItem->code,
+            'title' => $objItem->title,
+            'recipient' => $this->getAdminEmail(),
+            'time' => time(),
+            'token' => $this->csrfTokenManager->getDefaultTokenValue(),
+            'form' => Controller::getForm($this->model->offer_applicationForm),
+        ]);
     }
 
     /**

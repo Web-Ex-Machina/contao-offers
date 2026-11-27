@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
-#[AsFrontendModule(self::TYPE, category: self::CATEGORY, template: 'mod_offersfilters')]
+#[AsFrontendModule(self::TYPE, category: self::CATEGORY)]
 class FiltersModuleController extends ModuleController
 {
     public const TYPE = 'offersfilters';

@@ -25,7 +25,7 @@ use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
-#[AsFrontendModule(self::TYPE, category: self::CATEGORY, template: 'mod_offersalert')]
+#[AsFrontendModule(self::TYPE, category: self::CATEGORY)]
 class AlertModuleController extends ModuleController
 {
     public const TYPE = 'offersalert';
@@ -73,9 +73,10 @@ class AlertModuleController extends ModuleController
 
         if ($action === 'unsubscribe') {
             $template->unsubscribe = true;
-            $template->unsubscribeLbl = $GLOBALS['TL_LANG']['WEM']['OFFERS']['unsubscribeLbl'] ?? 'Supprimer mon alerte emploi';
+            $template->unsubscribeLbl = $GLOBALS['TL_LANG']['WEM']['OFFERS']['unsubscribeLbl'];
         }
 
+        $template->alertTeaser = $model->offer_alertTeaser;
         $template->conditions = $this->buildConditions($request);
         $template->moduleId = $model->id;
         $template->rt = $this->csrfTokenManager->getDefaultTokenValue();

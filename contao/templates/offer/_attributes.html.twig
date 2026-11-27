@@ -1,0 +1,18 @@
+{#
+    Lists the offer attributes.
+
+    Mandatory variables:
+        @var array attributes ['name' => ['label' => …, 'human_readable_value' => …]]
+#}
+{% block attributes_component %}
+    {% if attributes is not empty %}
+        <div class="offer__attributes">
+            {% for attribute in attributes|filter(a => a.label and a.human_readable_value) %}
+                <div class="offer__attribute">
+                    <div class="offer__attribute__title">{{ attribute.label }}</div>
+                    <div class="offer__attribute__value">{{ attribute.human_readable_value is iterable ? attribute.human_readable_value|join(', ') : attribute.human_readable_value|raw }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

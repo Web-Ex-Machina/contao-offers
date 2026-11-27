@@ -11,11 +11,14 @@ declare(strict_types=1);
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Slug\Slug;
+use Contao\CoreBundle\Twig\Finder\FinderFactory;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use WEM\OffersBundle\Cronjob\SendAlerts;
 use WEM\OffersBundle\NotificationType\AlertEmailNotificationType;
 
 class OfferFeedContainer
@@ -24,6 +27,7 @@ class OfferFeedContainer
         private readonly Connection $connection,
         private readonly Slug $slug,
         private readonly NotificationCenter $notificationCenter,
+        private readonly FinderFactory $finderFactory,
     ) {
     }
 
@@ -47,6 +51,19 @@ class OfferFeedContainer
         }
 
         return $varValue;
+    }
+
+    /**
+     * Return the templates available for the alert emails.
+     */
+    #[AsCallback(table: 'tl_wem_offer_feed', target: 'fields.tplOfferAlert.options')]
+    public function getAlertTemplates(): array
+    {
+        return [
+            ...$this->finderFactory->create()->identifier(SendAlerts::DEFAULT_TEMPLATE)->withVariants()->asTemplateOptions(),
+            // Legacy PHP templates still present in the website
+            ...Controller::getTemplateGroup('offer_alert_'),
+        ];
     }
 
     #[AsCallback(table: 'tl_wem_offer_feed', target: 'fields.ncEmailAlert.options')]

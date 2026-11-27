@@ -25,6 +25,15 @@
 				<source>Empty</source>
 				<target>Empty</target>
 			</trans-unit>
+			<trans-unit id="WEM.OFFERS.errorLabel">
+				<source>Error:</source>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.applyFor">
+				<source>Apply for the offer %s</source>
+			</trans-unit>
+			<trans-unit id="WEM.OFFERS.unsubscribeLbl">
+				<source>Delete my alert</source>
+			</trans-unit>
 			<trans-unit id="WEM.OFFERS.applyTitle">
 				<source>Interested? Apply here!</source>
 				<target>Interested? Apply here!</target>

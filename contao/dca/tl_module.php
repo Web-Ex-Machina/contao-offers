@@ -156,13 +156,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['offer_applicationForm'] = [
     ],
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_template'] = [
-    'default' => 'offer_default',
     'exclude' => true,
     'inputType' => 'select',
     'eval' => [
         'tl_class' => 'w50',
     ],
-    'sql' => "varchar(64) NOT NULL default ''",
+    'sql' => "varchar(128) NOT NULL default ''",
 ];
 $GLOBALS['TL_DCA']['tl_module']['fields']['offer_pageGdpr'] = [
     'exclude' => true,

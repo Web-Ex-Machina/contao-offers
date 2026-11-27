@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
-use Contao\Controller;
 use Contao\DataContainer;
 
 $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
@@ -143,13 +142,11 @@ $GLOBALS['TL_DCA']['tl_wem_offer_feed'] = [
         'tplOfferAlert' => [
             'exclude' => true,
             'inputType' => 'select',
-            'options_callback' => static fn (): array => Controller::getTemplateGroup('offer_alert_'),
             'eval' => [
-                'includeBlankOption' => true,
                 'chosen' => true,
                 'tl_class' => 'w50',
             ],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => "varchar(128) NOT NULL default ''",
         ],
     ],
 ];

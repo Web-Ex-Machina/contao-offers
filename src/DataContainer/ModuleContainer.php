@@ -13,10 +13,12 @@ namespace WEM\OffersBundle\DataContainer;
 
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Twig\Finder\FinderFactory;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use WEM\OffersBundle\Controller\Frontend\FiltersModuleController;
+use WEM\OffersBundle\Controller\Frontend\ModuleController;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\OffersBundle\NotificationType\AlertSubscribeNotificationType;
@@ -28,6 +30,7 @@ class ModuleContainer
     public function __construct(
         private readonly Connection $connection,
         private readonly NotificationCenter $notificationCenter,
+        private readonly FinderFactory $finderFactory,
     ) {
     }
 
@@ -37,7 +40,19 @@ class ModuleContainer
     #[AsCallback(table: 'tl_module', target: 'fields.offer_template.options')]
     public function getTemplates(): array
     {
-        return Controller::getTemplateGroup('offer_');
+        $options = [
+            ...$this->finderFactory->create()->identifier(ModuleController::DEFAULT_OFFER_TEMPLATE)->withVariants()->asTemplateOptions(),
+            ...$this->finderFactory->create()->identifier(ModuleController::DETAILS_OFFER_TEMPLATE)->withVariants()->asTemplateOptions(false),
+        ];
+
+        // Legacy PHP templates still present in the website
+        foreach (Controller::getTemplateGroup('offer_') as $name => $label) {
+            if (! str_starts_with($name, 'offer_alert_') && ! str_starts_with($name, 'offer_apply')) {
+                $options[$name] = $label;
+            }
+        }
+
+        return $options;
     }
 
     /**

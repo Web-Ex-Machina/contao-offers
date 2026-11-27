@@ -1,0 +1,40 @@
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% set searchable = false %}
+{% set attributes = attrs().addClass('mod_offersfilters').mergeWith(attributes|default) %}
+
+{% block content %}
+    {% if filters is not empty %}
+        <form action="{{ formAction }}" method="get">
+            <div class="offers__filters">
+                {# Display the search field last #}
+                {% for filter in filters|filter(f => f.name != 'offer_filter_search')|merge(filters|filter(f => f.name == 'offer_filter_search')) %}
+                    {% if filter.type == 'select' %}
+                        <select class="filter" name="{{ filter.name }}"{% if filter.multiple %} multiple{% endif %} placeholder="{{ filter.placeholder|default(filter.label) }}">
+                            {% if not filter.multiple %}
+                                <option value="">- {{ filter.label }} -</option>
+                            {% endif %}
+                            {% for index, option in filter.options %}
+                                {% if option.options is defined %}
+                                    <optgroup label="{{ index }}">
+                                        {% for subOption in option.options %}
+                                            <option value="{{ subOption.value }}"{% if subOption.selected %} selected{% endif %}>{{ subOption.label }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% else %}
+                                    <option value="{{ option.value }}"{% if option.selected %} selected{% endif %}>{{ option.label }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input class="filter" type="text" name="{{ filter.name }}" value="{{ filter.value }}" placeholder="{{ filter.placeholder|default }}">
+                    {% endif %}
+                {% endfor %}
+
+                <div class="input-group offers__filters__submit">
+                    <button type="submit" class="btn-sm"><i class="fal fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

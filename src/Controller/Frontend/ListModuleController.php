@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use WEM\OffersBundle\Model\Offer;
 use WEM\UtilsBundle\Classes\StringUtil;
 
-#[AsFrontendModule(self::TYPE, category: self::CATEGORY, template: 'mod_offerslist')]
+#[AsFrontendModule(self::TYPE, category: self::CATEGORY)]
 class ListModuleController extends ModuleController
 {
     public const TYPE = 'offerslist';
@@ -57,7 +57,9 @@ class ListModuleController extends ModuleController
         }
 
         $template->items = [];
-        $template->empty = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
+        $template->empty_message = $GLOBALS['TL_LANG']['WEM']['OFFERS']['empty'];
+        // Kept for the legacy mod_offerslist templates
+        $template->empty = $template->empty_message;
         $template->moduleId = $model->id;
 
         $config = [
