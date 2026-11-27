@@ -1,0 +1,10 @@
+parameters:
+    phpVersion: 80400
+    level: 5
+    paths:
+        - src
+    scanDirectories:
+        - ./vendor/contao
+    ignoreErrors:
+        # Contao models expose their columns as magic properties
+        - identifier: property.notFound

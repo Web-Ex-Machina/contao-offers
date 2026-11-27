@@ -8,13 +8,21 @@ Functionnalities
 System requirements
 -------------------
 
- * Contao 4.* (Manager Edition)
+ * PHP 8.4+
+ * Contao 5.7+ (Managed Edition)
+ * terminal42/notification_center 2.x
 
 
 Installation
 ------------
 
-Clone the extension from Packagist (Contao 4 - Manager Edition) or directly from Composer
+Install the extension with the Contao Manager or with Composer:
+
+```bash
+composer require webexmachina/contao-offers
+```
+
+Then update the database (Contao Manager or `vendor/bin/contao-console contao:migrate`).
 
 Documentation
 -------------

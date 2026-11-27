@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  WEM\OffersBundle\:
+    resource: ../src/
+    exclude: ../src/{ContaoManager,DependencyInjection,Model,Dca,Classes,OffersBundle.php}
+
+  # Kept for backward compatibility with code calling the former service id
+  wem.offers.send_alert:
+    alias: WEM\OffersBundle\Cronjob\SendAlerts
+    public: true

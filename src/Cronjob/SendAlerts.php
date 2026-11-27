@@ -3,233 +3,192 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2019-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\Cronjob;
 
 use Contao\Config;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
+use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Date;
 use Contao\FrontendTemplate;
-use Contao\System;
 use Contao\ModuleModel;
 use Contao\PageModel;
+use Contao\System;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
+use WEM\OffersBundle\Controller\Frontend\AlertModuleController;
 use WEM\OffersBundle\Model\Alert;
 use WEM\OffersBundle\Model\AlertCondition;
 use WEM\OffersBundle\Model\Offer;
-use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\OfferFeed;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
-use NotificationCenter\Model\Notification;
-use Symfony\Component\Routing\Exception\ExceptionInterface;
 
+#[AsCronJob('hourly')]
 class SendAlerts
 {
+    public function __construct(
+        private readonly ContaoFramework $framework,
+        private readonly NotificationCenter $notificationCenter,
+        private readonly ContentUrlGenerator $contentUrlGenerator,
+        private readonly LoggerInterface $logger,
+    ) {
+    }
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger
-    )
+    public function __invoke(): void
     {
-        $this->logger = $logger;
+        $this->do();
     }
 
     /**
-     * Runs the SendAlerts cron job.
-     * Executed every hour
+     * Send the alerts matching new offers.
      *
-     * @param bool $blnUpdateAlertLastJob Whether to update the lastJob field of the alerts. Defaults to true.
+     * @param bool $blnUpdateAlertLastJob Whether to update the lastJob field of the alerts (and only send the alerts due)
      *
      * @throws \Exception
-     * @throws ExceptionInterface
      */
     public function do(bool $blnUpdateAlertLastJob = true): void
     {
-        // Log the start of the job and setup some vars
-        $this->logger->log("WEMOFFERS",'Cronjob SendAlerts started');
+        $this->framework->initialize();
+        $this->logger->info('Cronjob SendAlerts started');
 
         $t = Alert::getTable();
         $t3 = Offer::getTable();
         $nbAlerts = 0;
         $nbOffers = 0;
 
-        // We need to retrieve the alerts depending on their frequency
-        // hourly
-        // or daily and lastJob < time - 1 day
-        // or weekly and lastJob < time - 1 week
-        // or monthly and lastJob < time - 1 month
-        $c = ['active'=>1];
+        // Retrieve the alerts depending on their frequency
+        $c = [
+            'active' => 1,
+        ];
 
         if ($blnUpdateAlertLastJob) {
-            $arrWhere = [];
-            $arrWhere[] = sprintf(
-                "(
-                    {$t}.frequency = 'hourly'
-                    OR ({$t}.frequency = 'daily' AND {$t}.lastJob < %s)
-                    OR ({$t}.frequency = 'weekly' AND {$t}.lastJob < %s)
-                    OR ({$t}.frequency = 'monthly' AND {$t}.lastJob < %s)
-                )",
+            $c['where'] = [\sprintf(
+                "(%1\$s.frequency = 'hourly' OR (%1\$s.frequency = 'daily' AND %1\$s.lastJob < %2\$d) OR (%1\$s.frequency = 'weekly' AND %1\$s.lastJob < %3\$d) OR (%1\$s.frequency = 'monthly' AND %1\$s.lastJob < %4\$d))",
+                $t,
                 strtotime('-1 day'),
                 strtotime('-1 week'),
                 strtotime('-1 month'),
-            );
-            $c['where'] = $arrWhere;
+            )];
         }
 
-        $objAlerts = Alert::findItems($c, 0, 0, ['order'=>'language ASC, moduleOffersAlert ASC']);
+        $objAlerts = Alert::findItems($c, 0, 0, [
+            'order' => 'language ASC, moduleOffersAlert ASC',
+        ]);
 
-        // Quit the job if there is no alerts to retrieve
-        if (!$objAlerts || 0 === $objAlerts->count()) {
-            $this->logger->log("WEMOFFERS",'Nothing to send, abort !');
+        if (! $objAlerts instanceof \Contao\Model\Collection || $objAlerts->count() === 0) {
+            $this->logger->info('Cronjob SendAlerts: nothing to send');
+
             return;
         }
 
         $arrCache = [];
-        $arrFeedCache = [];
 
-        // Now, loop on the alerts and check if there is jobs matching its conditions
-        while ($objAlerts->next()) {
-            if (!array_key_exists($objAlerts->language, $arrCache)){
-                $arrCache[$objAlerts->language] = [];
-            }
+        /** @var Alert $objAlert */
+        foreach ($objAlerts as $objAlert) {
+            $objFeed = OfferFeed::findById($objAlert->feed);
 
-            // Retrieve the feed linked
-            if (\array_key_exists($objAlerts->feed, $arrFeedCache)) {
-                $objFeed = $arrFeedCache[$objAlerts->feed]['model'];
-            } else {
-                $objFeed = $objAlerts->getRelated('feed');
-                $arrFeedCache[$objAlerts->feed]['model'] = $objFeed;
-                $arrFeedCache[$objAlerts->feed]['tokens'] = [];
-
-                // Format and store tokens
-                foreach ($objFeed->row() as $k => $v) {
-                    $arrFeedCache[$objAlerts->feed]['tokens']['offersfeed_'.$k] = $v;
-                }
-            }
-
-            // Setup default conditions
-            $arrConditions = [];
-            $arrConditions['pid'] = $objFeed->id;
-            $arrConditions['published'] = 1;
-            $arrConditions['where'] = [];
-
-            // Retrieve the alert conditions
-            $objConditions = AlertCondition::findItems(['pid' => $objAlerts->id]);
-
-            // Format alert conditions for request
-            // @todo > Take in consideration that we can have multiple values per field.
-            // Ex : 2 cities for locations, 2 cities for country etc...
-            if ($objConditions && 0 < $objConditions->count()) {
-                while ($objConditions->next()) {
-                    $arrConditions[$objConditions->field] = $objConditions->value;
-                }
-            }
-
-            // Depending on frequency, adjust job time condition
-            switch ($objAlerts->frequency) {
-                case 'daily':
-                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 day'));
-                    break;
-                case 'weekly':
-                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 week'));
-                    break;
-                case 'monthly':
-                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 month'));
-                    break;
-                case 'hourly':
-                default:
-                    $arrConditions['where'][] = sprintf('%s.date > %s', $t3, strtotime('-1 hour'));
-            }
-
-            // Retrieve items matching the conditions
-            $objItems = Offer::findItems($arrConditions);
-
-            // Skip if no items were found
-            if (!$objItems || 0 === $objItems->count()) {
+            if (! $objFeed instanceof OfferFeed || ! $objFeed->ncEmailAlert) {
                 continue;
             }
 
-            // Prepare some tokens for notification
-            $arrTokens = [];
-            $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-            $arrBuffer = [];
+            // Setup default conditions
+            // Do not filter on the current request locale, alerts gather the offers of every language
+            $arrConditions = [
+                'pid' => $objFeed->id,
+                'published' => 1,
+                'lang' => null,
+                'where' => [],
+            ];
 
-            foreach ($objAlerts->row() as $k => $v) {
-                $arrTokens['recipient_'.$k] = $v;
+            // @todo > Take in consideration that we can have multiple values per field.
+            foreach (AlertCondition::findItems([
+                'pid' => $objAlert->id,
+            ]) ?? [] as $objCondition) {
+                $arrConditions[$objCondition->field] = $objCondition->value;
             }
 
-            // Loop on the items, format everything and send the notification \o/
-            while ($objItems->next()) {
-                if (is_array($arrCache[$objAlerts->language]) && \array_key_exists($objItems->id, $arrCache[$objAlerts->language])) {
-                    $arrBuffer[] = $arrCache[$objAlerts->language][$objItems->id];
-                } else {
-                    $bufferTmp = $this->parseItem($objItems->current(), $objAlerts->language, $objFeed->tplOfferAlert);
-                    $arrBuffer[] = $bufferTmp;
-                    $arrCache[$objAlerts->language][$objItems->id] = $bufferTmp;
-                }
+            // Depending on frequency, adjust offer time condition
+            $arrConditions['where'][] = \sprintf('%s.date > %d', $t3, strtotime(match ($objAlert->frequency) {
+                'daily' => '-1 day',
+                'weekly' => '-1 week',
+                'monthly' => '-1 month',
+                default => '-1 hour',
+            }));
 
+            $objItems = Offer::findItems($arrConditions);
+
+            if (! $objItems instanceof \Contao\Model\Collection || $objItems->count() === 0) {
+                continue;
+            }
+
+            $arrTokens = [
+                'admin_email' => Config::get('adminEmail'),
+            ];
+
+            foreach ($objFeed->row() as $k => $v) {
+                $arrTokens['feed_' . $k] = $v;
+            }
+
+            foreach ($objAlert->row() as $k => $v) {
+                $arrTokens['recipient_' . $k] = $v;
+            }
+
+            $arrBuffer = [];
+
+            /** @var Offer $objItem */
+            foreach ($objItems as $objItem) {
+                $arrBuffer[] = $arrCache[$objAlert->language][$objItem->id] ??= $this->parseItem($objItem, (string) $objAlert->language, $objFeed->tplOfferAlert ?: 'offer_alert_default');
                 ++$nbOffers;
             }
 
             $arrTokens['offershtml'] = implode('<hr>', $arrBuffer);
             $arrTokens['offerstext'] = strip_tags($arrTokens['offershtml']);
+            $arrTokens['link_unsubscribe'] = $this->getUnsubscribeLink($objAlert);
 
-            $arrTokens['link_unsubscribe'] = '';
-            $objModuleOffersAlert = $objAlerts->getRelated('moduleOffersAlert');
-            if (!$objModuleOffersAlert) {
-                $objModuleOffersAlert = ModuleModel::findBy('type', 'offersalert');
-            }
+            $this->notificationCenter->sendNotification((int) $objFeed->ncEmailAlert, $arrTokens, $objAlert->language ?: null);
+            ++$nbAlerts;
 
-            if ($objModuleOffersAlert) {
-                $objPageUnsubscribe = PageModel::findByPk($objModuleOffersAlert->offer_pageUnsubscribe);
-                $arrTokens['link_unsubscribe'] = $objPageUnsubscribe->getAbsoluteUrl().'?wem_action=unsubscribe&token='.$objAlerts->token;
-                //$arrTokens['link_unsubscribe'] = $this->urlGenerator->generate($objPageUnsubscribe, ['wem_action'=>'unsubscribe','token'=>$objAlerts->token], UrlGeneratorInterface::ABSOLUTE_URL);
-            }
-
-            if ($objNotification = Notification::findByPk($objFeed->ncEmailAlert)) {
-                ++$nbAlerts;
-                $objNotification->send($arrTokens, $objAlerts->language);
-
-                if ($blnUpdateAlertLastJob) {
-                    $objAlert = $objAlerts->current();
-                    $objAlert->lastJob = time();
-                    $objAlert->save();
-                }
+            if ($blnUpdateAlertLastJob) {
+                $objAlert->lastJob = time();
+                $objAlert->save();
             }
         }
 
-        // Step 5 - Log the results (how many alerts sents & how job offers sent)
-        $this->logger->log("WEMOFFERS",'Cronjob done, {nbAlerts} alerts and {nbOffers} offers sent',[
-            "nbAlerts"=>$nbAlerts,
-            "nbOffers"=>$nbOffers
-        ]);
+        $this->logger->info(\sprintf('Cronjob SendAlerts done, %d alerts and %d offers sent', $nbAlerts, $nbOffers));
+    }
+
+    private function getUnsubscribeLink(Alert $objAlert): string
+    {
+        $objModule = ModuleModel::findById($objAlert->moduleOffersAlert) ?? ModuleModel::findOneByType(AlertModuleController::TYPE);
+        $objPage = $objModule?->offer_pageUnsubscribe ? PageModel::findById($objModule->offer_pageUnsubscribe) : null;
+
+        if (! $objPage instanceof PageModel) {
+            return '';
+        }
+
+        return $this->contentUrlGenerator->generate($objPage, [], UrlGeneratorInterface::ABSOLUTE_URL) . '?wem_action=unsubscribe&token=' . $objAlert->token;
     }
 
     /**
-     * Parses an Offer object into a string using a specified template.
+     * Parse an offer using the alert template.
      *
-     * @param Offer $objItem The Offer object to parse.
-     * @param string $language The language to use for language file loading.
-     * @param string $strTemplate The name of the template to use. Defaults to 'offer_alert_default'.
-     *
-     * @return string The parsed template as a string.
      * @throws \Exception
      */
-    protected function parseItem(Offer $objItem, string $language, string $strTemplate = 'offer_alert_default'): string
+    private function parseItem(Offer $objItem, string $language, string $strTemplate): string
     {
-        System::loadLanguageFile(OfferFeed::getTable(),$language);
-        System::loadLanguageFile(OfferFeedAttribute::getTable(),$language);
-        System::loadLanguageFile(Offer::getTable(),$language);
+        System::loadLanguageFile(OfferFeed::getTable(), $language);
+        System::loadLanguageFile(OfferFeedAttribute::getTable(), $language);
+        System::loadLanguageFile(Offer::getTable(), $language);
 
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($objItem->row());
-
         $objTemplate->date = Date::parse(Config::get('dateFormat'), (int) $objItem->date);
         $objTemplate->attributes = $objItem->getAttributesFull();
         $objTemplate->language = $language;

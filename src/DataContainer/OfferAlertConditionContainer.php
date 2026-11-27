@@ -3,66 +3,46 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina
- *
- * @category ContaoBundle
- * @package  Web-Ex-Machina/contao-job-offers
- * @author   Web ex Machina <contact@webexmachina.fr>
- * @link     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\DataContainer;
 
+use Contao\Controller;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use WEM\OffersBundle\Model\Alert;
+use Contao\System;
 use WEM\OffersBundle\Model\AlertCondition;
-use Contao\Backend;
+use WEM\OffersBundle\Model\Offer;
 
-class OfferAlertConditionContainer extends Backend
+class OfferAlertConditionContainer
 {
-    public function __construct()
-    {
-        Parent::__construct();
-    }
-
     /**
      * Design each row of the DCA.
      */
+    #[AsCallback(table: 'tl_wem_offer_alert_condition', target: 'list.sorting.child_record')]
     public function listItems(array $row): string
     {
-        return sprintf(
-            '%s  = %s',
-            $row['field'],
-            $row['value']
-        );
+        return \sprintf('%s = %s', $row['field'], $row['value']);
     }
 
     /**
-     * Retrieve the available fields for alerts condition (limited to the alert feed)
-     *
-     * @throws \Exception
+     * Retrieve the available fields for alerts conditions.
      */
-    public function getFieldChoices(DataContainer $dc): array
+    #[AsCallback(table: 'tl_wem_offer_alert_condition', target: 'fields.field.options')]
+    public function getFieldChoices(): array
     {
-        if (!$dc->activeRecord->pid) {
-            return [];
-        }
-
-
-        $objAlert = Alert::findByPk($dc->activeRecord->pid);
-
-        if (!$objAlert) {
-            throw new \Exception("No alert found"); // @todo translation
-        }
+        Controller::loadDataContainer(Offer::getTable());
+        System::loadLanguageFile(Offer::getTable());
 
         $arrFields = [];
-        $this->loadDataContainer('tl_wem_offer');
-        $this->loadLanguageFile('tl_wem_offer');
 
-        foreach ($GLOBALS['TL_DCA']['tl_wem_offer']['fields'] as $name => $field) {
-            if (true === $field['eval']['wemoffers_isAvailableForAlerts']) {
-                $arrFields[$name] = $field['label'][0];
+        foreach ($GLOBALS['TL_DCA'][Offer::getTable()]['fields'] as $name => $field) {
+            if (true === ($field['eval']['isAlertCondition'] ?? false)) {
+                $arrFields[$name] = ($field['label'][0] ?? null) ?: $name;
             }
         }
 
@@ -70,37 +50,46 @@ class OfferAlertConditionContainer extends Backend
     }
 
     /**
-     * Retrieve the available values for alerts condition (limited to the alert condition field)
+     * Adjust the "value" widget to the selected offer field.
      */
-    public function getValueChoices(DataContainer $dc): void
+    #[AsCallback(table: 'tl_wem_offer_alert_condition', target: 'config.onload')]
+    public function adjustValueField(DataContainer|null $dc = null): void
     {
-        // keep the default behaviour if there is no field selected
-        if ("" === $dc->id) {
-            exit();
+        if (! $dc?->id) {
+            return;
         }
 
-        $objCondition = AlertCondition::findByPk($dc->id);
+        $objCondition = AlertCondition::findById($dc->id);
 
-        if (!$objCondition || "" === $objCondition->field) {
-            exit();
+        if (! $objCondition instanceof AlertCondition || ! $objCondition->field) {
+            return;
         }
 
-        $this->loadDataContainer('tl_wem_offer');
-        $this->loadLanguageFile('tl_wem_offer');
+        Controller::loadDataContainer(Offer::getTable());
+        System::loadLanguageFile(Offer::getTable());
 
-        // Update the DCA according to the field found
-        $field = $GLOBALS['TL_DCA']['tl_wem_offer']['fields'][$objCondition->field];
-        $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['inputType'] = $field['inputType'];
+        $field = $GLOBALS['TL_DCA'][Offer::getTable()]['fields'][$objCondition->field] ?? null;
 
-        if ("select" == $field['inputType']) {
-            $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['options'] = $field['options'];
-            $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['options_callback'] = $field['options_callback'];
-            $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['eval']['multiple'] = $field['eval']['multiple'];
-            $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['eval']['chosen'] = $field['eval']['chosen'];
-            $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['eval']['includeBlankOption'] = $field['eval']['includeBlankOption'];
+        if ($field === null) {
+            return;
         }
 
-        $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['eval']['maxlength'] = $field['eval']['maxlength'];
-        $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value']['eval']['rgxp'] = $field['eval']['rgxp'];
+        $value = &$GLOBALS['TL_DCA']['tl_wem_offer_alert_condition']['fields']['value'];
+        $value['inputType'] = $field['inputType'];
+
+        if ($field['inputType'] === 'select') {
+            $value['options'] = $field['options'] ?? null;
+            $value['options_callback'] = $field['options_callback'] ?? null;
+
+            foreach (['multiple', 'chosen', 'includeBlankOption'] as $key) {
+                $value['eval'][$key] = $field['eval'][$key] ?? false;
+            }
+        }
+
+        foreach (['maxlength', 'rgxp'] as $key) {
+            if (isset($field['eval'][$key])) {
+                $value['eval'][$key] = $field['eval'][$key];
+            }
+        }
     }
 }

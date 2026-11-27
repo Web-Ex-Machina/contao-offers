@@ -3,14 +3,10 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
- *
- * @category ContaoBundle
- *
- * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\Model;
@@ -34,13 +30,14 @@ class Alert extends BaseModel
     /**
      * Find items, depends on the arguments.
      *
-     * @return Model|Model[]|Collection
+     * @return Collection<Alert>|null
      */
     public static function findItems(
-        array $arrConfig = [], int $intLimit = 0,
-        int $intOffset = 0, array $arrOptions = []
-    ): ?Collection
-    {
+        array $arrConfig = [],
+        int $intLimit = 0,
+        int $intOffset = 0,
+        array $arrOptions = []
+    ): ?Collection {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
 
@@ -52,9 +49,7 @@ class Alert extends BaseModel
             $arrOptions['offset'] = $intOffset;
         }
 
-        if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = $t . '.createdAt DESC';
-        }
+        $arrOptions['order'] ??= $t . '.createdAt DESC';
 
         if ($arrColumns === []) {
             return static::findAll($arrOptions);
@@ -107,14 +102,14 @@ class Alert extends BaseModel
             // Search by feed
             case 'feed':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = $t . '.feed IN('.implode(',', array_map('\intval', $varValue)).')';
+                    $arrColumns[] = $t . '.feed IN(' . implode(',', array_map(intval(...), $varValue)) . ')';
                 } else {
-                    $arrColumns[] = $t.'.feed = '.$varValue;
+                    $arrColumns[] = $t . '.feed = ' . (int) $varValue;
                 }
 
-            break;
+                break;
 
-            // Search by conditions (value needs to be an array)
+                // Search by conditions (value needs to be an array)
             case 'conditions':
                 foreach ($varValue as $c => $v) {
                     $arrColumns[] = sprintf(
@@ -124,19 +119,19 @@ class Alert extends BaseModel
                     );
                 }
 
-            break;
+                break;
 
-            // Active alert means activatedAt > 0
+                // Active alert means activatedAt > 0
             case 'active':
-                if (1 === $varValue) {
+                if ($varValue === 1) {
                     $arrColumns[] = $t . '.activatedAt > 0';
-                } elseif (0 === $varValue) {
+                } elseif ($varValue === 0) {
                     $arrColumns[] = $t . '.activatedAt = 0';
                 }
 
-            break;
+                break;
 
-            // Load parent
+                // Load parent
             default:
                 $arrColumns = array_merge($arrColumns, parent::formatStatement($strField, $varValue, $strOperator));
         }

@@ -3,19 +3,14 @@
 declare(strict_types=1);
 
 /**
- * Contao Job Offers for Contao Open Source CMS
- * Copyright (c) 2018-2020 Web ex Machina.
- *
- * @category ContaoBundle
- *
- * @author   Web ex Machina <contact@webexmachina.fr>
- *
- * @see     https://github.com/Web-Ex-Machina/contao-job-offers/
+ * Contao Offers Bundle for Contao Open Source CMS
+ * @author     Web Ex Machina
+ * @see        https://github.com/Web-Ex-Machina/contao-offers
+ * @license    https://www.gnu.org/licenses/lgpl+gpl-3.0.txt
  */
 
 namespace WEM\OffersBundle\Model;
 
-use Contao\Model;
 use Contao\Model\Collection;
 
 /**
@@ -33,15 +28,14 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
     /**
      * Find items, depends on the arguments.
      *
-     *
-     * @return Model|Collection|null
      * @throws \Exception
      */
     public static function findItems(
-        array $arrConfig = [], int $intLimit = 0,
-        int $intOffset = 0, array $arrOptions = []
-    ): ?Collection
-    {
+        array $arrConfig = [],
+        int $intLimit = 0,
+        int $intOffset = 0,
+        array $arrOptions = []
+    ): ?Collection {
         $t = static::$strTable;
         $arrColumns = static::formatColumns($arrConfig);
 
@@ -53,9 +47,7 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
             $arrOptions['offset'] = $intOffset;
         }
 
-        if (!isset($arrOptions['order'])) {
-            $arrOptions['order'] = $t . '.createdAt DESC';
-        }
+        $arrOptions['order'] ??= $t . '.createdAt DESC';
 
         if ($arrColumns === []) {
             return static::findAll($arrOptions);
@@ -80,22 +72,20 @@ class OfferFeedAttribute extends \WEM\UtilsBundle\Model\Model
             // Search by pid
             case 'pid':
                 if (\is_array($varValue)) {
-                    $arrColumns[] = $t . '.pid IN('.implode(',', array_map('\intval', $varValue)).')';
+                    $arrColumns[] = $t . '.pid IN(' . implode(',', array_map(intval(...), $varValue)) . ')';
                 } else {
-                    $arrColumns[] = $t.'.pid = '.$varValue;
+                    $arrColumns[] = $t . '.pid = ' . (int) $varValue;
                 }
 
-            break;
+                break;
 
-            // Search by name
+                // Search by name
             case 'name':
-                if (\is_array($varValue)) {
-                    $arrColumns[] = $t . ".name IN('".implode("','", $varValue)."')";
-                } else {
-                    $arrColumns[] = $t.'.name = "'.$varValue.'"';
-                }
+                // Attribute names are field names, drop anything else to keep the query safe
+                $names = array_filter((array) $varValue, static fn ($name): bool => \is_string($name) && preg_match('/^\w+$/', $name) === 1);
+                $arrColumns[] = $names === [] ? '1 = 0' : $t . ".name IN('" . implode("','", $names) . "')";
 
-            break;
+                break;
         }
 
         return $arrColumns;
