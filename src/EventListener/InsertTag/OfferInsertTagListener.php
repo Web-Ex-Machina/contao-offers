@@ -32,7 +32,7 @@ class OfferInsertTagListener
         $field = (string) $insertTag->getParameters()->get(0);
 
         // Check if we want a specific offer or the current one
-        $varOffer = $insertTag->getParameters()->get(1) ?? Input::get('auto_item');
+        $varOffer = $insertTag->getParameters()->get(1) ?? Input::get('auto_item') ?? Input::post('offer');
         $objOffer = $varOffer !== null ? Offer::findByIdOrCode((string) $varOffer) : null;
 
         // We can't throw an Exception that can break a website just because an ID is wrong

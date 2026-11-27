@@ -3,50 +3,27 @@
 {% use '@Contao/offer/_attributes.html.twig' %}
 
 {% block offer %}
-    {# Optional "pictures" attribute (fileTree) used as a gallery #}
-    {% set pictures = model.getAttributeValue('pictures')|default([]) %}
-
     <div class="offer__details">
         <div class="offer__title h2">{{ title }}</div>
 
         {{ block('attributes_component') }}
 
         <div class="offer__text">
-            {% if hasTeaser %}
+            {# Use the full text if available #}
+            {% if hasText.invoke() %}
+                {{ text|raw }}
+            {% elseif hasTeaser %}
                 {{ teaser|raw }}
             {% endif %}
 
-            {% if hasText.invoke() %}
-                {{ text|raw }}
-            {% endif %}
-
-            <div class="offer__figure offer__mainPicture">
-                {% if figure %}
+            {% if figure %}
+                <div class="offer__figure offer__mainPicture">
                     {{ block('figure_component') }}
-                {% elseif pictures is not empty %}
-                    <img src="{{ pictures|first.src }}" alt="{{ pictures|first.picture.alt|default }}">
-                {% endif %}
-            </div>
-
-            {% if pictures is not empty %}
-                <div class="offer__gallery">
-                    {% if figure %}
-                        <div class="offer__figure active">
-                            <img src="{{ figure.image.imageSrc }}" alt="{{ figure.metadata.alt|default }}">
-                        </div>
-                    {% endif %}
-                    {% for picture in pictures %}
-                        <div class="offer__figure{% if not figure and loop.first %} active{% endif %}">
-                            <img src="{{ picture.thumbnail|default(picture.src) }}" alt="{{ picture.picture.alt|default }}">
-                        </div>
-                    {% endfor %}
                 </div>
             {% endif %}
         </div>
 
         {% if canApply %}
-            <div class="h4">{{ 'WEM.OFFERS.applyTitle'|trans }}</div>
-
             {% if formDisplay == 'modal' %}
                 <button type="button" class="btn-sm offer__action" data-process="openApplicationModal" data-offer="{{ id }}">{{ 'WEM.OFFERS.byForm'|trans }}</button>
             {% else %}

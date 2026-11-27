@@ -26,9 +26,15 @@
 
                 <div class="offer__actions">
                     {% block actions %}
-                        <button type="button" class="btn offer__action" title="{{ 'WEM.OFFERS.seeOffer'|trans }}" data-process="openDetailsModal" data-offer="{{ id }}" data-icon="false" data-result="false">
-                            {{ 'WEM.OFFERS.seeOffer'|trans }}
-                        </button>
+                        {% if jumpTo %}
+                            <div class="btn offer__action">
+                                <a href="{{ jumpTo }}" title="{{ 'WEM.OFFERS.seeOffer'|trans }}">{{ 'WEM.OFFERS.seeOffer'|trans }}</a>
+                            </div>
+                        {% else %}
+                            <button type="button" class="btn offer__action" title="{{ 'WEM.OFFERS.seeOffer'|trans }}" data-process="openDetailsModal" data-offer="{{ id }}" data-icon="false" data-result="false">
+                                {{ 'WEM.OFFERS.seeOffer'|trans }}
+                            </button>
+                        {% endif %}
 
                         {% if canApply %}
                             <button type="button" class="btn offer__action" data-process="openApplicationModal" data-offer="{{ id }}">

@@ -9,10 +9,6 @@
 				<source>Error:</source>
 				<target>Erreur :</target>
 			</trans-unit>
-    	<trans-unit id="WEM.OFFERS.applyFor">
-				<source>Apply for the offer %s</source>
-				<target>Postuler pour l'annonce %s</target>
-			</trans-unit>
     	<trans-unit id="WEM.OFFERS.unsubscribeLbl">
 				<source>Delete my alert</source>
 				<target>Supprimer mon alerte emploi</target>

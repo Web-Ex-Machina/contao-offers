@@ -1,13 +1,3 @@
-{% trans_default_domain 'contao_default' %}
-
 <div class="offer__form" data-form="apply_form_{{ id }}">
-    <div class="offer__title h2">{{ 'WEM.OFFERS.applyFor'|trans([title]) }}</div>
-
     {{ form|raw }}
-
-    <script>
-        window.addEventListener('load', function () {
-            $('[data-form="apply_form_{{ id }}"] input[name="pid"]').val({{ id }});
-        });
-    </script>
 </div>

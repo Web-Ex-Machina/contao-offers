@@ -17,6 +17,7 @@ use Contao\Controller;
 use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\CoreBundle\File\Metadata;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
@@ -179,7 +180,11 @@ abstract class ModuleController extends AbstractFrontendModuleController
     protected function subscribe(Request $request): JsonResponse
     {
         $email = $this->getValidEmail($request);
-        $arrConditions = $request->request->all('conditions');
+        // Conditions with several values are stored serialized
+        $arrConditions = array_map(
+            static fn ($v) => \is_array($v) ? serialize(array_values($v)) : $v,
+            $request->request->all('conditions'),
+        );
 
         // Check if we already have an existing alert with this email and this conditions
         if (Alert::countItems([
@@ -218,6 +223,15 @@ abstract class ModuleController extends AbstractFrontendModuleController
         $objAlert->save();
 
         foreach ($arrConditions as $field => $value) {
+            // An existing alert might already have this condition
+            if (AlertCondition::countItems([
+                'pid' => $objAlert->id,
+                'field' => $field,
+                'value' => $value,
+            ]) > 0) {
+                continue;
+            }
+
             $objAlertCondition = new AlertCondition();
             $objAlertCondition->tstamp = time();
             $objAlertCondition->createdAt = time();
@@ -318,12 +332,19 @@ abstract class ModuleController extends AbstractFrontendModuleController
         $data['timestamp'] = $objItem->date;
         $data['datetime'] = date('Y-m-d\TH:i:sP', (int) $objItem->date);
 
-        // Add an image
+        // Add an image, use the offer title as alternative text unless the metadata are overwritten
+        $data['alt'] = $objItem->overwriteMeta ? $objItem->alt : $objItem->title;
         $data['figure'] = $objItem->addImage && $objItem->singleSRC
             ? $this->studio
                 ->createFigureBuilder()
                 ->from($objItem->singleSRC)
                 ->setSize($objItem->size)
+                ->setOverwriteMetadata(new Metadata(array_filter([
+                    Metadata::VALUE_ALT => $data['alt'],
+                    Metadata::VALUE_TITLE => $objItem->overwriteMeta ? $objItem->imageTitle : null,
+                    Metadata::VALUE_URL => $objItem->overwriteMeta ? $objItem->imageUrl : null,
+                    Metadata::VALUE_CAPTION => $objItem->overwriteMeta ? $objItem->caption : null,
+                ])))
                 ->enableLightbox((bool) $objItem->fullsize)
                 ->buildIfResourceExists()
             : null;
@@ -367,6 +388,11 @@ abstract class ModuleController extends AbstractFrontendModuleController
                 $data['form'] = $this->getApplicationForm($id);
             }
         }
+
+        // Link to the overview page
+        $overviewPage = $this->model->overviewPage ? PageModel::findById($this->model->overviewPage) : null;
+        $data['referer'] = $overviewPage instanceof PageModel ? $this->contentUrlGenerator->generate($overviewPage) : null;
+        $data['back'] = $this->model->customLabel ?: ($GLOBALS['TL_LANG']['MSC']['newsOverview'] ?? '');
 
         // Notice the template if we want to display the text
         $data['blnDisplayText'] = (bool) $this->model->offer_displayTeaser;

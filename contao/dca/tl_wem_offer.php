@@ -204,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             ],
             'sql' => "varchar(255) NOT NULL default ''"],
         'size' => [
-            'label' => &$GLOBALS['TL_LANG']['MSC']['imgSize'],
+            'label' => &$GLOBALS['TL_LANG']['tl_content']['size'],
             'exclude' => true,
             'inputType' => 'imageSize',
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -278,6 +278,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'inputType' => 'checkbox',
             'eval' => [
                 'doNotCopy' => true,
+                'tl_class' => 'w50 m12 clr',
             ],
             'sql' => "char(1) NOT NULL default ''",
         ],
@@ -287,7 +288,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer'] = [
             'eval' => [
                 'rgxp' => 'datim',
                 'datepicker' => true,
-                'tl_class' => 'w50 wizard',
+                'tl_class' => 'w50 clr wizard',
             ],
             'sql' => "varchar(10) NOT NULL default ''",
         ],

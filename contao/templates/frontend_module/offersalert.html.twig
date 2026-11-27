@@ -76,9 +76,14 @@
                         var conditions = {};
 
                         $module.find('.conditions').find('input,select').each(function () {
-                            if ('' !== this.value) {
-                                conditions[this.name] = this.value;
+                            if ('' === this.value) {
+                                return;
                             }
+
+                            // Select fields may allow several values
+                            conditions[this.name] = 'SELECT' === this.tagName
+                                ? Array.from(this.selectedOptions).map((option) => option.value)
+                                : this.value;
                         });
 
                         createOfferAlert(rt, {{ moduleId }}, $module.find('input[name="email"]').val(), conditions)

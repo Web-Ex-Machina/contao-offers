@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace WEM\OffersBundle\EventListener\DataContainer;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use WEM\OffersBundle\Model\Offer;
 use WEM\OffersBundle\Model\OfferFeedAttribute;
@@ -21,6 +22,7 @@ use WEM\UtilsBundle\Classes\StringUtil;
  * Add the feed attributes as fields of the offer DCA.
  */
 #[AsHook('loadDataContainer')]
+#[WithMonologChannel('contao')]
 class LoadDataContainerListener
 {
     public function __construct(
@@ -71,6 +73,11 @@ class LoadDataContainerListener
         // if ($row['wemoffers_isAvailableForAlerts']) {
         if ($row['isAlertCondition']) {
             $data['eval']['isAlertCondition'] = true;
+        }
+
+        // Allow several values for this alert condition
+        if ($row['isMultipleAlertCondition'] ?? false) {
+            $data['eval']['isMultipleAlertCondition'] = true;
         }
 
         // Available for filters settings

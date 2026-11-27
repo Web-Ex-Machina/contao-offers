@@ -18,7 +18,10 @@ use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Date;
 use Contao\ModuleModel;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\System;
+use Doctrine\DBAL\Connection;
+use Monolog\Attribute\WithMonologChannel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -31,6 +34,7 @@ use WEM\OffersBundle\Model\OfferFeedAttribute;
 use WEM\OffersBundle\Twig\TemplateRenderer;
 
 #[AsCronJob('hourly')]
+#[WithMonologChannel('contao.cron')]
 class SendAlerts
 {
     public const DEFAULT_TEMPLATE = 'offer_alert/default';
@@ -40,6 +44,7 @@ class SendAlerts
         private readonly NotificationCenter $notificationCenter,
         private readonly ContentUrlGenerator $contentUrlGenerator,
         private readonly LoggerInterface $logger,
+        private readonly Connection $connection,
         private readonly TemplateRenderer $templateRenderer,
     ) {
     }
@@ -110,11 +115,10 @@ class SendAlerts
                 'where' => [],
             ];
 
-            // @todo > Take in consideration that we can have multiple values per field.
             foreach (AlertCondition::findItems([
                 'pid' => $objAlert->id,
             ]) ?? [] as $objCondition) {
-                $arrConditions[$objCondition->field] = $objCondition->value;
+                $this->addCondition($arrConditions, (string) $objCondition->field, $objCondition->value);
             }
 
             // Depending on frequency, adjust offer time condition
@@ -165,6 +169,33 @@ class SendAlerts
         }
 
         $this->logger->info(\sprintf('Cronjob SendAlerts done, %d alerts and %d offers sent', $nbAlerts, $nbOffers));
+    }
+
+    /**
+     * Add an alert condition, conditions with several values match any of them.
+     */
+    private function addCondition(array &$arrConditions, string $field, mixed $value): void
+    {
+        if (! $value || preg_match('/^\w+$/', $field) !== 1) {
+            return;
+        }
+
+        $values = StringUtil::deserialize($value);
+
+        if (! \is_array($values)) {
+            $arrConditions[$field] = $value;
+
+            return;
+        }
+
+        if ($values === []) {
+            return;
+        }
+
+        $arrConditions['where'][] = '(' . implode(' OR ', array_map(
+            fn ($v): string => \sprintf('%s.%s = %s', Offer::getTable(), $field, $this->connection->quote((string) $v)),
+            $values,
+        )) . ')';
     }
 
     private function getUnsubscribeLink(Alert $objAlert): string

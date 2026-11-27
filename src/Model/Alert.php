@@ -112,10 +112,16 @@ class Alert extends BaseModel
                 // Search by conditions (value needs to be an array)
             case 'conditions':
                 foreach ($varValue as $c => $v) {
-                    $arrColumns[] = sprintf(
-                        sprintf("%s.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%%s' AND twoac.value = '%%s')", $t),
+                    // The conditions come from the frontend, keep the query safe
+                    if (preg_match('/^\w+$/', (string) $c) !== 1) {
+                        continue;
+                    }
+
+                    $arrColumns[] = \sprintf(
+                        "%s.id IN (SELECT twoac.pid FROM tl_wem_offer_alert_condition AS twoac WHERE twoac.field = '%s' AND twoac.value = '%s')",
+                        $t,
                         $c,
-                        $v
+                        addslashes(\is_array($v) ? serialize($v) : (string) $v),
                     );
                 }
 

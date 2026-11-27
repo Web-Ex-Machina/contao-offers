@@ -101,6 +101,8 @@ window.addEventListener("load", function(e) {
 				btn.$el.removeClass('no-events');
 				throw Error(data);
 			});
+		} else {
+			btn.$el.removeClass('no-events');
 		}
 	});
 

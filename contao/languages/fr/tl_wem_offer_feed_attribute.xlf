@@ -83,6 +83,14 @@
 			<source>Check to make this attribute available for alert conditions</source>
 			<target>Cocher pour rendre cet attribut utilisable comme condition d'alerte</target>
 		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.isMultipleAlertCondition.0">
+			<source>Multiple Alert condition</source>
+			<target>Condition d'alerte multiple</target>
+		</trans-unit>
+		<trans-unit id="tl_wem_offer_feed_attribute.isMultipleAlertCondition.1">
+			<source>Check to allow users to pick multiple values for this alert condition</source>
+			<target>Cocher pour permettre aux usagers de choisir plusieurs valeurs pour cette alerte de condition</target>
+		</trans-unit>
 
 		<trans-unit id="tl_wem_offer_feed_attribute.insertAfter.0">
 			<source>Insert after</source>

@@ -57,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
     // Palettes
     'palettes' => [
         'default' => '
-            {recipient_legend},email;
+            {recipient_legend},email,activatedAt;
             {alert_legend},feed,frequency,language,moduleOffersAlert;
             {filters_legend},conditions
         ',
@@ -81,6 +81,13 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert'] = [
         ],
         'activatedAt' => [
             'default' => 0,
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => [
+                'rgxp' => 'datim',
+                'datepicker' => true,
+                'tl_class' => 'w50 wizard',
+            ],
             'flag' => DataContainer::SORT_MONTH_DESC,
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],

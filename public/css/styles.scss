@@ -36,7 +36,7 @@ $breakpoints: (
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
   max-width: 100%;
-  max-height: 1em*1.45*4; /* Fallback for non-webkit */
+  // max-height: 1em*1.45*4; /* Fallback for non-webkit */
   font-size: 1em;
   line-height: 1.45;
   -webkit-line-clamp: 4;

@@ -155,7 +155,7 @@ class AlertModuleController extends ModuleController
                 'label' => ($field['label'][0] ?? null) ?: ($GLOBALS['TL_LANG'][Offer::getTable()][$c][0] ?? $c),
                 'value' => $request->query->get($c) ?: '',
                 'options' => [],
-                'multiple' => isset($field['eval']['multiple']),
+                'multiple' => (bool) ($field['eval']['isMultipleAlertCondition'] ?? false),
             ];
 
             if ($field['inputType'] === 'select') {
@@ -189,6 +189,13 @@ class AlertModuleController extends ModuleController
                         ];
                     }
                 }
+            }
+
+            // HOOK: let the website adjust the condition
+            foreach ($GLOBALS['TL_HOOKS']['WEMOFFERSUPDATEALERTCONDITION'] ?? [] as $callback) {
+                $condition = \is_array($callback)
+                    ? System::importStatic($callback[0])->{$callback[1]}($condition, $this->model)
+                    : $callback($condition, $this->model);
             }
 
             $conditions[] = $condition;

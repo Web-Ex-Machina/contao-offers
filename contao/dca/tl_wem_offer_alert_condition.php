@@ -75,11 +75,8 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
         'field' => [
             'exclude' => true,
             'filter' => true,
-            'inputType' => 'select',
+            'inputType' => 'text',
             'eval' => [
-                'includeBlankOption' => true,
-                'submitOnChange' => true,
-                'chosen' => true,
                 'tl_class' => 'w50',
             ],
             'sql' => "varchar(255) NOT NULL default ''",
@@ -89,10 +86,10 @@ $GLOBALS['TL_DCA']['tl_wem_offer_alert_condition'] = [
             'filter' => true,
             'inputType' => 'text',
             'eval' => [
-                'mandatory' => true,
                 'tl_class' => 'w50',
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            // Conditions with several values are stored serialized
+            'sql' => 'mediumtext NULL',
         ],
     ],
 ];
